@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Test]]></title>
+    <url>%2F2018%2F09%2F14%2FTest%2F</url>
+    <content type="text"><![CDATA[## ## ##]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[CentOS7-安装docker-compose时由于pip10包管理导致的错误]]></title>
     <url>%2F2018%2F09%2F13%2FCentOS7-%E5%AE%89%E8%A3%85docker-compose%E6%97%B6%E7%94%B1%E4%BA%8Epip10%E5%8C%85%E7%AE%A1%E7%90%86%E5%AF%BC%E8%87%B4%E7%9A%84%E9%94%99%E8%AF%AF%2F</url>
     <content type="text"><![CDATA[今天在CentOS下安装docker-compose，遇到了Cannot uninstall ‘requests’. It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.错误的原因是requests默认版本为2.6.0，但是docker-compose要2.9以上才支持，但是无法正常卸载2.9版本，是pip10对包的管理存在变化。 解决方案： pip install -l requests==2.9]]></content>
