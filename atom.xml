@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2018-09-16T13:49:36.202Z</updated>
+  <updated>2018-09-17T02:57:06.209Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>python 发送各种格式的邮件</title>
+    <link href="https://cloudsjhan.github.io/2018/09/17/python-%E5%8F%91%E9%80%81%E5%90%84%E7%A7%8D%E6%A0%BC%E5%BC%8F%E7%9A%84%E9%82%AE%E4%BB%B6/"/>
+    <id>https://cloudsjhan.github.io/2018/09/17/python-发送各种格式的邮件/</id>
+    <published>2018-09-17T02:55:56.000Z</published>
+    <updated>2018-09-17T02:57:06.209Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> smtplib</span><br><span class="line"><span class="keyword">from</span> email.mime.multipart <span class="keyword">import</span> MIMEMultipart</span><br><span class="line"><span class="keyword">from</span> email.mime.text <span class="keyword">import</span> MIMEText</span><br><span class="line"><span class="keyword">from</span> email.mime.application <span class="keyword">import</span> MIMEApplication</span><br><span class="line">_user = <span class="string">"sigeken@qq.com"</span></span><br><span class="line">_pwd  = <span class="string">"***"</span></span><br><span class="line">_to   = <span class="string">"402363522@qq.com"</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">#如名字所示Multipart就是分多个部分</span></span><br><span class="line">msg = MIMEMultipart()</span><br><span class="line">msg[<span class="string">"Subject"</span>] = <span class="string">"don't panic"</span></span><br><span class="line">msg[<span class="string">"From"</span>]    = _user</span><br><span class="line">msg[<span class="string">"To"</span>]      = _to</span><br><span class="line"> </span><br><span class="line"><span class="comment">#---这是文字部分---</span></span><br><span class="line">part = MIMEText(<span class="string">"乔装打扮，不择手段"</span>)</span><br><span class="line">msg.attach(part)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#---这是附件部分---</span></span><br><span class="line"><span class="comment">#xlsx类型附件</span></span><br><span class="line">part = MIMEApplication(open(<span class="string">'foo.xlsx'</span>,<span class="string">'rb'</span>).read())</span><br><span class="line">part.add_header(<span class="string">'Content-Disposition'</span>, <span class="string">'attachment'</span>, filename=<span class="string">"foo.xlsx"</span>)</span><br><span class="line">msg.attach(part)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#jpg类型附件</span></span><br><span class="line">part = MIMEApplication(open(<span class="string">'foo.jpg'</span>,<span class="string">'rb'</span>).read())</span><br><span class="line">part.add_header(<span class="string">'Content-Disposition'</span>, <span class="string">'attachment'</span>, filename=<span class="string">"foo.jpg"</span>)</span><br><span class="line">msg.attach(part)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#pdf类型附件</span></span><br><span class="line">part = MIMEApplication(open(<span class="string">'foo.pdf'</span>,<span class="string">'rb'</span>).read())</span><br><span class="line">part.add_header(<span class="string">'Content-Disposition'</span>, <span class="string">'attachment'</span>, filename=<span class="string">"foo.pdf"</span>)</span><br><span class="line">msg.attach(part)</span><br><span class="line"> </span><br><span class="line"><span class="comment">#mp3类型附件</span></span><br><span class="line">part = MIMEApplication(open(<span class="string">'foo.mp3'</span>,<span class="string">'rb'</span>).read())</span><br><span class="line">part.add_header(<span class="string">'Content-Disposition'</span>, <span class="string">'attachment'</span>, filename=<span class="string">"foo.mp3"</span>)</span><br><span class="line">msg.attach(part)</span><br><span class="line"> </span><br><span class="line">s = smtplib.SMTP(<span class="string">"smtp.qq.com"</span>, timeout=<span class="number">30</span>)<span class="comment">#连接smtp邮件服务器,端口默认是25</span></span><br><span class="line">s.login(_user, _pwd)<span class="comment">#登陆服务器</span></span><br><span class="line">s.sendmail(_user, _to, msg.as_string())<span class="comment">#发送邮件</span></span><br><span class="line">s.close()</span><br></pre></td></tr></table></figure><hr>]]></content>
+    
+    <summary type="html">
+    
+      使用Python发送各种格式的邮件
+    
+    </summary>
+    
+      <category term="Python" scheme="https://cloudsjhan.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="https://cloudsjhan.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>技术周刊之当你ping的时候，发生了什么？</title>
