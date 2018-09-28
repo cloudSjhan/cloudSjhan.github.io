@@ -101,7 +101,7 @@
 <meta property="og:description" content="python apscheduler - skipped: maximum number of running instances reached">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2018/09/28/python-apscheduler-skipped-maximum-number-of-running-instances-reached/index.html">
-<meta property="og:updated_time" content="2018-09-28T08:11:43.720Z">
+<meta property="og:updated_time" content="2018-09-28T08:14:25.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python apscheduler - skipped: maximum number of running instances reached">
 <meta name="twitter:description" content="python apscheduler - skipped: maximum number of running instances reached">
@@ -475,7 +475,7 @@
 <a id="more"></a>
 <h3 id="出现问题的代码"><a href="#出现问题的代码" class="headerlink" title="出现问题的代码"></a>出现问题的代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line">scheduler.add_job(runsync, <span class="string">'interval'</span>, seconds=<span class="number">1</span>)</span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
 <h3 id="问题出现的情况"><a href="#问题出现的情况" class="headerlink" title="问题出现的情况"></a>问题出现的情况</h3><ul>
-<li>运行一段代码，时而出现时而不出现</li>
+<li>运行一段代码，时而报错时而不报错</li>
 <li>报错是：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WARNING:apscheduler.scheduler:Execution of job &quot;runsync (trigger: interval[0:00:01], next run at: 2015-12-01 11:50:42 UTC)&quot; skipped: maximum number of running instances reached (1)</span><br></pre></td></tr></table></figure>

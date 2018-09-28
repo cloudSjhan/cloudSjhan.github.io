@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[python apscheduler - skipped: maximum number of running instances reached]]></title>
     <url>%2F2018%2F09%2F28%2Fpython-apscheduler-skipped-maximum-number-of-running-instances-reached%2F</url>
-    <content type="text"><![CDATA[出现问题的代码123scheduler = BackgroundScheduler()scheduler.add_job(runsync, 'interval', seconds=1)scheduler.start() 问题出现的情况 运行一段代码，时而出现时而不出现 报错是： 1WARNING:apscheduler.scheduler:Execution of job &quot;runsync (trigger: interval[0:00:01], next run at: 2015-12-01 11:50:42 UTC)&quot; skipped: maximum number of running instances reached (1) 分析 apscheduler这个模块，在你的代码运行时间大于interval的时候，就会报错 也就是说，你的代码运行时间超出了你的定时任务的时间间隔。 解决 增大时间间隔即可 ###]]></content>
+    <content type="text"><![CDATA[出现问题的代码123scheduler = BackgroundScheduler()scheduler.add_job(runsync, 'interval', seconds=1)scheduler.start() 问题出现的情况 运行一段代码，时而报错时而不报错 报错是： 1WARNING:apscheduler.scheduler:Execution of job &quot;runsync (trigger: interval[0:00:01], next run at: 2015-12-01 11:50:42 UTC)&quot; skipped: maximum number of running instances reached (1) 分析 apscheduler这个模块，在你的代码运行时间大于interval的时候，就会报错 也就是说，你的代码运行时间超出了你的定时任务的时间间隔。 解决 增大时间间隔即可 ###]]></content>
       <categories>
         <category>python</category>
       </categories>
