@@ -23,11 +23,6 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>%2F2018%2F09%2F25%2Famazon_%E5%9F%B9%E8%AE%AD_2018_09_25%2F</url>
-    <content type="text"><![CDATA[计算服务架构演进 虚拟机VM（Amazon EC2） 容器（ecs, eks） serverLess(lamda) serverless computing AWS lambda Lambda = 事件驱动的无服务器的微服务即一小段运行的代码 专注于业务逻辑]]></content>
-  </entry>
-  <entry>
     <title><![CDATA[python 发送各种格式的邮件]]></title>
     <url>%2F2018%2F09%2F17%2Fpython-%E5%8F%91%E9%80%81%E5%90%84%E7%A7%8D%E6%A0%BC%E5%BC%8F%E7%9A%84%E9%82%AE%E4%BB%B6%2F</url>
     <content type="text"><![CDATA[12345678910111213141516171819202122232425262728293031323334353637383940414243import smtplibfrom email.mime.multipart import MIMEMultipartfrom email.mime.text import MIMETextfrom email.mime.application import MIMEApplication_user = "sigeken@qq.com"_pwd = "***"_to = "402363522@qq.com" #如名字所示Multipart就是分多个部分msg = MIMEMultipart()msg["Subject"] = "don't panic"msg["From"] = _usermsg["To"] = _to #---这是文字部分---part = MIMEText("乔装打扮，不择手段")msg.attach(part) #---这是附件部分---#xlsx类型附件part = MIMEApplication(open('foo.xlsx','rb').read())part.add_header('Content-Disposition', 'attachment', filename="foo.xlsx")msg.attach(part) #jpg类型附件part = MIMEApplication(open('foo.jpg','rb').read())part.add_header('Content-Disposition', 'attachment', filename="foo.jpg")msg.attach(part) #pdf类型附件part = MIMEApplication(open('foo.pdf','rb').read())part.add_header('Content-Disposition', 'attachment', filename="foo.pdf")msg.attach(part) #mp3类型附件part = MIMEApplication(open('foo.mp3','rb').read())part.add_header('Content-Disposition', 'attachment', filename="foo.mp3")msg.attach(part) s = smtplib.SMTP("smtp.qq.com", timeout=30)#连接smtp邮件服务器,端口默认是25s.login(_user, _pwd)#登陆服务器s.sendmail(_user, _to, msg.as_string())#发送邮件s.close()]]></content>

@@ -61,35 +61,6 @@
   </entry>
   
   <entry>
-    <title></title>
-    <link href="https://cloudsjhan.github.io/2018/09/25/amazon_%E5%9F%B9%E8%AE%AD_2018_09_25/"/>
-    <id>https://cloudsjhan.github.io/2018/09/25/amazon_培训_2018_09_25/</id>
-    <published>2018-09-25T05:42:19.454Z</published>
-    <updated>2018-09-25T06:03:14.694Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li>计算服务架构演进<ul><li>虚拟机VM（Amazon EC2）</li><li>容器（ecs, eks）</li><li>serverLess(lamda)</li></ul></li><li>serverless computing</li><li>AWS lambda<ul><li>Lambda = 事件驱动的无服务器的微服务即一小段运行的代码</li><li>专注于业务逻辑</li><li></li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;计算服务架构演进&lt;ul&gt;
-&lt;li&gt;虚拟机VM（Amazon EC2）&lt;/li&gt;
-&lt;li&gt;容器（ecs, eks）&lt;/li&gt;
-&lt;li&gt;serverLess(lamda)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;serverless computing&lt;/li&gt;
-
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
     <title>python 发送各种格式的邮件</title>
     <link href="https://cloudsjhan.github.io/2018/09/17/python-%E5%8F%91%E9%80%81%E5%90%84%E7%A7%8D%E6%A0%BC%E5%BC%8F%E7%9A%84%E9%82%AE%E4%BB%B6/"/>
     <id>https://cloudsjhan.github.io/2018/09/17/python-发送各种格式的邮件/</id>
