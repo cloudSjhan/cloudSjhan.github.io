@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="python, go, Docker, k8s,爬虫,Django" />
+  <meta name="keywords" content="golang,技术周刊," />
 
 
 
@@ -92,17 +92,23 @@
 
 
 
-<meta name="description" content="关于技术，关于生活">
-<meta name="keywords" content="go, python, Docker, 爬虫，k8s">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cloud world">
-<meta property="og:url" content="https://cloudsjhan.github.io/tags/网络/index.html">
+<meta name="description" content="如何优雅地修改go中struct的slice的值">
+<meta name="keywords" content="golang,技术周刊">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术周刊之golang中修改struct的slice的值">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="关于技术，关于生活">
+<meta property="og:description" content="如何优雅地修改go中struct的slice的值">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/index.html">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwly1fwmm2z70f6j30d301ja9z.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwmnl32x44j30dj01imx3.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fwmnl32x44j30dj01imx3.jpg">
+<meta property="og:updated_time" content="2018-10-27T04:27:06.639Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cloud world">
-<meta name="twitter:description" content="关于技术，关于生活">
+<meta name="twitter:title" content="技术周刊之golang中修改struct的slice的值">
+<meta name="twitter:description" content="如何优雅地修改go中struct的slice的值">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/index.html">
 
 
 
@@ -132,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/tags/网络/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/"/>
 
 
 
@@ -147,7 +153,7 @@
   </script>
 
 
-  <title>标签: 网络 | cloud world</title>
+  <title>技术周刊之golang中修改struct的slice的值 | cloud world</title>
   
 
 
@@ -166,7 +172,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
@@ -315,82 +321,350 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>网络<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/12/总结版图解http/" itemprop="url">
-              
-                <span itemprop="name">总结版图解http</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">技术周刊之golang中修改struct的slice的值</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-12T10:20:37+08:00"
-              content="2018-10-12" >
-          10-12
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-27T10:30:10+08:00">
+                2018-10-27
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术周刊/" itemprop="url" rel="index">
+                    <span itemprop="name">技术周刊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/27/技术周刊之golang中修改struct的slice的值/" class="leancloud_visitors" data-flag-title="技术周刊之golang中修改struct的slice的值">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,283
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  如何优雅地修改go中struct的slice的值
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p class="description"></p>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/09/16/技术周刊之当你ping的时候，发生了什么？/" itemprop="url">
-              
-                <span itemprop="name">技术周刊之当你ping的时候，发生了什么？</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-16T21:40:02+08:00"
-              content="2018-09-16" >
-          09-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><ul>
+<li>前段时间写go的时候遇到一个问题，需要修改由struct构成的slice中struct的某个字段值，类似于下面的需求：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Docker <span class="keyword">struct</span> &#123;</span><br><span class="line">	Ip  <span class="keyword">string</span></span><br><span class="line">	ID <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">docker1 := Docker&#123;</span><br><span class="line">		Ip:  <span class="string">"222"</span>,</span><br><span class="line">		ID: <span class="string">"aaa"</span>,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	docker2 := Docker&#123;</span><br><span class="line">		Ip:  <span class="string">"111"</span>,</span><br><span class="line">		ID: <span class="string">"bbb"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> tmpDocker []Docker</span><br><span class="line">	tmpDocker = <span class="built_in">append</span>(tmpDocker, docker1)</span><br><span class="line">	tmpDocker = <span class="built_in">append</span>(tmpDocker, docker2)</span><br><span class="line">	现在需要修改tmpDocker中，Ip这个字段的值, 你可以先自己尝试修改一下，然后再往下看</span><br></pre></td></tr></table></figure>
+<p>由这个问题我查阅很多资料，我们先从语言中经典的传值、传引用说起来</p>
+<ul>
+<li>对于一门语言，我们关心传递参数的过程中，是传值还是传引用，其实对于传值和传引用是一个比较古老的问题，在大学入门的时候，你可能就接触过这样的C语言代码：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以下哪个函数能实现交换两个数？</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap1</span><span class="params">(<span class="keyword">int</span> p,<span class="keyword">int</span> q)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp=p;</span><br><span class="line">    p=q;</span><br><span class="line">    q=temp;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap2</span><span class="params">(<span class="keyword">int</span> *p,<span class="keyword">int</span> *q)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> *temp;</span><br><span class="line">    *temp=*p;</span><br><span class="line">    *p=*q;</span><br><span class="line">    *q=*temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实对于C语言来说，并没有传引用的概念，看似传引用的操控，实际上传的是指针的地址，也算是一种传值，先看一下传值，传引用，传指针的概念：</p>
+<ul>
+<li>传值：可能很多人都听说，传值无非就是实参拷贝传递给形参。这句话没有错，但是理解起来还是有点抽象。一句话，传值就是把实参赋值给形参，赋值完毕后实参就和形参没有任何联系，对形参的修改就不会影响到实参。</li>
+<li>传地址：为什么说传地址也是一种传值呢？因为传地址是把实参地址的拷贝传递给形参。还是一句话，传地址就是把实参的地址复制给形参。复制完毕后实参的地址和形参的地址没有任何联系，对实参形参地址的修改不会影响到实参, 但是对形参地址所指向对象的修改却直接反应在实参中，因为形参指向的对象就是形参的对象。</li>
+<li>传引用：传引用本质没有任何实参的拷贝，一句话，就是让另外一个变量也执行该实参。就是两个变量指向同一个对象。这是对形参的修改，必然反映到实参上。</li>
+</ul>
+<p>那么对于go语言来说，是没有引用传递的，go作为云计算时代的C语言，采用的都是值传递，即使是指针，也是将指针的地址即指针的指针，拷贝一份传递，可以参考这篇博文的讲解：Go<a href="http://www.flysnow.org/2018/02/24/golang-function-parameters-passed-by-value.html" target="_blank" rel="noopener">语言参数传递是传值还是传引用</a></p>
+<h3 id="回到正题"><a href="#回到正题" class="headerlink" title="回到正题"></a>回到正题</h3><ul>
+<li><p>了解基本的知识背景之后，让我们回到文章开头的代码，即要修改slice中struct某字段的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">type Docker struct &#123;</span><br><span class="line">	Ip  string</span><br><span class="line">	ID string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">docker1 := Docker&#123;</span><br><span class="line">		Ip:  &quot;222&quot;,</span><br><span class="line">		ID: &quot;aaa&quot;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	docker2 := Docker&#123;</span><br><span class="line">		Ip:  &quot;111&quot;,</span><br><span class="line">		ID: &quot;bbb&quot;,</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	var tmpDocker []Docker</span><br><span class="line">	tmpDocker = append(tmpDocker, docker1)</span><br><span class="line">	tmpDocker = append(tmpDocker, docker2)</span><br></pre></td></tr></table></figure>
+<p>先将我最初的代码实现贴出来：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="keyword">for</span> _, dockerInfo := <span class="keyword">range</span> tmpDocker &#123;</span><br><span class="line">	dockerInfo.Ip = <span class="string">"192.168,.1.1"</span></span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(tmpDocker)</span><br></pre></td></tr></table></figure>
+<p>让我们看一下运行结果：</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwly1fwmm2z70f6j30d301ja9z.jpg" alt=""></p>
+<p>发现struct中Ip字段的值并没有改变，是为什么呢？</p>
+<p>原因就是：range的过程中产生了一个新的对象，即dockerInfo是temDocker中每个元素的一个副本，所以你改变的只是副本中Ip字段的值，并没有改变真实的。那么如何解决呢?</p>
+<p>这里我提出两种解决的方法，代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法1：赋给一个新的对象</span></span><br><span class="line">newTmpDocker := []Docker&#123;&#125;<span class="comment">//新的对象</span></span><br><span class="line"><span class="keyword">for</span> _, dockerInfo := <span class="keyword">range</span> tmpDocker &#123;</span><br><span class="line">    dockerInfo.Ip = <span class="string">"192.168.1.1"</span></span><br><span class="line">    newTmpDocker = <span class="built_in">append</span>(newTmpDocker, dockerInfo)</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(newTmpDocker)</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwmnl32x44j30dj01imx3.jpg" alt=""></p>
+<p>可以看到最终输出的struct的slice中我们想要改变的字段已经修改成功。</p>
+<p>第二种方法是将副本修改后赋值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">方法<span class="number">2</span>：修改副本后，将副本赋值给原来的</span><br><span class="line"><span class="keyword">for</span> i, dockerInfo := <span class="keyword">range</span> tmpDocker&#123;</span><br><span class="line">    dockerInfo.Ip = <span class="string">"192.168.1.1"</span></span><br><span class="line">    tmpDocker[i] = dockerInfo</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(tmpDocker)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fwmnl32x44j30dj01imx3.jpg" alt=""></p>
+<p>可以看到同样修改成功。</p>
+</li>
+</ul>
+<h3 id="总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。"><a href="#总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。" class="headerlink" title="总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。"></a>总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。</h3><p>是否可以修改原内容数据，和传值、传引用没有必然的关系。在C++中，传引用肯定是可以修改原内容数据的，在Go语言里，虽然只有传值，但是我们也可以修改原内容数据，因为参数是引用类型。</p>
+<p>这里也要记住，引用类型和传引用是两个概念。</p>
+<p>再记住，Go里只有传值（值传递）。</p>
+<hr>
 
       
     </div>
+    
+    
+    
 
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2018/10/27/技术周刊之golang中修改struct的slice的值/">技术周刊之golang中修改struct的slice的值</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2018年10月27日 - 10:10</p>
+  <p><span>最后更新:</span>2018年10月27日 - 12:10</p>
+  <p><span>原始链接:</span><a href="/2018/10/27/技术周刊之golang中修改struct的slice的值/" title="技术周刊之golang中修改struct的slice的值">https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/10/27/技术周刊之golang中修改struct的slice的值/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
+          
+            <a href="/tags/技术周刊/" rel="tag"><i class="fa fa-tag"></i> 技术周刊</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/25/golang中string-rune-byte的关系/" rel="next" title="golang中string,rune,byte的关系">
+                <i class="fa fa-chevron-left"></i> golang中string,rune,byte的关系
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -398,6 +672,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -418,8 +701,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -534,6 +826,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回到正题"><span class="nav-number">2.</span> <span class="nav-text">回到正题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。"><span class="nav-number">3.</span> <span class="nav-text">总结，在go中，所有传参都是传值，都是一个副本，即一个拷贝，因为拷贝的内容有时候是非引用类型（int、string、struct等这些），这样就在函数中就无法修改原内容数据；有的是引用类型（指针、map、slice、chan等这些），这样就可以修改原内容数据。</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -695,6 +1003,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -723,6 +1035,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
@@ -1174,6 +1497,23 @@
 
   
   
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
 
   
 
