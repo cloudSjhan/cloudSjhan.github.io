@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2018-10-29T02:01:09.050Z</updated>
+  <updated>2018-10-31T07:44:25.132Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>golang xorm 操作指南</title>
+    <link href="https://cloudsjhan.github.io/2018/10/31/golang-xorm-%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/"/>
+    <id>https://cloudsjhan.github.io/2018/10/31/golang-xorm-操作指南/</id>
+    <published>2018-10-31T07:42:15.000Z</published>
+    <updated>2018-10-31T07:44:25.132Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p><a href="https://www.kancloud.cn/xormplus/xorm/167077" target="_blank" rel="noopener">https://www.kancloud.cn/xormplus/xorm/167077</a></p><hr>]]></content>
+    
+    <summary type="html">
+    
+      golang xorm 操作指南 官方版
+    
+    </summary>
+    
+      <category term="golang" scheme="https://cloudsjhan.github.io/categories/golang/"/>
+    
+    
+      <category term="golang" scheme="https://cloudsjhan.github.io/tags/golang/"/>
+    
+  </entry>
   
   <entry>
     <title>技术周刊之golang中修改struct的slice的值</title>
