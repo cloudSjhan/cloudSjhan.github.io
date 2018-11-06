@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[MySQL使用group by分组后对每组操作]]></title>
+    <url>%2F2018%2F11%2F05%2FMySQL%E4%BD%BF%E7%94%A8group-by%E5%88%86%E7%BB%84%E5%90%8E%E5%AF%B9%E6%AF%8F%E7%BB%84%E6%93%8D%E4%BD%9C%2F</url>
+    <content type="text"><![CDATA[group by 操作 分组能够将数据分成几个逻辑组，然后对其进行聚集操作 前几天开发的时候遇到这样的一个问题，有一个vender-cost表： mysql&gt; select * from vendor-cost;+———+————–+————–+———–+————+———-+———-+ vendor host vendor_id start_date cost +———+————–+————–+———–+————+———-+———-+| Tencent | ins-m9faipc4 | 100014390 | 2018-10 | 0.015456 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-r76jxurv | 100015923 | 2018-10 | 0.284697 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-ramdkuqz | 100015923 | 2018-10 | 0.021175 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-q7o1dhsa | 100014390 | 2018-10 | 0.113501 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-5xxrgd65 | 100015923 | 2018-10 | 0.058623 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-79g28kn6 | 100015923 | 2018-10 | 0.03808 || ——- | ———— | ——— | ——- | ——- || | | | | || Tencent | ins-rw54ka4k | 100015923 | 2018-10 | 0.150595 || ——- | ———— | ——— | ——- | ——– || | | | | || Tencent | ins-ggxrtm1v | 100015923 | 2018-10 | 0.068281 || ——- | ———— | ——— | ——- | ——– || | | | | |为了统计出每个vendor_id的cost，就需要使用分组语句，将同一个vendor_id的cost求和： select vendor_id, sum(cost) from vendor_cost group by vendor_id; 得出的结果就是每个vendor_id的总cost。 还有一种group by的用法：GROUP BY X, Y意思是将所有具有相同X字段值和Y字段值的记录放到一个分组里。 举个栗子： 现在有表格 Table: Subject_Selection Subject Semester AttendeeITB001 1 JohnITB001 1 BobITB001 1 MickeyITB001 2 JennyITB001 2 JamesMKB114 1 JohnMKB114 1 Erica 我们下面再接着要求统计出每门学科每个学期有多少人选择，应用如下SQL 123SELECT Subject, Semester, Count(*)FROM Subject_SelectionGROUP BY Subject, Semester 得到的结果是： 得到的结果是：12345Subject Semester Count------------------------------ITB001 1 3ITB001 2 2MKB114 1 2 从表中的记录我们可以看出这个分组结果是正确的有3个学生在第一学期选择了ITB001, 2个学生在第二学期选择了ITB001,还有两个学生在第一学期选择了MKB114, 没人在第二学期选择MKB114。]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[golang xorm 操作指南]]></title>
     <url>%2F2018%2F10%2F31%2Fgolang-xorm-%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97%2F</url>
     <content type="text"><![CDATA[https://www.kancloud.cn/xormplus/xorm/167077]]></content>
