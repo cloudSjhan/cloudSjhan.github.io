@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="技术周刊,influxDB," />
+  <meta name="keywords" content="go,技术周刊," />
 
 
 
@@ -92,24 +92,22 @@
 
 
 
-<meta name="description" content="介绍influxDB的基本概念，基本操作以及如何使用go实现influxDB的操作">
-<meta name="keywords" content="技术周刊,influxDB">
+<meta name="description" content="从冒泡排序看Go的基准测试及其使用">
+<meta name="keywords" content="go,技术周刊">
 <meta property="og:type" content="article">
-<meta property="og:title" content="技术周刊之influxDB使用入门">
-<meta property="og:url" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/index.html">
+<meta property="og:title" content="从冒泡排序优化到Go基准测试">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="介绍influxDB的基本概念，基本操作以及如何使用go实现influxDB的操作">
+<meta property="og:description" content="从冒泡排序看Go的基准测试及其使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/index.html">
-<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fxzdysawf8j31hq0cqwgt.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fxzegqffyhj31x50u0jvr.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwgy1fxzq4jt9xkj31qa0qcgoc.jpg">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fxzqcl2pvtj31q605yq3l.jpg">
-<meta property="og:updated_time" content="2018-12-08T15:24:02.461Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/index.html">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNbRwly1fy7v2wibo3j313o0bgta3.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwly1fy7v8m1tz8j31400bcmyk.jpg">
+<meta property="og:updated_time" content="2018-12-15T15:54:56.209Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="技术周刊之influxDB使用入门">
-<meta name="twitter:description" content="介绍influxDB的基本概念，基本操作以及如何使用go实现influxDB的操作">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/index.html">
+<meta name="twitter:title" content="从冒泡排序优化到Go基准测试">
+<meta name="twitter:description" content="从冒泡排序看Go的基准测试及其使用">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/index.html">
 
 
 
@@ -139,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/"/>
 
 
 
@@ -154,7 +152,7 @@
   </script>
 
 
-  <title>技术周刊之influxDB使用入门 | cloud world</title>
+  <title>从冒泡排序优化到Go基准测试 | cloud world</title>
   
 
 
@@ -336,7 +334,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -353,7 +351,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">技术周刊之influxDB使用入门</h1>
+          <h1 class="post-title" itemprop="name headline">从冒泡排序优化到Go基准测试</h1>
         
 
         <div class="post-meta">
@@ -365,8 +363,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-27T10:30:10+08:00">
-                2018-10-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-09T23:12:08+08:00">
+                2018-12-09
               </time>
             
 
@@ -405,7 +403,7 @@
 
           
           
-             <span id="/2018/10/27/技术周刊之influxDB使用入门/" class="leancloud_visitors" data-flag-title="技术周刊之influxDB使用入门">
+             <span id="/2018/12/09/从冒泡排序优化到Go基准测试/" class="leancloud_visitors" data-flag-title="从冒泡排序优化到Go基准测试">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -432,7 +430,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,971
+                  825
                 </span>
               
 
@@ -448,7 +446,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  3
                 </span>
               
             </div>
@@ -456,7 +454,7 @@
 
           
               <div class="post-description">
-                  介绍influxDB的基本概念，基本操作以及如何使用go实现influxDB的操作
+                  从冒泡排序看Go的基准测试及其使用
               </div>
           
 
@@ -477,133 +475,52 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>InfluxDB是一个用于存储和分析时间序列数据的开源数据库。</p>
-<p>主要特性有：</p>
+<h3 id="Go的测试"><a href="#Go的测试" class="headerlink" title="Go的测试"></a>Go的测试</h3><h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><ul>
+<li>测试文件命名：文件命名使用 xx_test.go 保存在项目目录里即可，也可以新建个test目录，TestAll；</li>
+<li>测试函数命名：单元测试函数名Test开头，接收一个指针型参数（*testing.T）；</li>
+<li>运行测试程序：go run test -v -run=”函数名”，其中-v意思是输出详细的测试信息；</li>
+</ul>
+<h4 id="基准测试"><a href="#基准测试" class="headerlink" title="基准测试"></a>基准测试</h4><ul>
+<li>测试文件命名：测试文件命名：文件命名使用 xx_test.go 保存在项目目录里即可，也可以新建个test目录，TestAll；</li>
+<li>测试函数命名：基准测试以Benchmark开头，接收一个指针型参数（*testing.B）；</li>
+<li>运行测试程序：go test -v -bench=”函数名”；</li>
+<li>还有一个参数是 -benchmem, -benchmem 表示分配内存的次数和字节数，-benchtime=”3s” 表示持续3秒</li>
+</ul>
+<h3 id="冒泡排序及其简单优化"><a href="#冒泡排序及其简单优化" class="headerlink" title="冒泡排序及其简单优化"></a>冒泡排序及其简单优化</h3><h4 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h4><p>前几天看一个公众号，说是有个人去美团面试，被要求手写冒泡排序算法，这人心想这还不简单的，分分钟写下了下面的代码，可以说是非常标准的冒泡排序了</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BubbleSort</span><span class="params">(array []<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span>; i&lt;<span class="built_in">len</span>(array)<span class="number">-1</span>;i++&#123;</span><br><span class="line">		<span class="keyword">for</span> j :=<span class="number">0</span>;j&lt;<span class="built_in">len</span>(array)-i<span class="number">-1</span>;j++&#123;</span><br><span class="line">			<span class="keyword">if</span> array[j]&gt;array[j+<span class="number">1</span>]&#123;</span><br><span class="line">				swap(j, j+<span class="number">1</span>)</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是随之，面试官说让他优化一下这个算法，问他有没有可优化的地方，这人就懵逼了。其实冒泡排序可优化的地方很多，最简单的一种就是加一个标志位，检查是否已经排序完毕，排序已经完成的话就没有必要再比较下去，浪费时间。上面的代码添加几行，那人就很可能拿到offer了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BubbleSort</span><span class="params">(array []<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">	i := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> i = <span class="number">0</span>; i&lt;<span class="built_in">len</span>(array)<span class="number">-1</span>;i++&#123;</span><br><span class="line">		exchanged := <span class="literal">false</span></span><br><span class="line">		<span class="keyword">for</span> j :=<span class="number">0</span>;j&lt;<span class="built_in">len</span>(array)-i<span class="number">-1</span>;j++&#123;</span><br><span class="line">			<span class="keyword">if</span> array[j]&gt;array[j+<span class="number">1</span>]&#123;</span><br><span class="line">				swap(j, j+<span class="number">1</span>)</span><br><span class="line">				exchanged = <span class="literal">true</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> exchanged == <span class="literal">false</span> &#123;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么，如何更直观的看出，优化过的代码确实有效呢，我们就可以使用go自带的基准测试，测试一下两段代码的性能，优化与否就一目了然。</p>
+<h3 id="基准测试冒泡排序"><a href="#基准测试冒泡排序" class="headerlink" title="基准测试冒泡排序"></a>基准测试冒泡排序</h3><ul>
+<li><p>首先我们创建一个存放测试文件的文件夹</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir testAll</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后创建基准测试文件</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch benchmark_test.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li>内置HTTP接口，使用方便</li>
-<li>数据可以打标记，查让查询可以很灵活</li>
-<li>类SQL的查询语句</li>
-<li>安装管理很简单，并且读写数据很高效</li>
-<li>能够实时查询，数据在写入时被索引后就能够被立即查出</li>
-<li>……</li>
+<li>编写基准测试代码</li>
 </ul>
-<p>在最新的<a href="https://db-engines.com/en/ranking/time+series+dbms" target="_blank" rel="noopener">DB-ENGINES</a>给出的时间序列数据库的排名中，InfluxDB高居第一位，可以预见，InfluxDB会越来越得到广泛的使用。</p>
-<ul>
-<li><p>influxDB使用go语言编写，采用了SQL like的语法，非常灵活高效，如果你的数据是与时间相关的，那么使用influxDB做数据可视化是最合适不过的，尤其是influxDB自身就提供数据库CRUD所需要的API，虽然不是RESTFul的，但是也省去了编写后端接口的力气。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var sortArray = []int&#123;41, 24, 76, 11, 45, 64, 21, 69, 19, 36&#125;</span><br><span class="line">func BenchmarkBubbleSort(b *testing.B)  &#123;</span><br><span class="line"></span><br><span class="line">	for i:=0;i&lt;b.N;i++ &#123;</span><br><span class="line">	BubbleSort(sortArray)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="测试基本冒泡排序"><a href="#测试基本冒泡排序" class="headerlink" title="测试基本冒泡排序"></a>测试基本冒泡排序</h4><ul>
+<li><p>我们首先测试最原始的冒泡排序</p>
 </li>
-<li><p>下面从influxDB的安装、使用CLI的influxdb基本操作、使用API对influxdb操作及golang代码实现、经历的坑，几个方面分享influxDB的入门经历。</p>
-</li>
-</ul>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
-<li><p>本次安装的环境是：</p>
-<ul>
-<li>CentOS 7</li>
-<li>内核版本：4.4.135-1.el7.elrepo.x86_64</li>
-</ul>
-</li>
-<li><p>直接使用yum安装</p>
-<ul>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/influxdb.repo # 输入influxDB的repoURL地址等信息</span><br><span class="line">[influxdb]</span><br><span class="line">  name = InfluxDB Repository - RHEL \$releasever</span><br><span class="line">  baseurl = https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable</span><br><span class="line">  enabled = 1</span><br><span class="line">  gpgcheck = 1</span><br><span class="line">  gpgkey = https://repos.influxdata.com/influxdb.key</span><br><span class="line">  EOF</span><br><span class="line"><span class="meta">  #</span><span class="bash">EOF是文本的结束符</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install influxdb</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>influxd config</p>
-<p>安装完成后使用该命令查看influxDB的配置内容，default的config文件路径在：/etc/influxdb/influxdb.conf</p>
-</li>
-<li><p>启动influxDB</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-m1 ~]# influx</span><br><span class="line">Connected to http://localhost:8086 version 1.7.1</span><br><span class="line">InfluxDB shell version: 1.7.1</span><br><span class="line">Enter an InfluxQL query</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-<p>到此完成了influxDB的安装，接下来我们做基本的配置。</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ul>
-<li>用户管理</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-- 创建一个管理员用户</span><br><span class="line">CREATE USER "admin" WITH PASSWORD 'xxxx' WITH ALL PRIVILEGES</span><br><span class="line">-- 创建一个普通用户</span><br><span class="line">CREATE USER "user" WITH PASSWORD 'xxxxx'</span><br><span class="line">-- 为用户授权读权限</span><br><span class="line">GRANT READ ON [database] to "user"</span><br><span class="line">-- 为用户授权写权限</span><br><span class="line">GRANT WRITE ON [database] to "user"</span><br><span class="line">--------------------- </span><br><span class="line"><span class="meta">#</span><span class="bash"> 需要修改InfluxDB的配置文件/etc/influxdb/influxdb.conf，设置http下的auth-enabled = <span class="literal">true</span>，重启后，使用influx命令登录数据库就需要用户名和密码了。（Influx命令实际上也是使用API来操作InfluxDB的，InfluxDB只提供了API接口）</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看用户</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> show users</span></span><br><span class="line">user  admin</span><br><span class="line">----  -----</span><br><span class="line">admin true</span><br><span class="line">sjhan true</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
-<p>influxDB的配置项目有很多，剩下的可以根据自己的需求继续研究，这里就不展开了。</p>
-<p>在进行数据库基本操作之前我们必须了解一下infuxDB的一些基本概念</p>
-<h4 id="influxDB基本概念"><a href="#influxDB基本概念" class="headerlink" title="influxDB基本概念"></a>influxDB基本概念</h4><ul>
-<li>influxDB里面最基本的概念就是，measurement，tags，fields，points。我们可以类比于MySQL来理解这几个字段：</li>
-<li>measurement类似于SQL中的table；</li>
-<li>tags类似SQL中的被索引的列；</li>
-<li>fields类似于SQL中没有被索引的列；</li>
-<li>points对应SQL的table中的每行数据。</li>
-<li>知道了这几个概念，便可以继续往下进行，如需更加详细的文档，英文版文档<a href="https://docs.influxdata.com/influxdb/v1.7/" target="_blank" rel="noopener">猛戳这里</a>，当然也有中文版，<a href="https://jasper-zhang1.gitbooks.io/influxdb/" target="_blank" rel="noopener">猛戳这里</a>。不知为何中文版我只有番蔷才能访问。</li>
-</ul>
-<h3 id="influxDB基本操作"><a href="#influxDB基本操作" class="headerlink" title="influxDB基本操作"></a>influxDB基本操作</h3><ul>
-<li>首先，跟MySQL一样，我们需要创建一个数据库</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 创建数据库，默认设置</span><br><span class="line">CREATE DATABASE &quot;first_db&quot;</span><br><span class="line">-- 创建数据库，同时创建一个Retention Policy，数据保留时间描述</span><br><span class="line">-- Retention Policy各部分描述：DURATION为数据存储时长，下面的1d即只存1天的数据；REPLICATION为数据副本，一般在使用集群的时候才会设置为&gt;1；SHARD DURATION为分区间隔，InfluxDB默认对数据分区，填写30m即对数据每隔30分钟做一个新的分区；Name是RP的名字。</span><br><span class="line">CREATE DATABASE &quot;first_db&quot; WITH DURATION 1d REPLICATION 1 SHARD DURATION 30m NAME &quot;myrp&quot;</span><br></pre></td></tr></table></figure>
-<p>我们创建了一个influxDB的数据库，名字为first_db, 数据存储时间为一天，一个副本，每30分钟做一个新的分区。</p>
-<ul>
-<li><p>influxDB插入数据</p>
-<p>influx -username admin -password</p>
-<p>我们插入一条数据到刚刚创建的数据库中</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> product,productName=disk,usageType=pay,creator=zhangsan,appId=<span class="number">105</span> <span class="keyword">cost</span>=<span class="number">3421.6</span></span><br></pre></td></tr></table></figure>
-<p>我们分析一下这条插入语句，其中product字段是influxDB中的measurement,前面讲基本概念的时候已经解释过，类似于MySQL中的table，“productName=disk,usageType=pay,creator=zhangsan,appId=105”，这一坨在influxDB中叫做tag set,可以理解为tag的一个集合，tag的类型只能是字符串的K-V，还有需要注意的是tag set与前面的measurement之间只有一个逗号，<strong>并没有空格！</strong>，一开始不知道这回事，怎么插入都是失败。“cost=3421.6”这个叫做filed set，filed的类型可以是float、boolean、integer。这样插入的一条数据，influxDB中叫做一个point。</p>
-</li>
-</ul>
-<ul>
-<li><p>查询操作</p>
-<p>查询之前要选择你想查询的数据库</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use first_db</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from product</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxzdysawf8j31hq0cqwgt.jpg" alt=""></p>
-</li>
-<li><p>可以看到influxDB自动为我们的这个point加了一个timestamp，这个是数据的UNIX时间格式的时间精度，我们在启动数据库时可以定义这个precision，像下面这样</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">influx --precision rfc3339</span><br></pre></td></tr></table></figure>
-<p>influxDB规定了很多时间精度，具体可以在命令行输出help查看</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">precision &lt;format&gt;    specifies the format of the timestamp: rfc3339, h, m, s, ms, u or ns</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可指定的时间精度</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>使用influxDB内置CLI执行查询操作</p>
-<p>还是查询我们刚刚插入的那条数据,在命令行中输入以下命令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode "db=first_db" --data-urlencode "q=SELECT \"cost\" FROM \"product\" WHERE \"productName\"='disk'"</span><br></pre></td></tr></table></figure>
-<p>得到输出为json结构的查询结果<img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxzegqffyhj31x50u0jvr.jpg" alt=""></p>
-<p>influxDB内置的API很大程度简化了后端的开发，使各种项目可以快速上线。</p>
-</li>
-<li><p>插入操作的API</p>
-</li>
-</ul>
-<p>在命令行中输入</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -i -XPOST 'http://localhost:8086/write?db=first_db' --data-binary 'weather,location=us-midwes temperature=125'</span><br><span class="line"><span class="meta">#</span><span class="bash"> 插入一条数据，measurement=weather，tag=location，filed=temperature,时间戳为当地服务器时间</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>我们使用postman测试这个插入接口，以确定该接口的header，body等，为接下来使用go编写请求代码做好准备。通过分析URL，我们可知请求的param是db=first_db，–dat-binary这个参数，意味着你的request body必须是raw,而且header的content-Type=”text”,具体的postman设置参照下图：<img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxzq4jt9xkj31qa0qcgoc.jpg" alt=""></li>
-<li>点击Send之后，可以在下面看到response的statusCode是204，在http协议中，这个状态码意思是返回体中没有内容。<img src="https://ws4.sinaimg.cn/large/006tNbRwly1fxzqcl2pvtj31q605yq3l.jpg" alt=""></li>
-<li>我们回到influxDB的terminal中查看一下，可以看到这条数据已经插入成功了。</li>
-</ul>
-<h3 id="GO操作influxDB的API实现插入数据"><a href="#GO操作influxDB的API实现插入数据" class="headerlink" title="GO操作influxDB的API实现插入数据"></a>GO操作influxDB的API实现插入数据</h3><ul>
-<li><p>可以利用这样方便的API，编写代码，实现数据的批量采集、管理、展示，这里我用GO对插入数据的操作简单实现。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	reqBody := <span class="string">"weather,location=us-midwes temperature=521 1475839730100400200"</span></span><br><span class="line">	rb := []<span class="keyword">byte</span>(reqBody)</span><br><span class="line">    headers := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">"Content-type"</span>: <span class="string">"text"</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	resp, _,err := simpleHttpClient.DoRequest(<span class="string">"POST"</span>,<span class="string">"http://10.18.5.30:8086/write?db=first_db"</span>,headers,rb,<span class="number">10</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(resp))</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>使用的DoRequest方法来自<a href="https://github.com/hantmac/simple-httpClient" target="_blank" rel="noopener">这里</a>，这个库对golang的http操作进行简单的封装，而且加入了错误处理，timeout异常检测等。</p>
-</li>
-<li><p>当然也可以使用Go自带的net/http包中的POST方法</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">reqBody := <span class="string">"weather,location=us-midwes temperature=521 1475839730100400200"</span></span><br><span class="line">	<span class="comment">//rb := []byte(reqBody)</span></span><br><span class="line">    rb := io.NewReader(reqBody)</span><br><span class="line">	resp, err := http.Post(<span class="string">"http://10.18.5.30:8086/write?db=first_db"</span>,<span class="string">"text"</span>,rb)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(resp))</span><br></pre></td></tr></table></figure>
-<ul>
-<li>需要注意的是对request body的类型处理，net/http.post方法要求改参数的类型是io.reader，所以要使用io.NewReader()进行转换。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>以上就是对influxDB的入门介绍，包括基本概念，安装，配置，基本操作（CLI，API）以及使用GO编写操作数据库的代码。但influxDB的奥秘远不止这些，<a href="https://docs.influxdata.com/influxdb/v1.7/" target="_blank" rel="noopener">如需更加深入的研究可参阅官方文档</a>。</li>
-</ul>
+<li><p>在testAll文件夹下执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go test -v -bench=&quot;BubbleSort&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwly1fy7v2wibo3j313o0bgta3.jpg" alt=""></p>
+<p>基准测试结果如图所示，解释一下几个关键参数，</p>
+<p>81.2ns/op 表示每次操作耗时81.2纳秒，1.725s表示程序运行的时间。</p>
+<h4 id="测试优化的冒泡排序"><a href="#测试优化的冒泡排序" class="headerlink" title="测试优化的冒泡排序"></a>测试优化的冒泡排序</h4><ul>
+<li><p>执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go test -v -bench=&quot;BubbleSort&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwly1fy7v8m1tz8j31400bcmyk.jpg" alt=""></p>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<hr>
-
-
-
-
+<pre><code>可以看到优化过的代码，执行时间为1.2s,而且每次操作的耗时为23.0纳秒，足足降低了60%多。可见一个很简单的优化就可以使代码提升这么多，在以后的工作中，对于代码的设计与优化还是要重视。
+</code></pre><hr>
 
 
 
@@ -636,12 +553,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2018/10/27/技术周刊之influxDB使用入门/">技术周刊之influxDB使用入门</a></p>
+  <p><span>本文标题:</span><a href="/2018/12/09/从冒泡排序优化到Go基准测试/">从冒泡排序优化到Go基准测试</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2018年10月27日 - 10:10</p>
-  <p><span>最后更新:</span>2018年12月08日 - 23:12</p>
-  <p><span>原始链接:</span><a href="/2018/10/27/技术周刊之influxDB使用入门/" title="技术周刊之influxDB使用入门">https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/10/27/技术周刊之influxDB使用入门/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2018年12月09日 - 23:12</p>
+  <p><span>最后更新:</span>2018年12月15日 - 23:12</p>
+  <p><span>原始链接:</span><a href="/2018/12/09/从冒泡排序优化到Go基准测试/" title="从冒泡排序优化到Go基准测试">https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/12/09/从冒泡排序优化到Go基准测试/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -701,9 +618,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/技术周刊/" rel="tag"><i class="fa fa-tag"></i> 技术周刊</a>
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
           
-            <a href="/tags/influxDB/" rel="tag"><i class="fa fa-tag"></i> influxDB</a>
+            <a href="/tags/技术周刊/" rel="tag"><i class="fa fa-tag"></i> 技术周刊</a>
           
         </div>
       
@@ -729,8 +646,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/27/技术周刊之golang中修改struct的slice的值/" rel="next" title="技术周刊之golang中修改struct的slice的值">
-                <i class="fa fa-chevron-left"></i> 技术周刊之golang中修改struct的slice的值
+              <a href="/2018/12/08/postman-接口测试神器/" rel="next" title="postman 接口测试神器">
+                <i class="fa fa-chevron-left"></i> postman 接口测试神器
               </a>
             
           </div>
@@ -739,8 +656,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/10/31/golang-xorm-操作指南/" rel="prev" title="golang xorm 操作指南">
-                golang xorm 操作指南 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/12/Go关于time包的解析与使用/" rel="prev" title="Go关于time包的解析与使用">
+                Go关于time包的解析与使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -827,7 +744,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -838,7 +755,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -849,7 +766,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -933,7 +850,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#influxDB基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">influxDB基本概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#influxDB基本操作"><span class="nav-number">4.</span> <span class="nav-text">influxDB基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO操作influxDB的API实现插入数据"><span class="nav-number">5.</span> <span class="nav-text">GO操作influxDB的API实现插入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go的测试"><span class="nav-number">1.</span> <span class="nav-text">Go的测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单元测试"><span class="nav-number">1.1.</span> <span class="nav-text">单元测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基准测试"><span class="nav-number">1.2.</span> <span class="nav-text">基准测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冒泡排序及其简单优化"><span class="nav-number">2.</span> <span class="nav-text">冒泡排序及其简单优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冒泡排序"><span class="nav-number">2.1.</span> <span class="nav-text">冒泡排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基准测试冒泡排序"><span class="nav-number">3.</span> <span class="nav-text">基准测试冒泡排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试基本冒泡排序"><span class="nav-number">3.1.</span> <span class="nav-text">测试基本冒泡排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试优化的冒泡排序"><span class="nav-number">3.2.</span> <span class="nav-text">测试优化的冒泡排序</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -971,7 +888,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:46.3k</span>
+  <span class="post-count">Total Words:50.4k</span>
 </div>
 
 
