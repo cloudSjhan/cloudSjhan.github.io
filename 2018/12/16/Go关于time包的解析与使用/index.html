@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="python, go, Docker, k8s,爬虫,Django" />
+  <meta name="keywords" content="golang," />
 
 
 
@@ -92,17 +92,20 @@
 
 
 
-<meta name="keywords" content="go, python, Docker, 爬虫，k8s">
+<meta name="description" content="golang time包的解析与使用">
+<meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go关于time包的解析与使用">
-<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/index.html">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/index.html">
 <meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="golang time包的解析与使用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/index.html">
-<meta property="og:updated_time" content="2018-12-12T08:16:34.146Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/index.html">
+<meta property="og:updated_time" content="2018-12-16T15:26:02.748Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go关于time包的解析与使用">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/index.html">
+<meta name="twitter:description" content="golang time包的解析与使用">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/index.html">
 
 
 
@@ -132,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/"/>
 
 
 
@@ -329,7 +332,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -358,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-12T16:16:34+08:00">
-                2018-12-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-16T23:16:34+08:00">
+                2018-12-16
               </time>
             
 
@@ -369,6 +372,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -376,7 +401,7 @@
 
           
           
-             <span id="/2018/12/12/Go关于time包的解析与使用/" class="leancloud_visitors" data-flag-title="Go关于time包的解析与使用">
+             <span id="/2018/12/16/Go关于time包的解析与使用/" class="leancloud_visitors" data-flag-title="Go关于time包的解析与使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -403,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  1,571
                 </span>
               
 
@@ -419,12 +444,16 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  8
                 </span>
               
             </div>
           
 
+          
+              <div class="post-description">
+                  golang time包的解析与使用
+              </div>
           
 
         </div>
@@ -444,10 +473,109 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>##</p>
-<p>##</p>
-<p>##</p>
-<hr>
+<h3 id="Go关于时间与日期的处理"><a href="#Go关于时间与日期的处理" class="headerlink" title="Go关于时间与日期的处理"></a>Go关于时间与日期的处理</h3><h4 id="关于time的数据类型"><a href="#关于time的数据类型" class="headerlink" title="关于time的数据类型"></a>关于time的数据类型</h4><ul>
+<li><p>time包依赖的数据类型有：<strong>time.Time</strong>,<strong>time.Month</strong>,<strong>time.WeekDay</strong>,<strong>time.Duration</strong>,<strong>time.Location</strong>.</p>
+</li>
+<li><p>详细介绍以上几种数据类型</p>
+<ul>
+<li><p>time.Time</p>
+</li>
+<li><p><code>/usr/local/go/src/time/time.go</code> 定义如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Time <span class="keyword">struct</span> &#123;</span><br><span class="line">    sec <span class="keyword">int64</span> <span class="comment">// 从1年1月1日 00:00:00 UTC 至今过去的秒数</span></span><br><span class="line">    nsec <span class="keyword">int32</span> <span class="comment">// 最近一秒到下一秒过去的纳秒数</span></span><br><span class="line">    loc *Location <span class="comment">// 时区</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>time.Time会返回纳秒时间精度的时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ti time.Time</span><br><span class="line">ti = time.Now()</span><br><span class="line">fmt.Printf(<span class="string">"时间: %v, 时区:  %v,  时间类型: %T\n"</span>, t, t.Location(), t)</span><br><span class="line"><span class="comment">//时间: 2018-12-15 09:06:05.816187261 +0800 CST, 时区:  Local,  时间类型: time.Time</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Month, go中自己重新定义了month的类型，与time.year和time.day不同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">type Month int</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">    January Month = 1 + iota</span><br><span class="line">    February</span><br><span class="line">    March</span><br><span class="line">    April</span><br><span class="line">    May</span><br><span class="line">    June</span><br><span class="line">    July</span><br><span class="line">    August</span><br><span class="line">    September</span><br><span class="line">    October</span><br><span class="line">    November</span><br><span class="line">    December</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>iota是golang语言的常量计数器,只能在常量的表达式中使用。<br> iota在const关键字出现时将被重置为0(const内部的第一行之前)，const中每新增一行常量声明将使iota计数一次(iota可理解为const语句块中的行索引)。 使用iota能简化定义，在定义枚举时很有用。</p>
+</li>
+<li><p>time.WeekDay,代表一周之中的星期几（当然是按照西方的规则，他们把周日当做是一周的开始）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WeekDay <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Sunday Weekday = <span class="literal">iota</span></span><br><span class="line">    Monday</span><br><span class="line">    Tuesday</span><br><span class="line">    Wednesday</span><br><span class="line">    Thursday</span><br><span class="line">    Friday</span><br><span class="line">    Saturday</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Duration,代表两个时间点之间的纳秒差值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Duration <span class="keyword">int64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Nanosecond  Duration = <span class="number">1</span></span><br><span class="line">    Microsecond          = <span class="number">1000</span> * Nanosecond</span><br><span class="line">    Millisecond          = <span class="number">1000</span> * Microsecond</span><br><span class="line">    Second               = <span class="number">1000</span> * Millisecond</span><br><span class="line">    Minute               = <span class="number">60</span> * Second</span><br><span class="line">    Hour                 = <span class="number">60</span> * Minute</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Location,时区信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Location <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="keyword">string</span></span><br><span class="line">    zone []zone</span><br><span class="line">    tx   []zoneTrans</span><br><span class="line">    cacheStart <span class="keyword">int64</span></span><br><span class="line">    cacheEnd   <span class="keyword">int64</span></span><br><span class="line">    cacheZone  *zone</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//北京时间：Asia/Shanghai</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="以上类型receiver的实现方法"><a href="#以上类型receiver的实现方法" class="headerlink" title="以上类型receiver的实现方法"></a>以上类型receiver的实现方法</h4><ul>
+<li>time.Time相关方法</li>
+</ul>
+<p><code>func Now() Time {}</code> // 当前本地时间</p>
+<p> <code>func Unix(sec int64, nsec int64) Time {}</code>  // 根据时间戳返回本地时间</p>
+<p> <code>func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time {}</code> // 返回指定时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/ 当前本地时间</span><br><span class="line">t = time.Now()</span><br><span class="line">fmt.Println(<span class="string">"'time.Now': "</span>, t)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据时间戳返回本地时间</span></span><br><span class="line">t_by_unix := time.Unix(<span class="number">1487780010</span>, <span class="number">0</span>)</span><br><span class="line">fmt.Println(<span class="string">"'time.Unix': "</span>, t_by_unix)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回指定时间</span></span><br><span class="line">t_by_date := time.Date(<span class="number">2017</span>, time.Month(<span class="number">2</span>), <span class="number">23</span>, <span class="number">1</span>, <span class="number">30</span>, <span class="number">30</span>, <span class="number">0</span>, l)</span><br><span class="line">fmt.Println(<span class="string">"'time.Date': "</span>, t_by_date)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>按照时区信息显示时间</p>
+</li>
+<li><p><code>func (t Time) UTC() Time {}</code> // 获取指定时间在UTC 时区的时间表示</p>
+</li>
+<li><code>func (t Time) Local() Time {}</code> // 以本地时区表示</li>
+<li><code>func (t Time) In(loc *Location) Time {}</code> // 时间在指定时区的表示</li>
+<li><code>func (t Time) Format(layout string) string {}</code> // 按指定格式显示时间</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取指定时间在UTC 时区的时间表示</span></span><br><span class="line">t_by_utc := t.UTC()</span><br><span class="line">fmt.Println(<span class="string">"'t.UTC': "</span>, t_by_utc)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取本地时间表示</span></span><br><span class="line">t_by_local := t.Local()</span><br><span class="line">fmt.Println(<span class="string">"'t.Local': "</span>, t_by_local)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间在指定时区的表示</span></span><br><span class="line">t_in := t.In(time.UTC)</span><br><span class="line">fmt.Println(<span class="string">"'t.In': "</span>, t_in)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Format</span></span><br><span class="line">fmt.Println(<span class="string">"t.Format"</span>, t.Format(time.RFC3339))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>获取年月日等信息</li>
+</ul>
+<p><code>func (t Time) Date() (year int, month Month, day int) {}</code> // 返回时间的日期信息</p>
+<p> <code>func (t Time) Year() int {}</code> // 返回年</p>
+<p> <code>func (t Time) Month() Month {}</code> // 月</p>
+<p> <code>func (t Time) Day() int {}</code> // 日</p>
+<p> <code>func (t Time) Weekday() Weekday {}</code> // 星期</p>
+<p> <code>func (t Time) ISOWeek() (year, week int) {}</code> // 返回年，星期范围编号</p>
+<p> <code>func (t Time) Clock() (hour, min, sec int) {}</code> // 返回时间的时分秒</p>
+<p> <code>func (t Time) Hour() int {}</code> // 返回小时</p>
+<p> <code>func (t Time) Minute() int {}</code> // 分钟</p>
+<p> <code>func (t Time) Second() int {}</code> // 秒</p>
+<p> <code>func (t Time) Nanosecond() int {}</code> // 纳秒</p>
+<p> <code>func (t Time) YearDay() int {}</code> // 一年中对应的天</p>
+<p> <code>func (t Time) Location() *Location {}</code> // 时间的时区</p>
+<p> <code>func (t Time) Zone() (name string, offset int) {}</code> // 时间所在时区的规范名和想对UTC 时间偏移量</p>
+<p> <code>func (t Time) Unix() int64 {}</code> // 时间转为时间戳</p>
+<p> <code>func (t Time) UnixNano() int64 {}</code> // 时间转为时间戳（纳秒）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回时间的日期信息</span></span><br><span class="line">year, month, day := t.Date()</span><br><span class="line">fmt.Println(<span class="string">"'t.Date': "</span>, year, month, day)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 星期</span></span><br><span class="line">week := t.Weekday()</span><br><span class="line">fmt.Println(<span class="string">"'t.Weekday': "</span>, week)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回年，星期范围编号</span></span><br><span class="line">year, week_int := t.ISOWeek()</span><br><span class="line">fmt.Println(<span class="string">"'t.ISOWeek': "</span>, year, week_int)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回时间的时分秒</span></span><br><span class="line">hour, min, sec := t.Clock()</span><br><span class="line">fmt.Println(<span class="string">"'t.Clock': "</span>, hour, min, sec)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>时间运算</li>
+</ul>
+<p><code>func (t Time) IsZero() bool {}</code> // 是否是零时时间</p>
+<p> <code>func (t Time) After(u Time) bool {}</code> // 时间在u 之前</p>
+<p> <code>func (t Time) Before(u Time) bool {}</code> // 时间在u 之后</p>
+<p> <code>func (t Time) Equal(u Time) bool {}</code> // 时间与u 相同</p>
+<p> <code>func (t Time) Add(d Duration) Time {}</code> // 返回t +d 的时间点</p>
+<p> <code>func (t Time) Sub(u Time) Duration {}</code> // 返回 t-u</p>
+<p> <code>func (t Time) AddDate(years int, months int, days int) Time {}</code> 返回增加了给出的年份、月份和天数的时间点Time</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 返回增加了给出的年份、月份和天数的时间点Time</span><br><span class="line">t_new := t.AddDate(0, 1, 1)</span><br><span class="line">fmt.Println(&quot;&apos;t.AddDate&apos;: &quot;, t_new)</span><br><span class="line"></span><br><span class="line">// 时间在u 之前</span><br><span class="line">is_after := t.After(t_new)</span><br><span class="line">fmt.Println(&quot;&apos;t.After&apos;: &quot;, is_after)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.Duration的类型receiver实现的方法</li>
+</ul>
+<p><code>func (d Duration) String() string</code> // 格式化输出 Duration</p>
+<p> <code>func (d Duration) Nanoseconds() int64</code> // 将时间段表示为纳秒</p>
+<p> <code>func (d Duration) Seconds() float64</code> // 将时间段表示为秒</p>
+<p> <code>func (d Duration) Minutes() float64</code> // 将时间段表示为分钟</p>
+<p> <code>func (d Duration) Hours() float64</code> // 将时间段表示为小时</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// time.Duration 时间段</span></span><br><span class="line">fmt.Println(<span class="string">"time.Duration 时间段"</span>)</span><br><span class="line">d = time.Duration(<span class="number">10000000000000</span>)<span class="comment">//输入参数为int64类型</span></span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">"'String: %v', 'Nanoseconds: %v', 'Seconds: %v', 'Minutes: %v', 'Hours: %v'\n"</span>, </span><br><span class="line">d.String(), d.Nanoseconds(), d.Seconds(), d.Minutes(), d.Hours())</span><br><span class="line"><span class="comment">// 'String: 2h46m40s', 'Nanoseconds: 10000000000000', 'Seconds: 10000', 'Minutes: 166.66666666666666', 'Hours: 2.7777777777777777'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>time.Location的receiver实现的方法</li>
+</ul>
+<p><code>func (l *Location) String() string</code> // 输出时区名</p>
+<p> <code>func FixedZone(name string, offset int) *Location</code> // FixedZone 使用给定的地点名name和时间偏移量offset（单位秒）创建并返回一个Location</p>
+<p> <code>func LoadLocation(name string) (*Location, error)</code> // LoadLocation 使用给定的名字创建Location</p>
+<p><code>func Sleep(d Duration)</code> // Sleep阻塞当前go程至少d代表的时间段。d&lt;=0时，Sleep会立刻返回</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d_second := time.Second</span><br><span class="line">time.Sleep(d_second)</span><br></pre></td></tr></table></figure>
+<h3 id="一些常用的技巧与代码示例"><a href="#一些常用的技巧与代码示例" class="headerlink" title="一些常用的技巧与代码示例"></a>一些常用的技巧与代码示例</h3><ul>
+<li><p>string与time.Time互转</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	date        = <span class="string">"2006-01-02"</span></span><br><span class="line">	datetime    = <span class="string">"2006-01-02 15:04:02"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">timeStamp := time.Now().Format(date) <span class="comment">//将当前时间，即time.Time类型转为string</span></span><br><span class="line"></span><br><span class="line">billTimeStamp, err := time.Parse(date,timeStamp)<span class="comment">//将String类型的时间转为time.Time类型</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>unix time与String互转</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">endTime := time.Unix(time.Now().Unix(), <span class="number">0</span>)<span class="comment">//此时endTime是time.Time类型</span></span><br><span class="line">endStr := endTime.Format(datetime)<span class="comment">//将unix time 转为了String，再根据上面的例子，可转为time.Time</span></span><br></pre></td></tr></table></figure>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><p><a href="https://link.jianshu.com/?t=http://studygolang.com/static/pkgdoc/pkg/time.htm" target="_blank" rel="noopener">pkg/time中文翻译</a></p>
+<p><a href="https://link.jianshu.com/?t=https://golang.org/pkg/time/" target="_blank" rel="noopener">pkg/time英文</a></p>
 
       
     </div>
@@ -475,12 +603,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2018/12/12/Go关于time包的解析与使用/">Go关于time包的解析与使用</a></p>
+  <p><span>本文标题:</span><a href="/2018/12/16/Go关于time包的解析与使用/">Go关于time包的解析与使用</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2018年12月12日 - 16:12</p>
-  <p><span>最后更新:</span>2018年12月12日 - 16:12</p>
-  <p><span>原始链接:</span><a href="/2018/12/12/Go关于time包的解析与使用/" title="Go关于time包的解析与使用">https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/12/12/Go关于time包的解析与使用/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2018年12月16日 - 23:12</p>
+  <p><span>最后更新:</span>2018年12月16日 - 23:12</p>
+  <p><span>原始链接:</span><a href="/2018/12/16/Go关于time包的解析与使用/" title="Go关于time包的解析与使用">https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -538,6 +666,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
+          
+        </div>
+      
 
       
       
@@ -560,8 +694,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/08/postman-接口测试神器/" rel="next" title="postman 接口测试神器">
-                <i class="fa fa-chevron-left"></i> postman 接口测试神器
+              <a href="/2018/12/15/从冒泡排序优化到Go基准测试/" rel="next" title="从冒泡排序优化到Go基准测试">
+                <i class="fa fa-chevron-left"></i> 从冒泡排序优化到Go基准测试
               </a>
             
           </div>
@@ -569,10 +703,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/15/从冒泡排序优化到Go基准测试/" rel="prev" title="从冒泡排序优化到Go基准测试">
-                从冒泡排序优化到Go基准测试 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -629,8 +759,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -746,6 +885,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go关于时间与日期的处理"><span class="nav-number">1.</span> <span class="nav-text">Go关于时间与日期的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于time的数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">关于time的数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以上类型receiver的实现方法"><span class="nav-number">1.2.</span> <span class="nav-text">以上类型receiver的实现方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些常用的技巧与代码示例"><span class="nav-number">2.</span> <span class="nav-text">一些常用的技巧与代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">2.1.</span> <span class="nav-text">相关参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -777,7 +932,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:50.4k</span>
+  <span class="post-count">Total Words:52.0k</span>
 </div>
 
 
