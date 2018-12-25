@@ -101,7 +101,7 @@
 <meta property="og:description" content="MySQL add primary key auto_increment for established table">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2018/12/25/mysql-add-primary-key-auto-increment/index.html">
-<meta property="og:updated_time" content="2018-12-25T11:11:48.761Z">
+<meta property="og:updated_time" content="2018-12-25T11:52:17.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mysql add primary key auto_increment">
 <meta name="twitter:description" content="MySQL add primary key auto_increment for established table">
@@ -372,6 +372,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -406,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  79
+                  91
                 </span>
               
 
@@ -451,10 +473,23 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>alter table TABLE_NAME add id int not null primary key Auto_increment<br>1<br>如果想添加已经有了一列为主键，可以用：</p>
-<p>alter table TABLE_NAME add primary key(COL_NAME);<br>1<br>如果想修改一列为主键，则需要先删除原来的主键：</p>
-<p>alter table TABLE_NAME drop primary key;<br>1<br>再重新添加主键：</p>
-<h2 id="alter-table-TABLE-NAME-add-primary-key-COL-NAME"><a href="#alter-table-TABLE-NAME-add-primary-key-COL-NAME" class="headerlink" title="alter table TABLE_NAME add primary key(COL_NAME);"></a>alter table TABLE_NAME add primary key(COL_NAME);</h2><hr>
+<p>添加字段id,并将其设置为主键自增</p>
+<ul>
+<li>alter table TABLE_NAME add id int not null primary key Auto_increment</li>
+</ul>
+<p>如果想添加已经有了一列为主键，可以用：</p>
+<ul>
+<li><p>alter table TABLE_NAME add primary key(COL_NAME);</p>
+</li>
+<li><p>如果想修改一列为主键，则需要先删除原来的主键：</p>
+</li>
+</ul>
+<p>alter table TABLE_NAME drop primary key;</p>
+<p>再重新添加主键：</p>
+<ul>
+<li>alter table TABLE_NAME add primary key(COL_NAME);</li>
+</ul>
+<hr>
 
       
     </div>
@@ -642,17 +677,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -767,22 +793,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#alter-table-TABLE-NAME-add-primary-key-COL-NAME"><span class="nav-number">1.</span> <span class="nav-text">alter table TABLE_NAME add primary key(COL_NAME);</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
