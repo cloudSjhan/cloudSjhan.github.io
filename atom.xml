@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2018-12-25T11:48:50.260Z</updated>
+  <updated>2019-01-03T09:00:27.642Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>beego注解路由中@Param的参数解释</title>
+    <link href="https://cloudsjhan.github.io/2019/01/03/beego%E6%B3%A8%E8%A7%A3%E8%B7%AF%E7%94%B1%E4%B8%AD-Param%E7%9A%84%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A/"/>
+    <id>https://cloudsjhan.github.io/2019/01/03/beego注解路由中-Param的参数解释/</id>
+    <published>2019-01-03T08:56:19.000Z</published>
+    <updated>2019-01-03T09:00:27.642Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>beego注解路由的注释，我们可以把我们的注释分为以下类别：</p><ul><li><p>@Title</p><p>接口的标题，用来标示唯一性，唯一，可选</p><p>格式：之后跟一个描述字符串</p></li><li><p>@Description</p><p>接口的作用，用来描述接口的用途，唯一，可选</p><p>格式：之后跟一个描述字符串</p></li><li><p><a href="http://my.oschina.net/param" target="_blank" rel="noopener">@Param</a></p><p>请求的参数，用来描述接受的参数，多个，可选</p><p>格式：变量名 传输类型 类型 是否必须 描述</p><p>传输类型：paht or body</p><p>类型：</p><p>变量名和描述是一个字符串</p><p>是否必须：true 或者false</p></li><li><ul><li>string</li><li>int</li><li>int64</li><li>对象，这个地方大家写的时候需要注意，需要是相对于当前项目的路径.对象，例如<code>models.Object</code>表示<code>models</code>目录下的Object对象，这样bee在生成文档的时候会去扫描改对象并显示给用户改对象。</li><li>query 表示带在url串里面?aa=bb&amp;cc=dd</li><li>form 表示使用表单递交数据</li><li>path 表示URL串中得字符，例如/user/{uid} 那么uid就是一个path类型的参数</li><li>body 表示使用raw body进行数据的传输</li><li>header 表示通过header进行数据的传输</li></ul></li><li></li><li><p><a href="http://my.oschina.net/u/660711" target="_blank" rel="noopener">@Success</a></p><p>成功返回的code和对象或者信息</p><p>格式：code 对象类型 信息或者对象路径</p><p>code：表示HTTP的标准status code，200 201等</p><p>对象类型：{object}表示对象，其他默认都认为是字符类型，会显示第三个参数给用户，如果是{object}类型，那么就会去扫描改对象，并显示给用户</p><p>对象路径和上面Param中得对象类型一样，使用路径.对象的方式来描述</p></li><li><p><a href="http://my.oschina.net/Failure" target="_blank" rel="noopener">@Failure</a></p><p>错误返回的信息，</p><p>格式： code 信息</p><p>code:同上Success</p><p>错误信息：字符串描述信息</p></li><li><p><a href="http://my.oschina.net/Router" target="_blank" rel="noopener">@router</a></p><p>上面已经描述过支持两个参数，第一个是路由，第二个表示支持的HTTP方法</p></li></ul><hr>]]></content>
+    
+    <summary type="html">
+    
+      beego注解路由中@Param的参数解释
+    
+    </summary>
+    
+      <category term="go" scheme="https://cloudsjhan.github.io/categories/go/"/>
+    
+    
+      <category term="beego" scheme="https://cloudsjhan.github.io/tags/beego/"/>
+    
+      <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
+    
+  </entry>
   
   <entry>
     <title>golang use reflect to judge type of variable</title>
@@ -295,7 +319,7 @@
     <published>2018-11-15T10:37:28.000Z</published>
     <updated>2018-11-15T10:39:44.797Z</updated>
     
-    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#x73;&#105;&#x6e;&#x61;&#46;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#x73;&#105;&#x6e;&#x61;&#46;&#99;&#x6f;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#110;&#101;&#x40;&#x73;&#105;&#110;&#97;&#46;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#110;&#101;&#x40;&#x73;&#105;&#110;&#97;&#46;&#x63;&#x6f;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#x64;&#105;&#x70;&#x7a;&#x6f;&#x6e;&#x65;&#x40;&#115;&#105;&#x6e;&#97;&#46;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#102;&#x64;&#105;&#x70;&#x7a;&#x6f;&#x6e;&#x65;&#x40;&#115;&#105;&#x6e;&#97;&#46;&#x63;&#111;&#109;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#x66;&#100;&#x69;&#112;&#x7a;&#x6f;&#110;&#101;&#x40;&#x73;&#105;&#x6e;&#97;&#x2e;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#100;&#x69;&#112;&#x7a;&#x6f;&#110;&#101;&#x40;&#x73;&#105;&#x6e;&#97;&#x2e;&#99;&#111;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
     
     <summary type="html">
     
