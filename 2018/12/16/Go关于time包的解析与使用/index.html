@@ -101,7 +101,7 @@
 <meta property="og:description" content="golang time包的解析与使用">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/index.html">
-<meta property="og:updated_time" content="2018-12-16T15:26:02.748Z">
+<meta property="og:updated_time" content="2019-01-09T11:24:47.279Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go关于time包的解析与使用">
 <meta name="twitter:description" content="golang time包的解析与使用">
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,571
+                  1,708
                 </span>
               
 
@@ -573,7 +573,7 @@
 <li><p>unix time与String互转</p>
 </li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">endTime := time.Unix(time.Now().Unix(), <span class="number">0</span>)<span class="comment">//此时endTime是time.Time类型</span></span><br><span class="line">endStr := endTime.Format(datetime)<span class="comment">//将unix time 转为了String，再根据上面的例子，可转为time.Time</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">endTime := time.Unix(time.Now().Unix(), <span class="number">0</span>)<span class="comment">//此时endTime是time.Time类型</span></span><br><span class="line">endStr := endTime.Format(datetime)<span class="comment">//将unix time 转为了String，再根据上面的例子，可转为time.Time</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"></span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取时间戳</span></span><br><span class="line"></span><br><span class="line">timestamp := time.Now().Unix()</span><br><span class="line"></span><br><span class="line">fmt.Println(timestamp)</span><br><span class="line"></span><br><span class="line"><span class="comment">//格式化为字符串,tm为Time类型</span></span><br><span class="line"></span><br><span class="line">tm := time.Unix(timestamp, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">fmt.Println(tm.Format(<span class="string">"2006-01-02 03:04:05 PM"</span>))</span><br><span class="line"></span><br><span class="line">fmt.Println(tm.Format(<span class="string">"02/01/2006 15:04:05 PM"</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">//从字符串转为时间戳，第一个参数是格式，第二个是要转换的时间字符串</span></span><br><span class="line"></span><br><span class="line">tm2, _ := time.Parse(<span class="string">"01/02/2006"</span>, <span class="string">"02/08/2018"</span>)</span><br><span class="line"></span><br><span class="line">fmt.Println(tm2.Unix())</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><p><a href="https://link.jianshu.com/?t=http://studygolang.com/static/pkgdoc/pkg/time.htm" target="_blank" rel="noopener">pkg/time中文翻译</a></p>
 <p><a href="https://link.jianshu.com/?t=https://golang.org/pkg/time/" target="_blank" rel="noopener">pkg/time英文</a></p>
 
@@ -606,7 +606,7 @@
   <p><span>本文标题:</span><a href="/2018/12/16/Go关于time包的解析与使用/">Go关于time包的解析与使用</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2018年12月16日 - 23:12</p>
-  <p><span>最后更新:</span>2018年12月16日 - 23:12</p>
+  <p><span>最后更新:</span>2019年01月09日 - 19:01</p>
   <p><span>原始链接:</span><a href="/2018/12/16/Go关于time包的解析与使用/" title="Go关于time包的解析与使用">https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/12/16/Go关于time包的解析与使用/"  aria-label="复制成功！"></i></span>
   </p>
@@ -936,7 +936,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:52.7k</span>
+  <span class="post-count">Total Words:52.8k</span>
 </div>
 
 
