@@ -485,10 +485,10 @@
 <p>host表示你远程连接数据库设备的ip地址（如果你想让所有机器都能远程连接，host改为‘%’，<strong>不推荐这样使用</strong>），password表示MySQL的root用户密码</p>
 </li>
 <li><p>刷新or重启MySQL</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span> flush privileges;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> flush privileges;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>最后非常重要的一点</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/vim /etc/mysql/my.cnf</span><br><span class="line">屏蔽bing-server 127.0.0.0</span><br><span class="line"><span class="meta">#</span>bing-server 127.0.0.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/vim /etc/mysql/my.cnf</span><br><span class="line">屏蔽bing-server 127.0.0.0</span><br><span class="line"><span class="meta">#</span><span class="bash">bing-server 127.0.0.0</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>完成，可以远程连接你的数据库了</p>
 </li>
@@ -710,7 +710,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -854,7 +854,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:52.8k</span>
+  <span class="post-count">Total Words:53.1k</span>
 </div>
 
 
