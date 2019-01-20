@@ -100,7 +100,7 @@
 <meta property="og:site_name" content="cloud world">
 <meta property="og:description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-20T15:43:40.215Z">
+<meta property="og:updated_time" content="2019-01-20T15:58:48.731Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20181202-Postmortem-debugging-Go-services-with-Delve[翻译]">
 <meta name="twitter:description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
@@ -503,7 +503,7 @@
 <p>我们能够注意到，即使是一个简单的服务器，core文件依然会很大（我这一份是1.2G）,对于生产的服务来说，可能会更加巨大。</p>
 <p><em>如果需要了解更多使用GDB调试的技巧，可以继续阅读<a href="https://golang.org/doc/gdb" target="_blank" rel="noopener">使用GDB调试Go代码</a>。</em></p>
 <h2 id="使用Delve调试器"><a href="#使用Delve调试器" class="headerlink" title="使用Delve调试器"></a>使用Delve调试器</h2><p><a href="https://github.com/derekparker/delve" target="_blank" rel="noopener">Delve</a>是一个针对Go程序的调试器。它类似于GDB，但是更关注Go的运行时、数据结构以及其他内部的机制。</p>
-<p>如果你对Delve的内部实现机制很感兴趣，纳闷我十分推荐你阅读Alessandro Arzilli在GopherCon EU 2018所作的演讲，[<a href="https://www.youtube.com/watch?v=IKnTr7Zms1k" target="_blank" rel="noopener">Internal Architecture of Delve, a Debugger For Go</a>]。</p>
+<p>如果你对Delve的内部实现机制很感兴趣，那么我十分推荐你阅读Alessandro Arzilli在GopherCon EU 2018所作的演讲，[<a href="https://www.youtube.com/watch?v=IKnTr7Zms1k" target="_blank" rel="noopener">Internal Architecture of Delve, a Debugger For Go</a>]。</p>
 <p>Delve是用Go写的，所以安装起来非常简单：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go get -u github.com/derekparker/delve/cmd/dlv</span></span><br></pre></td></tr></table></figure>
 <p>Delve安装以后，我们就可以通过运行<code>dlv core &lt;path to service binary&gt; &lt;core file&gt;</code>来分析core文件。我们先列出执行coredump时正在运行的所有goroutines。Delve的<code>goroutines</code>命令如下：</p>
