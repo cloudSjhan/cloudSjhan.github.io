@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="python," />
+  <meta name="keywords" content="go," />
 
 
 
@@ -92,20 +92,20 @@
 
 
 
-<meta name="description" content="常用的Python模块，即查即用">
-<meta name="keywords" content="python">
+<meta name="description" content="go语言坑之for range">
+<meta name="keywords" content="go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用的Python小模块">
-<meta property="og:url" content="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/index.html">
+<meta property="og:title" content="go语言坑之for range">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="常用的Python模块，即查即用">
+<meta property="og:description" content="go语言坑之for range">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/index.html">
-<meta property="og:updated_time" content="2018-09-28T02:06:00.780Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/index.html">
+<meta property="og:updated_time" content="2019-01-31T02:05:43.618Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用的Python小模块">
-<meta name="twitter:description" content="常用的Python模块，即查即用">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/index.html">
+<meta name="twitter:title" content="go语言坑之for range">
+<meta name="twitter:description" content="go语言坑之for range">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/index.html">
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/"/>
 
 
 
@@ -150,7 +150,7 @@
   </script>
 
 
-  <title>常用的Python小模块 | cloud world</title>
+  <title>go语言坑之for range | cloud world</title>
   
 
 
@@ -332,7 +332,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -349,7 +349,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">常用的Python小模块</h1>
+          <h1 class="post-title" itemprop="name headline">go语言坑之for range</h1>
         
 
         <div class="post-meta">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T16:24:41+08:00">
-                2018-09-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T09:59:59+08:00">
+                2019-01-31
               </time>
             
 
@@ -384,8 +384,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
                   </a>
                 </span>
 
@@ -401,7 +401,7 @@
 
           
           
-             <span id="/2018/09/06/常用的Python小模块/" class="leancloud_visitors" data-flag-title="常用的Python小模块">
+             <span id="/2019/01/31/go语言坑之for-range/" class="leancloud_visitors" data-flag-title="go语言坑之for range">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  263
+                  680
                 </span>
               
 
@@ -444,7 +444,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -452,7 +452,7 @@
 
           
               <div class="post-description">
-                  常用的Python模块，即查即用
+                  go语言坑之for range
               </div>
           
 
@@ -473,12 +473,23 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<ul>
-<li>工作或者生活中总会遇到一些常用的Python模块，为了避免重复的工作，将这些自己写过的Python模块记录下来，方便使用的时候查找。</li>
-</ul>
-<h3 id="Python写CSV文件，并防止中文乱码"><a href="#Python写CSV文件，并防止中文乱码" class="headerlink" title="Python写CSV文件，并防止中文乱码"></a>Python写CSV文件，并防止中文乱码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_csv</span><span class="params">(a_list,b_list)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'vm_data.csv'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(codecs.BOM_UTF8.decode())</span><br><span class="line">        writer1 = csv.writer(f,  dialect=<span class="string">'excel'</span>)</span><br><span class="line">        <span class="comment">#写CVS的标题</span></span><br><span class="line">        writer1.writerow([<span class="string">'a'</span>, <span class="string">'b'</span>])</span><br><span class="line">        <span class="comment">#将数据写入CSV文件</span></span><br><span class="line">        writer1.writerows(zip(a_list, b_list))</span><br></pre></td></tr></table></figure>
-<h3 id="Python将数据结构转为json-并优化json字符串的结构，处理中文乱码"><a href="#Python将数据结构转为json-并优化json字符串的结构，处理中文乱码" class="headerlink" title="Python将数据结构转为json,并优化json字符串的结构，处理中文乱码"></a>Python将数据结构转为json,并优化json字符串的结构，处理中文乱码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">"appid.json"</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf8'</span>, ) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(json.dumps(final, sort_keys=<span class="keyword">True</span>, indent=<span class="number">2</span>, ensure_ascii=<span class="keyword">False</span>))</span><br><span class="line"><span class="comment"># sort_keys = True: 将字典的key按照字母排序</span></span><br><span class="line"><span class="comment"># ident = 2: 优化json字符串结构，看起来更美观</span></span><br><span class="line"><span class="comment"># ensure_ascii=False: 防止json字符串中的中文乱码</span></span><br></pre></td></tr></table></figure>
-<h3 id="使用requests包进行网络请求（以post为例）"><a href="#使用requests包进行网络请求（以post为例）" class="headerlink" title="使用requests包进行网络请求（以post为例）"></a>使用requests包进行网络请求（以post为例）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">def  get_data(url):</span><br><span class="line">    final = &#123;&#125;</span><br><span class="line">    url = &quot;http://xxxx.com&quot;</span><br><span class="line">    request_body = &#123;</span><br><span class="line">        &apos;access_token&apos;: access_token,</span><br><span class="line">        &apos;request_body&apos;: &#123;&quot;params1&quot;: param1, &apos;params2&apos;: param2&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    headers = &#123;</span><br><span class="line">        &apos;Content-type&apos;: &apos;application/json&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    data = requests.post(url, headers=headers, data=json.dumps(request_body))</span><br></pre></td></tr></table></figure>
+<h1 id="go语言坑之for-range"><a href="#go语言坑之for-range" class="headerlink" title="go语言坑之for range"></a>go语言坑之for range</h1><blockquote>
+<p>这篇文章简单清晰地解释了之前遍历struct切片时遇到的一些怪异现象，这个问题当时也写了一篇文章来讨论，<a href="https://cloudsjhan.github.io/2018/10/27/%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A%E4%B9%8Bgolang%E4%B8%AD%E4%BF%AE%E6%94%B9struct%E7%9A%84slice%E7%9A%84%E5%80%BC/">文章地址</a>，但是没有切中要点。昨天无意中看到这篇博客，豁然开朗。</p>
+</blockquote>
+<hr>
+<p>go只提供了一种循环方式，即for循环，在使用时可以像c那样使用，也可以通过for range方式遍历容器类型如数组、切片和映射。但是在使用for range时，如果使用不当，就会出现一些问题，导致程序运行行为不如预期。比如，下面的示例程序将遍历一个切片，并将切片的值当成映射的键和值存入，切片类型是一个int型，映射的类型是键为int型，值为*int，即值是一个地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    slice := []int&#123;0, 1, 2, 3&#125;</span><br><span class="line">    myMap := make(map[int]*int)</span><br><span class="line"></span><br><span class="line">    for index, value := range slice &#123;</span><br><span class="line">        myMap[index] = &amp;value</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(&quot;=====new map=====&quot;)</span><br><span class="line">    prtMap(myMap)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func prtMap(myMap map[int]*int) &#123;</span><br><span class="line">    for key, value := range myMap &#123;</span><br><span class="line">        fmt.Printf(&quot;map[%v]=%v\n&quot;, key, *value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行程序输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">=====new map=====</span><br><span class="line">map[3]=3</span><br><span class="line">map[0]=3</span><br><span class="line">map[1]=3</span><br><span class="line">map[2]=3</span><br></pre></td></tr></table></figure>
+<p>由输出可以知道，不是我们预期的输出，正确输出应该如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">=====new map=====</span><br><span class="line">map[0]=0</span><br><span class="line">map[1]=1</span><br><span class="line">map[2]=2</span><br><span class="line">map[3]=3</span><br><span class="line">（无序输出，但是值是0,1,2,3）</span><br></pre></td></tr></table></figure>
+<p>但是由输出可以知道，映射的值都相同且都是3。其实可以猜测映射的值都是同一个地址，遍历到切片的最后一个元素3时，将3写入了该地址，所以导致映射所有值都相同。其实真实原因也是如此，因为for range创建了每个元素的副本，而不是直接返回每个元素的引用，如果使用该值变量的地址作为指向每个元素的指针，就会导致错误，在迭代时，返回的变量是一个迭代过程中根据切片依次赋值的新变量，所以值的地址总是相同的，导致结果不如预期。</p>
+<p>修正后程序如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    slice := []int&#123;0, 1, 2, 3&#125;</span><br><span class="line">    myMap := make(map[int]*int)</span><br><span class="line"></span><br><span class="line">    for index, value := range slice &#123;</span><br><span class="line">        num := value</span><br><span class="line">        myMap[index] = &amp;num</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Println(&quot;=====new map=====&quot;)</span><br><span class="line">    prtMap(myMap)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func prtMap(myMap map[int]*int) &#123;</span><br><span class="line">    for key, value := range myMap &#123;</span><br><span class="line">        fmt.Printf(&quot;map[%v]=%v\n&quot;, key, *value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行程序输出如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">=====new map=====</span><br><span class="line">map[2]=2</span><br><span class="line">map[3]=3</span><br><span class="line">map[0]=0</span><br><span class="line">map[1]=1</span><br></pre></td></tr></table></figure>
+<hr>
+<p>引用声明：该博客来自于<a href="https://studygolang.com/articles/9701" target="_blank" rel="noopener">这里</a>.</p>
 <hr>
 
       
@@ -507,12 +518,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2018/09/06/常用的Python小模块/">常用的Python小模块</a></p>
+  <p><span>本文标题:</span><a href="/2019/01/31/go语言坑之for-range/">go语言坑之for range</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2018年09月06日 - 16:09</p>
-  <p><span>最后更新:</span>2018年09月28日 - 10:09</p>
-  <p><span>原始链接:</span><a href="/2018/09/06/常用的Python小模块/" title="常用的Python小模块">https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/09/06/常用的Python小模块/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年01月31日 - 09:01</p>
+  <p><span>最后更新:</span>2019年01月31日 - 10:01</p>
+  <p><span>原始链接:</span><a href="/2019/01/31/go语言坑之for-range/" title="go语言坑之for range">https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/01/31/go语言坑之for-range/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -572,7 +583,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
           
         </div>
       
@@ -598,8 +609,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/01/Mysql无法连接/" rel="next" title="Mysql无法连接[MySql Host is blocked because of many connection errors]">
-                <i class="fa fa-chevron-left"></i> Mysql无法连接[MySql Host is blocked because of many connection errors]
+              <a href="/2019/01/28/记第一个Vue项目台前幕后的经历/" rel="next" title="记第一个Vue项目台前幕后的经历">
+                <i class="fa fa-chevron-left"></i> 记第一个Vue项目台前幕后的经历
               </a>
             
           </div>
@@ -607,10 +618,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/07/golang-编译针对不同平台的可执行程序/" rel="prev" title="golang 编译针对不同平台的可执行程序">
-                golang 编译针对不同平台的可执行程序 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -802,7 +809,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python写CSV文件，并防止中文乱码"><span class="nav-number">1.</span> <span class="nav-text">Python写CSV文件，并防止中文乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python将数据结构转为json-并优化json字符串的结构，处理中文乱码"><span class="nav-number">2.</span> <span class="nav-text">Python将数据结构转为json,并优化json字符串的结构，处理中文乱码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用requests包进行网络请求（以post为例）"><span class="nav-number">3.</span> <span class="nav-text">使用requests包进行网络请求（以post为例）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#go语言坑之for-range"><span class="nav-number">1.</span> <span class="nav-text">go语言坑之for range</span></a></li></ol></div>
             
 
           </div>
