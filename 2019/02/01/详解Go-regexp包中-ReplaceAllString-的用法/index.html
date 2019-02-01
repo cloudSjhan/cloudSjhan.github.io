@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="python, go, Docker, k8s,爬虫,Django" />
+  <meta name="keywords" content="go," />
 
 
 
@@ -92,17 +92,20 @@
 
 
 
-<meta name="description" content="关于技术，关于生活">
-<meta name="keywords" content="go, python, Docker, 爬虫，k8s">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cloud world">
-<meta property="og:url" content="https://cloudsjhan.github.io/archives/2018/11/index.html">
+<meta name="description" content="详解Go regexp包中 ReplaceAllString 的用法">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解Go regexp包中 ReplaceAllString 的用法">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="关于技术，关于生活">
+<meta property="og:description" content="详解Go regexp包中 ReplaceAllString 的用法">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
+<meta property="og:updated_time" content="2019-02-01T09:37:45.426Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cloud world">
-<meta name="twitter:description" content="关于技术，关于生活">
+<meta name="twitter:title" content="详解Go regexp包中 ReplaceAllString 的用法">
+<meta name="twitter:description" content="详解Go regexp包中 ReplaceAllString 的用法">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
 
 
 
@@ -132,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/archives/2018/11/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/"/>
 
 
 
@@ -147,7 +150,7 @@
   </script>
 
 
-  <title>归档 | cloud world</title>
+  <title>详解Go regexp包中 ReplaceAllString 的用法 | cloud world</title>
   
 
 
@@ -166,7 +169,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
@@ -315,221 +318,361 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
-         
+          <h1 class="post-title" itemprop="name headline">详解Go regexp包中 ReplaceAllString 的用法</h1>
         
-        OK! 目前共计 46 篇日志。 继续努力。
-      </span>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T12:23:12+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/" class="leancloud_visitors" data-flag-title="详解Go regexp包中 ReplaceAllString 的用法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,455
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  详解Go regexp包中 ReplaceAllString 的用法
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
-        
-        
-        
+      
+        <p class="description"></p>
 
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<p>昨天有同事在看k8s源码，突然问了一个看似很简单的问题，<a href="https://golang.org/pkg/regexp/#Regexp.ReplaceAllString" target="_blank" rel="noopener">https://golang.org/pkg/regexp/#Regexp.ReplaceAllString</a> 官方文档中<code>ReplaceAllString</code>的解释，到底是什么意思？到底怎么用？</p>
+<p>官方英文原文：</p>
+<p><code>func (re *Regexp) ReplaceAllString(src, repl string) string</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ReplaceAllString returns a copy of src, replacing matches of the Regexp with the replacement <span class="built_in">string</span> repl. Inside repl, $ signs are interpreted as in Expand, so <span class="keyword">for</span> instance $<span class="number">1</span> represents the text of the first submatch.</span><br></pre></td></tr></table></figure>
+<p>中文文档：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReplaceAllLiteral返回src的一个拷贝，将src中所有re的匹配结果都替换为repl。在替换时，repl中的&apos;$&apos;符号会按照Expand方法的规则进行解释和替换，例如$1会被替换为第一个分组匹配结果。</span><br></pre></td></tr></table></figure>
+<p>看上去一脸懵逼，还是不理解这个函数到底怎么用。</p>
+<p>又去看官方的示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Example：</span><br><span class="line">re := regexp.MustCompile(<span class="string">"a(x*)b"</span>)</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"T"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$1"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$1W"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$&#123;1&#125;W"</span>))</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line"></span><br><span class="line">-T-T-</span><br><span class="line">--xx-</span><br><span class="line">---</span><br><span class="line">-W-xxW-</span><br></pre></td></tr></table></figure>
+<p>第一个替换勉强能看明白，是用<code>T</code>去替换<code>-ab-axxb-</code>中符合正则表达式匹配的部分；第二个中的<code>$</code>是什么意思？<code>$1</code>看起来像是匹配正则表达式分组中第一部分，那<code>$1W</code>呢？<code>${1}W</code>呢？带着这些问题，开始深入研究这个函数到底怎么用。</p>
+<p>首先，<code>$</code>符号在<code>Expand</code>函数中有解释过：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte</span><br><span class="line"></span><br><span class="line">Expand返回新生成的将template添加到dst后面的切片。在添加时，Expand会将template中的变量替换为从src匹配的结果。match应该是被FindSubmatchIndex返回的匹配结果起止位置索引。（通常就是匹配src，除非你要将匹配得到的位置用于另一个[]byte）</span><br><span class="line"></span><br><span class="line">在template参数里，一个变量表示为格式如：$name或$&#123;name&#125;的字符串，其中name是长度&gt;0的字母、数字和下划线的序列。一个单纯的数字字符名如$1会作为捕获分组的数字索引；其他的名字对应(?P&lt;name&gt;...)语法产生的命名捕获分组的名字。超出范围的数字索引、索引对应的分组未匹配到文本、正则表达式中未出现的分组名，都会被替换为空切片。</span><br><span class="line"></span><br><span class="line">$name格式的变量名，name会尽可能取最长序列：$1x等价于$&#123;1x&#125;而非$&#123;1&#125;x，$10等价于$&#123;10&#125;而非$&#123;1&#125;0。因此$name适用在后跟空格/换行等字符的情况，$&#123;name&#125;适用所有情况。</span><br><span class="line"></span><br><span class="line">如果要在输出中插入一个字面值&apos;$&apos;，在template里可以使用$$。</span><br></pre></td></tr></table></figure>
+<p>说了这么多，其实最终要的部分可以概括为三点：</p>
+<ol>
+<li><code>$</code>后面只有数字，则代表正则表达式的分组索引，关于正则表达式的分组解释：</li>
+</ol>
+<p>捕获组可以通过从左到右计算其开括号来编号 。例如，在表达式 (A)(B(C)) 中，存在四个这样的组：</p>
+<table>
+<thead>
+<tr>
+<th><strong>0</strong></th>
+<th>(A)(B(C))</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>(A)</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>(B(C))</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>(C)</td>
+</tr>
+</tbody>
+</table>
+<p>组零始终代表整个表达式</p>
+<p>之所以这样命名捕获组是因为在匹配中，保存了与这些组匹配的输入序列的每个子序列。捕获的子序列稍后可以通过 Back 引用（反向引用） 在表达式中使用，也可以在匹配操作完成后从匹配器检索。</p>
+<p>匹配正则表达式的<code>$1</code>部分，保留该部分，去掉其余部分；</p>
+<ol start="2">
+<li><code>$</code>后面是字符串，即<code>$name</code>,代表匹配<strong>对应(?P<name>…)语法产生的命名捕获分组的名字</name></strong></li>
+<li><code>${数字}字符串</code>,即<code>${1}xxx</code>，意思是匹配正则表达式的分组1，<code>src</code>中匹配分组1的保留，并删除<code>src</code>剩余部分，追加<code>xxx</code>，后面会有代码示例解释这部分，也是最难理解的部分</li>
+<li>最简单的情况，参数<code>repl</code>是字符串，将src中所有re的匹配结果都替换为repl</li>
+</ol>
+<p>下面用代码来解释以上几种情况：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"><span class="string">"regexp"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	s := <span class="string">"Hello World, 123 Go!"</span></span><br><span class="line">	<span class="comment">//定义一个正则表达式reg，匹配Hello或者Go</span></span><br><span class="line">	reg := regexp.MustCompile(<span class="string">`(Hell|G)o`</span>)</span><br><span class="line">	</span><br><span class="line">	s2 := <span class="string">"2019-12-01,test"</span></span><br><span class="line">	<span class="comment">//定义一个正则表达式reg2,匹配 YYYY-MM-DD 的日期格式</span></span><br><span class="line">	reg2 := regexp.MustCompile(<span class="string">`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//最简单的情况，用“T替换”"-ab-axxb-"中符合正则"a(x*)b"的部分</span></span><br><span class="line">    reg3 := regexp.MustCompile(<span class="string">"a(x*)b"</span>)</span><br><span class="line">	fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"T"</span>))</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//$&#123;1&#125;匹配"Hello World, 123 Go!"中符合正则`(Hell|G)`的部分并保留，去掉"Hello"与"Go"中的'o'并用"ddd"追加</span></span><br><span class="line">	rep1 := <span class="string">"$&#123;1&#125;ddd"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg.ReplaceAllString(s, rep1))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;4&#125;)'的'2019'保留，去掉剩余部分</span></span><br><span class="line">    rep2 := <span class="string">"$&#123;1&#125;"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep2))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;2&#125;)'的'12'保留，去掉剩余部分</span></span><br><span class="line">     rep3 := <span class="string">"$&#123;2&#125;"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep3))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;2&#125;)'的'01'保留，去掉剩余部分,并追加"13:30:12"</span></span><br><span class="line">    rep4 := <span class="string">"$&#123;3&#125;:13:30:12"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep4))</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码输出依次是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go run main.go</span></span><br><span class="line">-T-T-</span><br><span class="line">"Hellddd World, 123 Gddd!"</span><br><span class="line">"2019,test"</span><br><span class="line">"12,test"</span><br><span class="line">"01:13:30:12,test"</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go<code>regexp</code>包中的<code>ReplaceAllString</code>设计有些许反人类，理解和使用上感觉不方便，如果你有更好的理解或者示例代码，Call me!</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
         
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/">详解Go regexp包中 ReplaceAllString 的用法</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2019年02月01日 - 12:02</p>
+  <p><span>最后更新:</span>2019年02月01日 - 17:02</p>
+  <p><span>原始链接:</span><a href="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/" title="详解Go regexp包中 ReplaceAllString 的用法">https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
+            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
           </div>
         
-        
 
         
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/11/30/ionic-project-Could-not-find-module-angular-devkit-build-angular-from-XXX/" itemprop="url">
-              
-                <span itemprop="name">ionic project-Could not find module @angular-devkit/build-angular from XXX</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-30T22:02:49+08:00"
-              content="2018-11-30" >
-          11-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
+        </div>
+      
       
 
-        
-        
-        
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/go语言坑之for-range/" rel="next" title="go语言坑之for range">
+                <i class="fa fa-chevron-left"></i> go语言坑之for range
+              </a>
+            
+          </div>
 
-        
-        
+          <span class="post-nav-divider"></span>
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/18/快排之golang实现/" itemprop="url">
-              
-                <span itemprop="name">快排之golang实现</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-18T14:36:38+08:00"
-              content="2018-11-18" >
-          11-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/15/git如何找回被删除的分支/" itemprop="url">
-              
-                <span itemprop="name">git如何找回被删除的分支</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-15T18:37:28+08:00"
-              content="2018-11-15" >
-          11-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/06/golang读取命令行传来的参数/" itemprop="url">
-              
-                <span itemprop="name">golang读取命令行传来的参数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-06T14:59:04+08:00"
-              content="2018-11-06" >
-          11-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/05/MySQL使用group-by分组后对每组操作/" itemprop="url">
-              
-                <span itemprop="name">MySQL使用group by分组后对每组操作</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-05T16:54:14+08:00"
-              content="2018-11-05" >
-          11-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-    </div>
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -537,6 +680,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -557,8 +709,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -673,6 +834,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -834,6 +1011,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -862,6 +1043,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
@@ -1313,6 +1505,23 @@
 
   
   
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
 
   
 
