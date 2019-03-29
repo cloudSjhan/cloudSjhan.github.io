@@ -105,7 +105,7 @@
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1g1jwn7d37aj30tg0iy0v1.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcgy1g1jyf6bmcfj314w0kqq97.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1g1k09zlxtzj30ua076128.jpg">
-<meta property="og:updated_time" content="2019-03-29T13:55:29.747Z">
+<meta property="og:updated_time" content="2019-03-29T13:57:34.558Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="scrapy 源码分析之retry中间件与应用">
 <meta name="twitter:description" content="分析scrapy的retry源码，定制化重试机制">
@@ -484,14 +484,14 @@
 <p><img src="https://scrapy-chs.readthedocs.io/zh_CN/0.24/_images/scrapy_architecture.png" alt=""></p>
 <p>简单了解一下各个部分的功能，可以看下面简化版数据流：</p>
 <p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1g1jwn7d37aj30tg0iy0v1.jpg" alt=""></p>
-<h2 id="总有漏网之鱼"><a href="#总有漏网之鱼" class="headerlink" title="## 总有漏网之鱼"></a>## 总有漏网之鱼</h2><p>不管你的主机配置多么吊炸天，还是网速多么给力，在scrapy的大规模任务中，最终爬取的item数量都不会等于期望爬取的数量，也就是说总有那么一些爬取失败的漏网之鱼，通过分析scrapy的日志，可以知道造成失败的原因有以下两种情况：</p>
+<h2 id="总有漏网之鱼"><a href="#总有漏网之鱼" class="headerlink" title="总有漏网之鱼"></a>总有漏网之鱼</h2><p>不管你的主机配置多么吊炸天，还是网速多么给力，在scrapy的大规模任务中，最终爬取的item数量都不会等于期望爬取的数量，也就是说总有那么一些爬取失败的漏网之鱼，通过分析scrapy的日志，可以知道造成失败的原因有以下两种情况：</p>
 <ol>
 <li>exception_count</li>
 <li>httperror</li>
 </ol>
 <p><img src="https://ws1.sinaimg.cn/large/006tKfTcgy1g1jyf6bmcfj314w0kqq97.jpg" alt=""></p>
 <p>以上的不管是exception还是httperror, scrapy中都有对应的retry机制，在<code>settings.py</code>文件中我们可以设置有关重试的参数，等运行遇到异常和错误时候，scrapy就会自动处理这些问题，其中最关键的部分就是重试中间件，下面让我们看一下scrapy的retry middleware。</p>
-<h2 id="RetryMiddle源码分析"><a href="#RetryMiddle源码分析" class="headerlink" title="## RetryMiddle源码分析"></a>## RetryMiddle源码分析</h2><p>在scrapy项目的<code>middlewares.py</code>文件中 敲如下代码：</p>
+<h2 id="RetryMiddle源码分析"><a href="#RetryMiddle源码分析" class="headerlink" title="RetryMiddle源码分析"></a>RetryMiddle源码分析</h2><p>在scrapy项目的<code>middlewares.py</code>文件中 敲如下代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.downloadermiddlewares.retry <span class="keyword">import</span> RetryMiddleware</span><br></pre></td></tr></table></figure>
 <p>按住ctrl键（Mac是command键），鼠标左键点击RetryMiddleware进入该中间件所在的项目文件的位置，也可以通过查看文件的形式找到该该中间件的位置，路径是：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site-packages/scrapy/downloadermiddlewares/retry.RetryMiddleware</span><br></pre></td></tr></table></figure>
@@ -833,7 +833,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#scrapy简介"><span class="nav-number">1.</span> <span class="nav-text">scrapy简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总有漏网之鱼"><span class="nav-number">2.</span> <span class="nav-text">## 总有漏网之鱼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RetryMiddle源码分析"><span class="nav-number">3.</span> <span class="nav-text">## RetryMiddle源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码思想的应用"><span class="nav-number">4.</span> <span class="nav-text">源码思想的应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#scrapy简介"><span class="nav-number">1.</span> <span class="nav-text">scrapy简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总有漏网之鱼"><span class="nav-number">2.</span> <span class="nav-text">总有漏网之鱼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RetryMiddle源码分析"><span class="nav-number">3.</span> <span class="nav-text">RetryMiddle源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码思想的应用"><span class="nav-number">4.</span> <span class="nav-text">源码思想的应用</span></a></li></ol></div>
             
 
           </div>
