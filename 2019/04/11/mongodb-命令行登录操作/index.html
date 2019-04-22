@@ -101,7 +101,10 @@
 <meta property="og:description" content="mongodb 命令行登录操作">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2019/04/11/mongodb-命令行登录操作/index.html">
-<meta property="og:updated_time" content="2019-04-12T01:54:35.856Z">
+<meta property="og:image" content="https:////upload-images.jianshu.io/upload_images/4218662-435c85a12eae4a61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/958/format/webp">
+<meta property="og:image" content="https:////upload-images.jianshu.io/upload_images/4218662-7842d5837475c137.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:image" content="https:////upload-images.jianshu.io/upload_images/4218662-8f368a1234b354cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:updated_time" content="2019-04-22T02:52:39.347Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongodb 命令行登录操作">
 <meta name="twitter:description" content="mongodb 命令行登录操作">
@@ -428,7 +431,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  530
+                  777
                 </span>
               
 
@@ -444,7 +447,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  3
                 </span>
               
             </div>
@@ -473,6 +476,22 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
+<h2 id="Mac-OS下载安装及配置"><a href="#Mac-OS下载安装及配置" class="headerlink" title="Mac OS下载安装及配置"></a>Mac OS下载安装及配置</h2><p>使用brew可以直接搞定，简单方便！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install mongodb</span><br></pre></td></tr></table></figure>
+<p>安装完成后会提示启动的方式，安装位置等等信息。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/4218662-435c85a12eae4a61.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/958/format/webp" alt="img"></p>
+<p>安装完成</p>
+<p>安装完成后，按照提示启动MongoDB：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongod --config /usr/local/etc/mongod.conf</span><br></pre></td></tr></table></figure>
+<p>配置文件已修改fork=true，因此启动后将以后台进程方式存在。</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/4218662-7842d5837475c137.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img"></p>
+<p>MongoDB启动</p>
+<p>终端输入mongo连接MongoDB数据库(默认连接本机的27017端口)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br></pre></td></tr></table></figure>
+<p><img src="https:////upload-images.jianshu.io/upload_images/4218662-8f368a1234b354cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img"></p>
+<p>客户端连接</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>MongoDB引入一个YAML-based格式的配置文件。<br> 现在的配置文件/usr/local/etc/mongod.conf显示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># 日志</span><br><span class="line">systemLog:</span><br><span class="line"># 日志为文件</span><br><span class="line">  destination: file</span><br><span class="line"># 文件位置</span><br><span class="line">  path: /usr/local/var/log/mongodb/mongo.log</span><br><span class="line"># 是否追加</span><br><span class="line">  logAppend: true</span><br><span class="line">#进程</span><br><span class="line">processManagement:</span><br><span class="line"># 守护进程方式</span><br><span class="line">  fork: true</span><br><span class="line">storage:</span><br><span class="line">  dbPath: /usr/local/var/mongodb</span><br><span class="line">net:</span><br><span class="line"># 绑定IP，默认127.0.0.1，只能本机访问</span><br><span class="line">  bindIp: 127.0.0.1</span><br><span class="line"># 端口</span><br><span class="line">  port: 27017</span><br></pre></td></tr></table></figure>
 <h2 id="CentOS-7-安装MongoDB详细步骤"><a href="#CentOS-7-安装MongoDB详细步骤" class="headerlink" title="CentOS 7 安装MongoDB详细步骤"></a><a href="https://segmentfault.com/a/1190000016877915" target="_blank" rel="noopener">CentOS 7 安装MongoDB详细步骤</a></h2><p>创建<code>/etc/yum.repos.d/mongodb-org-4.0.repo</code>文件，编辑内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-4.0]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc</span><br></pre></td></tr></table></figure>
 <p>运行以下命令安装最新版的mongodb：</p>
@@ -530,7 +549,7 @@
   <p><span>本文标题:</span><a href="/2019/04/11/mongodb-命令行登录操作/">mongodb 命令行登录操作</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2019年04月11日 - 15:04</p>
-  <p><span>最后更新:</span>2019年04月12日 - 09:04</p>
+  <p><span>最后更新:</span>2019年04月22日 - 10:04</p>
   <p><span>原始链接:</span><a href="/2019/04/11/mongodb-命令行登录操作/" title="mongodb 命令行登录操作">https://cloudsjhan.github.io/2019/04/11/mongodb-命令行登录操作/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/04/11/mongodb-命令行登录操作/"  aria-label="复制成功！"></i></span>
   </p>
@@ -822,7 +841,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS-7-安装MongoDB详细步骤"><span class="nav-number">1.</span> <span class="nav-text">CentOS 7 安装MongoDB详细步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mongodb-用户验证登陆"><span class="nav-number">1.1.</span> <span class="nav-text">Mongodb 用户验证登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建普通用户"><span class="nav-number">1.2.</span> <span class="nav-text">创建普通用户</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac-OS下载安装及配置"><span class="nav-number">1.</span> <span class="nav-text">Mac OS下载安装及配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS-7-安装MongoDB详细步骤"><span class="nav-number">3.</span> <span class="nav-text">CentOS 7 安装MongoDB详细步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mongodb-用户验证登陆"><span class="nav-number">3.1.</span> <span class="nav-text">Mongodb 用户验证登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建普通用户"><span class="nav-number">3.2.</span> <span class="nav-text">创建普通用户</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -860,7 +879,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:99.7k</span>
+  <span class="post-count">Total Words:99.9k</span>
 </div>
 
 
