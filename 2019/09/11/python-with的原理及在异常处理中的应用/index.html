@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="go 数据结构与算法," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -92,20 +92,20 @@
 
 
 
-<meta name="description" content="快速排序的go实现">
-<meta name="keywords" content="go 数据结构与算法">
+<meta name="description" content="python with的原理及在异常处理中的应用">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="快排之golang实现">
-<meta property="og:url" content="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/index.html">
+<meta property="og:title" content="python with的原理及在异常处理中的应用">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="快速排序的go实现">
+<meta property="og:description" content="python with的原理及在异常处理中的应用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/index.html">
-<meta property="og:updated_time" content="2018-11-19T02:09:59.522Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/index.html">
+<meta property="og:updated_time" content="2019-09-11T03:39:08.498Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="快排之golang实现">
-<meta name="twitter:description" content="快速排序的go实现">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/index.html">
+<meta name="twitter:title" content="python with的原理及在异常处理中的应用">
+<meta name="twitter:description" content="python with的原理及在异常处理中的应用">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/index.html">
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/"/>
 
 
 
@@ -150,7 +150,7 @@
   </script>
 
 
-  <title>快排之golang实现 | cloud world</title>
+  <title>python with的原理及在异常处理中的应用 | cloud world</title>
   
 
 
@@ -332,7 +332,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -349,7 +349,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">快排之golang实现</h1>
+          <h1 class="post-title" itemprop="name headline">python with的原理及在异常处理中的应用</h1>
         
 
         <div class="post-meta">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-18T14:36:38+08:00">
-                2018-11-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T11:37:54+08:00">
+                2019-09-11
               </time>
             
 
@@ -384,8 +384,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
                   </a>
                 </span>
 
@@ -401,7 +401,7 @@
 
           
           
-             <span id="/2018/11/18/快排之golang实现/" class="leancloud_visitors" data-flag-title="快排之golang实现">
+             <span id="/2019/09/11/python-with的原理及在异常处理中的应用/" class="leancloud_visitors" data-flag-title="python with的原理及在异常处理中的应用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  642
+                  1,301
                 </span>
               
 
@@ -444,7 +444,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  6
                 </span>
               
             </div>
@@ -452,7 +452,7 @@
 
           
               <div class="post-description">
-                  快速排序的go实现
+                  python with的原理及在异常处理中的应用
               </div>
           
 
@@ -469,32 +469,92 @@
       
 
       
-        <p class="description"></p>
-
-<p><img src="https://" alt="" style="width:100%"></p>
+        <p></p><p class="description"></p><br><img src="https://" alt="" style="width:100%"><p></p>
 <a id="more"></a>
-<ul>
-<li>快速排序由C. A. R. Hoare在1962年提出。它的基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</li>
-</ul>
-<p>利用分治法可将快速排序的分为三步：</p>
-<ul>
-<li>在数据集之中，选择一个元素作为”基准”（pivot）。</li>
-<li>所有小于”基准”的元素，都移到”基准”的左边；所有大于”基准”的元素，都移到”基准”的右边。这个操作称为分区 (partition) 操作，分区操作结束后，基准元素所处的位置就是最终排序后它的位置。</li>
-<li>对”基准”左边和右边的两个子集，不断重复第一步和第二步，直到所有子集只剩下一个元素为止。</li>
-</ul>
-<p>快速排序平均时间复杂度为<code>O(n log n)</code>,最坏情况为<code>O(n2)</code>，不稳定排序。</p>
-<p>这里实现了两种方式的快排，第一种是单路的，实现代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">partition</span><span class="params">(sortArray []<span class="keyword">int</span>, left, right <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	key := sortArray[right]</span><br><span class="line">	i := left - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> j := left; j &lt; right; j++ &#123;</span><br><span class="line">		<span class="keyword">if</span> sortArray[j] &lt;= key &#123;</span><br><span class="line">			i++</span><br><span class="line">			swap(i, j)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	swap(i+<span class="number">1</span>, right)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>第二种是双路的：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">unc partition2(arr []<span class="keyword">int</span>,left,right <span class="keyword">int</span>)(p <span class="keyword">int</span>)  &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> left &gt; right &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	i,j,pivot := left,right ,arr[left]</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i&lt;j  &#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i &lt; j &amp;&amp; arr[j] &gt;pivot  &#123;</span><br><span class="line">			j--</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i &lt; j &amp;&amp; arr[i] &lt;= pivot  &#123;</span><br><span class="line">			i++</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> i &lt; j &#123;</span><br><span class="line">			arr[i] ,arr[j] = arr[j],arr[i]</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	arr[i],arr[left] = arr[left],arr[i]</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> i</span><br></pre></td></tr></table></figure>
-<p>测试代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (<span class="string">"fmt"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> MAX = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sortArray = []<span class="keyword">int</span>&#123;<span class="number">41</span>, <span class="number">24</span>, <span class="number">76</span>, <span class="number">11</span>, <span class="number">45</span>, <span class="number">64</span>, <span class="number">21</span>, <span class="number">69</span>, <span class="number">19</span>, <span class="number">36</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">"before sort："</span>)</span><br><span class="line"></span><br><span class="line">	quickSort(sortArray, <span class="number">0</span>, MAX<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"after sort:"</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">quickSort</span><span class="params">(sortArray []<span class="keyword">int</span>, left, right <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> left &lt; right &#123;</span><br><span class="line">		pos := partition2(sortArray, left, right)<span class="comment">//修改此处测试不同的实现方式</span></span><br><span class="line">		quickSort(sortArray, left, pos<span class="number">-1</span>)</span><br><span class="line">		quickSort(sortArray, pos+<span class="number">1</span>, right)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>BUT!</p>
-<p>要表达快排的思想，还是使用Python比较透彻：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span><span class="params">(array)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> len(array) &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> array</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = array[<span class="number">0</span>]</span><br><span class="line">        less = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &lt;= pivot]</span><br><span class="line">        greater = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &gt; pivot]</span><br><span class="line">    <span class="keyword">return</span> quickSort(less) + [pivot] + quickSort(greater)</span><br></pre></td></tr></table></figure>
-<p>是不是将快排的分治思想表达地淋漓尽致，简洁美观。</p>
-<p>​                                        </p>
-<p>​                                    End！</p>
+<p>只要对象内实现 <strong>enter</strong>() 和 <strong>exit</strong>() 方法，就能兼容 with 语句，触发上下文管理。 </p>
+<p>一、上下文管理的简单执行流程<br>with 工作原理 （１）紧跟with后面的语句被求值后，返回对象的“<strong>enter</strong>()”方法被调用，这个方法的返回值将被赋值给as后面的变量； （２）当with后面的代码块全部被执行完之后，将调用前面返回对象的“<strong>exit</strong>()”方法。</p>
+<p>class Sample:<br>    def <strong>enter</strong>(self):<br>        print “in <strong>enter</strong>“<br>        return “Foo”<br>    def <strong>exit</strong>(self, exc_type, exc_val, exc_tb):<br>        ‘’’<br>        若在执行流程中因为错误而退出，调用exit时，会自动捕获错误信息<br>        exc_type：　错误的类型(异常类型)<br>        exc_val：　错误类型对应的值 (异常值)<br>        exc_tb：　代码中错误发生的位置 (错误栈)<br>        ‘’’<br>        print “in <strong>exit</strong>“</p>
+<p>def get_sample():<br>    return Sample()</p>
+<p>with get_sample() as sample:<br>    print “Sample: “, sample<br>‘’’<br>流程总结：<br>1- 执行get_sample()函数<br>2- 函数内实例化Sample对象，执行<strong>enter</strong>返回字符串赋予sample变量<br>3- 执行with内的代码块，输出sample变量值<br>4- 执行Sample对象内的<strong>exit</strong>方法<br>‘’’<br>二、错误执行流程<br>class Sample():<br>    def <strong>enter</strong>(self):<br>        print(‘in enter’)<br>        return self</p>
+<pre><code>def __exit__(self, exc_type, exc_val, exc_tb):
+    print &quot;type: &quot;, exc_type
+    print &quot;val: &quot;, exc_val
+    print &quot;tb: &quot;, exc_tb
+
+def do_something(self):
+    bar = 1 / 0
+    return bar + 10
+</code></pre><p>with Sample() as sample:<br>    sample.do_something()</p>
+<p>‘’’<br>in enter<br>Traceback (most recent call last):<br>type:  <type 'exceptions.zerodivisionerror'=""><br>val:  integer division or modulo by zero<br>  File “/home/user/cltdevelop/Code/TF_Practice_2017_06_06/with_test.py”, line 36, in <module><br>tb:  <traceback object="" at="" 0x7f9e13fc6050=""><br>    sample.do_something()<br>  File “/home/user/cltdevelop/Code/TF_Practice_2017_06_06/with_test.py”, line 32, in do_something<br>    bar = 1 / 0<br>ZeroDivisionError: integer division or modulo by zero</traceback></module></type></p>
+<p>Process finished with exit code 1</p>
+<p>‘’’<br>三、异常处理 with 应用<br>异常处理逻辑太多，以至于扰乱了代码核心逻辑。具体表现就是，代码里充斥着大量的 try、except、raise 语句，让核心逻辑变得难以辨识。</p>
+<p>def upload_avatar(request):<br>    “””用户上传新头像”””<br>    try:<br>        avatar_file = request.FILES[‘avatar’]<br>    except KeyError:<br>        raise error_codes.AVATAR_FILE_NOT_PROVIDED</p>
+<pre><code>try:
+   resized_avatar_file = resize_avatar(avatar_file)
+except FileTooLargeError as e:
+    raise error_codes.AVATAR_FILE_TOO_LARGE
+except ResizeAvatarError as e:
+    raise error_codes.AVATAR_FILE_INVALID
+
+try:
+    request.user.avatar = resized_avatar_file
+    request.user.save()
+except Exception:
+    raise error_codes.INTERNAL_SERVER_ERROR
+return HttpResponse({})
+</code></pre><p>这是一个处理用户上传头像的视图函数。这个函数内做了三件事情，并且针对每件事都做了异常捕获。如果做某件事时发生了异常，就返回对用户友好的错误到前端。</p>
+<p>这样的处理流程纵然合理，但是显然代码里的异常处理逻辑有点“喧宾夺主”了。一眼看过去全是代码缩进，很难提炼出代码的核心逻辑。</p>
+<p>早在 2.5 版本时，Python 语言就已经提供了对付这类场景的工具：“上下文管理器（context manager）”。上下文管理器是一种配合 with 语句使用的特殊 Python 对象，通过它，可以让异常处理工作变得更方便。</p>
+<p>class raise_api_error:<br>    “””<br>    captures specified exception and raise ApiErrorCode instead<br>    捕获指定的异常并改为引发ApiErrorCode<br>    :raises: AttributeError if code_name is not valid<br>    “””<br>    def <strong>init</strong>(self, captures, code_name):<br>        self.captures = captures<br>        self.code = getattr(error_codes, code_name)</p>
+<pre><code>def __enter__(self):
+    # 刚方法将在进入上下文时调用
+    return self
+
+def __exit__(self, exc_type, exc_val, exc_tb):
+    # 该方法将在退出上下文时调用
+    # exc_type, exc_val, exc_tb 分别表示该上下文内抛出的
+    # 异常类型、异常值、错误栈
+    if exc_type is None:
+        return False
+
+    if exc_type == self.captures:
+        raise self.code from exc_val
+    return False
+</code></pre><p>在上面的代码里，我们定义了一个名为 raise_api_error 的上下文管理器，它在进入上下文时什么也不做。但是在退出上下文时，会判断当前上下文中是否抛出了类型为 self.captures 的异常，如果有，就用 APIErrorCode 异常类替代它。</p>
+<p>使用该上下文管理器后，整个函数可以变得更清晰简洁：</p>
+<p>def upload_avatar(request):<br>    “””用户上传新头像”””<br>    with raise_api_error(KeyError, ‘AVATAR_FILE_NOT_PROVIDED’):<br>        avatar_file = request.FILES[‘avatar’]</p>
+<pre><code>with raise_api_error(ResizeAvatarError, &apos;AVATAR_FILE_INVALID&apos;),\
+        raise_api_error(FileTooLargeError, &apos;AVATAR_FILE_TOO_LARGE&apos;):
+    resized_avatar_file = resize_avatar(avatar_file)
+
+with raise_api_error(Exception, &apos;INTERNAL_SERVER_ERROR&apos;):
+    request.user.avatar = resized_avatar_file
+    request.user.save()
+return HttpResponse({})
+</code></pre><p>四、raies 和 raise……from 的区别</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>…     print(1 / 0)<br>… except:<br>…     raise RuntimeError(“Something bad happened”)<br>…</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>ZeroDivisionError: division by zero</module></stdin></p>
+<h1 id="在处理上述异常期间，发生了另一个异常："><a href="#在处理上述异常期间，发生了另一个异常：" class="headerlink" title="在处理上述异常期间，发生了另一个异常："></a>在处理上述异常期间，发生了另一个异常：</h1><p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 4, in <module><br>RuntimeError: Something bad happened</module></stdin></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>…     print(1 / 0)<br>… except Exception as exc:<br>…     raise RuntimeError(“Something bad happened”) from exc<br>…</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>ZeroDivisionError: division by zero</module></stdin></p>
+<h1 id="上述异常是以下异常的直接原因："><a href="#上述异常是以下异常的直接原因：" class="headerlink" title="上述异常是以下异常的直接原因："></a>上述异常是以下异常的直接原因：</h1><p>The above exception was the direct cause of the following exception:</p>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 4, in <module><br>RuntimeError: Something bad happened<br>不同之处在于，from 会为异常对象设置 <em>cause</em> 属性表明异常的是由谁直接引起的。</module></stdin></p>
+<p>处理异常时发生了新的异常，在不使用 from 时更倾向于新异常与正在处理的异常没有关联。而 from 则是能指出新异常是因旧异常直接引起的。这样的异常之间的关联有助于后续对异常的分析和排查。from 语法会有个限制，就是第二个表达式必须是另一个异常类或实例。</p>
+<p>如果在异常处理程序或 finally 块中引发异常，默认情况下，异常机制会隐式工作会将先前的异常附加为新异常的 _context _属性。</p>
+<p>当然，也可以通过 with_traceback() 方法为异常设置上下文 <em>context</em> 属性，这也能在 traceback 更好的显示异常信息。</p>
 <hr>
 
       
@@ -523,12 +583,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2018/11/18/快排之golang实现/">快排之golang实现</a></p>
+  <p><span>本文标题:</span><a href="/2019/09/11/python-with的原理及在异常处理中的应用/">python with的原理及在异常处理中的应用</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2018年11月18日 - 14:11</p>
-  <p><span>最后更新:</span>2018年11月19日 - 10:11</p>
-  <p><span>原始链接:</span><a href="/2018/11/18/快排之golang实现/" title="快排之golang实现">https://cloudsjhan.github.io/2018/11/18/快排之golang实现/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2018/11/18/快排之golang实现/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年09月11日 - 11:09</p>
+  <p><span>最后更新:</span>2019年09月11日 - 11:09</p>
+  <p><span>原始链接:</span><a href="/2019/09/11/python-with的原理及在异常处理中的应用/" title="python with的原理及在异常处理中的应用">https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/09/11/python-with的原理及在异常处理中的应用/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -588,7 +648,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/go-数据结构与算法/" rel="tag"><i class="fa fa-tag"></i> go 数据结构与算法</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
         </div>
       
@@ -614,8 +674,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/15/git如何找回被删除的分支/" rel="next" title="git如何找回被删除的分支">
-                <i class="fa fa-chevron-left"></i> git如何找回被删除的分支
+              <a href="/2019/09/10/TCP-IP详解-TCP连接中time-wait状态过多/" rel="next" title="TCP/IP详解--TCP连接中time_wait状态过多">
+                <i class="fa fa-chevron-left"></i> TCP/IP详解--TCP连接中time_wait状态过多
               </a>
             
           </div>
@@ -623,10 +683,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/30/ionic-project-Could-not-find-module-angular-devkit-build-angular-from-XXX/" rel="prev" title="ionic project-Could not find module @angular-devkit/build-angular from XXX">
-                ionic project-Could not find module @angular-devkit/build-angular from XXX <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -683,8 +739,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -799,6 +864,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在处理上述异常期间，发生了另一个异常："><span class="nav-number">1.</span> <span class="nav-text">在处理上述异常期间，发生了另一个异常：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#上述异常是以下异常的直接原因："><span class="nav-number">2.</span> <span class="nav-text">上述异常是以下异常的直接原因：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
