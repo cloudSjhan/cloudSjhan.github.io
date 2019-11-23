@@ -95,15 +95,16 @@
 <meta name="description" content="github&amp;Daocloud演讲总结">
 <meta name="keywords" content="golang,生活">
 <meta property="og:type" content="article">
-<meta property="og:title" content="githubXDaocloud演讲稿整理与总结.md">
+<meta property="og:title" content="github&amp;Daocloud演讲稿整理与总结">
 <meta property="og:url" content="https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/index.html">
 <meta property="og:site_name" content="cloud world">
 <meta property="og:description" content="github&amp;Daocloud演讲总结">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98bvonxkzj305k05kmx1.jpg">
-<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Desktop/截屏2019-11-2322.14.47.png">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c4evdpaj323f0u0gsb.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98ckayzwxj323f0u0wui.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98ckr5ve9j31cz0u07h2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98cjvmammj311k06w0t6.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c5dze47j31fq0mu79j.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c67o6udj30hi0b40ur.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c6oud5sj30i709zq57.jpg">
@@ -115,9 +116,9 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c8l87rlj30qo07m776.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98cab6m7nj31n30u0tmk.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/006y8mN6gy1g98cabpls3j30qo07y764.jpg">
-<meta property="og:updated_time" content="2019-11-23T14:29:35.748Z">
+<meta property="og:updated_time" content="2019-11-23T14:37:12.828Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="githubXDaocloud演讲稿整理与总结.md">
+<meta name="twitter:title" content="github&amp;Daocloud演讲稿整理与总结">
 <meta name="twitter:description" content="github&amp;Daocloud演讲总结">
 <meta name="twitter:image" content="https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/index.html">
 
@@ -164,7 +165,7 @@
   </script>
 
 
-  <title>githubXDaocloud演讲稿整理与总结.md | cloud world</title>
+  <title>github&Daocloud演讲稿整理与总结 | cloud world</title>
   
 
 
@@ -363,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">githubXDaocloud演讲稿整理与总结.md</h1>
+          <h1 class="post-title" itemprop="name headline">github&Daocloud演讲稿整理与总结</h1>
         
 
         <div class="post-meta">
@@ -415,7 +416,7 @@
 
           
           
-             <span id="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/" class="leancloud_visitors" data-flag-title="githubXDaocloud演讲稿整理与总结.md">
+             <span id="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/" class="leancloud_visitors" data-flag-title="github&Daocloud演讲稿整理与总结">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -442,7 +443,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,673
+                  1,665
                 </span>
               
 
@@ -490,10 +491,12 @@
 <p>当时这个话题的灵感来自一个开源项目 crawlab, crawlab是一个分布式任务调度平台，这里不展开详细解释了，大家有兴趣可以到GitHub主页看一下，<a href="https://github.com/crawlab-team/crawlab" target="_blank" rel="noopener">https://github.com/crawlab-team/crawlab</a></p>
 <p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98bvonxkzj305k05kmx1.jpg" alt="crawlab_pic"></p>
 <p>当时是有用户报出crawlab启动一段时间后，主节点机器会出现内存占用过高的问题，一台4G内存的服务器在运行crawlab后竟然能占用3G以的内存，然后整个master就会down掉，于是我开始对crawlab的后端服务进行性能的分析，下面将带大家回顾这一过程。</p>
-<p>首先介绍，Golang的性能分析主要分为两种方式，<img src="/Users/hanshanjie/Desktop/截屏2019-11-2322.14.47.png" alt="截屏2019-11-2322.14.47"></p>
+<p>首先介绍，Golang的性能分析主要分为两种方式，<img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98ckayzwxj323f0u0wui.jpg" alt="截屏2019-11-2322.14.47"></p>
 <p>一种是通过文件方式输出profile，特点是灵活性高，适用于特定代码片段的分析，我们通过调用/runtime包中的/pprof的API生成相应的pprof文件，然后使用 pprof就可以进入类似GDB的窗口。在这个窗口中你就可以用top,list function等命令去查看cpu,memory的状况以及goroutine运行情况。</p>
 <p>第二种方式就是通过HTTP输出profile，</p>
-<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c4evdpaj323f0u0gsb.jpg" alt="截屏2019-11-2322.14.47">这种方式就适合于你还不清楚到底哪一段代码出现问题，而且你的应用要持续运行的情况。在分析crawlab的时候，采用的是这种方式。首先，我们在crawlab项目中嵌入如下几行代码，将crawlab后端服务启动后，浏览器中输入<a href="http://ip:8899/debug/pprof/就可以看到一个汇总分析页面，显示如下信息，点击heap，在汇总分析页面的最上方可以看到如下图所示，![heap_server](https://tva1.sinaimg.cn/large/006y8mN6gy1g98c4fr9sfj311k06w0t6.jpg)" target="_blank" rel="noopener">http://ip:8899/debug/pprof/就可以看到一个汇总分析页面，显示如下信息，点击heap，在汇总分析页面的最上方可以看到如下图所示，![heap_server](https://tva1.sinaimg.cn/large/006y8mN6gy1g98c4fr9sfj311k06w0t6.jpg)</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98ckr5ve9j31cz0u07h2.jpg" alt="截屏2019-11-2322.17.33"></p>
+<p>这种方式就适合于你还不清楚到底哪一段代码出现问题，而且你的应用要持续运行的情况。在分析crawlab的时候，采用的是这种方式。首先，我们在crawlab项目中嵌入如下几行代码，将crawlab后端服务启动后，浏览器中输入<a href="http://ip:8899/debug/pprof/就可以看到一个汇总分析页面，显示如下信息，点击heap，在汇总分析页面的最上方可以看到如下图所示，" target="_blank" rel="noopener">http://ip:8899/debug/pprof/就可以看到一个汇总分析页面，显示如下信息，点击heap，在汇总分析页面的最上方可以看到如下图所示，</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98cjvmammj311k06w0t6.jpg" alt="heap_server"></p>
 <p>红色箭头所指的就是当前已经使用的堆内存是25M,！在我只上传一个爬虫文件，而且这个文件还不是特别打大的情况下，一个后端服务所用的内存使用竟然能达到25M。</p>
 <p>我们再用这个命令进入命令行详细看一下，这个命令进入后，输入top命令可以显示前10的内存分配，flat是堆栈中当前层的inuse内存值，cum是堆栈中本层级的累计inuse内存值。</p>
 <p>可以看到，bytes.makeSlice这个内置方法竟然使用了24M内存，那么我们就考虑谁会用到makeslice呢，<img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g98c5dze47j31fq0mu79j.jpg" alt="heap_gdb"></p>
@@ -560,11 +563,11 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/">githubXDaocloud演讲稿整理与总结.md</a></p>
+  <p><span>本文标题:</span><a href="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/">github&Daocloud演讲稿整理与总结</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2019年11月23日 - 22:11</p>
   <p><span>最后更新:</span>2019年11月23日 - 22:11</p>
-  <p><span>原始链接:</span><a href="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/" title="githubXDaocloud演讲稿整理与总结.md">https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/</a>
+  <p><span>原始链接:</span><a href="/2019/11/23/githubXDaocloud演讲稿整理与总结-md/" title="github&Daocloud演讲稿整理与总结">https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/11/23/githubXDaocloud演讲稿整理与总结-md/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
