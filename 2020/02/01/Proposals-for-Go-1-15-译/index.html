@@ -101,8 +101,7 @@
 <meta property="og:description" content="本文是Golang官方对于Go近期版本的现状总结以及Go 1.15版本的一些提案，原文发布于 The Go Blog">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2020/02/01/Proposals-for-Go-1-15-译/index.html">
-<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/FQUyuicNqYjNkiaUWBvyQ1zGsMTMWaPzAolVHY3J9amyJQMG5j9YibMzW9bg1TatnGd5uXvfDuy19UnxH4eNgOvOg/640?wx_fmt=jpeg">
-<meta property="og:updated_time" content="2020-04-01T05:33:34.971Z">
+<meta property="og:updated_time" content="2020-04-01T05:43:29.296Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Proposals for Go 1.15(译)">
 <meta name="twitter:description" content="本文是Golang官方对于Go近期版本的现状总结以及Go 1.15版本的一些提案，原文发布于 The Go Blog">
@@ -475,7 +474,6 @@
 <h2 id="Proposals-for-Go-1-15-译"><a href="#Proposals-for-Go-1-15-译" class="headerlink" title="Proposals for Go 1.15(译)"></a><a href="https://blog.golang.org/go1.15-proposals" target="_blank" rel="noopener">Proposals for Go 1.15</a>(译)</h2><hr>
 <p><em>本文是Golang官方对于Go近期版本的现状总结以及Go 1.15版本的一些提案，原文发布于 The Go Blog</em></p>
 <p><em>Robert Griesemer, for the Go team</em><br>        <em>28 January 2020</em></p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/FQUyuicNqYjNkiaUWBvyQ1zGsMTMWaPzAolVHY3J9amyJQMG5j9YibMzW9bg1TatnGd5uXvfDuy19UnxH4eNgOvOg/640?wx_fmt=jpeg" alt="img"></p>
 <h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><p>Go 1.14的RC1版本已经准备就绪，如果一切顺利，Go 1.14计划将于今年2月份发布。按照<a href="https://blog.golang.org/go2-here-we-come" target="_blank" rel="noopener">Go 2,here we come!</a>的规划，在我们的开发周期中又到了这样的一个时刻：考虑下一个版本中（暂定于几年8月份发布的Go 1.15），到底要提供哪些Golang本身或者Go lib中的新特性。</p>
 <p>当前版本的Go的优化目标仍然围绕着软件包和版本管理，更好的错误处理支持以及泛型特性。Go Module 目前使用状态比较好，并且每天都在不断完善，对泛型的支持也有一些推进（今年晚些时候会有更多进展）。为了提供更好的错误处理机制，大约在7个月前我们提出了<a href="https://golang.org/issue/32437" target="_blank" rel="noopener">try_proposal</a>的提案，有少部分人支持该提案，但是大部分还是持强烈的反对态度，于是我们决定放弃这个想法。在此之后，也有许多建议，但它们有些都没有足够的说服力，有些还不如<a href="https://golang.org/issue/32437" target="_blank" rel="noopener">try_proposal</a>。因此，我们暂时没有进一步的计划去改善错误处理机制，也许未来会出现一些比较好的点子帮助我们解决这个问题。</p>
 <h2 id="提案"><a href="#提案" class="headerlink" title="提案"></a>提案</h2><p>鉴于Go Module和泛型正在积极的推进中，且错误处理机制没有进一步的计划，那么还有哪些特性值得我们去关注呢？如果非要说有的话，有一些编程语言中经久不衰的特性，例如枚举类型和不可变类型的需求，但是这些idea还没有被Go团队深入地思考，所以Go团队也没有投入过多精力在其中，尤其是改进这些语言特性需要很大的成本。</p>
