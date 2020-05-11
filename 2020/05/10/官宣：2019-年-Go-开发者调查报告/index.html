@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="golang," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="官宣：2019 年 Go 开发者调查报告">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="官宣：2019 年 Go 开发者调查报告">
+<meta property="og:url" content="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="官宣：2019 年 Go 开发者调查报告">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/index.html">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8j9j94sj31b40riad1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8krfpo2j31820oogo9.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8pgrzp3j31200u0dil.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8u1p9ffj318y0to424.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8wibkmuj30yx0u0425.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen90a3r5kj31620suju1.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen954rg3zj316u0os40m.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen97prm9bj30ut0u0adw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9c42reaj315q0dy75o.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9l5v6hvj31880mmq5d.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9q557lwj31aw0pcn0b.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9stmm3kj31b80p40vu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9zwcigoj31980ogq5i.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gena24q35rj316a0tg41v.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendj3ibsxj30u012swjq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendjjfdt3j31350u077p.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendvm7u8nj314y0ig0ui.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gene19viz8j30uj0u00x7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gene34rbeqj30yj0u042n.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geneex9jfcj30u00xnq8a.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genei7lamdj31940lyack.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genekp7b9mj30u00um43z.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genepofpmhj30x70u078l.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geneu7w8ftj31860rutcf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf1jh4xqj30ws0u00wd.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf5welcoj30wu0u0tcr.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf7s960qj318w0qqju6.jpg">
+<meta property="og:updated_time" content="2020-05-10T08:36:16.496Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="官宣：2019 年 Go 开发者调查报告">
+<meta name="twitter:description" content="官宣：2019 年 Go 开发者调查报告">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>官宣：2019 年 Go 开发者调查报告 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">To be A geek</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">官宣：2019 年 Go 开发者调查报告</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-10T16:30:53+08:00">
+                2020-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/golang/" itemprop="url" rel="index">
+                    <span itemprop="name">golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/05/10/官宣：2019-年-Go-开发者调查报告/" class="leancloud_visitors" data-flag-title="官宣：2019 年 Go 开发者调查报告">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,528
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  官宣：2019 年 Go 开发者调查报告
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="2019-年-Go-开发者调查"><a href="#2019-年-Go-开发者调查" class="headerlink" title="2019 年 Go 开发者调查"></a>2019 年 Go 开发者调查</h2><blockquote>
+<p>4月20日，Go 官方释出 2019 年的 Go 开发者调研报告。官方非常感谢参与本次调查的数千名Go开发人员。 在2019年，官方收到了 10,975 份问卷，几乎是去年的两倍！ 团队成员非常感谢开发者花时间和精力填写这份 Go 开发者调研。</p>
+</blockquote>
+<blockquote>
+<p>本次调研，官方改进了对开放式、自由文本回答的问题的分析。去年使用的是机器学习来粗略但快速地对这些问卷进行分类。今年，两名研究人员手动分析和分类了这些问卷，允许进行更细致的分析，与去年的数字进行有效的比较。这个变化的目的是提供一个 2019 年以后的可靠基线。</p>
+</blockquote>
+<hr>
+<h3 id="一分钟速读"><a href="#一分钟速读" class="headerlink" title="一分钟速读"></a>一分钟速读</h3><p>这篇文章很长。以下是本次调研的主要结论:</p>
+<ul>
+<li>这次的受访者的受众特征与 Stack Overflow 的调查受访者相似，使得这些结果可以代表更多的 Go 开发人员的心声。</li>
+<li>大多数受访者每天都使用 Go，而且这个数字每年都在上升。</li>
+<li>Go 的使用仍集中在技术公司，但是 Go 在越来越多的行业中被用到，例如金融行业和媒体相关。</li>
+<li>开发者使用 Go 解决的问题很相似，基本集中在构建 API, RPC 服务和 CLI 工具。</li>
+<li>大多数团队都试图尽快更新到最新的 Go 版本。 但是第三方 package 的 provider 更新地会相对慢一点。</li>
+<li>现在，Go生态系统中的几乎每个人都在使用 Go Modules，但是用户对软件包管理方面仍然存在困惑。</li>
+<li>有待改进的重点领域包括改善开发人员的 debug 体验，Go Modules 和 cloud service 方面的体验。</li>
+<li>VS Code 和 GoLand 仍然是最受欢迎的编辑器，受访的四个人中就有三个在使用他们。</li>
+</ul>
+<hr>
+<h3 id="受访的开发者群体"><a href="#受访的开发者群体" class="headerlink" title="受访的开发者群体"></a>受访的开发者群体</h3><h4 id="受访者公司规模"><a href="#受访者公司规模" class="headerlink" title="受访者公司规模"></a>受访者公司规模</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8j9j94sj31b40riad1.jpg" alt=""></p>
+<h4 id="受访者的编程工作年限"><a href="#受访者的编程工作年限" class="headerlink" title="受访者的编程工作年限"></a>受访者的编程工作年限</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8krfpo2j31820oogo9.jpg" alt=""></p>
+<h4 id="受访者使用-Go-编程的时间"><a href="#受访者使用-Go-编程的时间" class="headerlink" title="受访者使用 Go 编程的时间"></a>受访者使用 Go 编程的时间</h4><p>从使用 Go 的经验来看，我们发现大多数受访者（56％）使用 Go 的时间不到两年，相对较新。 多数人还说，他们在工作中（72％）和工作外（62％）使用Go。 可以看到在工作中使用 Go 的受访者比例每年都在上升。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8pgrzp3j31200u0dil.jpg" alt=""></p>
+<h4 id="受访者的开发背景"><a href="#受访者的开发背景" class="headerlink" title="受访者的开发背景"></a>受访者的开发背景</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8u1p9ffj318y0to424.jpg" alt=""></p>
+<p>使用 Go 时间较长的受访者与新的 Go 开发人员的背景不同。 这些 Go 老兵更有可能拥有 C / C ++ 的专业知识，而不太可能具备 JavaScript，TypeScript 和 PHP 的专业知识。 但是不管他们使用 Go 已有多长时间，Python似乎都是大多数受访者熟悉的语言（不是Go🤔）。</p>
+<h4 id="受访者所从事的行业"><a href="#受访者所从事的行业" class="headerlink" title="受访者所从事的行业"></a>受访者所从事的行业</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen8wibkmuj30yx0u0425.jpg" alt=""></p>
+<p>去年，我们询问了受访者从事哪些行业，发现大多数人在软件，互联网或网络服务公司工作。 今年看来，受访者所从事的行业更加广泛了。</p>
+<h4 id="受访者对-Go-开源项目的贡献"><a href="#受访者对-Go-开源项目的贡献" class="headerlink" title="受访者对 Go 开源项目的贡献"></a>受访者对 Go 开源项目的贡献</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen90a3r5kj31620suju1.jpg" alt=""></p>
+<p>Go 是一个成功的开源项目，但这并不意味着使用它的开发人员也正在编写​​免费或开源软件。 与往年一样，我们发现大多数受访者并不是 Go 开源项目的频繁贡献者，有 75％ 的受访者表示他们“很少”或“从不”参与 Go 开源项目。 随着Go社区的扩展，我们发现从未为 Go 开源项目做出过贡献的受访者所占的比例正在缓慢上升。</p>
+<h3 id="开发工具篇"><a href="#开发工具篇" class="headerlink" title="开发工具篇"></a>开发工具篇</h3><h4 id="受访者开发中使用的-OS"><a href="#受访者开发中使用的-OS" class="headerlink" title="受访者开发中使用的 OS"></a>受访者开发中使用的 OS</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen954rg3zj316u0os40m.jpg" alt=""></p>
+<p>与往年一样，绝大多数开发者表示在 Linux 和 macOS 系统上使用 Go。 这是我们的受访者与StackOverflow的2019 年调查结果之间存在很大差异的一个方面：在我们的调查中，只有20％的受访者使用 Windows 作为主要开发平台，而对于 StackOverflow 而言，这一比例为 45％。 Linux 的使用率为 66％，macOS 的使用率为 53％，这两者都远远高于 StackOverflow 的受众，后者分别报告了 25％ 和 30％（看来 Gopher 还是喜欢 UNIX 多一些）。</p>
+<h4 id="受访者使用的-IDE"><a href="#受访者使用的-IDE" class="headerlink" title="受访者使用的 IDE"></a>受访者使用的 IDE</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen97prm9bj30ut0u0adw.jpg" alt=""></p>
+<p>今年，IDE 整合的趋势仍在继续。 GoLand 今年的使用量增长最快，从 24％ → 34％ 上升。 VS Code的增长速度有所放缓，但仍然是受访者中最受欢迎的编辑器，占41％。 结合起来，这两个 IDE 现在的占有率是 75%。</p>
+<h4 id="关于自建-Go-document-server"><a href="#关于自建-Go-document-server" class="headerlink" title="关于自建 Go document server"></a>关于自建 Go document server</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9c42reaj315q0dy75o.jpg" alt=""></p>
+<p>今年，我们添加了一个有关内部 Go 文档工具（例如 gddo ）的问题。 少数受访者（ 6％ ）表示他们的组织运行自己的Go文档服务器，尽管当我们查看大公司受访者（拥有至少5,000名员工）时，这一比例几乎翻了一番（达到11％），但当我们与后者交流时，他们说基本已经停止了自建 document server，原因是收益小，成本高。</p>
+<h3 id="受访者对-Go-的使用意向"><a href="#受访者对-Go-的使用意向" class="headerlink" title="受访者对 Go 的使用意向"></a>受访者对 Go 的使用意向</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9l5v6hvj31880mmq5d.jpg" alt=""></p>
+<p>大部分受访者都认为 Go 在他们的团队中表现良好（86％），并且他们希望将其用于下一个项目（89％）。 我们还发现，超过一半的受访者（59％）认为 Go 对其公司的成功至关重要。 自2016年以来，这些指标一直保持稳定。</p>
+<h4 id="受访者对-Go-生态的满意度"><a href="#受访者对-Go-生态的满意度" class="headerlink" title="受访者对 Go 生态的满意度"></a>受访者对 Go 生态的满意度</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9q557lwj31aw0pcn0b.jpg" alt=""></p>
+<p>在 Go 生态的满意度上，我们看到很大比例的受访者同意每种说法（82％–88％），并且在过去四年中，这些比率在很大程度上保持稳定。</p>
+<h4 id="受访者所在行业对-Go-生态的满意度"><a href="#受访者所在行业对-Go-生态的满意度" class="headerlink" title="受访者所在行业对 Go 生态的满意度"></a>受访者所在行业对 Go 生态的满意度</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9stmm3kj31b80p40vu.jpg" alt=""></p>
+<p>今年，我们对各个行业的满意度进行了更细微的考察，以建立基准。 总体而言，无论行业如何，受访者都对在工作中使用Go表示满意。 我们确实在几个领域（尤其是制造业）中看到了一些不满，我们计划通过后续研究进行调查。</p>
+<h4 id="受访者对-Go-特性的关注度"><a href="#受访者对-Go-特性的关注度" class="headerlink" title="受访者对 Go 特性的关注度"></a>受访者对 Go 特性的关注度</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gen9zwcigoj31980ogq5i.jpg" alt=""></p>
+<p>同样，我们调查了对 Go 开发各个方面的满意度以及重要性。 将这些结果结合在一起可以突出显示三个特别关注的主题：debug（包括调试并发性），go modules 和 cloud service。 大多数人都将这些主题中的每一个评为“非常”或“至关重要”，但与其他主题相比，这些方面的满意度得分明显较低。</p>
+<h4 id="受访者对-Go-社区的满意度"><a href="#受访者对-Go-社区的满意度" class="headerlink" title="受访者对 Go 社区的满意度"></a>受访者对 Go 社区的满意度</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gena24q35rj316a0tg41v.jpg" alt=""></p>
+<p>上面的调查结果可能不足为奇，因为参与 Go 开发者调查的人们喜欢 Go 的概率更大（手动狗头）。</p>
+<h3 id="使用-Go-完成的工作内容"><a href="#使用-Go-完成的工作内容" class="headerlink" title="使用 Go 完成的工作内容"></a>使用 Go 完成的工作内容</h3><p>构建API / RPC服务（71％）和CLI（62％）仍然是 Go 的重头戏。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendj3ibsxj30u012swjq.jpg" alt=""></p>
+<p>我们调查了受访者使用 Go 的更大领域。 到目前为止，最常见的领域是 Web 开发（66％），但其他常见的领域包括数据库（45％），网络编程（42％），系统编程（38％）和 DevOps （37％）。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendjjfdt3j31350u077p.jpg" alt=""></p>
+<h4 id="Go-开发过程的常用技术"><a href="#Go-开发过程的常用技术" class="headerlink" title="Go 开发过程的常用技术"></a>Go 开发过程的常用技术</h4><p>除了受访者正在构建的内容之外，我们还询问了他们使用的一些开发技术。 绝大多数受访者表示，他们依靠 log 进行调试（88％），而他们的回答表明，这是因为提供的调试工具难以有效使用。 但是，本地逐步调试（例如，使用Delve），性能分析和使用竞争检测器进行测试的情况并不少见，约有50％的受访者其使用中至少一种技术。</p>
+<h4 id="关于-Go-Modules"><a href="#关于-Go-Modules" class="headerlink" title="关于 Go Modules"></a>关于 Go Modules</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gendvm7u8nj314y0ig0ui.jpg" alt=""></p>
+<p>在包管理方面，我们发现绝大多数受访者(89%)采用了 Go Modules。对于开发者来说，这是一个巨大的转变，几乎整个社区都在同时经历这一转变。</p>
+<h3 id="云原生时代的-Go"><a href="#云原生时代的-Go" class="headerlink" title="云原生时代的 Go"></a>云原生时代的 Go</h3><p>Go在设计时考虑到了现代分布式计算，我们希望继续改进使用Go构建云服务的开发人员体验。今年，我们扩展了关于云开发的问题，以便更好地了解受访者如何与云提供商合作，他们喜欢当前开发者体验的哪些方面，以及哪些方面可以改进。</p>
+<p>我们可以清晰地感受到以下两个趋势：</p>
+<ol>
+<li>全球三大云提供商（Amazon Web Services，Google Cloud Platform和Microsoft Azure）在受访者中的使用率均呈上升趋势，而大多数其他提供商每年使用的受访者比例都较小。</li>
+<li>到自有或公司拥有的服务器的本地部署继续减少，并且在统计上已与AWS（44％比42％）绑定为最常见的部署平台。</li>
+</ol>
+<h4 id="Go-project-的部署云平台"><a href="#Go-project-的部署云平台" class="headerlink" title="Go project 的部署云平台"></a>Go project 的部署云平台</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gene19viz8j30uj0u00x7.jpg" alt=""></p>
+<p>总体而言，大多数受访者对在所有三大主要云提供商上使用 Go 感到满意。 受访者具有对 Go（AWS）（80％满意）和GCP（78％）的 满意度。</p>
+<h4 id="Go-project-的部署服务类型"><a href="#Go-project-的部署服务类型" class="headerlink" title="Go project 的部署服务类型"></a>Go project 的部署服务类型</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gene34rbeqj30yj0u042n.jpg" alt=""></p>
+<h3 id="存在的痛点"><a href="#存在的痛点" class="headerlink" title="存在的痛点"></a>存在的痛点</h3><p>受访者表示无法使用Go的主要原因有三个：</p>
+<ol>
+<li>（56％）当前的项目正在使用其他语言；</li>
+<li>团队更倾向于使用其他语言（37％）；</li>
+<li>Go本身缺乏一些关键功能 （25％）。<br><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1geneex9jfcj30u00xnq8a.jpg" alt=""></li>
+</ol>
+<h4 id="对一些-Go-特性的期待"><a href="#对一些-Go-特性的期待" class="headerlink" title="对一些 Go 特性的期待"></a>对一些 Go 特性的期待</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genei7lamdj31940lyack.jpg" alt=""></p>
+<p>在 25% 的受访者中，认为 Go 缺乏他们需要的语言特性。其中 79% 认为泛型是一个严重缺失的特性。22% 的人提到了对错误处理的持续改进(除了 Go 1.13 的更改之外)，13 %的人要求更多的函数式编程特性，尤其是内置的map/filter/reduce 功能。需要说明的是，这些数字来自受访者的子集，他们表示，如果提供了他们需要的一个或多个关键功能，他们将能够更多地使用 Go。</p>
+<h4 id="没有使用-Go-作为项目的语言的一些原因"><a href="#没有使用-Go-作为项目的语言的一些原因" class="headerlink" title="没有使用 Go 作为项目的语言的一些原因"></a>没有使用 Go 作为项目的语言的一些原因</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genekp7b9mj30u00um43z.jpg" alt=""></p>
+<p>对于他们所从事的工作来说，Go “不是一种合适的语言”的受访者有各种各样的理由和用例。最常见的是他们从事某种形式的前端开发(22%)，例如用于 web、桌面或移动设备的g ui。另一个常见的回答是，受访者说他们工作的领域中已经有占主导地位的语言(9%)，因此很难使用不同的语言。一些受访者还告诉我们他们指的是哪个领域(或者只是提到了一个领域，而没有提到另一种更常见的语言)，我们通过下面的“I work on [domain]”行来说明这一点。受访者提到的另一个主要原因是需要更好的性能(9%)，尤其是实时计算。</p>
+<h4 id="受访者认为目前存在的最大的阻碍"><a href="#受访者认为目前存在的最大的阻碍" class="headerlink" title="受访者认为目前存在的最大的阻碍"></a>受访者认为目前存在的最大的阻碍</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genepofpmhj30x70u078l.jpg" alt=""></p>
+<p>受访者报告的最大阻碍与去年基本保持一致。 Go 缺乏泛型和模块，包管理工具仍然是最主要的问题（分别占反馈的15％和12％），并且强调工具问题的受访者比例有所增加。 这些数字与上面的图表不同，因为这个问题是所有受访者都提出的，无论他们说最大的阻碍什么。 这三个问题都是今年 Go 团队关注的领域，我们希望在未来几个月内极大地改善开发人员的体验，尤其是在模块，工具和入门经验方面。</p>
+<h4 id="Debug-Go-project-的痛点"><a href="#Debug-Go-project-的痛点" class="headerlink" title="Debug Go project 的痛点"></a>Debug Go project 的痛点</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1geneu7w8ftj31860rutcf.jpg" alt=""></p>
+<p>任何一种语言的 debug 和 benchmark 都具有挑战性。 受访者告诉我们，这两个方面的最大挑战不是 Go 的工具所特有的，而是一个更根本的问题：缺乏知识，经验或最佳实践。 我们希望在今年晚些时候通过文档和其他材料来帮助解决这些问题。 其他主要问题涉及到工具的使用，尤其是在学习/使用 Go 的调试和 profile 分析工具时，在成本/收益方面存在不利的权衡，以及使工具在各种环境中工作的挑战（例如，在容器中进行调试或从生产环境中获取性能分析）。</p>
+<h3 id="Go-community"><a href="#Go-community" class="headerlink" title="Go community"></a>Go community</h3><p>大约三分之二的受访者使用 Stack Overflow 来回答与 go 相关的问题(64%)。其他排名靠前的答案来源是godoc.org(47%)，直接阅读源代码(42%)和 golang.org (33%)。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf1jh4xqj30ws0u00wd.jpg" alt=""></p>
+<h4 id="关于-MeetUp"><a href="#关于-MeetUp" class="headerlink" title="关于 MeetUp"></a>关于 MeetUp</h4><p>上表突展示了不同的寻求帮助的方式(几乎都是社区驱动的)，受访者在使用Go开发过程中依靠它们来克服挑战。事实上，对于许多 gopher 来说，这可能是他们与更大的社区互动的主要要点之一: 随着我们的社区不断扩大，我们看到越来越多的受访者不用参加任何与 go 相关的活动。在2019年，这一比例接近三分之二的受访者(62%)。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf5welcoj30wu0u0tcr.jpg" alt=""></p>
+<h4 id="受访者的语言"><a href="#受访者的语言" class="headerlink" title="受访者的语言"></a>受访者的语言</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1genf7s960qj318w0qqju6.jpg" alt=""></p>
+<p>由于谷歌更新了全谷歌范围内的隐私指南，我们无法再询问受访者生活在哪个国家。相反，我们询问了首选的口语/书面语作为 Go 在全球使用的粗略调查，这有助于为潜在的本地化工作提供数据。</p>
+<p>由于本次调查是用英语进行的，因此对于讲英语的人和英语为第二或第三种常见语言的人群可能会有很大的误差。 因此，非英语数字应解释为可能的最小值，而不是Go的全球受众人数的近似值。</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>我们希望你了解这次 2019 年开发者调查的结果。了解开发人员的经验和挑战有助于我们为 2020 年制定计划并确定工作的优先级。再一次，非常感谢所有参与调查的人，你们的反馈将有助于在未来一年甚至更长的时间内引导 Go 前进的方向。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/05/10/官宣：2019-年-Go-开发者调查报告/">官宣：2019 年 Go 开发者调查报告</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2020年05月10日 - 16:05</p>
+  <p><span>最后更新:</span>2020年05月10日 - 16:05</p>
+  <p><span>原始链接:</span><a href="/2020/05/10/官宣：2019-年-Go-开发者调查报告/" title="官宣：2019 年 Go 开发者调查报告">https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2020/05/10/官宣：2019-年-Go-开发者调查报告/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag"><i class="fa fa-tag"></i> golang</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/24/手把手教你实现高性能-kubernetes-web-terminal/" rel="next" title="手把手教你实现高性能 kubernetes web terminal">
+                <i class="fa fa-chevron-left"></i> 手把手教你实现高性能 kubernetes web terminal
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description">关于技术，关于生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/韩山杰" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-年-Go-开发者调查"><span class="nav-number">1.</span> <span class="nav-text">2019 年 Go 开发者调查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一分钟速读"><span class="nav-number">1.1.</span> <span class="nav-text">一分钟速读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#受访的开发者群体"><span class="nav-number">1.2.</span> <span class="nav-text">受访的开发者群体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者公司规模"><span class="nav-number">1.2.1.</span> <span class="nav-text">受访者公司规模</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者的编程工作年限"><span class="nav-number">1.2.2.</span> <span class="nav-text">受访者的编程工作年限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者使用-Go-编程的时间"><span class="nav-number">1.2.3.</span> <span class="nav-text">受访者使用 Go 编程的时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者的开发背景"><span class="nav-number">1.2.4.</span> <span class="nav-text">受访者的开发背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者所从事的行业"><span class="nav-number">1.2.5.</span> <span class="nav-text">受访者所从事的行业</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者对-Go-开源项目的贡献"><span class="nav-number">1.2.6.</span> <span class="nav-text">受访者对 Go 开源项目的贡献</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发工具篇"><span class="nav-number">1.3.</span> <span class="nav-text">开发工具篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者开发中使用的-OS"><span class="nav-number">1.3.1.</span> <span class="nav-text">受访者开发中使用的 OS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者使用的-IDE"><span class="nav-number">1.3.2.</span> <span class="nav-text">受访者使用的 IDE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于自建-Go-document-server"><span class="nav-number">1.3.3.</span> <span class="nav-text">关于自建 Go document server</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#受访者对-Go-的使用意向"><span class="nav-number">1.4.</span> <span class="nav-text">受访者对 Go 的使用意向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者对-Go-生态的满意度"><span class="nav-number">1.4.1.</span> <span class="nav-text">受访者对 Go 生态的满意度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者所在行业对-Go-生态的满意度"><span class="nav-number">1.4.2.</span> <span class="nav-text">受访者所在行业对 Go 生态的满意度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者对-Go-特性的关注度"><span class="nav-number">1.4.3.</span> <span class="nav-text">受访者对 Go 特性的关注度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者对-Go-社区的满意度"><span class="nav-number">1.4.4.</span> <span class="nav-text">受访者对 Go 社区的满意度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Go-完成的工作内容"><span class="nav-number">1.5.</span> <span class="nav-text">使用 Go 完成的工作内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go-开发过程的常用技术"><span class="nav-number">1.5.1.</span> <span class="nav-text">Go 开发过程的常用技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-Go-Modules"><span class="nav-number">1.5.2.</span> <span class="nav-text">关于 Go Modules</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#云原生时代的-Go"><span class="nav-number">1.6.</span> <span class="nav-text">云原生时代的 Go</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go-project-的部署云平台"><span class="nav-number">1.6.1.</span> <span class="nav-text">Go project 的部署云平台</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go-project-的部署服务类型"><span class="nav-number">1.6.2.</span> <span class="nav-text">Go project 的部署服务类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存在的痛点"><span class="nav-number">1.7.</span> <span class="nav-text">存在的痛点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对一些-Go-特性的期待"><span class="nav-number">1.7.1.</span> <span class="nav-text">对一些 Go 特性的期待</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#没有使用-Go-作为项目的语言的一些原因"><span class="nav-number">1.7.2.</span> <span class="nav-text">没有使用 Go 作为项目的语言的一些原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者认为目前存在的最大的阻碍"><span class="nav-number">1.7.3.</span> <span class="nav-text">受访者认为目前存在的最大的阻碍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Debug-Go-project-的痛点"><span class="nav-number">1.7.4.</span> <span class="nav-text">Debug Go project 的痛点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-community"><span class="nav-number">1.8.</span> <span class="nav-text">Go community</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于-MeetUp"><span class="nav-number">1.8.1.</span> <span class="nav-text">关于 MeetUp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#受访者的语言"><span class="nav-number">1.8.2.</span> <span class="nav-text">受访者的语言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.9.</span> <span class="nav-text">Conclusion</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:155.1k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
