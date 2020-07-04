@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="lxcfs 实现容器资源隔离的最佳实践">
+<meta name="keywords" content="docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lxcfs 实现容器资源视图隔离的最佳时间">
+<meta property="og:url" content="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="lxcfs 实现容器资源隔离的最佳实践">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/index.html">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3n2n48tj318e0msmz5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3p6a8yyj32jy07uk16.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3q20it9j31z003yq6j.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3qo5o8pj32he08012z.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3s9iz85j31lc05qdj8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3srgk92j32j006sgtt.jpg">
+<meta property="og:updated_time" content="2020-07-04T12:52:42.359Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lxcfs 实现容器资源视图隔离的最佳时间">
+<meta name="twitter:description" content="lxcfs 实现容器资源隔离的最佳实践">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>lxcfs 实现容器资源视图隔离的最佳时间 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">To be A geek</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">lxcfs 实现容器资源视图隔离的最佳时间</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-04T20:49:46+08:00">
+                2020-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/" class="leancloud_visitors" data-flag-title="lxcfs 实现容器资源视图隔离的最佳时间">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,384
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  lxcfs 实现容器资源隔离的最佳实践
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<blockquote>
+<p>LXCFS is a small FUSE filesystem written with the intention of making Linux containers feel more like a virtual machine. It started as a side-project of LXC but is useable by any runtime.</p>
+</blockquote>
+<p>用人话解释一下就是：</p>
+<blockquote>
+<p>xcfs 是一个开源的 FUSE（用户态文件系统）实现来支持 LXC 容器，它也可以支持 Docker 容器。让容器内的应用在读取内存和 CPU 信息的时候通过 lxcfs 的映射，转到自己的通过对 cgroup 中容器相关定义信息读取的虚拟数据上。</p>
+</blockquote>
+<h2 id="什么是资源视图隔离？"><a href="#什么是资源视图隔离？" class="headerlink" title="什么是资源视图隔离？"></a>什么是资源视图隔离？</h2><p>容器技术提供了不同于传统虚拟机技术的环境隔离方式。通常的Linux容器对容器打包和启动进行了加速，但也降低了容器的隔离强度。其中Linux容器最为知名的问题就是资源视图隔离问题。</p>
+<p>容器可以通过 cgroup 的方式对资源的使用情况进行限制，包括: 内存，CPU 等。但是需要注意的是，如果容器内的一个进程使用一些常用的监控命令，如: free, top 等命令其实看到还是物理机的数据，而非容器的数据。这是由于容器并没有做到对 <code>/proc</code>, <code>/sys</code> 等文件系统的资源视图隔离。</p>
+<h2 id="为什么要做容器的资源视图隔离？"><a href="#为什么要做容器的资源视图隔离？" class="headerlink" title="为什么要做容器的资源视图隔离？"></a>为什么要做容器的资源视图隔离？</h2><ol>
+<li><p>从容器的视角来看，通常有一些业务开发者已经习惯了在传统的物理机，虚拟机上使用 <code>top</code>, <code></code>free` 等命令来查看系统的资源使用情况，但是容器没有做到资源视图隔离，那么在容器里面看到的数据还是物理机的数据。</p>
+</li>
+<li><p>从应用程序的视角来看，在容器里面运行进程和在物理机虚拟机上运行进程的运行环境是不同的。并且有些应用在容器里面运行进程会存在一些安全隐患:</p>
+<p>对于很多基于 JVM 的 java 程序，应用启动时会根据系统的资源上限来分配 JVM 的堆和栈的大小。而在容器里面运行运行 JAVA 应用由于 JVM 获取的内存数据还是物理机的数据，而容器分配的资源配额又小于 JVM 启动时需要的资源大小，就会导致程序启动不成功。</p>
+<p>对于需要获取 host cpu info 的程序，比如在开发 golang 服务端需要获取 golang中 <code>runtime.GOMAXPROCS(runtime.NumCPU())</code> 或者运维在设置服务启动进程数量的时候( 比如 nginx 配置中的 worker_processes auto )，都喜欢通过程序自动判断所在运行环境CPU的数量。但是在容器内的进程总会从<code>/proc/cpuinfo</code>中获取到 CPU 的核数，而容器里面的<code>/proc</code>文件系统还是物理机的，从而会影响到运行在容器里面服务的运行状态。</p>
+<p>如何做容器的资源视图隔离？</p>
+<h2 id="lxcfs-横空出世就是为了解决这个问题。"><a href="#lxcfs-横空出世就是为了解决这个问题。" class="headerlink" title="lxcfs 横空出世就是为了解决这个问题。"></a>lxcfs 横空出世就是为了解决这个问题。</h2><p>lxcfs 是通过文件挂载的方式，把 cgroup 中关于系统的相关信息读取出来，通过 docker 的 volume 挂载给容器内部的 proc 系统。 然后让 docker 内的应用读取 proc 中信息的时候以为就是读取的宿主机的真实的 proc。</p>
+<p>下面是 lxcfs 的工作原理架构图：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3n2n48tj318e0msmz5.jpg" alt="lxcfs" style="zoom:50%;"></p>
+<p>解释一下这张图，当我们把宿主机的 <code>/var/lib/lxcfs/proc/memoinfo</code> 文件挂载到 Docker 容器的 <code>/proc/meminfo</code> 位置后，容器中进程读取相应文件内容时，lxcfs 的 <code>/dev/fuse</code> 实现会从容器对应的 Cgroup 中读取正确的内存限制。从而使得应用获得正确的资源约束。 cpu 的限制原理也是一样的。</p>
+<h2 id="通过-lxcfs-实现资源视图隔离"><a href="#通过-lxcfs-实现资源视图隔离" class="headerlink" title="通过 lxcfs 实现资源视图隔离"></a>通过 lxcfs 实现资源视图隔离</h2><h3 id="安装-lxcfs"><a href="#安装-lxcfs" class="headerlink" title="安装 lxcfs"></a>安装 lxcfs</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget &lt;https://copr-be.cloud.fedoraproject.org/results/ganto/lxc3/epel-7-x86_64/01041891-lxcfs/lxcfs-3.1.2-0.2.el7.x86_64.rpm&gt;</span><br><span class="line">rpm -ivh lxcfs-3.1.2-0.2.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>检查一下安装是否成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@ifdasdfe2344 system]<span class="comment"># lxcfs -h</span></span><br><span class="line">Usage:</span><br><span class="line"></span><br><span class="line">lxcfs [-f|-d] [-p pidfile] mountpoint</span><br><span class="line">  -f running foreground by default; -d <span class="built_in">enable</span> debug output</span><br><span class="line">  Default pidfile is /run/lxcfs.pid</span><br><span class="line">lxcfs -h</span><br></pre></td></tr></table></figure>
+<h3 id="启动-lxcfs"><a href="#启动-lxcfs" class="headerlink" title="启动 lxcfs"></a>启动 lxcfs</h3><ol>
+<li>直接后台启动</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lxcfs /var/lib/lxcfs &amp;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>通过 systemd 启动（推荐）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">touch /usr/lib/systemd/system/lxcfs.service</span><br><span class="line"></span><br><span class="line">cat &gt; /usr/lib/systemd/system/lxcfs.service &lt;&lt;EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=lxcfs</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">ExecStart=/usr/bin/lxcfs -f /var/lib/lxcfs</span><br><span class="line">Restart=on-failure</span><br><span class="line"><span class="comment">#ExecReload=/bin/kill -s SIGHUP $MAINPID</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start lxcfs.service</span><br></pre></td></tr></table></figure>
+<p>检查启动是否成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@ifdasdfe2344 system]<span class="comment"># ps aux | grep lxcfs</span></span><br><span class="line">root      3276  0.0  0.0 112708   980 pts/2    S+   15:45   0:00 grep --color=auto lxcfs</span><br><span class="line">root     18625  0.0  0.0 234628  1296 ?        Ssl  14:16   0:00 /usr/bin/lxcfs -f /var/lib/lxcfs</span><br></pre></td></tr></table></figure>
+<p>启动成功。</p>
+<h2 id="验证-lxcfs-效果"><a href="#验证-lxcfs-效果" class="headerlink" title="验证 lxcfs 效果"></a>验证 lxcfs 效果</h2><h3 id="未开启-lxcfs"><a href="#未开启-lxcfs" class="headerlink" title="未开启 lxcfs"></a>未开启 lxcfs</h3><p>我们首先在未开启 lxcfs 的机器上运行一个容器，进入到容器中观察 cpu, memory 的信息。为了看出明显的差别，我们用了一台高配置服务器（32c128g）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行以下操作</span></span><br><span class="line">systemctl stop lxcfs</span><br><span class="line"></span><br><span class="line">docker run -it ubuntu /bin/bash <span class="comment"># 进入到 nginx 容器中</span></span><br><span class="line"></span><br><span class="line">free -h</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3p6a8yyj32jy07uk16.jpg" alt="image-20200704180911456" style="zoom:50%;"></p>
+<p>通过上面的结果我们可以看到虽然是在容器中查看内存信息，但是显示的还是宿主机的 meminfo。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 看一下 CPU 的核数</span></span><br><span class="line">cat /proc/cpuinfo| grep <span class="string">"processor"</span>| wc -l</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3q20it9j31z003yq6j.jpg" alt="image-20200704181007610" style="zoom:50%;"></p>
+<p>结果符合我们的猜想，没有开启 lxcfs ，容器所看到的 cpuinfo 就是宿主机的。</p>
+<h3 id="开启-lxcfs"><a href="#开启-lxcfs" class="headerlink" title="开启 lxcfs"></a>开启 lxcfs</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">systemctl start lxcfs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动一个容器，用 lxcfs 的 /proc 文件映射到容器中的 /proc 文件，容器内存设置为 256M：</span></span><br><span class="line">docker run -it -m 256m \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/diskstats:/proc/diskstats:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/meminfo:/proc/meminfo:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/<span class="built_in">stat</span>:/proc/<span class="built_in">stat</span>:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/swaps:/proc/swaps:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/uptime:/proc/uptime:rw \\</span><br><span class="line">      ubuntu:latest /bin/bash</span><br><span class="line"></span><br><span class="line">free -h</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3qo5o8pj32he08012z.jpg" alt="image-20200704181044965" style="zoom:50%;"></p>
+<p>可以看到容器本身的内存被正确获取到了，对于内存的资源视图隔离是成功的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --cpus 2，限定容器最多只能使用两个逻辑CPU</span></span><br><span class="line"></span><br><span class="line">docker run -it --rm -m 256m  --cpus 2  \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/diskstats:/proc/diskstats:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/meminfo:/proc/meminfo:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/<span class="built_in">stat</span>:/proc/<span class="built_in">stat</span>:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/swaps:/proc/swaps:rw \\</span><br><span class="line">      -v /var/lib/lxcfs/proc/uptime:/proc/uptime:rw \\</span><br><span class="line">      ubuntu:latest /bin/sh</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3s9iz85j31lc05qdj8.jpg" alt="image-20200704181153515"></p>
+<p>cpuinfo 也是我们所限制容器所能使用的逻辑 cpu 的数量了。指定容器只能在指定的 CPU 数量上运行应当是利大于弊的，就是在创建容器的时候需要额外做点工作，合理分配 cpuset。</p>
+<h2 id="lxcfs-的-Kubernetes实践"><a href="#lxcfs-的-Kubernetes实践" class="headerlink" title="lxcfs 的 Kubernetes实践"></a>lxcfs 的 Kubernetes实践</h2><p>在kubernetes中使用lxcfs需要解决两个问题：</p>
+<p>第一个问题是每个node上都要启动 lxcfs；</p>
+<p>第二个问题是将 lxcfs 维护的 /proc 文件挂载到每个容器中；</p>
+<h2 id="DaemonSet方式来运行-lxcfs-FUSE文件系统"><a href="#DaemonSet方式来运行-lxcfs-FUSE文件系统" class="headerlink" title="DaemonSet方式来运行 lxcfs FUSE文件系统"></a>DaemonSet方式来运行 lxcfs FUSE文件系统</h2><p>针对第一个问题，我们使用 daemonset 在每个 k8s node 上都安装 lxcfs。</p>
+<p>直接使用下面的 yaml 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: DaemonSet</span><br><span class="line">metadata:</span><br><span class="line">  name: lxcfs</span><br><span class="line">  labels:</span><br><span class="line">    app: lxcfs</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: lxcfs</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: lxcfs</span><br><span class="line">    spec:</span><br><span class="line">      hostPID: <span class="literal">true</span></span><br><span class="line">      tolerations:</span><br><span class="line">      - key: node-role.kubernetes.io/master</span><br><span class="line">        effect: NoSchedule</span><br><span class="line">      containers:</span><br><span class="line">      - name: lxcfs</span><br><span class="line">        image: registry.cn-hangzhou.aliyuncs.com/denverdino/lxcfs:3.0.4</span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        securityContext:</span><br><span class="line">          privileged: <span class="literal">true</span></span><br><span class="line">        volumeMounts:</span><br><span class="line">        - name: cgroup</span><br><span class="line">          mountPath: /sys/fs/cgroup</span><br><span class="line">        - name: lxcfs</span><br><span class="line">          mountPath: /var/lib/lxcfs</span><br><span class="line">          mountPropagation: Bidirectional</span><br><span class="line">        - name: usr-local</span><br><span class="line">          mountPath: /usr/<span class="built_in">local</span></span><br><span class="line">      volumes:</span><br><span class="line">      - name: cgroup</span><br><span class="line">        hostPath:</span><br><span class="line">          path: /sys/fs/cgroup</span><br><span class="line">      - name: usr-local</span><br><span class="line">        hostPath:</span><br><span class="line">          path: /usr/<span class="built_in">local</span></span><br><span class="line">      - name: lxcfs</span><br><span class="line">        hostPath:</span><br><span class="line">          path: /var/lib/lxcfs</span><br><span class="line">          <span class="built_in">type</span>: DirectoryOrCreate</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f lxcfs-daemonset.yaml</span><br></pre></td></tr></table></figure>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggf3srgk92j32j006sgtt.jpg" alt="image-20200704181243710" style="zoom:50%;"></p>
+<p>可以看到 lxcfs 的 daemonset 已经部署到每个 node 上。</p>
+<h3 id="映射-lxcfs-的-proc-文件到容器"><a href="#映射-lxcfs-的-proc-文件到容器" class="headerlink" title="映射 lxcfs 的 proc 文件到容器"></a>映射 lxcfs 的 proc 文件到容器</h3><p>针对第二个问题，我们两种方法来解决。</p>
+<p>第一种就是简单地在 k8s deployment 的 yaml 文件中声明对宿主机 <code>/var/lib/lxcfs/proc</code> 一系列文件的挂载。</p>
+<p>第二种方式利用Kubernetes的扩展机制 Initializer，实现对 lxcfs 文件的自动化挂载。但是 <code>InitializerConfiguration</code> 的功能在 k8s 1.14 之后就不再支持了，这里不再赘述。但是我们可以实现 admission-webhook （准入控制（Admission Control）在授权后对请求做进一步的验证或添加默认参数, <a href="https://kubernetes.feisky.xyz/extension/auth/admission）来达到同样的目的。" target="_blank" rel="noopener">https://kubernetes.feisky.xyz/extension/auth/admission）来达到同样的目的。</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 验证你的 k8s 集群是否支持 admission</span></span><br><span class="line">$ kubectl api-versions | grep admissionregistration.k8s.io/v1beta1</span><br><span class="line">admissionregistration.k8s.io/v1beta1</span><br></pre></td></tr></table></figure>
+<p>关于 admission-webhook 的编写不属于本文的讨论范围，可以到官方文档中深入了解。</p>
+<p>这里有一个实现 lxcfs admission webhook 的范例，可以参考：<a href="https://github.com/hantmac/lxcfs-admission-webhook" target="_blank" rel="noopener">https://github.com/hantmac/lxcfs-admission-webhook</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了通过 lxcfs 提供容器资源视图隔离的方法，可以帮助一些容器化应用更好的识别容器运行时的资源限制。</p>
+<p>同时，在本文中我们介绍了利用容器和 DaemonSet 的方式部署 lxcfs FUSE，这不但极大简化了部署，也可以方便地利用 Kubernetes 自身的容器管理能力，支持 lxcfs 进程失效时自动恢复，在集群伸缩时也可以保证节点部署的一致性。这个技巧对于其他类似的监控或者系统扩展都是适用的。</p>
+<p>另外我们介绍了利用Kubernetes的 admission webhook，实现对 lxcfs 文件的自动化挂载。整个过程对于应用部署人员是透明的，可以极大简化运维复杂度。</p>
+<hr>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/">lxcfs 实现容器资源视图隔离的最佳时间</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2020年07月04日 - 20:07</p>
+  <p><span>最后更新:</span>2020年07月04日 - 20:07</p>
+  <p><span>原始链接:</span><a href="/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/" title="lxcfs 实现容器资源视图隔离的最佳时间">https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2020/07/04/lxcfs-实现容器资源视图隔离的最佳时间/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/12/重磅！微软-VS-Code-的-Go-语言插件迁移至由-Go-官方团队维护/" rel="next" title="重磅！微软 VS Code 的 Go 语言插件迁移至由 Go 官方团队维护">
+                <i class="fa fa-chevron-left"></i> 重磅！微软 VS Code 的 Go 语言插件迁移至由 Go 官方团队维护
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description">关于技术，关于生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/韩山杰" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是资源视图隔离？"><span class="nav-number">1.</span> <span class="nav-text">什么是资源视图隔离？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要做容器的资源视图隔离？"><span class="nav-number">2.</span> <span class="nav-text">为什么要做容器的资源视图隔离？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxcfs-横空出世就是为了解决这个问题。"><span class="nav-number">3.</span> <span class="nav-text">lxcfs 横空出世就是为了解决这个问题。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过-lxcfs-实现资源视图隔离"><span class="nav-number">4.</span> <span class="nav-text">通过 lxcfs 实现资源视图隔离</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-lxcfs"><span class="nav-number">4.1.</span> <span class="nav-text">安装 lxcfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-lxcfs"><span class="nav-number">4.2.</span> <span class="nav-text">启动 lxcfs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证-lxcfs-效果"><span class="nav-number">5.</span> <span class="nav-text">验证 lxcfs 效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#未开启-lxcfs"><span class="nav-number">5.1.</span> <span class="nav-text">未开启 lxcfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启-lxcfs"><span class="nav-number">5.2.</span> <span class="nav-text">开启 lxcfs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lxcfs-的-Kubernetes实践"><span class="nav-number">6.</span> <span class="nav-text">lxcfs 的 Kubernetes实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DaemonSet方式来运行-lxcfs-FUSE文件系统"><span class="nav-number">7.</span> <span class="nav-text">DaemonSet方式来运行 lxcfs FUSE文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#映射-lxcfs-的-proc-文件到容器"><span class="nav-number">7.1.</span> <span class="nav-text">映射 lxcfs 的 proc 文件到容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:171.3k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
