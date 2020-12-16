@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2020-12-09T12:35:21.014Z</updated>
+  <updated>2020-12-16T07:30:18.326Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redirecting godoc.org requests to pkg.go.dev</title>
+    <link href="https://cloudsjhan.github.io/2020/12/16/Redirecting-godoc-org-requests-to-pkg-go-dev/"/>
+    <id>https://cloudsjhan.github.io/2020/12/16/Redirecting-godoc-org-requests-to-pkg-go-dev/</id>
+    <published>2020-12-16T06:54:42.000Z</published>
+    <updated>2020-12-16T07:30:18.326Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><h3 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h3><p>随着 Go Module 的引入和 Go 生态系统的发展，pkg.go.dev 于 <a href="https://blog.golang.org/go.dev" target="_blank" rel="noopener">2019 年</a>启动，为开发人员提供了了一个查找 Go package 的地方，官方称之为 <code>center place</code>。 像 godoc.org 一样，pkg.go.dev 提供 Go 文档，但它也支持 Go Module、更好的搜索功能以及帮助 Go 用户找到正确软件包的指引。</p><p>正如官方在 <a href="https://blog.golang.org/pkg.go.dev-2020" target="_blank" rel="noopener">2020年1月分享</a> 的那样，官方的目标是最终将流量从 godoc.org 重定向到 pkg.go.dev 上的相应页面。 用户可以还可以选择将自己的请求从godoc.org 重定向到 pkg.go.dev。</p><p>今年官方收到了很多反馈，很多问题已经在 <a href="https://github.com/golang/go/milestone/157?closed=1https://github.com/golang/go/milestone/157?closed=1" target="_blank" rel="noopener">pkgsite/godoc.org-redirect</a> 和 <a href="https://github.com/golang/go/milestone/159?closed=1" target="_blank" rel="noopener">pkgsite/design-2020</a> 进行跟踪和解决。 用户的反馈意见支持对 pkg.go.dev 上的高频功能的改进，以及最近对pkg.go.dev 的重新设计都有很大的帮助。</p><h3 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h3><p>一旦在 <a href="https://github.com/golang/go/milestone/157" target="_blank" rel="noopener">pkgsite/godoc.org-redirect</a> 里程碑中跟踪的工作完成, 官方就会将所有请求从 godoc.org 重定向到pkg.go.dev上的相应页面,这大概会在2021 年初开始。</p><p>官方鼓励大家现状就开始使用 pkg.go.dev, 可以通过访问 <code>godoc.org?redirect=on</code> 或单击任何<code>godoc.org</code> 页面右上角的 “Always use pkg.go.dev” 来实现。</p><h3 id="FAQs"><a href="#FAQs" class="headerlink" title="FAQs"></a>FAQs</h3><ul><li><p>A: godoc.org 还可以继续使用吗？<br>Q: YES! 我们会将所有访问 godoc.org 的请求重定向到 pkg.go.dev 上的相应页面，因此你所有的书签和链接依然有效。</p></li><li><p>A: <code>golang/gddo</code> repo 将会如何处理？<br>Q: repo 可以继续 fork 和使用，但是官方将对其标记为 <code>archived</code>。</p></li><li><p>A: <code>api.godoc.org</code> 还能继续使用吗？<br>Q: 此过渡不会对 api.godoc.org 产生影响。 在 pkg.go.dev 提供 API 之前，api.godoc.org 将继续为流量提供服务。 有关 pkg.go.dev 的 API 的更新，请参见 <a href="https://golang.org/issue/36785" target="_blank" rel="noopener">issue 36785</a>。</p></li></ul><h3 id="Contributing"><a href="#Contributing" class="headerlink" title="Contributing"></a>Contributing</h3><p>  <a href="https://go.googlesource.com/pkgsite" target="_blank" rel="noopener">Pkg.go.dev</a> 是一个开源项目。 如果你有兴趣为 pkg site 做出贡献，可以加入 Gophers Slack 上的 <code>#pkgsite</code> 频道以了解更多信息。</p><hr>]]></content>
+    
+    <summary type="html">
+    
+      Redirecting godoc.org requests to pkg.go.dev
+    
+    </summary>
+    
+      <category term="golang" scheme="https://cloudsjhan.github.io/categories/golang/"/>
+    
+    
+      <category term="golang" scheme="https://cloudsjhan.github.io/tags/golang/"/>
+    
+  </entry>
   
   <entry>
     <title>Can I convert a []T to an []interface{}?</title>
@@ -570,9 +592,9 @@
       <category term="网络" scheme="https://cloudsjhan.github.io/categories/%E7%BD%91%E7%BB%9C/"/>
     
     
-      <category term="TCP/IP" scheme="https://cloudsjhan.github.io/tags/TCP-IP/"/>
-    
       <category term="网络" scheme="https://cloudsjhan.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="TCP/IP" scheme="https://cloudsjhan.github.io/tags/TCP-IP/"/>
     
   </entry>
   
@@ -1082,9 +1104,9 @@
       <category term="go" scheme="https://cloudsjhan.github.io/categories/go/"/>
     
     
-      <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
-    
       <category term="beego" scheme="https://cloudsjhan.github.io/tags/beego/"/>
+    
+      <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
     
   </entry>
   
@@ -1367,7 +1389,7 @@
     <published>2018-11-15T10:37:28.000Z</published>
     <updated>2018-11-15T10:39:44.797Z</updated>
     
-    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#100;&#105;&#112;&#122;&#x6f;&#x6e;&#101;&#64;&#x73;&#105;&#110;&#x61;&#x2e;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#105;&#112;&#122;&#x6f;&#x6e;&#101;&#64;&#x73;&#105;&#110;&#x61;&#x2e;&#99;&#111;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#x66;&#x64;&#105;&#x70;&#x7a;&#x6f;&#110;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x66;&#x64;&#105;&#x70;&#x7a;&#x6f;&#110;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#100;&#x69;&#x70;&#122;&#111;&#110;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#100;&#x69;&#x70;&#122;&#111;&#110;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#111;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#110;&#x65;&#x40;&#x73;&#x69;&#x6e;&#97;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#110;&#x65;&#x40;&#x73;&#x69;&#x6e;&#97;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
     
     <summary type="html">
     
@@ -1714,9 +1736,9 @@
       <category term="技术周刊" scheme="https://cloudsjhan.github.io/categories/%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A/"/>
     
     
-      <category term="Python" scheme="https://cloudsjhan.github.io/tags/Python/"/>
-    
       <category term="技术周刊" scheme="https://cloudsjhan.github.io/tags/%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A/"/>
+    
+      <category term="Python" scheme="https://cloudsjhan.github.io/tags/Python/"/>
     
   </entry>
   
