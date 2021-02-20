@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Go 1.16 is released, Apple silicon M1 可以放心买啦]]></title>
+    <url>%2F2021%2F02%2F20%2FGo-1-16-is-released-Apple-silicon-M1-%E5%8F%AF%E4%BB%A5%E6%94%BE%E5%BF%83%E4%B9%B0%E5%95%A6%2F</url>
+    <content type="text"><![CDATA[2021 年 2 月 16 日，春节假期的最后一天，Go 官方终于将 1.16 版本 released。 下面简要介绍一下 1.16 版本最重要的一些特性： 核心库加入了新的成员 - embedpackage embed 可访问正在运行的 Go 程序中所嵌入的静态文件。 使用 embed 可以使用 // go：embed 指令在编译时从包目录或子目录读取的文件的内容并使用它们。 例如，以下三种方法可以嵌入名为 hello.txt 的文件，然后在运行时打印其内容。 将一个文件嵌入到字符串中 12345import _ "embed"//go:embed hello.txtvar s stringprint(s) 将一个文件嵌入 []byte 12345import _ "embed"//go:embed hello.txtvar b []byteprint(string(b)) 将一个或多个文件嵌入到文件系统中 123456import "embed"//go:embed hello.txtvar f embed.FSdata, _ := f.ReadFile("hello.txt")print(string(data)) 这种将静态文件在编译时嵌入可执行文件的方式，在极大地提高了 go 访问静态文件的灵活性的同时，也能提高了敏感配置文件的安全性。更大胆一点，是不是在前端领域，golang 也能插一脚了？ 增加对 Apple silicon ARM 64 架构的支持Go 1.16 还添加了macOS ARM64 支持（也称为Apple silicon）。 自 Apple 宣布其新的 ARM64 架构以来，go team 一直在与他们紧密合作以确保 Go 得到完全的支持。一直在 观望 M1 的开发者这下可以放心去买新的 Mac 啦。 默认开启 Go modulesGo 1.16 默认使用 Go modules。因为根据 go team 的 2020 Go 开发人员调查，现在有96％的 Go 开发人员已经在使用 Go modules了。 其他的性能改善与提高最后，还有许多其他改进和 bug fix，比如构建速度提高了25％，内存使用量减少了15％。 有关更改的完整列表以及有关上述改进的更多信息，可以参考 Go 1.16发行说明)。 以上就是 Go 1.16 带来的新特性，有开发者调侃到 “最大的特性就是离泛型的版本号更近了（狗头）”哈哈哈。]]></content>
+      <categories>
+        <category>golang</category>
+      </categories>
+      <tags>
+        <tag>golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Redirecting godoc.org requests to pkg.go.dev]]></title>
     <url>%2F2020%2F12%2F16%2FRedirecting-godoc-org-requests-to-pkg-go-dev%2F</url>
     <content type="text"><![CDATA[现状随着 Go Module 的引入和 Go 生态系统的发展，pkg.go.dev 于 2019 年启动，为开发人员提供了了一个查找 Go package 的地方，官方称之为 center place。 像 godoc.org 一样，pkg.go.dev 提供 Go 文档，但它也支持 Go Module、更好的搜索功能以及帮助 Go 用户找到正确软件包的指引。 正如官方在 2020年1月分享 的那样，官方的目标是最终将流量从 godoc.org 重定向到 pkg.go.dev 上的相应页面。 用户可以还可以选择将自己的请求从godoc.org 重定向到 pkg.go.dev。 今年官方收到了很多反馈，很多问题已经在 pkgsite/godoc.org-redirect 和 pkgsite/design-2020 进行跟踪和解决。 用户的反馈意见支持对 pkg.go.dev 上的高频功能的改进，以及最近对pkg.go.dev 的重新设计都有很大的帮助。 下一步一旦在 pkgsite/godoc.org-redirect 里程碑中跟踪的工作完成, 官方就会将所有请求从 godoc.org 重定向到pkg.go.dev上的相应页面,这大概会在2021 年初开始。 官方鼓励大家现状就开始使用 pkg.go.dev, 可以通过访问 godoc.org?redirect=on 或单击任何godoc.org 页面右上角的 “Always use pkg.go.dev” 来实现。 FAQs A: godoc.org 还可以继续使用吗？Q: YES! 我们会将所有访问 godoc.org 的请求重定向到 pkg.go.dev 上的相应页面，因此你所有的书签和链接依然有效。 A: golang/gddo repo 将会如何处理？Q: repo 可以继续 fork 和使用，但是官方将对其标记为 archived。 A: api.godoc.org 还能继续使用吗？Q: 此过渡不会对 api.godoc.org 产生影响。 在 pkg.go.dev 提供 API 之前，api.godoc.org 将继续为流量提供服务。 有关 pkg.go.dev 的 API 的更新，请参见 issue 36785。 Contributing Pkg.go.dev 是一个开源项目。 如果你有兴趣为 pkg site 做出贡献，可以加入 Gophers Slack 上的 #pkgsite 频道以了解更多信息。]]></content>
@@ -281,8 +292,8 @@
         <category>网络</category>
       </categories>
       <tags>
-        <tag>网络</tag>
         <tag>TCP/IP</tag>
+        <tag>网络</tag>
       </tags>
   </entry>
   <entry>
@@ -680,7 +691,7 @@
   <entry>
     <title><![CDATA[git如何找回被删除的分支]]></title>
     <url>%2F2018%2F11%2F15%2Fgit%E5%A6%82%E4%BD%95%E6%89%BE%E5%9B%9E%E8%A2%AB%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF%2F</url>
-    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#x66;&#100;&#x69;&#x70;&#122;&#111;&#110;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#111;&#x6d;)Reflog message: commit: add test.txtAuthor: fdipzone &#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#110;&#x65;&#x40;&#x73;&#x69;&#x6e;&#97;&#x2e;&#x63;&#x6f;&#x6d;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
+    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#102;&#100;&#105;&#112;&#122;&#111;&#x6e;&#x65;&#x40;&#x73;&#x69;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;)Reflog message: commit: add test.txtAuthor: fdipzone &#x66;&#x64;&#x69;&#112;&#x7a;&#x6f;&#x6e;&#x65;&#64;&#x73;&#x69;&#x6e;&#x61;&#46;&#99;&#x6f;&#x6d;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
       <categories>
         <category>git</category>
       </categories>
@@ -853,8 +864,8 @@
         <category>技术周刊</category>
       </categories>
       <tags>
-        <tag>技术周刊</tag>
         <tag>Python</tag>
+        <tag>技术周刊</tag>
       </tags>
   </entry>
   <entry>
