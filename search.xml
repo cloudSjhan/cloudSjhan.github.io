@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[test]]></title>
-    <url>%2F2022%2F06%2F12%2Ftest%2F</url>
-    <content type="text"><![CDATA[## ## ##]]></content>
+    <title><![CDATA[[摘要]如何构建分布式数据库 severless 服务?]]></title>
+    <url>%2F2022%2F06%2F12%2F%E6%91%98%E8%A6%81-%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93-severless-%E6%9C%8D%E5%8A%A1%2F</url>
+    <content type="text"><![CDATA[分布式数据库 severless 服务要点最近在读一些分布式数据库 serverless 服务化的文章，从中总结出一些构建此类服务面临的痛点以及如何破局的要点，算是一个读书笔记。主要参考的文章有 cockroachdb severless 解读, How we built a forever-free serverless SQL database。 大致内容提纲 为什么要云原生数据库数据库的 scale 能力决定了这个产品的上限，而一家公司能用多少人服务多少客户的 scale 能力，决定了公司营收的上限。而破局的方式就是数据库上云，把数据库的服务化，降低门槛。 为什么要 serverless 化serverless 卖服务的形式，一个集群就可以服务”无穷”个租户，只要没有实际的使用，并不会产生成本。多增加一个租户，它的边际成本是零。所以这个模式是 scalable 的。 而为了实现 serverless 的目的，云原生数据库的架构大多是存储和计算分离的。 多租户的资源隔离问题如果是多租户共享计算层和存储层，那复杂 SQL 就会将整个集群的资源耗尽，影响其他租户； 如果是每个租户独享各自的计算层和存储层，也就是回到了每个租户一套集群的模式，成本非常高。 综上因素，比较好的方式是独享计算层，共享存储层。上层的 SQL 是租户之间物理隔离的，下面的 kv 存储是由所有租户去共享的。 共享存储之后，如何区分租户数据共享存储层后，可以在请求的 key 的编码中添加 tenant-id，多租户模式下，SQL 的表的数据映射成 kv 数据，最终的编码是 /tenant-id/table-id/index-id/key。 集群架构 名词解释Block storage: 多租户共享的存储 SQL Pod: 租户独享的 SQL 计算节点 Proxy Pod : 负责将租户的请求路由到正确的 SQL 节点上 计算节点无状态，这意味着 SQL pod 可以随用随起，也就是说，当某个 tenant 没有流量时，完全可以把它的 SQL 节点停下关掉，需要的时候再动态拉起。 拓展阅读 以上。]]></content>
+      <categories>
+        <category>kubernetes</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+        <tag>serverless</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[人、车、生活]]></title>
@@ -604,8 +611,8 @@
         <category>go</category>
       </categories>
       <tags>
-        <tag>beego</tag>
         <tag>go</tag>
+        <tag>beego</tag>
       </tags>
   </entry>
   <entry>
@@ -747,7 +754,7 @@
   <entry>
     <title><![CDATA[git如何找回被删除的分支]]></title>
     <url>%2F2018%2F11%2F15%2Fgit%E5%A6%82%E4%BD%95%E6%89%BE%E5%9B%9E%E8%A2%AB%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF%2F</url>
-    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#x66;&#100;&#x69;&#112;&#x7a;&#111;&#110;&#101;&#x40;&#115;&#105;&#x6e;&#97;&#46;&#x63;&#111;&#109;)Reflog message: commit: add test.txtAuthor: fdipzone &#102;&#x64;&#x69;&#x70;&#x7a;&#111;&#110;&#101;&#64;&#115;&#x69;&#110;&#97;&#46;&#x63;&#111;&#x6d;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
+    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#102;&#x64;&#x69;&#112;&#122;&#111;&#110;&#x65;&#x40;&#x73;&#105;&#x6e;&#97;&#46;&#99;&#x6f;&#x6d;)Reflog message: commit: add test.txtAuthor: fdipzone &#102;&#x64;&#105;&#x70;&#122;&#111;&#110;&#101;&#64;&#x73;&#x69;&#110;&#x61;&#46;&#x63;&#x6f;&#x6d;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
       <categories>
         <category>git</category>
       </categories>
