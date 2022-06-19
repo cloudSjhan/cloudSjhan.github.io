@@ -96,7 +96,7 @@
 <meta name="keywords" content="go, python, Docker, k8s">
 <meta property="og:type" content="website">
 <meta property="og:title" content="cloud world">
-<meta property="og:url" content="https://cloudsjhan.github.io/tags/MySQL/index.html">
+<meta property="og:url" content="https://cloudsjhan.github.io/tags/mysql/index.html">
 <meta property="og:site_name" content="cloud world">
 <meta property="og:description" content="关于技术，关于生活">
 <meta property="og:locale" content="zh-Hans">
@@ -132,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/tags/MySQL/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/tags/mysql/"/>
 
 
 
@@ -147,7 +147,7 @@
   </script>
 
 
-  <title>标签: MySQL | cloud world</title>
+  <title>标签: mysql | cloud world</title>
   
 
 
@@ -322,7 +322,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>MySQL<small>标签</small>
+        <h1>mysql<small>标签</small>
         </h1>
       </div>
 
@@ -334,9 +334,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/07/01/mysql数据去重/" itemprop="url">
+            <a class="post-title-link" href="/2019/03/11/mysql关闭update-safe-mode/" itemprop="url">
               
-                <span itemprop="name">mysql数据去重</span>
+                <span itemprop="name">mysql关闭update safe mode</span>
               
             </a>
         
@@ -344,9 +344,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2019-07-01T15:40:05+08:00"
-              content="2019-07-01" >
-          07-01
+              datetime="2019-03-11T10:28:38+08:00"
+              content="2019-03-11" >
+          03-11
         </time>
       </div>
 
@@ -362,9 +362,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/12/25/mysql-add-primary-key-auto-increment/" itemprop="url">
+            <a class="post-title-link" href="/2018/09/01/Mysql无法连接/" itemprop="url">
               
-                <span itemprop="name">mysql add primary key auto_increment</span>
+                <span itemprop="name">Mysql无法连接[MySql Host is blocked because of many connection errors]</span>
               
             </a>
         
@@ -372,9 +372,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2018-12-25T19:08:53+08:00"
-              content="2018-12-25" >
-          12-25
+              datetime="2018-09-01T13:20:54+08:00"
+              content="2018-09-01" >
+          09-01
         </time>
       </div>
 
@@ -390,37 +390,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/12/04/mysql中字段名与保留字冲突/" itemprop="url">
+            <a class="post-title-link" href="/2018/08/29/mysql-开启远程连接/" itemprop="url">
               
-                <span itemprop="name">mysql中字段名与保留字冲突</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-12-04T15:24:50+08:00"
-              content="2018-12-04" >
-          12-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/11/05/MySQL使用group-by分组后对每组操作/" itemprop="url">
-              
-                <span itemprop="name">MySQL使用group by分组后对每组操作</span>
+                <span itemprop="name">mysql 开启远程连接</span>
               
             </a>
         
@@ -428,9 +400,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2018-11-05T16:54:14+08:00"
-              content="2018-11-05" >
-          11-05
+              datetime="2018-08-29T11:17:20+08:00"
+              content="2018-08-29" >
+          08-29
         </time>
       </div>
 
@@ -1215,6 +1187,39 @@
     $(function() {
       var Counter = AV.Object.extend("Counter");
       if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
+f ($('.leancloud_visitors').length == 1) {
         addCount(Counter);
       } else if ($('.post-title-link').length > 1) {
         showTime(Counter);
