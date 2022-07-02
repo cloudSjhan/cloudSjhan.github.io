@@ -101,10 +101,10 @@
 <meta property="og:description" content="从源码解读 OpenKruise 原地升级的原理">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/06/19/OpenKruise-源码解读之原地升级/index.html">
-<meta property="og:image" content="https://openkruise.io/zh/img/what-is-kruise.png">
+<meta property="og:image" content="https://tva4.sinaimg.cn/large/005UfcOkly8h3se6zfp1kj30ge0dpjsh.jpg">
 <meta property="og:image" content="https://tva2.sinaimg.cn/large/005UfcOkly8h3sdj2vcjzj30mv0fraaw.jpg">
-<meta property="og:image" content="https://openkruise.io/zh/assets/images/inplace-update-workflow-7b4d4bb7cfb4e72882f2a6bb76f422f1.png">
-<meta property="og:updated_time" content="2022-07-02T02:34:59.423Z">
+<meta property="og:image" content="https://tva2.sinaimg.cn/large/005UfcOkly8h3se47ep4tj31po0u0gq1.jpg">
+<meta property="og:updated_time" content="2022-07-02T02:52:44.236Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenKruise 源码剖析之原地升级">
 <meta name="twitter:description" content="从源码解读 OpenKruise 原地升级的原理">
@@ -479,7 +479,7 @@
 <blockquote>
 <p>OpenKruise 是基于 CRD 的拓展，包含了很多应用工作负载和运维增强能力，本系列文章会从源码和底层原理上解读各个组件，以帮助大家更好地使用和理解 OpenKruise。让我们开始 OpenKruise 的源码之旅吧！</p>
 </blockquote>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><a href="https://openkruise.io/" title="OpenKruise" target="_blank" rel="noopener">OpenKruise</a> 是针对 Kubernetes 的增强能力套件，聚焦于云原生应用的部署、升级、运维、稳定性防护等领域。OpenKruise 提供的绝大部分能力都是基于 CRD 扩展来定义，它们不存在于任何外部依赖，可以运行在任意纯净的 Kubernetes 集群中。它包含了一系列增强版本的 Workloads（工作负载），比如 CloneSet、Advanced StatefulSet、Advanced DaemonSet、BroadcastJob 等, 它们不仅支持类似于 Kubernetes 原生 Workloads 的基础功能，还提供了如原地升级、可配置的扩缩容/发布策略、并发操作等。<br><img src="https://openkruise.io/zh/img/what-is-kruise.png" alt=""><br>其中原地升级是 OpenKruise 的核心功能, 它只需要使用新的镜像重建 Pod 中的特定容器，整个 Pod 以及其中的其他容器都不会被影响。因此它带来了更快的发布速度，以及避免了对其他 Scheduler、CNI、CSI 等组件的负面影响， 像 CloneSet、AdvancedStatefulSet、AdvancedDaemonSet、SidecarSet 的热更新机制，ContainerRestartRequest 等功能都依赖原地升级。理解原地升级之后再去研究其他组件就会事半功倍，所以本文首先带大家分析原地升级的源码，来一窥其底层原理。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p><a href="https://openkruise.io/" title="OpenKruise" target="_blank" rel="noopener">OpenKruise</a> 是针对 Kubernetes 的增强能力套件，聚焦于云原生应用的部署、升级、运维、稳定性防护等领域。OpenKruise 提供的绝大部分能力都是基于 CRD 扩展来定义，它们不存在于任何外部依赖，可以运行在任意纯净的 Kubernetes 集群中。它包含了一系列增强版本的 Workloads（工作负载），比如 CloneSet、Advanced StatefulSet、Advanced DaemonSet、BroadcastJob 等, 它们不仅支持类似于 Kubernetes 原生 Workloads 的基础功能，还提供了如原地升级、可配置的扩缩容/发布策略、并发操作等。<br><img src="https://tva4.sinaimg.cn/large/005UfcOkly8h3se6zfp1kj30ge0dpjsh.jpg" alt=""><br>其中原地升级是 OpenKruise 的核心功能, 它只需要使用新的镜像重建 Pod 中的特定容器，整个 Pod 以及其中的其他容器都不会被影响。因此它带来了更快的发布速度，以及避免了对其他 Scheduler、CNI、CSI 等组件的负面影响， 像 CloneSet、AdvancedStatefulSet、AdvancedDaemonSet、SidecarSet 的热更新机制，ContainerRestartRequest 等功能都依赖原地升级。理解原地升级之后再去研究其他组件就会事半功倍，所以本文首先带大家分析原地升级的源码，来一窥其底层原理。</p>
 <p>有关原地升级的使用和介绍可以先阅读<a href="https://openkruise.io/zh/docs/core-concepts/inplace-update" title="什么是原地升级" target="_blank" rel="noopener">这篇文档</a>。</p>
 <h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><h3 id="Before-Pod-Update"><a href="#Before-Pod-Update" class="headerlink" title="Before Pod Update"></a>Before Pod Update</h3><h4 id="1-reconcile-入口函数"><a href="#1-reconcile-入口函数" class="headerlink" title="1. reconcile 入口函数"></a>1. reconcile 入口函数</h4><p>我们以 CloneSet 为例，当 CloneSet 更新后，相应的 controller 感知到资源变化，此时代码会走到 <code>cloneset_controller.go</code> 的 <code>doReconcile</code> 函数，该函数是处理 CloneSet 更新的主干入口。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *ReconcileCloneSet)</span> <span class="title">doReconcile</span><span class="params">(request reconcile.Request)</span> <span class="params">(res reconcile.Result, retErr error)</span></span></span><br></pre></td></tr></table></figure>
@@ -540,7 +540,7 @@
 <h4 id="5-kubelet-标记-Pod-Ready"><a href="#5-kubelet-标记-Pod-Ready" class="headerlink" title="5. kubelet 标记 Pod Ready"></a>5. kubelet 标记 Pod Ready</h4><p>完成更新后，由 kubelet 标记 Pod Ready，kruise manager 将相应的 worklod 同步为更新完成。</p>
 <p>至此，整个原地升级的流程就完成了。不难发现，原地升级除了用到原生 kubernetes 提供的 informer controller 机制外，最核心的也是最有亮点的地方就是巧妙地实现了一个类似 kubelet 的 plugin - <code>kruise daemon</code>， 为我们提供了一种全新的 Kubernetes 容器运行时 operations 的拓展思路。</p>
 <h2 id="源码流程图"><a href="#源码流程图" class="headerlink" title="源码流程图"></a>源码流程图</h2><p>以上的代码可以总结简化为下面<a href="https://openkruise.io/zh/docs/core-concepts/inplace-update/" target="_blank" rel="noopener">这张图</a>：</p>
-<p><img src="https://openkruise.io/zh/assets/images/inplace-update-workflow-7b4d4bb7cfb4e72882f2a6bb76f422f1.png" alt=""></p>
+<p><img src="https://tva2.sinaimg.cn/large/005UfcOkly8h3se47ep4tj31po0u0gq1.jpg" alt=""></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>原地升级是 OpenKruise 的核心能力，是其他组件和功能实现的基石。了解其底层实现原理和源码能够扩宽自己的技术视野，加深对 kubernetes 的理解，给我们提供了一种新的拓展 kubelet 的新思路。同时，当我们在使用 Openkruise 遇到问题的时候，了解源码也有助于问题的排查。</p>
 <hr>
 
