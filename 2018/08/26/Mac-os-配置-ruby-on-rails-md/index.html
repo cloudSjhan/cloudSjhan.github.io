@@ -490,8 +490,8 @@
 <li><p>首先，升级你的Mac OS到10.13</p>
 </li>
 <li><p>查看是否安装xcode command line tool：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>:xcode-select -p</span><br><span class="line">如果你看到：</span><br><span class="line">xcode-select: error: unable to get active developer directory...</span><br><span class="line">说明你没有安装xcode command line tool,需要按照下面的步骤安装。</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果你看到：</span><br><span class="line"><span class="meta">$</span>:/Applications/Xcode.app/Contents/Developer 或者/Library/Developer/CommandLineTools</span><br><span class="line">恭喜你，xcode command line tool你已经安装好了</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">:xcode-select -p</span></span><br><span class="line">如果你看到：</span><br><span class="line">xcode-select: error: unable to get active developer directory...</span><br><span class="line">说明你没有安装xcode command line tool,需要按照下面的步骤安装。</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果你看到：</span><br><span class="line"><span class="meta">$</span><span class="bash">:/Applications/Xcode.app/Contents/Developer 或者/Library/Developer/CommandLineTools</span></span><br><span class="line">恭喜你，xcode command line tool你已经安装好了</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">But，如果你很不幸运地看到了这句话：</span><br><span class="line">$: /Applications/Apple Dev Tools/Xcode.app/Contents/Developer</span><br><span class="line">那么你就要卸掉xcode重新安装了，具体原因看</span><br></pre></td></tr></table></figure>
 <p><a href="http://rvm.io/support/faq#can-i-use-a-path-with-spaces" target="_blank" rel="noopener">这里</a></p>
 </li>
@@ -503,7 +503,7 @@
 </li>
 <li><p>确认一下是否安好</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> xcode-select -p</span><br><span class="line">/Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> xcode-select -p</span></span><br><span class="line">/Library/Developer/CommandLineTools</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="配置Git"><a href="#配置Git" class="headerlink" title="配置Git"></a>配置Git</h3><ul>
@@ -511,19 +511,19 @@
 </li>
 <li><p>检查Git版本并确认已经安装让你放心</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git version</span><br><span class="line">git version 2.4.9 (Apple Git-60)</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git version</span></span><br><span class="line">git version 2.4.9 (Apple Git-60)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置Git之前，你应该到<a href="https://help.github.com/articles/signing-up-for-a-new-github-account/" target="_blank" rel="noopener">GitHub</a>上注册你的账号并记住密码和邮箱。并使用下面的命令配置：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git config -l --global</span><br><span class="line">fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory</span><br><span class="line"><span class="meta">$</span> git config --global user.name "Your Real Name"</span><br><span class="line"><span class="meta">$</span> git config --global user.email me@example.com</span><br><span class="line"><span class="meta">$</span> git config -l --global</span><br><span class="line">user.name=Your Real Name</span><br><span class="line">user.email=me@example.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git config -l --global</span></span><br><span class="line">fatal: unable to read config file '/Users/.../.gitconfig': No such file or directory</span><br><span class="line"><span class="meta">$</span><span class="bash"> git config --global user.name <span class="string">"Your Real Name"</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config --global user.email me@example.com</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git config -l --global</span></span><br><span class="line">user.name=Your Real Name</span><br><span class="line">user.email=me@example.com</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Git配置完成，在你想用Git的时候，它就会蹦出来了。</p>
 </li>
 </ul>
 <h3 id="安装Homebrow"><a href="#安装Homebrow" class="headerlink" title="安装Homebrow"></a>安装Homebrow</h3><ul>
 <li><p>检查homebrow是否已经安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> brew</span><br><span class="line">-bash: brew: command not found</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew</span></span><br><span class="line">-bash: brew: command not found</span><br></pre></td></tr></table></figure>
 <p>RVM需要<a href="http://brew.sh/" target="_blank" rel="noopener">Homebrow</a>,其实一个Mac OS额安装包管理工具，用来下载一些软件，类似于Ubuntu的apt-get和centos的yum install.为避免安装RM出现问题，我们必须安装homebrow：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ruby -e <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)</span>"</span></span></span><br></pre></td></tr></table></figure>
 <p>安装过程中可能会出现一些warning并让你输入密码：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WARNING: Improper use of the sudo command could lead to data loss...</span><br><span class="line">To proceed, enter your password...</span><br><span class="line">Password:</span><br></pre></td></tr></table></figure>
 <p>尽管输入密码，忽略warning。</p>
@@ -533,16 +533,16 @@
 <h3 id="安装GPG"><a href="#安装GPG" class="headerlink" title="安装GPG"></a>安装GPG</h3><ul>
 <li><p><a href="https://en.wikipedia.org/wiki/GNU_Privacy_Guard" target="_blank" rel="noopener">gpg</a>是一个用来检查RVM下载包的安全性的程序，我们使用homebrew来安装gpg:</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> brew install gpg</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> brew install gpg</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>gpg安装之后，为RVM安装key:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> command curl -sSL https://rvm.io/mpapis.asc | gpg --import -</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">command</span> curl -sSL https://rvm.io/mpapis.asc | gpg --import -</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="安装RVM"><a href="#安装RVM" class="headerlink" title="安装RVM"></a>安装RVM</h3><ul>
 <li><p><a href="https://rvm.io/" target="_blank" rel="noopener">RVM</a>，是Ruby version manager的简写，用来安装ruby或者管理rails版本。<a href="https://rvm.io/rvm/install/" target="_blank" rel="noopener">这个网站</a>详细说明了安装ruby的方式，但是我们有一种最简便的方式：</p>
 </li>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> \curl -L https://get.rvm.io | bash -s stable</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> \curl -L https://get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
 <p>“curl”前面的“\”用来避免ruby版本的冲突，不要漏掉。</p>
 </li>
 <li><p>安装过程中你可能会看到</p>
@@ -550,34 +550,34 @@
 <p>请输入密码并继续。</p>
 </li>
 <li><p>如果你已经安装过RVM，使用下面的命令update：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> rvm get stable --autolibs=enable</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rvm get stable --autolibs=<span class="built_in">enable</span></span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>重启terminal窗口或者使用：使RVM生效</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> source ~/.rvm/scripts/rvm</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> ~/.rvm/scripts/rvm</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="安装ruby"><a href="#安装ruby" class="headerlink" title="安装ruby"></a>安装ruby</h3><ul>
 <li><p>在安装RVM之后，我们安装最新版本的ruby。ruby 2.5.1是写此博客时当前最新的ruby版本，还请查看ruby<a href="$ source ~/.rvm/scripts/rvm">官网</a>查看最新版本的ruby。必须指定ruby的版本：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> rvm install ruby-2.5.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rvm install ruby-2.5.1</span></span><br></pre></td></tr></table></figure>
 <p>安装后检查是否安装成功：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ruby -v</span><br><span class="line">ruby 2.5.1...</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ruby -v</span></span><br><span class="line">ruby 2.5.1...</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="升级rubyGemset"><a href="#升级rubyGemset" class="headerlink" title="升级rubyGemset"></a>升级rubyGemset</h3><ul>
 <li><p><a href="https://rubygems.org/gems/rubygems-update" target="_blank" rel="noopener">RubyGems</a>是一个ruby的包管理工具，用来安装ruby的工具或者额外功能的包。</p>
 </li>
 <li><p>查看gem版本：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gem -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gem -v</span></span><br></pre></td></tr></table></figure>
 <p>将gem升级到最新版本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gem update --system</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gem update --system</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>显示RVM gemsets的最初两个设置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> rvm gemset list</span><br><span class="line">gemsets for ruby-2.5.0</span><br><span class="line">=&gt; (default)</span><br><span class="line">   global</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rvm gemset list</span></span><br><span class="line">gemsets for ruby-2.5.0</span><br><span class="line">=&gt; (default)</span><br><span class="line">   global</span><br></pre></td></tr></table></figure>
 <p>一般使用global：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> rvm gemset use global</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rvm gemset use global</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装bundle,<a href="https://rubygems.org/gems/bundler" target="_blank" rel="noopener">Bundle</a>是一个管理gem的必须的工具</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gem install Bundler</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gem install Bundler</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装Nokogiri，<a href="http://nokogiri.org/" target="_blank" rel="noopener">Nokogiri</a>需要编译成指定的系统，在上面的配置下，号称最难安装的包，也将安装好</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install nokogiri</span><br></pre></td></tr></table></figure>
@@ -586,18 +586,18 @@
 </ul>
 <h3 id="安装rails"><a href="#安装rails" class="headerlink" title="安装rails"></a>安装rails</h3><ul>
 <li><p><a href="http://rubygems.org/gems/rails" target="_blank" rel="noopener">这里</a>是ruby On rail最新的版本，5.1是最新稳定版本，5.2是release版本，我们安装5.1.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gem install rails --version=5.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gem install rails --version=5.1</span></span><br></pre></td></tr></table></figure>
 <p>如果你喜欢尝鲜，可以使用</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gem install rails --pre</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gem install rails --pre</span></span><br></pre></td></tr></table></figure>
 <p>安装release版本。</p>
 <p>检查一下rails是否装好：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> rails -v</span><br><span class="line">Rails 5.2.0</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rails -v</span></span><br><span class="line">Rails 5.2.0</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>到此为止，ruby on rails 以及其环境配置都已妥当，可以开始你的ruby之旅了。</p>
 </li>
 </ul>
 <h3 id="ruby-on-rails-的Hello-world"><a href="#ruby-on-rails-的Hello-world" class="headerlink" title="ruby on rails 的Hello world"></a>ruby on rails 的Hello world</h3><ul>
-<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd /</span><br><span class="line"><span class="meta">$</span> mkdir worlspace</span><br><span class="line"><span class="meta">$</span> cd workspace</span><br><span class="line"><span class="meta">$</span> rails _5.1.0_ new hello_app</span><br><span class="line"><span class="meta">$</span> cd hello_app</span><br><span class="line"><span class="meta">$</span> rails server</span><br></pre></td></tr></table></figure>
+<li><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir worlspace</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> workspace</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rails _5.1.0_ new hello_app</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> hello_app</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rails server</span></span><br></pre></td></tr></table></figure>
 <p>将<a href="http://localhost:3000输入浏览器，就能看到ruby" target="_blank" rel="noopener">http://localhost:3000输入浏览器，就能看到ruby</a> on rails的欢迎界面。</p>
 </li>
 </ul>
@@ -965,7 +965,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:193.8k</span>
+  <span class="post-count">Total Words:194.0k</span>
 </div>
 
 
