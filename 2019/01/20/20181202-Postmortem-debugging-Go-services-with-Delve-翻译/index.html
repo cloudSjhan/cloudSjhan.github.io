@@ -101,7 +101,7 @@
 <meta property="og:description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/index.html">
-<meta property="og:updated_time" content="2019-01-20T16:05:15.383Z">
+<meta property="og:updated_time" content="2022-07-04T01:35:34.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="20181202-Postmortem-debugging-Go-services-with-Delve[翻译]">
 <meta name="twitter:description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,380
+                  3,381
                 </span>
               
 
@@ -477,7 +477,7 @@
 <blockquote>
 <p>Vladimir Varankin 写于 2018/12/02</p>
 </blockquote>
-<p>某天，我们生产服务上的几个实例突然不能处理外部进入的流量，HTTP请求成功通过负载均衡到达实例，但是之后却hang住了。接下来记录的是一次调试在线Go服务的惊心动魄的经历。</p>
+<p>某天，我们的生产服务上的几个实例突然不能处理外部进入的流量，HTTP请求成功通过负载均衡到达实例，但是之后却hang住了。接下来记录的是一次调试在线Go服务的惊心动魄的经历。</p>
 <p>正是下面逐步演示的操作，帮助我们定位了问题的根本原因。</p>
 <p>简单起见，我们将起一个Go写的HTTP服务作为调试使用，这个服务实现的细节暂时不做深究（之后我们将深入分析代码）。一个真实的生产应用可能包含很多组件，这些组件实现了业务罗和服务的基础架构。我们可以确信，这些应用已经在生产环境“身经百战” :)。</p>
 <p>源代码以及配置细节可以查看<a href="https://github.com/narqo/postmortem-debug-go" target="_blank" rel="noopener">GitHub仓库</a>。为了完成接下来的工作，你需要一台Linux系统的虚机，这里我使用<a href="https://github.com/sevos/vagrant-hostmanager" target="_blank" rel="noopener">vagrant-hostmanager</a>插件。<code>Vagrantfile</code>在GitHub仓库的根目录，可以查看更多细节。</p>
@@ -590,7 +590,7 @@
   <p><span>本文标题:</span><a href="/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/">20181202-Postmortem-debugging-Go-services-with-Delve[翻译]</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2019年01月20日 - 23:01</p>
-  <p><span>最后更新:</span>2019年01月21日 - 00:01</p>
+  <p><span>最后更新:</span>2022年07月04日 - 09:07</p>
   <p><span>原始链接:</span><a href="/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/" title="20181202-Postmortem-debugging-Go-services-with-Delve[翻译]">https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/"  aria-label="复制成功！"></i></span>
   </p>
