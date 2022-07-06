@@ -186,7 +186,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">To be A geek</p>
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
       
   </div>
 
@@ -349,7 +349,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">git如何找回被删除的分支</h1>
+          <h2 class="post-title" itemprop="name headline">git如何找回被删除的分支</h2>
         
 
         <div class="post-meta">
@@ -413,6 +413,11 @@
              </span>
           
 
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
           
 
           
@@ -492,7 +497,7 @@
 <ul>
 <li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li>
 </ul>
-<p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#x64;&#105;&#112;&#122;&#x6f;&#110;&#101;&#64;&#x73;&#105;&#110;&#97;&#x2e;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#x64;&#105;&#112;&#122;&#x6f;&#110;&#101;&#64;&#x73;&#105;&#110;&#97;&#x2e;&#99;&#111;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#122;&#111;&#x6e;&#101;&#x40;&#x73;&#x69;&#x6e;&#x61;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#122;&#111;&#x6e;&#101;&#x40;&#x73;&#x69;&#x6e;&#x61;&#x2e;&#x63;&#111;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p>
+<p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#100;&#105;&#x70;&#x7a;&#x6f;&#x6e;&#101;&#x40;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#105;&#x70;&#x7a;&#x6f;&#x6e;&#101;&#x40;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#x66;&#100;&#105;&#x70;&#x7a;&#111;&#x6e;&#101;&#64;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x66;&#100;&#105;&#x70;&#x7a;&#111;&#x6e;&#101;&#64;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p>
 <pre><code>add test.txt
 </code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p>
 <p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p>
@@ -557,6 +562,14 @@
 
       
 </div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
     
 
     
@@ -710,7 +723,7 @@
                 alt="cloud sjhan" />
             
               <p class="site-author-name" itemprop="name">cloud sjhan</p>
-              <p class="site-description motion-element" itemprop="description">关于技术，关于生活</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -772,12 +785,6 @@
                     <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-globe"></i>E-Mail</a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://www.facebook.com/韩山杰" target="_blank" title="FB Page">
-                      
-                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
                   </span>
                 
             </div>
@@ -852,6 +859,15 @@
   </span>
   <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">194.0k</span>
   
 </div>
 
@@ -1484,6 +1500,21 @@
   
 
   
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 
   
   
