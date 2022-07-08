@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="OpenKruise,kubernetes," />
+  <meta name="keywords" content="kubernetes,OpenKruise," />
 
 
 
@@ -93,7 +93,7 @@
 
 
 <meta name="description" content="OpenKruise 源码剖析之 ContainerRecreateRequest">
-<meta name="keywords" content="OpenKruise,kubernetes">
+<meta name="keywords" content="kubernetes,OpenKruise">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenKruise 源码分析之 ContainerRecreateRequest">
 <meta property="og:url" content="https://cloudsjhan.github.io/2022/07/03/OpenKruise-源码分析之-ContainerRecreateRequest/index.html">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/03/OpenKruise-源码分析之-ContainerRecreateRequest/index.html">
 <meta property="og:image" content="https://tva3.sinaimg.cn/large/005UfcOkly8h3zb5cpihfj31go0mcwhy.jpg">
 <meta property="og:image" content="https://tva3.sinaimg.cn/large/005UfcOkly8h3zwumldtfj31hg0re0z7.jpg">
-<meta property="og:updated_time" content="2022-07-08T15:04:02.937Z">
+<meta property="og:updated_time" content="2022-07-08T15:13:13.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenKruise 源码分析之 ContainerRecreateRequest">
 <meta name="twitter:description" content="OpenKruise 源码剖析之 ContainerRecreateRequest">
@@ -435,7 +435,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,390
+                  2,652
                 </span>
               
 
@@ -451,7 +451,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  11
+                  12
                 </span>
               
             </div>
@@ -483,12 +483,15 @@
 <blockquote>
 <p>OpenKruise 是基于 CRD 的拓展，包含了很多应用工作负载和运维增强能力，本系列文章会从源码和底层原理上解读各个组件，以帮助大家更好地使用和理解 OpenKruise。让我们开始 OpenKruise 的源码之旅吧！</p>
 </blockquote>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇文章中我们解读了 OpenKruise 原地升级的原理和相关代码，在此基础上我们来研究一个基于原地升级能力的组件 - <a href="https://openkruise.io/zh/docs/user-manuals/containerrecreaterequest" title="kruise CRR" target="_blank" rel="noopener">ContainerRecreateRequest</a>。<br><code>ContainerRecreateRequest(下文简称 CRR)</code> 能够重建 Pod 中一个或多个容器。该功能和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。如果挂载了 volume mount 挂载卷，卷中的数据不会丢失也不需要重新挂载。这个功能实现了运维容器与业务容器的管理分离，比如一个 Pod 中会有主容器中运行核心业务，sidecar 中运行运维容器，比如日志收集等.当运维容器需要维护或者更新的时候，传统的更新方式会让整个 Pod 重启从而导致业务容器无故被重启，而使用 ContainerRecreateRequest 可以实现只让 sidecar 容器更新，高效的同时更加安全。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="https://cloudsjhan.github.io/2022/06/19/OpenKruise-%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8B%E5%8E%9F%E5%9C%B0%E5%8D%87%E7%BA%A7/#more" title="OpenKruise 源码分析之原地升级">上一篇文章</a>中我们解读了 OpenKruise 原地升级的原理和相关代码，在此基础上我们来研究一个基于原地升级能力的组件 - <a href="https://openkruise.io/zh/docs/user-manuals/containerrecreaterequest" title="kruise CRR" target="_blank" rel="noopener">ContainerRecreateRequest</a>。<br><code>ContainerRecreateRequest(下文简称 CRR)</code> 能够重建 Pod 中一个或多个容器。该功能和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。如果挂载了 volume mount 挂载卷，卷中的数据不会丢失也不需要重新挂载。这个功能实现了运维容器与业务容器的管理分离，比如一个 Pod 中会有主容器中运行核心业务，sidecar 中运行运维容器，比如日志收集等.当运维容器需要维护或者更新的时候，传统的更新方式会让整个 Pod 重启从而导致业务容器无故被重启，而使用 ContainerRecreateRequest 可以实现只让 sidecar 容器更新，高效的同时更加安全。</p>
 <p>今天就让我们从源码的角度来看一下 <code>ContainerRecreateRequest</code> 的实现原理。</p>
 <h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><p>我们先来看一下整个 <code>CRR</code> 的代码流程概览，可以看到整个过程主要有三个组件参与，包括 CRR 的 admission webhook， controller manager，以及我们上一篇就提到过的原地升级中的重要组件 - <code>kruise-daemon</code> 中的 <code>crr daemon controller</code>。</p>
 <p><img src="https://tva3.sinaimg.cn/large/005UfcOkly8h3zb5cpihfj31go0mcwhy.jpg" alt=""></p>
 <p>然后我们再逐步拆开讲解每一步的内容。</p>
-<h3 id="1-create-CRR"><a href="#1-create-CRR" class="headerlink" title="1. create CRR"></a>1. create CRR</h3><h4 id="1-1-检查-feature-gate"><a href="#1-1-检查-feature-gate" class="headerlink" title="1.1 检查 feature-gate"></a>1.1 检查 feature-gate</h4><p>首先当我们创建一个 CRR 的时候，会最先经过 adminssion webhook，webhook 中会最先检查当前 feature gates 中是否开启了 <code>kruise-daemon</code> ，因为这个功能依赖于 kruise-daemon 组件来停止 Pod 容器，如果 KruiseDaemon feature-gate 被关闭了，ContainerRecreateRequest 也将无法使用。</p>
+<h3 id="1-create-CRR"><a href="#1-create-CRR" class="headerlink" title="1. create CRR"></a>1. create CRR</h3><p>先看一下 CRR 这个自定义资源的 schema 定义:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps.kruise.io/v1alpha1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ContainerRecreateRequest</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">pod-namespace</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">xxx</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  podName:</span> <span class="string">pod-name</span></span><br><span class="line"><span class="attr">  containers:</span>       <span class="comment"># 要重建的容器名字列表，至少要有 1 个</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">app</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">sidecar</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    failurePolicy:</span> <span class="string">Fail</span>                 <span class="comment"># 'Fail' 或 'Ignore'，表示一旦有某个容器停止或重建失败， CRR 立即结束</span></span><br><span class="line"><span class="attr">    orderedRecreate:</span> <span class="literal">false</span>              <span class="comment"># 'true' 表示要等前一个容器重建完成了，再开始重建下一个</span></span><br><span class="line"><span class="attr">    terminationGracePeriodSeconds:</span> <span class="number">30</span>   <span class="comment"># 等待容器优雅退出的时间，不填默认用 Pod 中定义的</span></span><br><span class="line"><span class="attr">    unreadyGracePeriodSeconds:</span> <span class="number">3</span>        <span class="comment"># 在重建之前先把 Pod 设为 not ready，并等待这段时间后再开始执行重建</span></span><br><span class="line"><span class="attr">    minStartedSeconds:</span> <span class="number">10</span>               <span class="comment"># 重建后新容器至少保持运行这段时间，才认为该容器重建成功</span></span><br><span class="line"><span class="attr">  activeDeadlineSeconds:</span> <span class="number">300</span>        <span class="comment"># 如果 CRR 执行超过这个时间，则直接标记为结束（未结束的容器标记为失败）</span></span><br><span class="line"><span class="attr">  ttlSecondsAfterFinished:</span> <span class="number">1800</span>     <span class="comment"># CRR 结束后，过了这段时间自动被删除掉</span></span><br></pre></td></tr></table></figure>
+<p>然后开始走读代码流程。</p>
+<h4 id="1-1-检查-feature-gate"><a href="#1-1-检查-feature-gate" class="headerlink" title="1.1 检查 feature-gate"></a>1.1 检查 feature-gate</h4><p>当我们创建一个 CRR 的时候，会最先经过 adminssion webhook，webhook 中会最先检查当前 feature gates 中是否开启了 <code>kruise-daemon</code> ，因为这个功能依赖于 kruise-daemon 组件来停止 Pod 容器，如果 KruiseDaemon feature-gate 被关闭了，ContainerRecreateRequest 也将无法使用。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *ContainerRecreateRequestHandler)</span> <span class="title">Handle</span><span class="params">(ctx context.Context, req admission.Request)</span> <span class="title">admission</span>.<span class="title">Response</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> !utilfeature.DefaultFeatureGate.Enabled(features.KruiseDaemon) &#123;</span><br><span class="line">		<span class="keyword">return</span> admission.Errored(http.StatusForbidden, fmt.Errorf(<span class="string">"feature-gate %s is not enabled"</span>, features.KruiseDaemon))</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="1-2-注入默认值并检查-Pod"><a href="#1-2-注入默认值并检查-Pod" class="headerlink" title="1.2 注入默认值并检查 Pod"></a>1.2 注入默认值并检查 Pod</h4><p>创建 CRR 的时候要为其注入一些特定的标签，为后面控制启动容器的流程做准备，比如打上 <code>ContainerRecreateRequestPodNameKey</code>，<code>ContainerRecreateRequestActiveKey</code>的标签:</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.Labels[appsv1alpha1.ContainerRecreateRequestPodNameKey] = obj.Spec.PodName</span><br><span class="line">obj.Labels[appsv1alpha1.ContainerRecreateRequestActiveKey] = <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
@@ -623,9 +626,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/OpenKruise/" rel="tag"><i class="fa fa-tag"></i> OpenKruise</a>
-          
             <a href="/tags/kubernetes/" rel="tag"><i class="fa fa-tag"></i> kubernetes</a>
+          
+            <a href="/tags/OpenKruise/" rel="tag"><i class="fa fa-tag"></i> OpenKruise</a>
           
         </div>
       
@@ -879,7 +882,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">196.4k</span>
+    <span title="Site words total count">196.7k</span>
   
 </div>
 
@@ -892,7 +895,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:196.4k</span>
+  <span class="post-count">Total Words:196.7k</span>
 </div>
 
 
