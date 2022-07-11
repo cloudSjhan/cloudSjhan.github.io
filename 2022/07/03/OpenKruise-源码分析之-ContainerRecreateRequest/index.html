@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="kubernetes,OpenKruise," />
+  <meta name="keywords" content="OpenKruise,kubernetes," />
 
 
 
@@ -93,7 +93,7 @@
 
 
 <meta name="description" content="OpenKruise 源码剖析之 ContainerRecreateRequest">
-<meta name="keywords" content="kubernetes,OpenKruise">
+<meta name="keywords" content="OpenKruise,kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenKruise 源码分析之 ContainerRecreateRequest">
 <meta property="og:url" content="https://cloudsjhan.github.io/2022/07/03/OpenKruise-源码分析之-ContainerRecreateRequest/index.html">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/03/OpenKruise-源码分析之-ContainerRecreateRequest/index.html">
 <meta property="og:image" content="https://tva3.sinaimg.cn/large/005UfcOkly8h3zb5cpihfj31go0mcwhy.jpg">
 <meta property="og:image" content="https://tva3.sinaimg.cn/large/005UfcOkly8h3zwumldtfj31hg0re0z7.jpg">
-<meta property="og:updated_time" content="2022-07-08T23:02:55.875Z">
+<meta property="og:updated_time" content="2022-07-08T23:11:40.595Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenKruise 源码分析之 ContainerRecreateRequest">
 <meta name="twitter:description" content="OpenKruise 源码剖析之 ContainerRecreateRequest">
@@ -483,7 +483,7 @@
 <blockquote>
 <p>OpenKruise 是基于 CRD 的拓展，包含了很多应用工作负载和运维增强能力，本系列文章会从源码和底层原理上解读各个组件，以帮助大家更好地使用和理解 OpenKruise。让我们开始 OpenKruise 的源码之旅吧！</p>
 </blockquote>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="https://cloudsjhan.github.io/2022/06/19/OpenKruise-%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%E4%B9%8B%E5%8E%9F%E5%9C%B0%E5%8D%87%E7%BA%A7/#more" title="OpenKruise 源码分析之原地升级">上一篇文章</a>中我们解读了 OpenKruise 原地升级的原理和相关代码，在此基础上我们来研究一个基于原地升级能力的组件 - <a href="https://openkruise.io/zh/docs/user-manuals/containerrecreaterequest" title="kruise CRR" target="_blank" rel="noopener">ContainerRecreateRequest</a>。<br><code>ContainerRecreateRequest(下文简称 CRR)</code> 能够重建 Pod 中一个或多个容器。该功能和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。如果挂载了 volume mount 挂载卷，卷中的数据不会丢失也不需要重新挂载。这个功能实现了运维容器与业务容器的管理分离，比如一个 Pod 中会有主容器中运行核心业务，sidecar 中运行运维容器，比如日志收集等.当业务容器需要重启的时候，传统的更新方式会让整个 Pod 重启从而导致运维容器无故被重启从而中断服务，而使用 ContainerRecreateRequest 可以实现只让特定的容器重启，高效的同时更加安全。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在<a href="https://cloudsjhan.github.io/2022/06/19/OpenKruise-源码解读之原地升级/" title="OpenKruise 源码分析之原地升级">上一篇文章</a>中我们解读了 OpenKruise 原地升级的原理和相关代码，在此基础上我们来研究一个基于原地升级能力的组件 - <a href="https://openkruise.io/zh/docs/user-manuals/containerrecreaterequest" title="kruise CRR" target="_blank" rel="noopener">ContainerRecreateRequest</a>。<br><code>ContainerRecreateRequest(下文简称 CRR)</code> 能够重建 Pod 中一个或多个容器。该功能和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。如果挂载了 volume mount 挂载卷，卷中的数据不会丢失也不需要重新挂载。这个功能实现了运维容器与业务容器的管理分离，比如一个 Pod 中会有主容器中运行核心业务，sidecar 中运行运维容器，比如日志收集等.当业务容器需要重启的时候，传统的更新方式会让整个 Pod 重启从而导致运维容器无故被重启从而中断服务，而使用 ContainerRecreateRequest 可以实现只让特定的容器重启，高效的同时更加安全。</p>
 <p>今天就让我们从源码的角度来看一下 <code>ContainerRecreateRequest</code> 的实现原理。</p>
 <h2 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h2><p>我们先来看一下整个 <code>CRR</code> 的代码流程概览，可以看到整个过程主要有三个组件参与，包括 CRR 的 admission webhook， controller manager，以及我们上一篇就提到过的原地升级中的重要组件 - <code>kruise-daemon</code> 中的 <code>crr daemon controller</code>。</p>
 <p><img src="https://tva3.sinaimg.cn/large/005UfcOkly8h3zb5cpihfj31go0mcwhy.jpg" alt=""></p>
@@ -626,9 +626,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/kubernetes/" rel="tag"><i class="fa fa-tag"></i> kubernetes</a>
-          
             <a href="/tags/OpenKruise/" rel="tag"><i class="fa fa-tag"></i> OpenKruise</a>
+          
+            <a href="/tags/kubernetes/" rel="tag"><i class="fa fa-tag"></i> kubernetes</a>
           
         </div>
       
@@ -663,6 +663,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/" rel="prev" title="OpenKruise 源码分析之 ResourceDistribution">
+                OpenKruise 源码分析之 ResourceDistribution <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -748,7 +752,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
