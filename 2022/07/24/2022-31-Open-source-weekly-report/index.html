@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg">
-<meta property="og:updated_time" content="2022-07-25T04:24:04.607Z">
+<meta property="og:updated_time" content="2022-07-25T04:29:13.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022-31 Open source weekly report">
 <meta name="twitter:description" content="2022 No31. 开源周报">
@@ -434,7 +434,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  721
+                  777
                 </span>
               
 
@@ -480,8 +480,9 @@
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
 <p>本周是 2022 年第 31 周，以下是本周的开源周报。</p>
-<p>周中的时候在 OpenKruise 社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
-<p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
+<h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
+<p>其实这个想法在很久之前我就有了，当时搁置了一下就淹没在琐碎之中了。趁着这周末的空闲，打算把这个功能实现一把。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
 <p>目前用户创建 CRR 实现容器原地重启的方式主要有两种方式：</p>
 <ul>
 <li>kubectl apply -f crr.yaml</li>
@@ -826,7 +827,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#确定目标"><span class="nav-number">1.</span> <span class="nav-text">确定目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碎碎念"><span class="nav-number">3.</span> <span class="nav-text">碎碎念</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事出有因"><span class="nav-number">1.</span> <span class="nav-text">事出有因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">2.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定目标"><span class="nav-number">3.</span> <span class="nav-text">确定目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碎碎念"><span class="nav-number">5.</span> <span class="nav-text">碎碎念</span></a></li></ol></div>
             
 
           </div>
