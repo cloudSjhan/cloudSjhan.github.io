@@ -92,21 +92,21 @@
 
 
 
-<meta name="description" content="2022 No31. 开源周报">
+<meta name="description" content="2022 NO.31 开源周报">
 <meta name="keywords" content="weekly-report">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2022-31 Open source weekly report">
+<meta property="og:title" content="2022 NO.31 Open source weekly report">
 <meta property="og:url" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="2022 No31. 开源周报">
+<meta property="og:description" content="2022 NO.31 开源周报">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg">
-<meta property="og:updated_time" content="2022-07-25T05:03:18.455Z">
+<meta property="og:updated_time" content="2022-07-25T05:52:29.756Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2022-31 Open source weekly report">
-<meta name="twitter:description" content="2022 No31. 开源周报">
+<meta name="twitter:title" content="2022 NO.31 Open source weekly report">
+<meta name="twitter:description" content="2022 NO.31 开源周报">
 <meta name="twitter:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 
 
@@ -152,7 +152,7 @@
   </script>
 
 
-  <title>2022-31 Open source weekly report | cloud world</title>
+  <title>2022 NO.31 Open source weekly report | cloud world</title>
   
 
 
@@ -351,7 +351,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">2022-31 Open source weekly report</h2>
+          <h2 class="post-title" itemprop="name headline">2022 NO.31 Open source weekly report</h2>
         
 
         <div class="post-meta">
@@ -403,7 +403,7 @@
 
           
           
-             <span id="/2022/07/24/2022-31-Open-source-weekly-report/" class="leancloud_visitors" data-flag-title="2022-31 Open source weekly report">
+             <span id="/2022/07/24/2022-31-Open-source-weekly-report/" class="leancloud_visitors" data-flag-title="2022 NO.31 Open source weekly report">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,7 +435,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  819
+                  832
                 </span>
               
 
@@ -459,7 +459,7 @@
 
           
               <div class="post-description">
-                  2022 No31. 开源周报
+                  2022 NO.31 开源周报
               </div>
           
 
@@ -480,9 +480,9 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>本周是 2022 年第 31 周，以下是本周的开源周报。</p>
-<h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
-<p>其实这个想法在很久之前我就有了，<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg" alt=""><br>当时搁置了一下就淹没在琐碎之中了，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
+<p>2022 年第 31 周，以下是本周的开源周报。</p>
+<h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 开源社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
+<p>其实这个想法我在很久之前就有了，<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg" alt=""><br>当时搁置了一下就淹没在琐碎之中，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
 <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
 <p>目前用户创建 CRR 实现容器原地重启的方式主要有两种方式：</p>
 <ul>
@@ -490,11 +490,11 @@
 <li>OpenKruise API</li>
 </ul>
 <p>这两种方式对集群运维人员来说都不够友好，过于繁琐。最好的方式就是在 terminal 中使用一行命令就能创建 CRR 完成原地重启。而 <a href="https://github.com/openkruise/kruise-tools" title="kruise-tools" target="_blank" rel="noopener">Kruise-tools</a> 为 Kruise 的功能提供了一系列命令行工具，包括 kubectl-kruise，它的是 kubectl 的标准插件。在这个插件中可以很容易集成该功能。（关于 kubectl-kruise 后面打算专门开一篇文章来详细介绍。)</p>
-<h3 id="确定目标"><a href="#确定目标" class="headerlink" title="确定目标"></a>确定目标</h3><p>需要保证输入的参数尽量少，其他的必须参数都给到合理的默认值，以便用户能够以最快的速度创建 CRR 重启容器，所以我在插件中定义了 CRR 的一个默认策略：</p>
+<h3 id="确定目标"><a href="#确定目标" class="headerlink" title="确定目标"></a>确定目标</h3><p>首先我们需要保证输入的参数尽量少，其他的必须参数都给到合理的默认值，以便用户能够以最快的速度创建 CRR 重启容器，所以我在插件中定义了 CRR 的一个默认策略：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strategy:</span><br><span class="line">    failurePolicy: Fail                </span><br><span class="line">    orderedRecreate: false             </span><br><span class="line">    unreadyGracePeriodSeconds: 3       </span><br><span class="line">  	activeDeadlineSeconds: 300        </span><br><span class="line">  	ttlSecondsAfterFinished: 1800</span><br></pre></td></tr></table></figure>
 <p>确定最终的命令为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl kruise create ContainerRecreateRequest test-crr --pod=sample-k52bq --containers=nginx</span><br></pre></td></tr></table></figure>
-<p>重启 pod sample-k52bq 中名字为 <code>nginx</code> 的容器，<code>--containers</code> 为一个列表，如果为空就重启 pod 中所有的容器，否则重启指定容器。</p>
+<p>执行这条命令就可以重启 pod sample-k52bq 中名字为 <code>nginx</code> 的容器，其中 <code>--containers</code> 为一个列表，如果为空就重启 pod 中所有的容器，否则重启指定容器。</p>
 <p>除了 <code>--pod</code>、<code>--containers</code> 还支持 <code>unreadyGracePeriodSeconds</code> 和 <code>terminationGracePeriodSeconds</code>，这两个参数都是选填。</p>
 <ul>
 <li>unreadyGracePeriodSeconds: 重建后新容器至少保持运行这段时间，才认为该容器重建成功</li>
@@ -502,7 +502,8 @@
 </ul>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>相关的代码实现可以查看这个 <a href="https://github.com/openkruise/kruise-tools/pull/66" target="_blank" rel="noopener">PR</a>。</p>
 <p>这部分代码合并后下周会 release 新版本，想要尝鲜的同学可以 clone 项目后自行编译。</p>
-<h3 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h3><p>这篇文章是 weekly-report 系列的第一篇，之所以开始这个系列，真是说来话长。差不多就是刚开始写 blog 的时候是想每周都输出一篇有点子质量的技术文章，发现这样太难了，一是没有这么多内容输出，二是很容易被其他杂事打乱，很难坚持。这次开始以开源周报的名义写每周的 blog，实际上是想以一种随意、自由的方式，输出一点东西，不计篇幅也不考究质量，只为记录，这样大概能坚持下去吧。<br>都说日拱一卒，我先周拱一卒。</p>
+<h3 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h3><p>这篇文章是 weekly-report 系列的第一篇，之所以开始这个系列，真是说来话长。差不多就是刚开始写 blog 的时候是想每周都输出一篇有点子质量的技术文章，发现这样太难了，一是没有这么多内容输出，二是很容易被其他杂事打乱，很难坚持。这次开始以开源周报的名义写每周的 blog，实际上是想以一种随意、自由的方式，输出一点东西，不计篇幅也不考究质量，只为记录，这样大概能坚持下去吧。</p>
+<p>都说日拱一卒，我先周拱一卒。</p>
 <hr>
 
       
@@ -531,11 +532,11 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/">2022-31 Open source weekly report</a></p>
+  <p><span>本文标题:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/">2022 NO.31 Open source weekly report</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2022年07月24日 - 22:07</p>
   <p><span>最后更新:</span>2022年07月25日 - 13:07</p>
-  <p><span>原始链接:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/" title="2022-31 Open source weekly report">https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/</a>
+  <p><span>原始链接:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/" title="2022 NO.31 Open source weekly report">https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
