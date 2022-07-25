@@ -102,7 +102,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg">
-<meta property="og:updated_time" content="2022-07-25T04:38:34.881Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg">
+<meta property="og:updated_time" content="2022-07-25T04:57:42.374Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022-31 Open source weekly report">
 <meta name="twitter:description" content="2022 No31. 开源周报">
@@ -481,7 +482,7 @@
 <a id="more"></a>
 <p>本周是 2022 年第 31 周，以下是本周的开源周报。</p>
 <h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
-<p>其实这个想法在很久之前我就有了，当时搁置了一下就淹没在琐碎之中了，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
+<p>其实这个想法在很久之前我就有了，<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg" alt=""><br>当时搁置了一下就淹没在琐碎之中了，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
 <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
 <p>目前用户创建 CRR 实现容器原地重启的方式主要有两种方式：</p>
 <ul>
