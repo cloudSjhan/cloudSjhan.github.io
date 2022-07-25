@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg">
-<meta property="og:updated_time" content="2022-07-25T04:29:13.531Z">
+<meta property="og:updated_time" content="2022-07-25T04:38:34.881Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022-31 Open source weekly report">
 <meta name="twitter:description" content="2022 No31. 开源周报">
@@ -434,7 +434,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  777
+                  817
                 </span>
               
 
@@ -481,7 +481,7 @@
 <a id="more"></a>
 <p>本周是 2022 年第 31 周，以下是本周的开源周报。</p>
 <h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
-<p>其实这个想法在很久之前我就有了，当时搁置了一下就淹没在琐碎之中了。趁着这周末的空闲，打算把这个功能实现一把。</p>
+<p>其实这个想法在很久之前我就有了，当时搁置了一下就淹没在琐碎之中了，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
 <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
 <p>目前用户创建 CRR 实现容器原地重启的方式主要有两种方式：</p>
 <ul>
@@ -500,8 +500,8 @@
 <li>terminationGracePeriodSeconds： 等待容器优雅退出的时间，不填默认用 Pod 中定义的</li>
 </ul>
 <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>相关的代码实现可以查看这个 <a href="https://github.com/openkruise/kruise-tools/pull/66" target="_blank" rel="noopener">PR</a>。</p>
-<p>这部分代码合并后下周会 release 新版本，想要尝鲜的可以 clone 项目后自行编译。</p>
-<h3 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h3><p>最开始的时候是想每周都输出一篇有点子质量的技术文章，发现这样太难了，一是没有这么多内容输出，二是很容易被其他杂事打乱，很难坚持。这次开始以开源周报的名义写每周的输出，实际上是想以一种随意的方式，输出一点东西，不计篇幅也不考究质量，只为记录，这样大概能坚持下去吧。都说日拱一卒，我先周拱一卒吧。</p>
+<p>这部分代码合并后下周会 release 新版本，想要尝鲜的同学可以 clone 项目后自行编译。</p>
+<h3 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h3><p>这篇文章是 weekly-report 系列的第一篇，之所以开始这个系列，还得从很久之前说起。刚开始写 blog 的时候是想每周都输出一篇有点子质量的技术文章，发现这样太难了，一是没有这么多内容输出，二是很容易被其他杂事打乱，很难坚持。这次开始以开源周报的名义写每周的 blog，实际上是想以一种随意、自由的方式，输出一点东西，不计篇幅也不考究质量，只为记录，这样大概能坚持下去吧。<br>都说日拱一卒，我先周拱一卒。</p>
 <hr>
 
       
@@ -861,7 +861,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">197.5k</span>
+    <span title="Site words total count">197.6k</span>
   
 </div>
 
@@ -874,7 +874,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:197.5k</span>
+  <span class="post-count">Total Words:197.6k</span>
 </div>
 
 
