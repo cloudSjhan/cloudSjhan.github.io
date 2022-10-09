@@ -506,7 +506,7 @@
 <p>我们检查了下启动 java 进程的脚本，发现确实是用 <code>exec</code> 的方式启动的，那为什么 java 进程的 PID 还不是 1 呢？</p>
 <p>原因是 <code>exec</code> 形式的 <code>ENTRYPOINT</code> 只能解决 <code>无需任何准备工作就启动进程</code> 的场景，而不能解决一些需要准备工作的复杂场景。举个栗子，我们的 ENTRYPOINT 往往需要执行一个 shell 脚本，然后在脚本的最后才会去执行 <code>java -jar xxx</code>，这时候，我们的 java 进程就无法成为 PID 1 进程。</p>
 <p>我们可以在 shell 中使用 exec 命令来解决。这个命令的作用就是使用新的进程替代原有的进程，并保持 PID 不变。 这就意味着我们可以在执行 java 命令的时候使用它，从而替换掉 PID 1 的 shell 脚本。</p>
-<p>entrypoint.sh demo<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">echo "prepare..."</span><br><span class="line">exec java -jar app.jar</span><br></pre></td></tr></table></figure></p>
+<p>entrypoint.sh demo<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">echo "prepare..."</span><br><span class="line">exec java -jar app.jar</span><br></pre></td></tr></table></figure></p>
 <p>修改后我们再来看下容器中的 java 进程的 PID：</p>
 <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gkz5cr2pqrj313a052t9w.jpg" alt=""></p>
 <p>使用 exec 之后，容器中 java 进程的 PID 成为 1，我们发出 delete pod 请求能让进程接收到 SIGTERM 信号，执行相应的操作后立即退出。</p>
