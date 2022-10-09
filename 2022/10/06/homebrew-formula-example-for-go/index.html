@@ -103,7 +103,7 @@
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/10/06/homebrew-formula-example-for-go/index.html">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h6z5wwxx48j31bm0e241t.jpg">
 <meta property="og:image" content="https://tva3.sinaimg.cn/large/005UfcOkly8h6z5domkzbj31c007swfx.jpg">
-<meta property="og:updated_time" content="2022-10-09T09:28:56.022Z">
+<meta property="og:updated_time" content="2022-10-09T09:33:03.557Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022-41 homebrew formula example for go">
 <meta name="twitter:description" content="homebrew formula example for go">
@@ -435,7 +435,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  366
+                  371
                 </span>
               
 
@@ -487,8 +487,8 @@
 <p>根据 homebrew-core 的文档，在提 PR 之前要完成几个前置操作：<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h6z5wwxx48j31bm0e241t.jpg" alt=""></p>
 <p>当执行到 <code>brew test bendsql</code> 的时候，发现向 homebrew 官方仓库提交应用是需要满足一定条件的：<br><img src="https://tva3.sinaimg.cn/large/005UfcOkly8h6z5domkzbj31c007swfx.jpg" alt=""></p>
 <p>bendsql 刚开源一周还没满足以上条件，所以没法直接使用 <code>brew install bendsql</code>，只能另辟蹊径了。</p>
-<p>想起来之前写其他工具的时候，只要在自己的账户中创建一个 homebrew-tap 的 repo, 比如 <a href="https://github.com/hantmac/homebrew-tap" target="_blank" rel="noopener">https://github.com/hantmac/homebrew-tap</a> 就能实现类似的下载效果。</p>
-<p>所以只要在 databendcloud 的账户下，新建一个这样的 repo，将 formula 提交进去就可以 <code>brew tap databendcloud/homebrew-tap &amp;&amp; brew install bendsql</code> 很方便地下载了。</p>
+<p>想起来之前写其他工具的时候，只要在自己的账户中创建一个 homebrew-tap 的 repo, 比如 <a href="https://github.com/hantmac/homebrew-tap" target="_blank" rel="noopener">https://github.com/hantmac/homebrew-tap</a>, 就能实现类似的下载效果。</p>
+<p>所以只要在 databendcloud 的账户下，新建一个这样的 repo，将上面配好的 formula 提交进去就可以 <code>brew tap databendcloud/homebrew-tap &amp;&amp; brew install bendsql</code> 很方便地下载了。</p>
 <hr>
 
       
