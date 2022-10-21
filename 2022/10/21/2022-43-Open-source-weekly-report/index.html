@@ -101,7 +101,8 @@
 <meta property="og:description" content="2022 NO.40 weekly report">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/10/21/2022-43-Open-source-weekly-report/index.html">
-<meta property="og:updated_time" content="2022-10-21T10:41:09.856Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h7d6u4upl3j31gq0fuwfq.jpg">
+<meta property="og:updated_time" content="2022-10-21T12:46:27.763Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022 43 Open source weekly report">
 <meta name="twitter:description" content="2022 NO.40 weekly report">
@@ -433,7 +434,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  12
+                  704
                 </span>
               
 
@@ -449,7 +450,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
@@ -478,7 +479,29 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<h2 id="Go-driver-SDK-for-databend-cloud-released"><a href="#Go-driver-SDK-for-databend-cloud-released" class="headerlink" title="Go driver SDK for databend cloud released!"></a>Go driver SDK for databend cloud released!</h2><h2 id="bendsql-尝鲜-go-driver"><a href="#bendsql-尝鲜-go-driver" class="headerlink" title="bendsql 尝鲜 go driver"></a>bendsql 尝鲜 go driver</h2><hr>
+<h2 id="Go-driver-SDK-for-databend-cloud-released"><a href="#Go-driver-SDK-for-databend-cloud-released" class="headerlink" title="Go driver SDK for databend cloud released!"></a>Go driver SDK for databend cloud released!</h2><p>由于在 databend cloud 各个项目的代码中已经充斥着大量重复的请求 databend-query 的代码，所以亟需一个 driver SDK 来实现大一统，于是在几周前就开始着手实现 databend cloud 的 go driver，当时用比较短的时间大概实现了一个架子，详情可以见 <a href="https://cloudsjhan.github.io/2022/09/02/2022-36-Open-source-weekly-report/">这篇文章</a>。碍于中间有几个优先级比较高的工作就暂时搁置了，本周 all in 这个项目一周，终于 release 了 <a href="https://github.com/databendcloud/databend-go" target="_blank" rel="noopener">v0.0.1 版本</a>，虽然代码的结构、功能的丰富程度、代码的优雅程度都跟标杆 SDK - <a href="https://github.com/ClickHouse/clickhouse-go" target="_blank" rel="noopener">clickhouse-go</a> 的水平有较大差距，但基本的方法比如 <code>sql.Open</code>, <code>Exec</code>, <code>Query</code>, <code>Next</code>, <code>Rows</code> 等都已经可用。先来看几个🌰吧!</p>
+<h3 id="Execution"><a href="#Execution" class="headerlink" title="Execution"></a>Execution</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">  dsn, cfg, err := getDSN()</span><br><span class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  log.Fatalf(<span class="string">"failed to create DSN from Config: %v, err: %v"</span>, cfg, err)</span><br><span class="line">      &#125;</span><br><span class="line">conn, err := sql.Open(<span class="string">"databend"</span>, dsn)</span><br><span class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">   &#125;</span><br><span class="line">  conn.Exec(<span class="string">`DROP TABLE IF EXISTS data`</span>)</span><br><span class="line">  _, err = conn.Exec(<span class="string">`</span></span><br><span class="line"><span class="string">  CREATE TABLE IF NOT EXISTS  data(</span></span><br><span class="line"><span class="string">      Col1 UInt8,</span></span><br><span class="line"><span class="string">      Col2 String</span></span><br><span class="line"><span class="string">  ) </span></span><br><span class="line"><span class="string">  `</span>)</span><br><span class="line">  <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">  &#125;</span><br><span class="line">  _, err = conn.Exec(<span class="string">"INSERT INTO data VALUES (1, 'test-1')"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Query-Row"><a href="#Query-Row" class="headerlink" title="Query Row"></a>Query Row</h3><p>可以用 <code>Scan</code> 方法来解析出单条数据<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">row := conn.QueryRow(<span class="string">"SELECT * FROM data"</span>)</span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    col1             <span class="keyword">uint8</span></span><br><span class="line">    col2, col3, col4 <span class="keyword">string</span></span><br><span class="line">    col5            []<span class="keyword">string</span></span><br><span class="line">    col6             time.Time</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> err := row.Scan(&amp;col1, &amp;col2, &amp;col3, &amp;col4, &amp;col5, &amp;col6); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Query-Rows"><a href="#Query-Rows" class="headerlink" title="Query Rows"></a>Query Rows</h3><p>当然可以用 <code>Next</code> 来不断迭代获取所有数据</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">row := conn.QueryRow(<span class="string">"SELECT * FROM data"</span>)</span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    col1             <span class="keyword">uint8</span></span><br><span class="line">    col2, col3, col4 <span class="keyword">string</span></span><br><span class="line">    col5            []<span class="keyword">string</span></span><br><span class="line">    col6             time.Time</span><br><span class="line">)</span><br><span class="line"><span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">    <span class="keyword">if</span> err := row.Scan(&amp;col1, &amp;col2, &amp;col3, &amp;col4, &amp;col5, &amp;col6); err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    fmt.Printf(<span class="string">"row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v\n"</span>, col1, col2, col3, col4, col5, col6)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样在请求 databend-query 的时候，就不用再每次都写一遍 http 请求/解析的代码啦。</p>
+<h2 id="bendsql-尝鲜-go-driver"><a href="#bendsql-尝鲜-go-driver" class="headerlink" title="bendsql 尝鲜 go driver"></a>bendsql 尝鲜 go driver</h2><p>Go driver release 后马上就迎来了第一个用户(小白鼠) - <a href="https://github.com/databendcloud/bendsql" target="_blank" rel="noopener">bendsql</a>。bendsql 中有个命令用来执行 SQL 语句， <code>bendsql query &quot;select * from table&quot;</code>，所以我先将这里面请求 databend-query 的代码都换成了 go driver - <code>https://github.com/databendcloud/bendsql/pull/22</code>，可以看到删掉了不少代码，清晰了不少。接下来要在其他项目中去检验了。</p>
+<p>来看看效果：<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h7d6u4upl3j31gq0fuwfq.jpg" alt=""></p>
+<h2 id="kruise-tools"><a href="#kruise-tools" class="headerlink" title="kruise-tools"></a>kruise-tools</h2><p>本周 <code>kubectl-kruise</code> 插件迎来了一次<a href="https://github.com/openkruise/kruise-tools/releases/tag/v1.0.5" target="_blank" rel="noopener">更新</a>，包含了两个 bug-fix 和新的 feature:</p>
+<p>🐛 Bug fix:</p>
+<ul>
+<li>Fix rollout status of partitioned update <a href="https://github.com/openkruise/kruise-tools/pull/68" target="_blank" rel="noopener">https://github.com/openkruise/kruise-tools/pull/68</a></li>
+<li>Fix ads patch for rollout undo <a href="https://github.com/openkruise/kruise-tools/pull/71" target="_blank" rel="noopener">https://github.com/openkruise/kruise-tools/pull/71</a></li>
+</ul>
+<p>🚀 Feat:</p>
+<ul>
+<li>Support kubectl-kruise create ContainerRecreateRequest <a href="https://github.com/openkruise/kruise-tools/pull/66" target="_blank" rel="noopener">https://github.com/openkruise/kruise-tools/pull/66</a></li>
+<li><p>Add resourcedistribution generator <a href="https://github.com/openkruise/kruise-tools/pull/69" target="_blank" rel="noopener">https://github.com/openkruise/kruise-tools/pull/69</a>. Thanks @dong4325 </p>
+<p>其中 resourcedistribution generator 是开源之夏的一个项目，主要是用来方便用户生成 resourceDistrubution 资源的，关于 <a href="https://openkruise.io/docs/user-manuals/resourcedistribution" target="_blank" rel="noopener">resouceDistribution</a> 和这个 generator 后面等功能稳定后再多做介绍。</p>
+</li>
+</ul>
+<p>好了，以上。</p>
+<hr>
 
       
     </div>
@@ -509,7 +532,7 @@
   <p><span>本文标题:</span><a href="/2022/10/21/2022-43-Open-source-weekly-report/">2022 43 Open source weekly report</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2022年10月21日 - 18:10</p>
-  <p><span>最后更新:</span>2022年10月21日 - 18:10</p>
+  <p><span>最后更新:</span>2022年10月21日 - 20:10</p>
   <p><span>原始链接:</span><a href="/2022/10/21/2022-43-Open-source-weekly-report/" title="2022 43 Open source weekly report">https://cloudsjhan.github.io/2022/10/21/2022-43-Open-source-weekly-report/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2022/10/21/2022-43-Open-source-weekly-report/"  aria-label="复制成功！"></i></span>
   </p>
@@ -799,7 +822,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-driver-SDK-for-databend-cloud-released"><span class="nav-number">1.</span> <span class="nav-text">Go driver SDK for databend cloud released!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bendsql-尝鲜-go-driver"><span class="nav-number">2.</span> <span class="nav-text">bendsql 尝鲜 go driver</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-driver-SDK-for-databend-cloud-released"><span class="nav-number">1.</span> <span class="nav-text">Go driver SDK for databend cloud released!</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Execution"><span class="nav-number">1.1.</span> <span class="nav-text">Execution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Query-Row"><span class="nav-number">1.2.</span> <span class="nav-text">Query Row</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Query-Rows"><span class="nav-number">1.3.</span> <span class="nav-text">Query Rows</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bendsql-尝鲜-go-driver"><span class="nav-number">2.</span> <span class="nav-text">bendsql 尝鲜 go driver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kruise-tools"><span class="nav-number">3.</span> <span class="nav-text">kruise-tools</span></a></li></ol></div>
             
 
           </div>
@@ -833,7 +856,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">200.8k</span>
+    <span title="Site words total count">201.4k</span>
   
 </div>
 
@@ -846,7 +869,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:200.8k</span>
+  <span class="post-count">Total Words:201.4k</span>
 </div>
 
 
