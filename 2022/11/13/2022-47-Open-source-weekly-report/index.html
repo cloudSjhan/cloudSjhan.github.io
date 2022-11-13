@@ -101,7 +101,7 @@
 <meta property="og:description" content="2022 NO.47 周报">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2022/11/13/2022-47-Open-source-weekly-report/index.html">
-<meta property="og:updated_time" content="2022-11-13T14:02:07.213Z">
+<meta property="og:updated_time" content="2022-11-13T14:17:19.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022 47 Open source weekly report">
 <meta name="twitter:description" content="2022 NO.47 周报">
@@ -433,7 +433,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  559
+                  561
                 </span>
               
 
@@ -478,7 +478,7 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>自从 <a href="https://cloudsjhan.github.io/2022/10/21/2022-43-Open-source-weekly-report/#more">databend-go</a>  release 后，最近大部分时间都在与 Python 搏斗😂，太长时间没有仔细写 Python 了真是磨合了好几天才找到点感觉。<br>用了差不多两周，databend 的 Python Deiver <a href="https://github.com/databendcloud/databend-py" target="_blank" rel="noopener">databend-py</a> 以及支持 <code>SQLAlchemy</code> 语法的 <a href="https://github.com/databendcloud/databend-sqlalchemy" target="_blank" rel="noopener">databend-sqlalchemy</a> 已经基本可用。不得不说 Python 在数据的生态里还是王者，前几天有用户在使用 go driver 的时候遇到了一个 data type parser 的<a href="https://github.com/databendcloud/databend-go/issues/10" target="_blank" rel="noopener">问题</a>，之前在实现过程中就遇到过类似的类型问题，这种问题在强类型语言里简直就是灾难，但是对于 Python 来说就不存在。所以最后用户还是用了 Python 的 driver 解决了问题，看来后面要认真打磨 databend-py 了。</p>
+<p>自从 <a href="https://cloudsjhan.github.io/2022/10/21/2022-43-Open-source-weekly-report/#more">databend-go</a>  release 后，最近大部分时间都在与 Python 搏斗😂，太长时间没有正儿八经写 Python 了真是磨合了好几天才找到点感觉。<br>用了差不多两周，databend 的 Python Deiver <a href="https://github.com/databendcloud/databend-py" target="_blank" rel="noopener">databend-py</a> 以及支持 <code>SQLAlchemy</code> 语法的 <a href="https://github.com/databendcloud/databend-sqlalchemy" target="_blank" rel="noopener">databend-sqlalchemy</a> 已经基本可用。不得不说 Python 在数据的生态里还是王者，前几天有用户在使用 go driver 的时候遇到了一个 data type parser 的<a href="https://github.com/databendcloud/databend-go/issues/10" target="_blank" rel="noopener">问题</a>，之前在实现过程中就遇到过类似的类型问题，这种问题在强类型语言里简直就是灾难，但是对于 Python 来说就不存在。所以最后用户还是用了 Python 的 driver 解决了问题，看来后面要认真打磨 databend-py 了。</p>
 <p>在使用方面也是 python 占优，pip install 然后 import 直接就是手到擒来：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install databend-py</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> databend_py <span class="keyword">import</span> Client</span><br><span class="line">client = Client(</span><br><span class="line">    host=<span class="string">'hostName'</span>,</span><br><span class="line">    database=<span class="string">"default"</span>,</span><br><span class="line">    user=<span class="string">"user"</span>,</span><br><span class="line">    password=<span class="string">"pass"</span>)</span><br><span class="line">print(client.execute(<span class="string">"SELECT 1"</span>))</span><br></pre></td></tr></table></figure>
