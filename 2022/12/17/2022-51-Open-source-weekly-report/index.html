@@ -105,7 +105,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h96n06kdcwj30qk0cg3zb.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h972vmd7aqj318v0s9n14.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h972v1gxwjj30zk0js76o.jpg">
-<meta property="og:updated_time" content="2022-12-17T13:03:59.567Z">
+<meta property="og:updated_time" content="2022-12-17T13:22:44.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022 51 Open source weekly report">
 <meta name="twitter:description" content="2022 NO.51 周报">
@@ -437,7 +437,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,122
+                  1,136
                 </span>
               
 
@@ -490,26 +490,28 @@
 <p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h96n06kdcwj30qk0cg3zb.jpg" alt="ELT"></p>
 <p>在 ELT 的过程中，数据无须等待即可进入数仓，转换出现错误也不需要重新加载，能够提高效率并降低成本。下面我也会介绍一个 EL 的工具 - airbyte，看 airbyte + dbt 如何实现完美的 ELT 流程。关于  dbt 的介绍就到这里，想要深入了解的同学可以参考 dbt 官网和 dbt-core 的 github 主页。</p>
 <h2 id="How-to-use-dbt-with-Databend-Cloud"><a href="#How-to-use-dbt-with-Databend-Cloud" class="headerlink" title="How to use dbt with Databend Cloud"></a>How to use dbt with Databend Cloud</h2><p>经过几周与 dbt 的搏斗，支持 databend 的 dbt adapter 插件 <a href="https://github.com/databendcloud/dbt-databend" target="_blank" rel="noopener">dbt-databend-cloud</a> 终于能够跑通官方的 case 了✿✿ヽ(°▽°)ノ✿。开发的过程中也帮 databend 本身发现并解决了一些问题:</p>
-<h4 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h4><ul>
+<h4 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h4><ol>
 <li><a href="https://github.com/datafuselabs/databend/issues/8906" target="_blank" rel="noopener">Feature: support <code>a.*</code> in SQL</a></li>
-<li><a href="https://github.com/datafuselabs/databend/issues/8876" target="_blank" rel="noopener">Feature: support <code>||</code> concat function in SQL</a></li>
+<li>Feature: support <code>||</code> concat function in SQL](<a href="https://github.com/datafuselabs/databend/issues/8876" target="_blank" rel="noopener">https://github.com/datafuselabs/databend/issues/8876</a>)</li>
 <li><a href="https://github.com/datafuselabs/databend/issues/9131" target="_blank" rel="noopener">Feature: support SQL-style double-quoted identifier in get_path</a></li>
-</ul>
-<h4 id="PR"><a href="#PR" class="headerlink" title="PR"></a>PR</h4><ul>
+</ol>
+<h4 id="PR"><a href="#PR" class="headerlink" title="PR"></a>PR</h4><ol>
 <li><a href="https://github.com/datafuselabs/databend/pull/9206" target="_blank" rel="noopener">fix: double-quote in get_path</a></li>
-</ul>
+</ol>
 <p>期间也有跟 dbt 社区的讨论，非常感谢 dbt 社区的热心帮助:</p>
-<h4 id="Disscussion"><a href="#Disscussion" class="headerlink" title="Disscussion"></a>Disscussion</h4><p><a href="https://github.com/dbt-labs/dbt-core/discussions/6276" target="_blank" rel="noopener">Field “path” of type Path in DatabendRelation has invalid value</a></p>
+<h4 id="Disscussion"><a href="#Disscussion" class="headerlink" title="Disscussion"></a>Disscussion</h4><ol>
+<li><a href="https://github.com/dbt-labs/dbt-core/discussions/6276" target="_blank" rel="noopener">Field “path” of type Path in DatabendRelation has invalid value</a></li>
+</ol>
 <p>我们可以跟着这个 <a href="https://github.com/databendcloud/dbt-databend/wiki/How-to-use-dbt-with-Databend-Cloud" target="_blank" rel="noopener">wiki - How to use dbt with Databend Cloud</a> 体验一下 dbt 的强大能力，希望后面能顺利将 dbt-databend 加入到官方 dbt-adapters 的维护阵营当中去。</p>
 <h2 id="What-is-airbyte"><a href="#What-is-airbyte" class="headerlink" title="What is airbyte?"></a>What is airbyte?</h2><p>上面我们介绍 ELT 的时候提到过 <code>airbyte</code>，这里再展开介绍一下。<a href="https://airbytehq.github.io/" target="_blank" rel="noopener">Airbyte</a> 是一个开源的云原生数据集成平台，可以让用户从各种来源提取、转换和加载数据到各种目标。</p>
 <p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h972vmd7aqj318v0s9n14.jpg" alt="airbyte"></p>
 <p>airbyte 的架构设计易于扩展，非常灵活，允许用户开发自定义的 source/destination connector ，并且可以很方便地加入到 airbyte 的平台里。这里我主要是开发了一个 destination connector，将 databend cloud 作为数据的目的入口，这样用户就可以很容易地从各个数据源，比如 S3, Clickhouse, Filebot ，甚至本地文件同步数据到 databend cloud，并且 airbyte 的 Normalization 能力结合 dbt 后能够将原始数据转换成完整表结构的数据表。</p>
 <p>等这个 <a href="https://github.com/airbytehq/airbyte/pull/19815" target="_blank" rel="noopener">PR</a> 合并后就可以在 airbyte cloud 上使用 databend cloud 作为 data source 了。</p>
 <h2 id="ClickVisual-支持-databend-source"><a href="#ClickVisual-支持-databend-source" class="headerlink" title="ClickVisual 支持 databend source"></a>ClickVisual 支持 databend source</h2><p>ClickVisual 是一个轻量级的由<a href="https://shimo.im/" target="_blank" rel="noopener">石墨文档</a>开源的日志查询、分析、报警的可视化平台，提供一站式应用可靠性的可视化的解决方案。既可以独立部署使用，也可作为插件集成到第三方系统。目前是市面上唯一一款支持 ClickHouse 的类 Kibana 的业务日志查询平台。之前 ClickVisual 只支持 Clickhouse 作为数据源来存储、查询日志，我添加了一些代码经过调试后现在也能支持 databend cloud 作为数据源。</p>
-<ul>
+<ol>
 <li><a href="https://github.com/clickvisual/clickvisual/pull/823" target="_blank" rel="noopener">Feat: support databend source</a></li>
 <li><a href="https://github.com/clickvisual/clickvisual/pull/835" target="_blank" rel="noopener">feat: support exist log table for databend</a> </li>
-</ul>
+</ol>
 <p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h972v1gxwjj30zk0js76o.jpg" alt=""></p>
 <p>但是由于目前 databend 不支持类似 Clickhouse <code>status=&#39;200&#39;</code> ( <code>status</code> 是 <code>int32</code> 类型) 这样的语法，所以字段过滤查询的功能需要等这个 <a href="https://github.com/clickvisual/clickvisual/issues/836" target="_blank" rel="noopener">issue-836</a> 解决后才能正常使用。</p>
 <h2 id="Openkruise-遗留-PR"><a href="#Openkruise-遗留-PR" class="headerlink" title="Openkruise 遗留 PR"></a>Openkruise 遗留 PR</h2><p>说起来真是非常惭愧，不仅已经很久没有参加 OpenKruise 的双周会了而且还遗留了一个陈年老 PR 没有完成，其实两周前 <a href="https://github.com/zmberg" target="_blank" rel="noopener">zmberg</a> 就联系我尽快处理一下这个问题，所以这周无论如何也要把这个 <a href="https://github.com/openkruise/kruise/pull/1028" target="_blank" rel="noopener">PR</a> 关掉 😭。</p>
