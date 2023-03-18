@@ -112,7 +112,7 @@
 <meta property="og:image" content="https://p.ipic.vip/vaennu.png">
 <meta property="og:image" content="https://p.ipic.vip/0ulvaw.png">
 <meta property="og:image" content="https://p.ipic.vip/nr3e25.png">
-<meta property="og:updated_time" content="2023-03-18T09:11:48.467Z">
+<meta property="og:updated_time" content="2023-03-18T09:31:21.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2023 12 Open Source weekly report">
 <meta name="twitter:description" content="2023 NO.12 开源周报">
@@ -444,7 +444,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,151
+                  1,201
                 </span>
               
 
@@ -489,7 +489,7 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>不出意外这是 2023 年第一份周报，一直拖着不写倒不是因为没什么可写的，反而是因为最近这几个月接收的信息量太大，一时间没有办法吃透、理解，自然就无法做到有效输出。除了常规的工作以外，这段时间开始接触 ELT 相关的东西，比如 Airbyte、dbt，CDC 领域中的 TapData、Flink CDC ，完善 databend 在 BI 类工具的生态….比如 superset, redash, metadata 等（文章最后会列出对应的 Pull Request），信息量可以说是爆炸式增长，很多东西也是一知半解的。</p>
+<p>不出意外这是 2023 年第一份周报，一直拖着不写倒不是因为没什么可写的，反而是因为最近这几个月接收的信息量太大，一时间没有办法吃透、理解，自然就无法做到有效输出。除了常规的工作以外，这段时间开始接触 ELT 相关的东西，比如 Airbyte、dbt，CDC 领域中的 TapData、Flink CDC ，完善 databend 在 BI 类工具的生态….比如 superset, redash, metadata 等，信息量可以说是爆炸式增长，很多东西也是一知半解的。</p>
 <p>这周之所以想起来写是因为写了一点比较有意思的新东西，所以想记录并分享一下。</p>
 <h2 id="Clojure-amp-Metabase"><a href="#Clojure-amp-Metabase" class="headerlink" title="Clojure &amp; Metabase"></a><a href="http://clojure.org/" target="_blank" rel="noopener">Clojure</a> &amp; Metabase</h2><p>是的你没看错，这周一直在写 Clojure。起因是要在 <a href="https://www.metabase.com/" target="_blank" rel="noopener">Metabase</a> 中支持 databend，metabase 是一款易用、开源、技术成熟、不断并快速迭代的 BI 工具，打开 metabase 的 Github <a href="https://github.com/metabase/metabase" target="_blank" rel="noopener">首页</a> 可以看到其主要是编程语言正是 Clojure。</p>
 <p>很多年轻的朋友可能都没听说过这门编程语言。Clojure 是一种运行在<a href="https://baike.baidu.com/item/Java平台/3793459" target="_blank" rel="noopener">Java平台</a>上的类 Lisp 语言，看到 Lisp 是不是一种上古的气息扑面而来。Clojure 比较成功地把函数式编程引入了 JVM，在JVM平台运行的时候，会被编译为JVM的字节码进行运算。其最大的优势就是在保持了函数式语言的主要特性的前提下，例如immutable state，Full Lisp-style macro support，persistent data structures等等，还能够非常方便的调用Java类库的API，和Java类库进行良好的整合。</p>
@@ -548,6 +548,19 @@
 <figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">+</span></span> <span class="number">1</span> <span class="number">2</span>) <span class="comment">;运算符在前</span></span><br><span class="line">------</span><br><span class="line">(<span class="name"><span class="builtin-name">ns</span></span> clojure.examples.hello</span><br><span class="line">   (<span class="symbol">:gen-class</span>))</span><br><span class="line">(<span class="name"><span class="builtin-name">defn</span></span> Example []</span><br><span class="line">   (<span class="name">println</span> (<span class="name"><span class="builtin-name">str</span></span> <span class="string">"Hello"</span> <span class="string">"World"</span>))</span><br><span class="line">   (<span class="name">println</span> (<span class="name"><span class="builtin-name">+</span></span> <span class="number">1</span> <span class="number">2</span>)))</span><br><span class="line">(<span class="name">Example</span>)</span><br></pre></td></tr></table></figure>
 <p>所以当一个函数比较大而且有高阶函数的时候，数括号就会成为一种灾难😂，这个时候就不得不依赖 IDE 的提示了。</p>
 <p>机缘巧合粗浅地了解了这门编程语言，不过目前来看使用 Clojure 作为主力开发语言的公司非常少，坊间甚至一度传闻 <a href="https://news.ycombinator.com/item?id=14418013" target="_blank" rel="noopener">Clojure is dead</a>。但是语言只是工具，即使工作中无法使用，了解这门优雅、富有表现力的语言来扩展自己的眼界，也是不错的选择。Clojure 社区也有一些有意思的项目，这里抛砖引玉，感兴趣的同学可以去了解一下。</p>
+<hr>
+<blockquote>
+<p> 索性在这里记录跟踪一下最近的一些跟开源相关的工作</p>
+<ul>
+<li><a href="https://github.com/tapdata/tapdata" target="_blank" rel="noopener">tapdata/tapdata </a><a href="https://github.com/tapdata/tapdata/pull/435" target="_blank" rel="noopener">🎉 New connector: databend</a></li>
+<li><a href="https://github.com/clickvisual/clickvisual" target="_blank" rel="noopener">clickvisual/clickvisual </a><a href="https://github.com/clickvisual/clickvisual/pull/823" target="_blank" rel="noopener">Feat: support databend source</a> </li>
+<li><a href="https://github.com/getredash/redash" target="_blank" rel="noopener">getredash/redash </a><a href="https://github.com/getredash/redash/pull/5902" target="_blank" rel="noopener">feat: New support databend for redash</a></li>
+<li><a href="https://github.com/apache/superset" target="_blank" rel="noopener">apache/superset </a><a href="https://github.com/apache/superset/pull/23308" target="_blank" rel="noopener">feat: support databend for superset</a> </li>
+<li><a href="https://github.com/airbytehq/airbyte" target="_blank" rel="noopener">airbytehq/airbyte </a><a href="https://github.com/airbytehq/airbyte/pull/21302" target="_blank" rel="noopener">🎉 New source connector: databend</a></li>
+<li><a href="https://github.com/databendcloud/metabase-databend-driver" target="_blank" rel="noopener">metabase-databend-driver</a></li>
+<li><a href="https://github.com/databendcloud/flink-connector-databend" target="_blank" rel="noopener">flink-connector-databend</a></li>
+</ul>
+</blockquote>
 <hr>
 
       
