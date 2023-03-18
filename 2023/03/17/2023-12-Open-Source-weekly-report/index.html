@@ -101,7 +101,7 @@
 <meta property="og:description" content="2023 NO.12 开源周报">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://cloudsjhan.github.io/2023/03/17/2023-12-Open-Source-weekly-report/index.html">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vOhrAgy1hc4327djjbj31ba0ksn0w.jpg">
+<meta property="og:image" content="https://p.ipic.vip/fdru4v.png">
 <meta property="og:image" content="https://p.ipic.vip/f6c371.png">
 <meta property="og:image" content="https://p.ipic.vip/y11n06.png">
 <meta property="og:image" content="https://p.ipic.vip/rykbju.png">
@@ -112,7 +112,7 @@
 <meta property="og:image" content="https://p.ipic.vip/vaennu.png">
 <meta property="og:image" content="https://p.ipic.vip/0ulvaw.png">
 <meta property="og:image" content="https://p.ipic.vip/nr3e25.png">
-<meta property="og:updated_time" content="2023-03-18T09:31:21.760Z">
+<meta property="og:updated_time" content="2023-03-18T09:36:37.123Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2023 12 Open Source weekly report">
 <meta name="twitter:description" content="2023 NO.12 开源周报">
@@ -494,7 +494,7 @@
 <h2 id="Clojure-amp-Metabase"><a href="#Clojure-amp-Metabase" class="headerlink" title="Clojure &amp; Metabase"></a><a href="http://clojure.org/" target="_blank" rel="noopener">Clojure</a> &amp; Metabase</h2><p>是的你没看错，这周一直在写 Clojure。起因是要在 <a href="https://www.metabase.com/" target="_blank" rel="noopener">Metabase</a> 中支持 databend，metabase 是一款易用、开源、技术成熟、不断并快速迭代的 BI 工具，打开 metabase 的 Github <a href="https://github.com/metabase/metabase" target="_blank" rel="noopener">首页</a> 可以看到其主要是编程语言正是 Clojure。</p>
 <p>很多年轻的朋友可能都没听说过这门编程语言。Clojure 是一种运行在<a href="https://baike.baidu.com/item/Java平台/3793459" target="_blank" rel="noopener">Java平台</a>上的类 Lisp 语言，看到 Lisp 是不是一种上古的气息扑面而来。Clojure 比较成功地把函数式编程引入了 JVM，在JVM平台运行的时候，会被编译为JVM的字节码进行运算。其最大的优势就是在保持了函数式语言的主要特性的前提下，例如immutable state，Full Lisp-style macro support，persistent data structures等等，还能够非常方便的调用Java类库的API，和Java类库进行良好的整合。</p>
 <p>Metabase 提供了一种插件系统，方便开发者以开发插件的方式，将数据源添加到 metabase 中，因为要调用 metabase driver 的 API，所以插件的编写也需要使用 Clojure 来完成。</p>
-<h2 id="上手-Clojure"><a href="#上手-Clojure" class="headerlink" title="上手 Clojure"></a>上手 Clojure</h2><p><img src="https://tva1.sinaimg.cn/large/008vOhrAgy1hc4327djjbj31ba0ksn0w.jpg" alt="hello clojure"></p>
+<h2 id="上手-Clojure"><a href="#上手-Clojure" class="headerlink" title="上手 Clojure"></a>上手 Clojure</h2><p><img src="https://p.ipic.vip/fdru4v.png" alt="hello clojure"></p>
 <p>Clojure 是完全的函数式编程，基本语法比较简单，大概看了半天的教程配置好开发环境就能写 hello world 了。A few days later….，支持 databend 的 metabase 插件就完成了，项目及相关代码在 <a href="https://github.com/databendcloud/metabase-databend-driver" target="_blank" rel="noopener">metabase databend driver</a> 。</p>
 <h2 id="插件使用"><a href="#插件使用" class="headerlink" title="插件使用"></a>插件使用</h2><p>Metabase 的插件使用起来非常方便，只需要两个 jar 就能从 databend 读取并分析数据出报表了。</p>
 <h3 id="Download-metabase-jar"><a href="#Download-metabase-jar" class="headerlink" title="Download metabase.jar"></a>Download metabase.jar</h3><p>Metabase是一个Java应用程序，可以通过<a href="https://www.metabase.com/start/oss/jar" target="_blank" rel="noopener">下载JAR文件</a> 并执行 <strong><code>java -jar metabase.jar</code></strong>来运行。Metabase 使用 JDBC  Driver 连接到 Databend。</p>
