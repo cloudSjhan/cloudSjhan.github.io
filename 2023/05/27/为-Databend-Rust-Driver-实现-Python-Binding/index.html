@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://p.ipic.vip/xcbu06.jpg">
 <meta property="og:image" content="https://p.ipic.vip/dv1sc3.png">
 <meta property="og:image" content="https://p.ipic.vip/9fdcwj.png">
-<meta property="og:updated_time" content="2023-05-27T05:32:10.906Z">
+<meta property="og:updated_time" content="2023-05-27T05:41:03.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为 Databend Rust Driver 实现 Python Binding">
 <meta name="twitter:description" content="为 Databend Rust Driver 实现 Python Binding">
@@ -436,7 +436,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,934
+                  1,935
                 </span>
               
 
@@ -477,11 +477,9 @@
       
 
       
-        <p class="description"></p>
-
-<p><img src="https://" alt="" style="width:100%"></p>
+        <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<h2 id="How-PyO3-Maturin"><a href="#How-PyO3-Maturin" class="headerlink" title="How? PyO3 + Maturin"></a>How? PyO3 + Maturin</h2><p>Rust 和 Python 都拥有丰富的包和库。在 Python 中，很多包的底层是使用 C/C++ 编写的，而 Rust 天生与 C 兼容。因此，我们可以使用 Rust 为 Python 编写软件包，实现 Python 调用 Rust 的功能，从而获得更好的性能和速度。</p>
+<h3 id="HOW-PyO3-Maturin"><a href="#HOW-PyO3-Maturin" class="headerlink" title="HOW? PyO3 + Maturin"></a>HOW? PyO3 + Maturin</h3><p>Rust 和 Python 都拥有丰富的包和库。在 Python 中，很多包的底层是使用 C/C++ 编写的，而 Rust 天生与 C 兼容。因此，我们可以使用 Rust 为 Python 编写软件包，实现 Python 调用 Rust 的功能，从而获得更好的性能和速度。</p>
 <p>为了实现这一目标，<a href="https://github.com/PyO3/pyo3" title="PyO3" target="_blank" rel="noopener">PyO3</a> 应运而生。PyO3 不仅提供了 Rust 与 Python 的绑定功能，还提供了一个名为 <a href="https://github.com/PyO3/maturin" title="maturin" target="_blank" rel="noopener">maturin</a> 的开箱即用的脚手架工具。通过 maturin，我们可以方便地创建基于 Rust 开发的 Python 扩展模块。这样一来，我们可以重新组织代码，使用 Rust 编写性能更好的部分，而其余部分仍然可以使用原始的 Python 代码。</p>
 <p><img src="https://p.ipic.vip/xcbu06.jpg" alt="rust-rewrite"></p>
 <p>Databend 目前有针对 Rust、Go、Python、Java 的多套 Driver SDK，维护成本颇高，上游一旦出现更新 SDK 便会手忙脚乱。 Rust 能提供对其他语言的 Binding 实现一套代码到处使用，而且又能获得更好地性能和速度，何乐而不为呢？</p>
@@ -522,8 +520,10 @@
 <p>执行 <code>behave tests</code> 运行测试集:</p>
 <p><img src="https://p.ipic.vip/9fdcwj.png" alt="image-20230527125008830"></p>
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>基于 Pyo3，我们可以比较方便地专注于 Rust 实现逻辑本身，无需关注太多 FFI （Foreign Function Interface）和转换细节就可以将 Rust 低成本地转换成 Python 模块，后期也只需要维护一套代码，极大地降低了维护成本。本文章抛砖引玉，只是将很少部分代码做了转换，后面会陆续将 rust driver 全部提供 Python binding 最终替换掉现在的 <a href="https://github.com/databendcloud/databend-py" title="databend-py" target="_blank" rel="noopener">databend-py</a>。</p>
-<hr>
-
+<pre><code>HTML
+</code></pre><p>​<br>​<br>​<br>​<br>​<br>​            </p>
+<pre><code>​
+</code></pre>
       
     </div>
     
@@ -845,7 +845,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-PyO3-Maturin"><span class="nav-number">1.</span> <span class="nav-text">How? PyO3 + Maturin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的-Demo"><span class="nav-number">1.1.</span> <span class="nav-text">简单的 Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建-Databend-Driver-的-Python-Binding"><span class="nav-number">1.2.</span> <span class="nav-text">构建 Databend Driver 的 Python Binding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化项目"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-Rust-Struct-转换成-Python-模块"><span class="nav-number">1.2.2.</span> <span class="nav-text">将 Rust Struct 转换成 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-python-扩展模块信息"><span class="nav-number">1.2.3.</span> <span class="nav-text">定义 python 扩展模块信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">1.2.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">1.3.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HOW-PyO3-Maturin"><span class="nav-number">1.</span> <span class="nav-text">HOW? PyO3 + Maturin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的-Demo"><span class="nav-number">2.</span> <span class="nav-text">简单的 Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建-Databend-Driver-的-Python-Binding"><span class="nav-number">3.</span> <span class="nav-text">构建 Databend Driver 的 Python Binding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化项目"><span class="nav-number">3.1.</span> <span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-Rust-Struct-转换成-Python-模块"><span class="nav-number">3.2.</span> <span class="nav-text">将 Rust Struct 转换成 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-python-扩展模块信息"><span class="nav-number">3.3.</span> <span class="nav-text">定义 python 扩展模块信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">3.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
