@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="rust,databend," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="为 Databend Rust Driver 实现 Python Binding">
+<meta name="keywords" content="rust,databend">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为 Databend Rust Driver 实现 Python Binding">
+<meta property="og:url" content="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="为 Databend Rust Driver 实现 Python Binding">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/index.html">
+<meta property="og:image" content="https://p.ipic.vip/xcbu06.jpg">
+<meta property="og:image" content="https://p.ipic.vip/dv1sc3.png">
+<meta property="og:image" content="https://p.ipic.vip/9fdcwj.png">
+<meta property="og:updated_time" content="2023-05-27T05:32:10.906Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为 Databend Rust Driver 实现 Python Binding">
+<meta name="twitter:description" content="为 Databend Rust Driver 实现 Python Binding">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>为 Databend Rust Driver 实现 Python Binding | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">为 Databend Rust Driver 实现 Python Binding</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-05-27T13:26:47+08:00">
+                2023-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/rust/" itemprop="url" rel="index">
+                    <span itemprop="name">rust</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/" class="leancloud_visitors" data-flag-title="为 Databend Rust Driver 实现 Python Binding">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,934
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  为 Databend Rust Driver 实现 Python Binding
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="How-PyO3-Maturin"><a href="#How-PyO3-Maturin" class="headerlink" title="How? PyO3 + Maturin"></a>How? PyO3 + Maturin</h2><p>Rust 和 Python 都拥有丰富的包和库。在 Python 中，很多包的底层是使用 C/C++ 编写的，而 Rust 天生与 C 兼容。因此，我们可以使用 Rust 为 Python 编写软件包，实现 Python 调用 Rust 的功能，从而获得更好的性能和速度。</p>
+<p>为了实现这一目标，<a href="https://github.com/PyO3/pyo3" title="PyO3" target="_blank" rel="noopener">PyO3</a> 应运而生。PyO3 不仅提供了 Rust 与 Python 的绑定功能，还提供了一个名为 <a href="https://github.com/PyO3/maturin" title="maturin" target="_blank" rel="noopener">maturin</a> 的开箱即用的脚手架工具。通过 maturin，我们可以方便地创建基于 Rust 开发的 Python 扩展模块。这样一来，我们可以重新组织代码，使用 Rust 编写性能更好的部分，而其余部分仍然可以使用原始的 Python 代码。</p>
+<p><img src="https://p.ipic.vip/xcbu06.jpg" alt="rust-rewrite"></p>
+<p>Databend 目前有针对 Rust、Go、Python、Java 的多套 Driver SDK，维护成本颇高，上游一旦出现更新 SDK 便会手忙脚乱。 Rust 能提供对其他语言的 Binding 实现一套代码到处使用，而且又能获得更好地性能和速度，何乐而不为呢？</p>
+<p>本篇文章我们关注如何在 python 中调用 Rust 开发的模块，以此来为 Databend Rust Driver 实现 Python Binding。</p>
+<h3 id="简单的-Demo"><a href="#简单的-Demo" class="headerlink" title="简单的 Demo"></a>简单的 Demo</h3><p>这里我们以官网提供的最简单的方式来做个演示。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir string_sum</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> string_sum</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建 venv 的这一步不能省略，否则后续运行的时候会报错</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python -m venv .env</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> .env/bin/activate</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> pip install maturin</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 直接使用 maturin 初始化项目即可，选择 pyo3，或者直接执行 maturin init --bindings pyo3</span></span><br><span class="line">❯ maturin init</span><br><span class="line">✔ 🤷 Which kind of bindings to use?</span><br><span class="line">  📖 Documentation: https://maturin.rs/bindings.html · pyo3</span><br><span class="line">  ✨ Done! Initialized project /Users/hanshanjie/rustProj/string_sum</span><br></pre></td></tr></table></figure>
+<p><img src="https://p.ipic.vip/dv1sc3.png" alt="image-20230527100715138"></p>
+<p>这个时候，我们可以得到一个简单的 Rust 项目，并且包含了调用的示例，打开 src/lib.rs：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> pyo3::prelude::*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// Formats the sum of two numbers as string.</span></span><br><span class="line"><span class="meta">#[pyfunction]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">sum_as_string</span></span>(a: <span class="built_in">usize</span>, b: <span class="built_in">usize</span>) -&gt; PyResult&lt;<span class="built_in">String</span>&gt; &#123;</span><br><span class="line">    <span class="literal">Ok</span>((a + b).to_string())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// A Python module implemented in Rust.</span></span><br><span class="line"><span class="meta">#[pymodule]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">string_sum</span></span>(_py: Python, m: &amp;PyModule) -&gt; PyResult&lt;()&gt; &#123;</span><br><span class="line">    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>pyfunction</code> 和 <code>pymodule</code> 两个 Rust 的宏，#[pymodule] 过程宏属性负责将模块的初始化函数导出到Python。它可以接受模块的名称作为参数，该名称必须是.so或.pyd文件的名称；默认值为Rust函数的名称。#[pyfunction] 注释一个函数，然后使用 wrap_pyfunction 宏将其添加到刚刚定义的模块中。</p>
+<p>我们无需修改任何代码，可以直接执行下面的命令测试：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> maturin develop 会自动打包出一个 wheel 包，并且安装到当前的 venv 中 </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> maturin develop</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; import string_sum</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; string_sum.sum_as_string(5, 20)</span></span><br><span class="line">'25'</span><br></pre></td></tr></table></figure>
+<h3 id="构建-Databend-Driver-的-Python-Binding"><a href="#构建-Databend-Driver-的-Python-Binding" class="headerlink" title="构建 Databend Driver 的 Python Binding"></a>构建 Databend Driver 的 Python Binding</h3><h4 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h4><p>在 <a href="https://github.com/datafuselabs/bendsql" target="_blank" rel="noopener">bendsql</a> 根目录下创建 <code>bindings/python</code>的 rust 项目：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> bendsql </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir bindings &amp; <span class="built_in">cd</span> bindings</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir python &amp; <span class="built_in">cd</span> python</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> python -m venv .env</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> .env/bin/activate</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> pip install maturin</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 直接使用 maturin 初始化项目即可，选择 pyo3</span></span><br><span class="line">❯ maturin init</span><br></pre></td></tr></table></figure>
+<p>为了使用PyO3，我们需要将其作为依赖项添加到我们的Cargo.toml文件中，以及其他依赖项。我们的Cargo.toml文件应该如下所示：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">"databend-python"</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">"0.0.1"</span></span><br><span class="line"><span class="attr">edition</span> = <span class="string">"2021"</span></span><br><span class="line"><span class="attr">license</span> = <span class="string">"Apache-2.0"</span></span><br><span class="line"><span class="attr">publish</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="section">[lib]</span></span><br><span class="line"><span class="attr">crate-type</span> = [<span class="string">"cdylib"</span>]</span><br><span class="line"><span class="attr">doc</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">chrono</span> = &#123; version = <span class="string">"0.4.24"</span>, default-features = <span class="literal">false</span>, features = [<span class="string">"std"</span>] &#125;</span><br><span class="line"><span class="attr">futures</span> = <span class="string">"0.3.28"</span></span><br><span class="line"><span class="attr">databend-driver</span> = &#123; path = <span class="string">"../../driver"</span>, version = <span class="string">"0.2.20"</span>, features = [<span class="string">"rustls"</span>, <span class="string">"flight-sql"</span>] &#125;</span><br><span class="line"><span class="attr">databend-client</span> = &#123; version = <span class="string">"0.1.15"</span>, path = <span class="string">"../../core"</span> &#125;</span><br><span class="line"><span class="attr">pyo3</span> = &#123; version = <span class="string">"0.18"</span>, features = [<span class="string">"abi3-py37"</span>] &#125;</span><br><span class="line"><span class="attr">pyo3-asyncio</span> = &#123; version = <span class="string">"0.18"</span>, features = [<span class="string">"tokio-runtime"</span>] &#125;</span><br><span class="line"><span class="attr">tokio</span> = <span class="string">"1"</span></span><br></pre></td></tr></table></figure>
+<p>PyO3 添加为依赖项，并使用适当的属性注解 Rust 函数（我们将在后面介绍），就可以使用 PyO3 库创建一个可以被导入到 Python 脚本中的 Python 扩展模块。</p>
+<h4 id="将-Rust-Struct-转换成-Python-模块"><a href="#将-Rust-Struct-转换成-Python-模块" class="headerlink" title="将 Rust Struct 转换成 Python 模块"></a>将 Rust Struct 转换成 Python 模块</h4><p><code>databend-client</code> 中提供了两种连接到 databend 的方式，flightSQL 和 http， <code>databend-driver</code> package 实现了一个 <code>Trait</code>来统一入口并自动解析协议：</p>
+<blockquote>
+<p>bendsql/driver/src/conn.rs</p>
+</blockquote>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[async_trait]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">trait</span> <span class="title">Connection</span></span>: DynClone + <span class="built_in">Send</span> + <span class="built_in">Sync</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">info</span></span>(&amp;<span class="keyword">self</span>) -&gt; ConnectionInfo;</span><br><span class="line"></span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">version</span></span>(&amp;<span class="keyword">self</span>) -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">String</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> row = <span class="keyword">self</span>.query_row(<span class="string">"SELECT version()"</span>).await?;</span><br><span class="line">        <span class="keyword">let</span> version = <span class="keyword">match</span> row &#123;</span><br><span class="line">            <span class="literal">Some</span>(row) =&gt; &#123;</span><br><span class="line">                <span class="keyword">let</span> (version,): (<span class="built_in">String</span>,) = row.try_into()?;</span><br><span class="line">                version</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="literal">None</span> =&gt; <span class="string">""</span>.to_string(),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="literal">Ok</span>(version)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">exec</span></span>(&amp;<span class="keyword">self</span>, sql: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">i64</span>&gt;;</span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">query_row</span></span>(&amp;<span class="keyword">self</span>, sql: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">Option</span>&lt;Row&gt;&gt;;</span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">query_iter</span></span>(&amp;<span class="keyword">self</span>, sql: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Result</span>&lt;RowIterator&gt;;</span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">query_iter_ext</span></span>(&amp;<span class="keyword">self</span>, sql: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Result</span>&lt;(Schema, RowProgressIterator)&gt;;</span><br><span class="line"></span><br><span class="line">    async <span class="function"><span class="keyword">fn</span> <span class="title">stream_load</span></span>(</span><br><span class="line">        &amp;<span class="keyword">self</span>,</span><br><span class="line">        sql: &amp;<span class="built_in">str</span>,</span><br><span class="line">        data: Reader,</span><br><span class="line">        size: <span class="built_in">u64</span>,</span><br><span class="line">        file_format_options: <span class="built_in">Option</span>&lt;BTreeMap&lt;&amp;<span class="built_in">str</span>, &amp;<span class="built_in">str</span>&gt;&gt;,</span><br><span class="line">        copy_options: <span class="built_in">Option</span>&lt;BTreeMap&lt;&amp;<span class="built_in">str</span>, &amp;<span class="built_in">str</span>&gt;&gt;,</span><br><span class="line">    ) -&gt; <span class="built_in">Result</span>&lt;QueryProgress&gt;;</span><br><span class="line">&#125;</span><br><span class="line">dyn_clone::clone_trait_object!(Connection);</span><br></pre></td></tr></table></figure>
+<p>所以我们只需要将该 Trait 转换成 Python class ，就能在 python 中调用这些方法。Pyo3 官网中提供了转换 Trait 的方式，<a href="https://pyo3.rs/v0.12.3/trait_bounds，但是这种方式过于复杂，需要写太多的胶水代码，而且对用户也不友好，不能做到开箱即用。左思右想，为何不将" target="_blank" rel="noopener">https://pyo3.rs/v0.12.3/trait_bounds，但是这种方式过于复杂，需要写太多的胶水代码，而且对用户也不友好，不能做到开箱即用。左思右想，为何不将</a> Trait 封装一个 Struct 然后将 Struct 直接将转换成 python module ？</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Clone)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">Connector</span></span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> connector: FusedConnector,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">type</span> <span class="title">FusedConnector</span></span> = Arc&lt;dyn Connection&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// For bindings</span></span><br><span class="line"><span class="keyword">impl</span> Connector &#123;</span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">new_connector</span></span>(dsn: &amp;<span class="built_in">str</span>) -&gt; <span class="built_in">Result</span>&lt;<span class="built_in">Box</span>&lt;<span class="keyword">Self</span>&gt;, Error&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> conn = new_connection(dsn).unwrap();</span><br><span class="line">        <span class="keyword">let</span> r = <span class="keyword">Self</span> &#123;</span><br><span class="line">            connector: FusedConnector::from(conn),</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="literal">Ok</span>(<span class="built_in">Box</span>::new(r))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里写了一个 <code>Connector</code> 的 struct，里面封装了 Connection Trait，为 <code>Connector</code> 实现了 <code>new_connector</code> 方法，返回的正是一个指向 Connector 的指针，更多代码可以看<a href="https://github.com/datafuselabs/bendsql/blob/main/bindings/python/src/lib.rs#L50" title="bindings/python/src/lib.rs" target="_blank" rel="noopener">这里</a> 。</p>
+<p>在 asyncio.rs 中我们就可以定义一个 Struct <code>AsyncDatabendDriver</code> 暴露为 python class，并定义 python module 为 <code>databend-driver</code>:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// `AsyncDatabendDriver` is the entry for all public async API</span></span><br><span class="line"><span class="meta">#[pyclass(module = <span class="meta-string">"databend_driver"</span>)]</span></span><br><span class="line"><span class="keyword">pub</span> <span class="class"><span class="keyword">struct</span> <span class="title">AsyncDatabendDriver</span></span>(Connector);</span><br></pre></td></tr></table></figure>
+<p>接下来就要为 <code>AsyncDatabendDriver</code> 实现相应的方法，而底层调用的就是 rust 中实现的 Trait 中的方法（这里以 exec 为例）：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[pymethods]</span></span><br><span class="line"><span class="keyword">impl</span> AsyncDatabendDriver &#123;</span><br><span class="line">    <span class="meta">#[new]</span></span><br><span class="line">    <span class="meta">#[pyo3(signature = (dsn))]</span></span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">new</span></span>(dsn: &amp;<span class="built_in">str</span>) -&gt; PyResult&lt;<span class="keyword">Self</span>&gt; &#123;</span><br><span class="line">        <span class="literal">Ok</span>(AsyncDatabendDriver(build_connector(dsn)?))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// exec</span></span><br><span class="line">    <span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">exec</span></span>&lt;<span class="symbol">'p</span>&gt;(&amp;<span class="symbol">'p</span> <span class="keyword">self</span>, py: Python&lt;<span class="symbol">'p</span>&gt;, sql: <span class="built_in">String</span>) -&gt; PyResult&lt;&amp;<span class="symbol">'p</span> PyAny&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> this = <span class="keyword">self</span>.<span class="number">0</span>.clone();</span><br><span class="line">        future_into_py(py, async <span class="keyword">move</span> &#123;</span><br><span class="line">          <span class="comment">// 调用 connection 中的 exec 方法</span></span><br><span class="line">            <span class="keyword">let</span> res = this.connector.exec(&amp;sql).await.unwrap();</span><br><span class="line">            <span class="literal">Ok</span>(res)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>最后在 lib.rs 中将 <code>AsyncDatabendDriver</code> 添加为 python class:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[pymodule]</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">_databend_driver</span></span>(_py: Python, m: &amp;PyModule) -&gt; PyResult&lt;()&gt; &#123;</span><br><span class="line">    m.add_class::&lt;AsyncDatabendDriver&gt;()?;</span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="定义-python-扩展模块信息"><a href="#定义-python-扩展模块信息" class="headerlink" title="定义 python 扩展模块信息"></a>定义 python 扩展模块信息</h4><p>创建 <a href="https://github.com/datafuselabs/bendsql/blob/main/bindings/python/pyproject.toml" title="pyproject.toml" target="_blank" rel="noopener">pyproject.toml</a> 和 <a href="https://github.com/datafuselabs/bendsql/tree/main/bindings/python/python/databend_driver" title="databend_driver" target="_blank" rel="noopener">python/databend_driver</a> 并定义 python module 相关信息。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>这里我们使用 <code>behave</code> 进行测试，同时也可以看到能够以 <code>import databend_driver</code> 的形式在 python 项目中使用：</p>
+<figure class="highlight feature"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Feature</span>: Databend-Driver Binding</span><br><span class="line"></span><br><span class="line">    <span class="keyword">Scenario</span>: Databend-Driver Async Operations</span><br><span class="line">        <span class="keyword">Given</span> A new Databend-Driver Async Connector</span><br><span class="line">        <span class="keyword">When</span> Async exec <span class="string">"CREATE TABLE if not exists test_data (x Int32,y VARCHAR)"</span></span><br><span class="line">        <span class="keyword">When</span> Async exec <span class="string">"INSERT INTO test_data(x,y) VALUES(1,'xx')"</span></span><br><span class="line">        <span class="keyword">Then</span> The select <span class="string">"SELECT * FROM test_data"</span> should run</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> behave <span class="keyword">import</span> given, when, then</span><br><span class="line"><span class="keyword">from</span> behave.api.async_step <span class="keyword">import</span> async_run_until_complete</span><br><span class="line"><span class="keyword">import</span> databend_driver</span><br><span class="line"></span><br><span class="line"><span class="meta">@given("A new Databend-Driver Async Connector")</span></span><br><span class="line"><span class="meta">@async_run_until_complete</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">step_impl</span><span class="params">(context)</span>:</span></span><br><span class="line">    dsn = os.getenv(<span class="string">"TEST_DATABEND_DSN"</span>, <span class="string">"databend+http://root:root@localhost:8000/?sslmode=disable"</span>)</span><br><span class="line">    context.ad = databend_driver.AsyncDatabendDriver(dsn)</span><br><span class="line"></span><br><span class="line"><span class="meta">@when('Async exec "&#123;sql&#125;"')</span></span><br><span class="line"><span class="meta">@async_run_until_complete</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">step_impl</span><span class="params">(context, sql)</span>:</span></span><br><span class="line">    <span class="keyword">await</span> context.ad.exec(sql)</span><br><span class="line"></span><br><span class="line"><span class="meta">@then('The select "&#123;select_sql&#125;" should run')</span></span><br><span class="line"><span class="meta">@async_run_until_complete</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">step_impl</span><span class="params">(context, select_sql)</span>:</span></span><br><span class="line">    <span class="keyword">await</span> context.ad.exec(select_sql)</span><br></pre></td></tr></table></figure>
+<p>运行 <code>maturin develop</code> 会自动打包出一个 wheel 包，并且安装到当前的 venv 中 ，</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    ....</span><br><span class="line">    Finished dev [unoptimized + debuginfo] target(s) in 8.71s</span><br><span class="line">📦 Built wheel for abi3 Python ≥ 3.7 to /var/folders/x5/4hndsx0x7cb5_45qgpfqx4th0000gn/T/.tmpyzRsUc/databend_driver-0.0.1-cp37-abi3-macosx_11_0_arm64.whl</span><br><span class="line">🛠 Installed databend-driver-0.0.1</span><br></pre></td></tr></table></figure>
+<p>执行 <code>behave tests</code> 运行测试集:</p>
+<p><img src="https://p.ipic.vip/9fdcwj.png" alt="image-20230527125008830"></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>基于 Pyo3，我们可以比较方便地专注于 Rust 实现逻辑本身，无需关注太多 FFI （Foreign Function Interface）和转换细节就可以将 Rust 低成本地转换成 Python 模块，后期也只需要维护一套代码，极大地降低了维护成本。本文章抛砖引玉，只是将很少部分代码做了转换，后面会陆续将 rust driver 全部提供 Python binding 最终替换掉现在的 <a href="https://github.com/databendcloud/databend-py" title="databend-py" target="_blank" rel="noopener">databend-py</a>。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/">为 Databend Rust Driver 实现 Python Binding</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2023年05月27日 - 13:05</p>
+  <p><span>最后更新:</span>2023年05月27日 - 13:05</p>
+  <p><span>原始链接:</span><a href="/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/" title="为 Databend Rust Driver 实现 Python Binding">https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rust/" rel="tag"><i class="fa fa-tag"></i> rust</a>
+          
+            <a href="/tags/databend/" rel="tag"><i class="fa fa-tag"></i> databend</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/03/17/2023-12-Open-Source-weekly-report/" rel="next" title="2023 12 Open Source weekly report">
+                <i class="fa fa-chevron-left"></i> 2023 12 Open Source weekly report
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-PyO3-Maturin"><span class="nav-number">1.</span> <span class="nav-text">How? PyO3 + Maturin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的-Demo"><span class="nav-number">1.1.</span> <span class="nav-text">简单的 Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建-Databend-Driver-的-Python-Binding"><span class="nav-number">1.2.</span> <span class="nav-text">构建 Databend Driver 的 Python Binding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化项目"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始化项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-Rust-Struct-转换成-Python-模块"><span class="nav-number">1.2.2.</span> <span class="nav-text">将 Rust Struct 转换成 Python 模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-python-扩展模块信息"><span class="nav-number">1.2.3.</span> <span class="nav-text">定义 python 扩展模块信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">1.2.4.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">1.3.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">206.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:206.3k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
