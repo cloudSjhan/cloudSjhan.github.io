@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="CDC,Database," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+<meta name="keywords" content="CDC,Database">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 0 到 1 为 Databend 开发轻量级 CDC">
+<meta property="og:url" content="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Documents/0cyp1f.png">
+<meta property="og:image" content="https://p.ipic.vip/4fgvvc.png">
+<meta property="og:image" content="https://p.ipic.vip/hauu8v.png">
+<meta property="og:image" content="https://p.ipic.vip/sdnd3u.jpg">
+<meta property="og:image" content="https://p.ipic.vip/c8zkw9.png">
+<meta property="og:image" content="https://p.ipic.vip/40yu3q.png">
+<meta property="og:image" content="https://p.ipic.vip/8sevgd.png">
+<meta property="og:image" content="https://p.ipic.vip/tfc5eg.png">
+<meta property="og:image" content="https://p.ipic.vip/plcu47.png">
+<meta property="og:image" content="https://p.ipic.vip/sr7ydp.png">
+<meta property="og:image" content="https://p.ipic.vip/e7k2bl.png">
+<meta property="og:image" content="https://p.ipic.vip/sbf8k0.png">
+<meta property="og:updated_time" content="2023-07-22T01:57:07.643Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 0 到 1 为 Databend 开发轻量级 CDC">
+<meta name="twitter:description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Documents/0cyp1f.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>从 0 到 1 为 Databend 开发轻量级 CDC | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">从 0 到 1 为 Databend 开发轻量级 CDC</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-07-18T10:24:52+08:00">
+                2023-07-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CDC/" itemprop="url" rel="index">
+                    <span itemprop="name">CDC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/" class="leancloud_visitors" data-flag-title="从 0 到 1 为 Databend 开发轻量级 CDC">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,964
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  从 0 到 1 为 Databend 实现轻量级 CDC
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <a id="more"></a>
+<h2 id="什么是-CDC"><a href="#什么是-CDC" class="headerlink" title="什么是 CDC"></a>什么是 CDC</h2><p>CDC（Change Data Capture）是一种数据同步技术，用于实时捕获和传递数据库中的数据更改。通过 CDC，我们可以将数据库中的变更事件捕获并转换成数据流，然后将其传递给其他系统或应用程序，以实现数据的实时同步和分发。 常见的 CDC 格式为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "op": "Update", // "Insert", "Delete",</span><br><span class="line">  "event_time": "2022-11-01 12:00:00",</span><br><span class="line">  "payload": &#123;</span><br><span class="line">    "id": 123,</span><br><span class="line">    "author": "Franz Kafka",</span><br><span class="line">    "title": "Metamorphosis",</span><br><span class="line">    "published_at": "1915-01-01"</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一种生产可用的 CDC 系统架构可以是下图：</p>
+<p><img src="/Users/hanshanjie/Documents/0cyp1f.png" alt="img"></p>
+<h2 id="现阶段主流-CDC-方案和架构"><a href="#现阶段主流-CDC-方案和架构" class="headerlink" title="现阶段主流 CDC 方案和架构"></a>现阶段主流 CDC 方案和架构</h2><p>在目前的技术发展中，有几种主流的CDC方案和架构：</p>
+<p><strong>1. Flink CDC</strong></p>
+<p><a href="https://ververica.github.io/flink-cdc-connectors/release-2.1/content/about.html" title="Flink CDC" target="_blank" rel="noopener">Flink CDC</a> 是基于 Apache Flink 的 CDC 方案。它可以实时捕获数据库的变更事件，并将其转换成流数据。Flink CDC 提供了非常多的连接器组件，可以在异构的数据源之间实现数据流动。</p>
+<p><img src="https://p.ipic.vip/4fgvvc.png" alt="Flink_CDC"></p>
+<p>Databend 也提供了 <a href="https://github.com/databendcloud/flink-connector-databend" target="_blank" rel="noopener">flink-databend-connector</a>，可以与 MySQL，PG 等 RDBMS 构建实时数据同步。</p>
+<p><img src="https://p.ipic.vip/hauu8v.png" alt=""></p>
+<p><strong>2. Kafka Connector</strong></p>
+<p><a href="https://docs.confluent.io/platform/current/connect/index.html" title="Kafka Connector" target="_blank" rel="noopener">Kafka Connector</a> 是基于 Apache Kafka 的 CDC 方案。Kafka 作为分布式消息队列，可以用于数据传递和分发。Kafka Connector 允许将数据从数据库中捕获，并将其发布到 Kafka 主题中，供其他系统消费。</p>
+<p><img src="https://p.ipic.vip/sdnd3u.jpg" alt="ingest-data-upstream-systems"></p>
+<p><strong>3. Canal</strong></p>
+<p><a href="https://github.com/alibaba/canal" title="Canal" target="_blank" rel="noopener">Canal</a> 是阿里巴巴开源的 CDC 解决方案。它可以捕获 MySQL 数据库的变更，并将其转换成消息格式输出，常用于数据同步和业务解耦。限制是只能基于 MySQL 数据库增量日志解析。</p>
+<p><img src="https://p.ipic.vip/c8zkw9.png" alt=""></p>
+<p><strong>Debezium Server</strong></p>
+<p><a href="https://debezium.io/documentation/reference/1.6/overview.html" title="Debezium Server" target="_blank" rel="noopener">Debezium Server</a> 是一个基于 Debezium Engine 的 CDC 项目。Debezium Engine 是 Debezium 项目的核心，用于捕获数据库的变更事件。Debezium Server 构建在该引擎之上，提供了一种轻量级的 CDC 解决方案，用于实时捕获数据库更改，并将其转换为事件流，最终将数据写入目标数据库。</p>
+<p><img src="https://p.ipic.vip/40yu3q.png" alt=""></p>
+<h2 id="Debezium-Server-Databend"><a href="#Debezium-Server-Databend" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h2><p><a href="https://github.com/databendcloud/debezium-server-databend" title="Debezium Server Databend" target="_blank" rel="noopener">Debezium Server Databend</a> 是一个基于 Debezium Engine 自研的轻量级 CDC 项目，用于实时捕获数据库更改并将其作为事件流传递最终将数据写入目标数据库 Databend。它提供了一种简单的方式来监视和捕获关系型数据库的变化，并支持将这些变化转换为可消费事件。使用 Debezium server databend 实现 CDC 无须依赖大型的 Data Infra 比如 Flink, Kafka, Spark 等，只需一个启动脚本即可开启实时数据同步。</p>
+<p><img src="https://p.ipic.vip/8sevgd.png" alt=""></p>
+<h3 id="源码分析-debezium-server-databend-实现"><a href="#源码分析-debezium-server-databend-实现" class="headerlink" title="源码分析 debezium-server-databend 实现"></a>源码分析 debezium-server-databend 实现</h3><p><a href="https://github.com/databendcloud/debezium-server-databend/" target="_blank" rel="noopener">Debezium Server Databend</a> 实现了轻量级CDC方案，通过 Debezium Engine 捕获数据库变更事件，将其转换成事件流，然后将事件流传递给 Databend 数据库，实现数据的实时同步。下面先从代码层面分析一下该组件的实现原理。</p>
+<p>主要代码的结构是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── DatabendChangeConsumer.java</span><br><span class="line">├── DatabendChangeEvent.java</span><br><span class="line">├── DatabendTypes.java</span><br><span class="line">├── DatabendUtil.java</span><br><span class="line">├── DebeziumMetrics.java</span><br><span class="line">├── batchsizewait</span><br><span class="line">│   ├── InterfaceBatchSizeWait.java</span><br><span class="line">│   ├── MaxBatchSizeWait.java</span><br><span class="line">│   └── NoBatchSizeWait.java</span><br><span class="line">└── tablewriter</span><br><span class="line">    ├── AppendTableWriter.java</span><br><span class="line">    ├── BaseTableWriter.java</span><br><span class="line">    ├── RelationalTable.java</span><br><span class="line">    ├── TableNotFoundException.java</span><br><span class="line">    ├── TableWriterFactory.java</span><br><span class="line">    └── UpsertTableWriter.java</span><br></pre></td></tr></table></figure>
+<p>Debezium server 的入口逻辑在 <code>DatabendChangeConsumer</code> 中，继承 <code>BaseChangeConsumer</code> 并实现相应方法， 作用是加载配置，初始化 server, database以及处理 batch event：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Implementation of the consumer that delivers the messages to databend database tables.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> hantmac</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Named</span>(<span class="string">"databend"</span>)</span><br><span class="line"><span class="meta">@Dependent</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatabendChangeConsumer</span> <span class="keyword">extends</span> <span class="title">BaseChangeConsumer</span> <span class="keyword">implements</span> <span class="title">DebeziumEngine</span>.<span class="title">ChangeConsumer</span>&lt;<span class="title">ChangeEvent</span>&lt;<span class="title">Object</span>, <span class="title">Object</span>&gt;&gt; </span>&#123;</span><br><span class="line">  ...<span class="comment">//  @ConfigProperty(name = "debezium.sink.databend.xxx", defaultValue = "")</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleBatch</span><span class="params">(List&lt;ChangeEvent&lt;Object, Object&gt;&gt; records, DebeziumEngine.RecordCommitter&lt;ChangeEvent&lt;Object, Object&gt;&gt; committer)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> InterruptedException </span>&#123;...&#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心代码是在 handleBatch 中，在这里接收变更事件并发送到 <code>tablewriter</code> 中进一步处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleBatch</span><span class="params">(List&lt;ChangeEvent&lt;Object, Object&gt;&gt; records, DebeziumEngine.RecordCommitter&lt;ChangeEvent&lt;Object, Object&gt;&gt; committer)</span></span></span><br><span class="line"><span class="function">          <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">      Instant start = Instant.now();</span><br><span class="line"></span><br><span class="line">      <span class="comment">//group events by destination</span></span><br><span class="line">      Map&lt;String, List&lt;DatabendChangeEvent&gt;&gt; result =</span><br><span class="line">              records.stream()</span><br><span class="line">                      .map((ChangeEvent&lt;Object, Object&gt; e)</span><br><span class="line">                              -&gt; &#123;</span><br><span class="line">                          <span class="keyword">try</span> &#123;</span><br><span class="line">                              <span class="keyword">return</span> <span class="keyword">new</span> DatabendChangeEvent(e.destination(),</span><br><span class="line">                                      valDeserializer.deserialize(e.destination(), getBytes(e.value())),</span><br><span class="line">                                      e.key() == <span class="keyword">null</span> ? <span class="keyword">null</span> : valDeserializer.deserialize(e.destination(), getBytes(e.key())),</span><br><span class="line">                                      mapper.readTree(getBytes(e.value())).get(<span class="string">"schema"</span>),</span><br><span class="line">                                      e.key() == <span class="keyword">null</span> ? <span class="keyword">null</span> : mapper.readTree(getBytes(e.key())).get(<span class="string">"schema"</span>)</span><br><span class="line">                              );</span><br><span class="line">                          &#125; <span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">                              <span class="keyword">throw</span> <span class="keyword">new</span> DebeziumException(ex);</span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;)</span><br><span class="line">                      .collect(Collectors.groupingBy(DatabendChangeEvent::destination));</span><br><span class="line"></span><br><span class="line">      <span class="comment">// consume list of events for each destination table</span></span><br><span class="line">      <span class="keyword">for</span> (Map.Entry&lt;String, List&lt;DatabendChangeEvent&gt;&gt; tableEvents : result.entrySet()) &#123;</span><br><span class="line">          RelationalTable tbl = <span class="keyword">this</span>.getDatabendTable(mapDestination(tableEvents.getKey()), tableEvents.getValue().get(<span class="number">0</span>).schema()); <span class="comment">// 获取 tablewriter 实例</span></span><br><span class="line">          tableWriter.addToTable(tbl, tableEvents.getValue()); <span class="comment">// 将事件推送至 tablewriter</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (ChangeEvent&lt;Object, Object&gt; record : records) &#123;</span><br><span class="line">          LOGGER.trace(<span class="string">"Processed event '&#123;&#125;'"</span>, record);</span><br><span class="line">          committer.markProcessed(record);</span><br><span class="line">      &#125;</span><br><span class="line">      committer.markBatchFinished();</span><br><span class="line">      <span class="keyword">this</span>.logConsumerProgress(records.size());</span><br><span class="line"></span><br><span class="line">      batchSizeWait.waitMs(records.size(), (<span class="keyword">int</span>) Duration.between(start, Instant.now()).toMillis());</span><br></pre></td></tr></table></figure>
+<p><code>TableWriterFactory</code>中提供了 <code>Append</code> 和 <code>Upsert</code> 两种模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> BaseTableWriter <span class="title">get</span><span class="params">(<span class="keyword">final</span> Connection connection)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (upsert) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> UpsertTableWriter(connection, identifierQuoteCharacter.orElse(<span class="string">""</span>), upsertKeepDeletes);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AppendTableWriter(connection, identifierQuoteCharacter.orElse(<span class="string">""</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每种模式都实现了 <code>addTable</code> 方法。</p>
+<h3 id="Append-mode"><a href="#Append-mode" class="headerlink" title="Append mode"></a>Append mode</h3><p>在 CDC 中，Append Mode 是一种数据写入模式。当数据库的一条记录发生变化时，CDC 会将该变化作为一条新的事件追加到事件流中。</p>
+<h3 id="Upsert-mode"><a href="#Upsert-mode" class="headerlink" title="Upsert mode"></a>Upsert mode</h3><p>Upsert Mode 是另一种数据写入模式。当数据库的一条记录发生变化时，CDC 会将该变化作为一个更新操作，如果记录不存在，则作为插入操作，以实现数据的更新和插入。</p>
+<p>Upsert mode 用到了 Databend 的 <a href="https://databend.rs/doc/sql-commands/dml/dml-replace" target="_blank" rel="noopener">Replace into</a> 语法，所以需要用户指定一个 conflict key，这里我们提供一个配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.databend.database.primaryKey=id</span><br></pre></td></tr></table></figure>
+<p>如果没有提供该配置，会退化成追加模式。</p>
+<h3 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h3><p>Delete操作是指数据库中的记录被删除，CDC 会将该操作作为一个事件写入事件流，以通知其他系统该记录已被删除。</p>
+<p> Debezim Server 对 Delete 的处理比较复杂，在 DELETE 操作下会生成两条事件记录：</p>
+<ol>
+<li>一个包含 “op”: “d”，其他的行数据以及字段；</li>
+<li>一个tombstones记录，它具有与被删除行相同的键，但值为null。</li>
+</ol>
+<p>这两条事件会同时发出，在 Debezium Server Databend 中我们选择对 Delete 数据实行软删除，这就要求我们在 target table 中拥有 <code>__deleted</code> 字段，当 Delete 事件过来的时候我们将该字段置为 TRUE 后插入到目标表。</p>
+<p>这样设计的好处是，有些用户最开始想要保留这些数据，但可能未来会想到将其删除，这样就为用户提供了可选的方案，未来想要删除这些数据的时候，只需要 <code>delete from table where __deleted=true</code> 即可。</p>
+<p>关于 Debezium 对删除事件的说明以及处理方式，详情可参考<a href="https://debezium.io/documentation/reference/stable/transformations/event-flattening.html" title="Debezium Event Flattening" target="_blank" rel="noopener">文档</a>。</p>
+<h3 id="使用轻量级-CDC-debezium-server-databend-构建-MySQL-到-Databend-的-实时数据同步"><a href="#使用轻量级-CDC-debezium-server-databend-构建-MySQL-到-Databend-的-实时数据同步" class="headerlink" title="使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步"></a>使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步</h3><p>下面用一个实际案例展示如何基于 Debezium server databend 快速构建 MySQL 到 Databend 的实时数据同步。</p>
+<h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><p>准备一台已经安装了 Docker ，docker-compose 以及 Java 11 环境  的 Linux 或者 MacOS 。</p>
+<h4 id="准备教程所需要的组件"><a href="#准备教程所需要的组件" class="headerlink" title="准备教程所需要的组件"></a><strong>准备教程所需要的组件</strong></h4><p>接下来的教程将以 <code>docker-compose</code> 的方式准备所需要的组件。</p>
+<h5 id="debezium-MySQL"><a href="#debezium-MySQL" class="headerlink" title="debezium-MySQL"></a>debezium-MySQL</h5><p>docker-compose.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2.1'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  postgres:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">debezium/example-postgres:1.1</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"5432:5432"</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">POSTGRES_DB=postgres</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">POSTGRES_USER=postgres</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">POSTGRES_PASSWORD=postgres</span></span><br><span class="line"><span class="attr">  mysql:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">debezium/example-mysql:1.1</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"3306:3306"</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_ROOT_PASSWORD=123456</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_USER=mysqluser</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">MYSQL_PASSWORD=mysqlpw</span></span><br></pre></td></tr></table></figure>
+<h5 id="Debezium-Server-Databend-1"><a href="#Debezium-Server-Databend-1" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h5><ul>
+<li>Clone 项目: <code>git clone `</code><a href="https://github.com/databendcloud/debezium-server-databend.git`" target="_blank" rel="noopener">https://github.com/databendcloud/debezium-server-databend.git`</a></li>
+<li>从项目根目录开始:<ul>
+<li>构建和打包 debezium server: <code>mvn -Passembly -Dmaven.test.skip package</code></li>
+<li>构建完成后，解压服务器分发包: <code>unzip debezium-server-databend-dist/target/debezium-server-databend-dist*.zip -d databendDist</code></li>
+<li>进入解压后的文件夹: <code>cd databendDist</code></li>
+<li>创建 <code>application.properties</code> 文件并修改: <code>nano conf/application.properties</code>，将下面的 application.properties 拷贝进去，根据用户实际情况修改相应的配置。</li>
+<li>使用提供的脚本运行服务: <code>bash run.sh</code></li>
+<li>Debezium Server with Databend 将会启动</li>
+</ul>
+</li>
+</ul>
+<p>同时我们也提供了相应的 Docker image，可以在容器中一键启动：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">'2.1'</span></span><br><span class="line">services:</span><br><span class="line">  debezium:</span><br><span class="line">    image: ghcr.io/databendcloud/debezium-server-databend:pr-<span class="number">2</span></span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">"8080:8080"</span></span><br><span class="line">      - <span class="string">"8083:8083"</span></span><br><span class="line">    volumes:</span><br><span class="line">      - $PWD/conf:/app/conf</span><br><span class="line">      - $PWD/data:/app/data</span><br></pre></td></tr></table></figure>
+<p>NOTE: 在容器中启动注意所连接数据库的网络。</p>
+<h5 id="Debezium-Server-Databend-Application-Properties"><a href="#Debezium-Server-Databend-Application-Properties" class="headerlink" title="Debezium Server Databend Application Properties"></a>Debezium Server Databend Application Properties</h5><p>本文章使用下面提供的配置，更多的参数说明以及配置可以参考<a href="https://github.com/databendcloud/debezium-server-databend/blob/main/docs/docs.md" title="debezium-server-databend 配置文档" target="_blank" rel="noopener">文档</a>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.type=databend</span><br><span class="line">debezium.sink.databend.upsert=true</span><br><span class="line">debezium.sink.databend.upsert-keep-deletes=false</span><br><span class="line">debezium.sink.databend.database.databaseName=debezium</span><br><span class="line">debezium.sink.databend.database.url=jdbc:databend://tnf34b0rm<span class="comment">--xxxxxx.default.databend.cn:443</span></span><br><span class="line">debezium.sink.databend.database.username=cloudapp</span><br><span class="line">debezium.sink.databend.database.password=password</span><br><span class="line">debezium.sink.databend.database.primaryKey=id</span><br><span class="line">debezium.sink.databend.database.tableName=products</span><br><span class="line">debezium.sink.databend.database.param.ssl=true</span><br><span class="line"></span><br><span class="line"># enable event schemas</span><br><span class="line">debezium.format.value.schemas.enable=true</span><br><span class="line">debezium.format.key.schemas.enable=true</span><br><span class="line">debezium.format.value=json</span><br><span class="line">debezium.format.key=json</span><br><span class="line"></span><br><span class="line"># mysql source</span><br><span class="line">debezium.source.connector.class=io.debezium.connector.mysql.MySqlConnector</span><br><span class="line">debezium.source.offset.storage.file.filename=data/offsets.dat</span><br><span class="line">debezium.source.offset.flush.interval.ms=60000</span><br><span class="line"></span><br><span class="line">debezium.source.database.hostname=127.0.0.1</span><br><span class="line">debezium.source.database.port=3306</span><br><span class="line">debezium.source.database.user=root</span><br><span class="line">debezium.source.database.password=123456</span><br><span class="line">debezium.source.database.dbname=mydb</span><br><span class="line">debezium.source.database.server.name=from_mysql</span><br><span class="line">debezium.source.include.schema.changes=false</span><br><span class="line">debezium.source.table.include.list=mydb.products</span><br><span class="line"># debezium.source.database.ssl.mode=required</span><br><span class="line"># Run without Kafka, use local file to store checkpoints</span><br><span class="line">debezium.source.database.history=io.debezium.relational.history.FileDatabaseHistory</span><br><span class="line">debezium.source.database.history.file.filename=data/status.dat</span><br><span class="line"># do event flattening. unwrap message!</span><br><span class="line">debezium.transforms=unwrap</span><br><span class="line">debezium.transforms.unwrap.type=io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode=rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones=true</span><br><span class="line"></span><br><span class="line"># ############ SET LOG LEVELS ############</span><br><span class="line">quarkus.log.level=INFO</span><br><span class="line"># Ignore messages below warning level from Jetty, because it's a bit verbose</span><br><span class="line">quarkus.log.category."org.eclipse.jetty".level=WARN</span><br></pre></td></tr></table></figure>
+<h4 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a><strong>准备数据</strong></h4><h5 id="在-MySQL-数据库中准备数据"><a href="#在-MySQL-数据库中准备数据" class="headerlink" title="在 MySQL 数据库中准备数据"></a><strong>在</strong> <strong>MySQL</strong> <strong>数据库中准备数据</strong></h5><p>进入 MySQL 容器</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">docker-compose</span> <span class="string">exec</span> <span class="string">mysql</span> <span class="string">mysql</span> <span class="bullet">-uroot</span> <span class="bullet">-p123456</span></span><br></pre></td></tr></table></figure>
+<p>创建数据库 mydb 和表 <code>products</code>，并插入数据:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> mydb;</span><br><span class="line"><span class="keyword">USE</span> mydb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (<span class="keyword">id</span> <span class="built_in">INTEGER</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT PRIMARY <span class="keyword">KEY</span>,<span class="keyword">name</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,description <span class="built_in">VARCHAR</span>(<span class="number">512</span>));</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> products AUTO_INCREMENT = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,<span class="string">"scooter"</span>,<span class="string">"Small 2-wheel scooter"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"car battery"</span>,<span class="string">"12V car battery"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"12-pack drill bits"</span>,<span class="string">"12-pack of drill bits with sizes ranging from #40 to #3"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"12oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"14oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"16oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"rocks"</span>,<span class="string">"box of assorted rocks"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"jacket"</span>,<span class="string">"water resistent black wind breaker"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"cloud"</span>,<span class="string">"test for databend"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"spare tire"</span>,<span class="string">"24 inch spare tire"</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="在-Databend-中创建-Database"><a href="#在-Databend-中创建-Database" class="headerlink" title="在 Databend 中创建 Database"></a>在 Databend 中创建 Database</h5><p><img src="https://p.ipic.vip/tfc5eg.png" alt="img"></p>
+<p>NOTE: 用户可以不必先在 Databend 中创建表，系统检测到后会自动为用户建表。</p>
+<h4 id="启动-Debezium-Server-Databend"><a href="#启动-Debezium-Server-Databend" class="headerlink" title="启动 Debezium Server Databend"></a>启动 Debezium Server Databend</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">bash</span> <span class="string">run.sh</span></span><br></pre></td></tr></table></figure>
+<p>首次启动会进入 init snapshot 模式，通过配置的 Batch Size 全量将 MySQL 中的数据同步到 Databend，所以在 Databend 中可以看到 MySQL 中的数据已经同步过来了：</p>
+<p><img src="https://p.ipic.vip/plcu47.png" alt="img"></p>
+<h4 id="同步-Insert-数据"><a href="#同步-Insert-数据" class="headerlink" title="同步 Insert 数据"></a>同步 Insert 数据</h4><p>我们继续往 MySQL 中插入 5 条数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,<span class="string">"scooter"</span>,<span class="string">"Small 2-wheel scooter"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"car battery"</span>,<span class="string">"12V car battery"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"12-pack drill bits"</span>,<span class="string">"12-pack of drill bits with sizes ranging from #40 to #3"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"12oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"14oz carpenter's hammer"</span>);</span><br></pre></td></tr></table></figure>
+<p>Debezium server databend 日志：</p>
+<p><img src="https://p.ipic.vip/sr7ydp.png" alt=""></p>
+<p>同时在 Databend 中可以查到 5 条数据已经同步过来了：</p>
+<p><img src="https://p.ipic.vip/e7k2bl.png" alt="img"></p>
+<h4 id="同步-Update-数据"><a href="#同步-Update-数据" class="headerlink" title="同步 Update 数据"></a>同步 Update 数据</h4><p>配置文件中 <code>debezium.sink.databend.upsert=true</code> ，所以我们也可以处理 Update/Delete 的事件。</p>
+<p>在 MySQL 中更新 id=10 的数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> products <span class="keyword">set</span> <span class="keyword">name</span>=<span class="string">"from debezium"</span> <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>在 Databend 中可以查到 id 为 10 的数据已经被更新：</p>
+<p><img src="https://p.ipic.vip/sbf8k0.png" alt="img"></p>
+<h4 id="同步-Delete-数据"><a href="#同步-Delete-数据" class="headerlink" title="同步 Delete 数据"></a>同步 Delete 数据</h4><p>在配置文件中，有以下的配置，既可开启处理 Delete 事件的能力：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.databend.upsert-keep-deletes=false</span><br><span class="line">debezium.transforms=unwrap</span><br><span class="line">debezium.transforms.unwrap.type=io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode=rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones=true</span><br></pre></td></tr></table></figure>
+<p>在 MySQL 中删除 id=12 的数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> products <span class="keyword">where</span> <span class="keyword">id</span>=<span class="number">12</span>;</span><br></pre></td></tr></table></figure>
+<p>在 Databend 中可以观察到 id=12 的值的 <code>__deleted</code> 字段已经被置为 <code>true</code>。</p>
+<h4 id="环境清理"><a href="#环境清理" class="headerlink" title="环境清理"></a><strong>环境清理</strong></h4><p>操作结束后，在 <code>docker-compose.yml</code> 文件所在的目录下执行如下命令停止所有容器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>文章介绍了 databend 的轻量级 CDC 实现原理，演示了基于轻量级 CDC debezium server databend 构建 MySQL 到 Databend 的 实时数据同步的全部过程，这种方式不需要依赖 Flink, Kafka 等大型组件，启动和管理非常方便。</p>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/">从 0 到 1 为 Databend 开发轻量级 CDC</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2023年07月18日 - 10:07</p>
+  <p><span>最后更新:</span>2023年07月22日 - 09:07</p>
+  <p><span>原始链接:</span><a href="/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/" title="从 0 到 1 为 Databend 开发轻量级 CDC">https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CDC/" rel="tag"><i class="fa fa-tag"></i> CDC</a>
+          
+            <a href="/tags/Database/" rel="tag"><i class="fa fa-tag"></i> Database</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/05/27/为-Databend-Rust-Driver-实现-Python-Binding/" rel="next" title="为 Databend Rust Driver 实现 Python Binding">
+                <i class="fa fa-chevron-left"></i> 为 Databend Rust Driver 实现 Python Binding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-CDC"><span class="nav-number">1.</span> <span class="nav-text">什么是 CDC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#现阶段主流-CDC-方案和架构"><span class="nav-number">2.</span> <span class="nav-text">现阶段主流 CDC 方案和架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debezium-Server-Databend"><span class="nav-number">3.</span> <span class="nav-text">Debezium Server Databend</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源码分析-debezium-server-databend-实现"><span class="nav-number">3.1.</span> <span class="nav-text">源码分析 debezium-server-databend 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Append-mode"><span class="nav-number">3.2.</span> <span class="nav-text">Append mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Upsert-mode"><span class="nav-number">3.3.</span> <span class="nav-text">Upsert mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Delete"><span class="nav-number">3.4.</span> <span class="nav-text">Delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用轻量级-CDC-debezium-server-databend-构建-MySQL-到-Databend-的-实时数据同步"><span class="nav-number">3.5.</span> <span class="nav-text">使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备阶段"><span class="nav-number">3.5.1.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备教程所需要的组件"><span class="nav-number">3.5.2.</span> <span class="nav-text">准备教程所需要的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#debezium-MySQL"><span class="nav-number">3.5.2.1.</span> <span class="nav-text">debezium-MySQL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Debezium-Server-Databend-1"><span class="nav-number">3.5.2.2.</span> <span class="nav-text">Debezium Server Databend</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Debezium-Server-Databend-Application-Properties"><span class="nav-number">3.5.2.3.</span> <span class="nav-text">Debezium Server Databend Application Properties</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备数据"><span class="nav-number">3.5.3.</span> <span class="nav-text">准备数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在-MySQL-数据库中准备数据"><span class="nav-number">3.5.3.1.</span> <span class="nav-text">在 MySQL 数据库中准备数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在-Databend-中创建-Database"><span class="nav-number">3.5.3.2.</span> <span class="nav-text">在 Databend 中创建 Database</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-Debezium-Server-Databend"><span class="nav-number">3.5.4.</span> <span class="nav-text">启动 Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步-Insert-数据"><span class="nav-number">3.5.5.</span> <span class="nav-text">同步 Insert 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步-Update-数据"><span class="nav-number">3.5.6.</span> <span class="nav-text">同步 Update 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步-Delete-数据"><span class="nav-number">3.5.7.</span> <span class="nav-text">同步 Delete 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#环境清理"><span class="nav-number">3.5.8.</span> <span class="nav-text">环境清理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">3.6.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">209.2k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:209.2k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
