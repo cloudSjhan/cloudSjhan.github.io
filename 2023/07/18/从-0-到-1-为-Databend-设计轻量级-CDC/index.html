@@ -100,7 +100,8 @@
 <meta property="og:site_name" content="cloud world">
 <meta property="og:description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Documents/0cyp1f.png">
+<meta property="og:image" content="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/index.html">
+<meta property="og:image" content="https://p.ipic.vip/0xvmti.png">
 <meta property="og:image" content="https://p.ipic.vip/4fgvvc.png">
 <meta property="og:image" content="https://p.ipic.vip/hauu8v.png">
 <meta property="og:image" content="https://p.ipic.vip/sdnd3u.jpg">
@@ -112,11 +113,11 @@
 <meta property="og:image" content="https://p.ipic.vip/sr7ydp.png">
 <meta property="og:image" content="https://p.ipic.vip/e7k2bl.png">
 <meta property="og:image" content="https://p.ipic.vip/sbf8k0.png">
-<meta property="og:updated_time" content="2023-07-22T01:57:07.643Z">
+<meta property="og:updated_time" content="2023-07-22T02:06:17.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从 0 到 1 为 Databend 开发轻量级 CDC">
 <meta name="twitter:description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Documents/0cyp1f.png">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/index.html">
 
 
 
@@ -485,11 +486,15 @@
       
 
       
-        <a id="more"></a>
+        <hr>
+<p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
 <h2 id="什么是-CDC"><a href="#什么是-CDC" class="headerlink" title="什么是 CDC"></a>什么是 CDC</h2><p>CDC（Change Data Capture）是一种数据同步技术，用于实时捕获和传递数据库中的数据更改。通过 CDC，我们可以将数据库中的变更事件捕获并转换成数据流，然后将其传递给其他系统或应用程序，以实现数据的实时同步和分发。 常见的 CDC 格式为：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  "op": "Update", // "Insert", "Delete",</span><br><span class="line">  "event_time": "2022-11-01 12:00:00",</span><br><span class="line">  "payload": &#123;</span><br><span class="line">    "id": 123,</span><br><span class="line">    "author": "Franz Kafka",</span><br><span class="line">    "title": "Metamorphosis",</span><br><span class="line">    "published_at": "1915-01-01"</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>一种生产可用的 CDC 系统架构可以是下图：</p>
-<p><img src="/Users/hanshanjie/Documents/0cyp1f.png" alt="img"></p>
+<p><img src="https://p.ipic.vip/0xvmti.png" alt=""></p>
 <h2 id="现阶段主流-CDC-方案和架构"><a href="#现阶段主流-CDC-方案和架构" class="headerlink" title="现阶段主流 CDC 方案和架构"></a>现阶段主流 CDC 方案和架构</h2><p>在目前的技术发展中，有几种主流的CDC方案和架构：</p>
 <p><strong>1. Flink CDC</strong></p>
 <p><a href="https://ververica.github.io/flink-cdc-connectors/release-2.1/content/about.html" title="Flink CDC" target="_blank" rel="noopener">Flink CDC</a> 是基于 Apache Flink 的 CDC 方案。它可以实时捕获数据库的变更事件，并将其转换成流数据。Flink CDC 提供了非常多的连接器组件，可以在异构的数据源之间实现数据流动。</p>
@@ -611,7 +616,7 @@
   <p><span>本文标题:</span><a href="/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/">从 0 到 1 为 Databend 开发轻量级 CDC</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
   <p><span>发布时间:</span>2023年07月18日 - 10:07</p>
-  <p><span>最后更新:</span>2023年07月22日 - 09:07</p>
+  <p><span>最后更新:</span>2023年07月22日 - 10:07</p>
   <p><span>原始链接:</span><a href="/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/" title="从 0 到 1 为 Databend 开发轻量级 CDC">https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/"  aria-label="复制成功！"></i></span>
   </p>
