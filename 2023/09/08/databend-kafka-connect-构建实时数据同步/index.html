@@ -100,6 +100,7 @@
 <meta property="og:site_name" content="cloud world">
 <meta property="og:description" content="使用 databend kafka connect 构建实时数据同步">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2023/09/08/databend-kafka-connect-构建实时数据同步/index.html">
 <meta property="og:image" content="https://p.ipic.vip/v9dpd7.png">
 <meta property="og:image" content="https://p.ipic.vip/3xgn0n.png">
 <meta property="og:image" content="https://p.ipic.vip/1p8u14.png">
@@ -109,11 +110,11 @@
 <meta property="og:image" content="https://p.ipic.vip/t1krmm.png">
 <meta property="og:image" content="https://p.ipic.vip/vb0j08.png">
 <meta property="og:image" content="https://p.ipic.vip/8if4ez.png">
-<meta property="og:updated_time" content="2023-09-08T06:19:16.239Z">
+<meta property="og:updated_time" content="2023-09-08T06:33:23.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="databend kafka connect 构建实时数据同步">
 <meta name="twitter:description" content="使用 databend kafka connect 构建实时数据同步">
-<meta name="twitter:image" content="https://p.ipic.vip/v9dpd7.png">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2023/09/08/databend-kafka-connect-构建实时数据同步/index.html">
 
 
 
@@ -482,7 +483,8 @@
       
 
       
-        <a id="more"></a>
+        <p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
 <h2 id="kafka-connect-介绍"><a href="#kafka-connect-介绍" class="headerlink" title="kafka connect 介绍"></a>kafka connect 介绍</h2><p>Kafka Connect 是一个用于在Apache Kafka®和其他数据系统之间可扩展且可靠地流式传输数据的工具。通过将数据移入和移出 Kafka 进行标准化，使得快速定义连接器以在 Kafka 中传输大型数据集变得简单，可以更轻松地构建大规模的实时数据管道。我们使用 Kafka Connector 读取或写入外部系统、管理数据流以及扩展系统，所有这些都无需开发新代码。Kafka Connect 管理与其他系统连接时的所有常见问题（Schema 管理、容错、并行性、延迟、投递语义等），每个 Connector 只关注如何在目标系统和 Kafka 之间复制数据。</p>
 <p>Kafka 连接器通常用来构建 data pipeline，一般有两种使用场景：</p>
 <p>开始和结束的端点：例如，将 Kafka 中的数据导出到 Databend 数据库，或者把 Mysql 数据库中的数据导入 Kafka 中。<br>数据传输的中间介质：例如，为了把海量的日志数据存储到 Elasticsearch 中，可以先把这些日志数据传输到 Kafka 中，然后再从 Kafka 中将这些数据导入到 Elasticsearch 中进行存储。Kafka 连接器可以作为数据管道各个阶段的缓冲区，将消费者程序和生产者程序有效地进行解耦。</p>
