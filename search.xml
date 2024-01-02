@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[从 AutoMQ Kafka 导出数据到 Databend]]></title>
+    <url>%2F2024%2F01%2F02%2F%E4%BB%8E-AutoMQ-Kafka-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE%E5%88%B0-Databend%2F</url>
+    <content type="text"><![CDATA[Databend是使用 Rust 研发、开源的、完全面向云架构、基于对象存储构建的新一代云原生数据仓库，为企业提供湖仓一体化、计算和存储分离的大数据分析平台。 本文将介绍如何通过 bend-ingest-kafka 将数据从 AutoMQ for Kafka 导入 Databend。 本文中提及的 AutoMQ Kafka 术语，均特指安托盟丘（杭州）科技有限公司通过 GitHub AutoMQ 组织下开源的 automq-for-kafka 项目。 环境准备准备 Databend Cloud 以及测试数据首先到 Databend Cloud 开启你的 Warehouse ，并在 worksheet 中创建数据库库和测试表: 1234567create database automq_db;create table users ( id bigint NOT NULL, name string NOT NULL, ts timestamp, status string) 准备 AutoMQ Kafka 环境和测试数据参考 部署 AutoMQ 到 AWS▸ 部署好 AutoMQ Kafka 集群，确保 AutoMQ Kafka 与 StarRocks 之间保持网络连通。 在AutoMQ Kafka中快速创建一个名为 example_topic 的主题并向其中写入一条测试 JSON 数据，可以通过以下步骤实现： 创建Topic:使用 Apache Kafka 命令行工具来创建主题。你需要有 Kafka 环境的访问权限，并且确保 Kafka 服务正在运行。以下是创建主题的命令： 1./kafka-topics.sh --create --topic exampleto_topic --bootstrap-server 10.0.96.4:9092 --partitions 1 --replication-factor 1 注意：执行命令时，需要将 topic 和 bootstarp-server 替换为实际使用的 Kafka 服务器地址。 创建 topic 之后可以用以下命令检查 topic 创建的结果。 1./kafka-topics.sh --describe example_topic --bootstrap-server 10.0.96.4:9092 生成测试数据:生成一条简单的 JSON 格式的测试数据，和前文的表需要对应。 123456&#123; "id":1, "name":"Test User", "ts":"2023-11-10T12:00:00", "status":"active"&#125; 写入测试数据使用 Kafka 的命令行工具或者编程方式将测试数据写入到 example_topic。以下是使用命令行工具的一个示例： 1echo '&#123;"id": 1, "name": "测试用户", "ts": "2023-11-10T12:00:00", "status": "active"&#125;' | sh kafka-console-producer.sh --broker-list 10.0.96.4:9092 --topic example_topic 使用如下命令可以查看刚写入的 topic 数据： 1sh kafka-console-consumer.sh --bootstrap-server 10.0.96.4:9092 --topic example_topic --from-beginning 创建 bend-ingest-databend jobbend-ingest-kafka 能够监控 kafka 并将数据批量写入 Databend Table。 部署 bend-ingest-kafka 之后，即可开启数据导入 job。 1bend-ingest-kafka --kafka-bootstrap-servers="localhost:9094" --kafka-topic="example_topic" --kafka-consumer-group="Consumer Group" --databend-dsn="https://cloudapp:password@host:443" --databend-table="automq_db.users" --data-format="json" --batch-size=5 --batch-max-interval=30s 注意：将 kafka_broker_list 替换为实际使用的 Kafka 服务器地址。 参数说明databend-dsnDatabend Cloud 提供的连接到 warehouse 的 DSN，可以参考该文档 获取。 batch-sizebend-ingest-kafka 会积攒到 batch-size 条数据再触发一次数据同步。 验证数据导入到 Databend Cloud worksheet 中查询 automq_db.users 表，可以看到数据已经从 AutoMq 同步到 Databend Table。]]></content>
+      <categories>
+        <category>Databend</category>
+      </categories>
+      <tags>
+        <tag>Databend</tag>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[使用 LF Edge eKuiper 将物联网流处理数据写入 Databend]]></title>
     <url>%2F2023%2F09%2F15%2F%E4%BD%BF%E7%94%A8-LF-Edge-eKuiper-%E5%B0%86%E7%89%A9%E8%81%94%E7%BD%91%E6%B5%81%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-Databend%2F</url>
     <content type="text"><![CDATA[LF Edge eKuiper[LF Edge eKuiper(https://github.com/lf-edge/ekuiper) 是 Golang 实现的轻量级物联网边缘分析、流式处理开源软件，可以运行在各类资源受限的边缘设备上。eKuiper 的主要目标是在边缘端提供一个流媒体软件框架（类似于 Apache Flink (opens new window)）。eKuiper 的规则引擎允许用户提供基于 SQL 或基于图形（类似于 Node-RED）的规则，在几分钟内创建物联网边缘分析应用。具体介绍可以参考 LF Edge eKuiper - 超轻量物联网边缘流处理软件。 Databend Sql SinkeKuiper 支持通过 Golang 或者 Python 在源 (Source)，SQL 函数, 目标 (Sink) 三个方面的扩展，通过支持不同的 Sink，允许用户将分析结果发送到不同的扩展系统中。Databend 作为 Sink 也被集成到了 eKuiper plugin 当中，下面通过一个案例来展示如何使用 eKuiper 将物联网流处理数据写入 Databend。 编译 ekuiper 和 Databend Sql PluginEkuiper12git clone https://github.com/lf-edge/ekuiper &amp; cd ekuipermake Databend Sql Plugin1go build -trimpath --buildmode=plugin -tags databend -o plugins/sinks/Sql.so extensions/sinks/sql/sql.go 编译后的 sink plugin 拷贝到 build 目录： 1cp plugins/sinks/Sql.so _build/kuiper-1.11.1-18-g42d9147f-darwin-arm64/plugins/sinks Databend 建表在 Databend 中先创建目标表 ekuiper_test： 1create table ekuiper_test (name string,size bigint,id bigint); 启动 ekuiperd12cd _build/kuiper-1.11.1-18-g42d9147f-darwin-arm64 ./bin/kuiperd 服务正常启动： 创建流（stream） 和 规则 (rule)Ekuiper 提供了两种管理各种流、规则，目标端的方式，一种是通过 ekuiper-manager 的 docker image（https://hub.docker.com/r/lfedge/ekuiper）启动可视化管理界面，一种是通过 CLI 工具来管理。这里我们使用 CLI。 创建 stream流是 eKuiper 中数据源连接器的运行形式。它必须指定一个源类型来定义如何连接到外部资源。这里我们创建一个流，从 json 文件数据源中获取数据，并发送到 ekuiper 中。 首先配置文件数据源，连接器的配置文件位于 /etc/sources/file.yaml。 1234567891011121314151617181920212223242526272829default: # 文件的类型，支持 json， csv 和 lines fileType: json # 文件以 eKuiper 为根目录的目录或文件的绝对路径。 # 请勿在此处包含文件名。文件名应在流数据源中定义 path: data # 读取文件的时间间隔，单位为ms。如果只读取一次，则将其设置为 0 interval: 0 # 读取后，两条数据发送的间隔时间 sendInterval: 0 # 是否并行读取目录中的文件 parallel: false # 文件读取后的操作 # 0: 文件保持不变 # 1: 删除文件 # 2: 移动文件到 moveTo 定义的位置 actionAfterRead: 0 # 移动文件的位置, 仅用于 actionAfterRead 为 2 的情况 moveTo: /tmp/kuiper/moved # 是否包含文件头，多用于 csv。若为 true，则第一行解析为文件头。 hasHeader: false # 定义文件的列。如果定义了文件头，该选项将被覆盖。 # columns: [id, name] # 忽略开头多少行的内容。 ignoreStartLines: 0 # 忽略结尾多少行的内容。最后的空行不计算在内。 ignoreEndLines: 0 # 使用指定的压缩方法解压缩文件。现在支持`gzip`、`zstd` 方法。 decompression: "" 使用 CLI 创建 steam 名为 stream1: 1./bin/kuiper create stream stream1 '(id BIGINT, name STRING,size BIGINT) WITH (DATASOURCE="test.json", FORMAT="json", TYPE="file");' Json 文件的内容为： 123456[ &#123;"id": 1,"size":100, "name": "John Doe"&#125;, &#123;"id": 2,"size":200, "name": "Jane Smith"&#125;, &#123;"id": 3,"size":300, "name": "Kobe Brant"&#125;, &#123;"id": 4,"size":400, "name": "Alen Iverson"&#125;] 创建 Databend Sink Rule一个规则代表了一个流处理流程，定义了从将数据输入流的数据源到各种处理逻辑，再到将数据输入到外部系统的动作。ekuiper 有两种方法来定义规则的业务逻辑。要么使用SQL/动作组合，要么使用新增加的图API。 这里我们通过指定 sql 和 actions 属性，以声明的方式定义规则的业务逻辑。其中，sql 定义了针对预定义流运行的 SQL 查询，这将转换数据。然后，输出的数据可以通过 action 路由到多个位置。 规则由 JSON 定义，下面是准备创建的规则 myRule.json： 123456789101112131415&#123; "id": "myRule", "sql": "SELECT id, name from stream1", "actions": [ &#123; "log": &#123; &#125;, "sql": &#123; "url": "databend://databend:databend@localhost:8000/default?sslmode=disable", "table": "ekuiper_test", "fields": ["id","name"] &#125; &#125; ]&#125; 执行 CLI 创建规则： 1./bin/kuiper create rule myRule -f myRule.json 可以查看所创建规则的运行状态： 1./bin/kuiper getstatus rule myRule 规则创建后，会立即将符合规则条件的数据发送到目标端，此时我们查看 databend 的 ekuiper_test 表，可以看到文件数据源中的数据已经被写入到 databend： 可以看到由于我们的规则 SQL 中只指定了 id, name 字段，所以这里只有这两个字段被写入。 结论Ekuiper 是 EMQ 旗下的一款流处理软件，其体积小、功能强大，在工业物联网、车辆网、公共数据分析等很多场景中得到广泛使用。本文介绍如何使用 eKuiper 将物联网流处理数据写入 Databend。]]></content>
@@ -8,8 +20,8 @@
         <category>Databend</category>
       </categories>
       <tags>
-        <tag>EMQ</tag>
         <tag>Databend</tag>
+        <tag>EMQ</tag>
         <tag>stream data</tag>
       </tags>
   </entry>
@@ -262,8 +274,8 @@
         <category>kubernetes</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>go</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -329,8 +341,8 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>kubernetes</tag>
         <tag>docker</tag>
+        <tag>kubernetes</tag>
       </tags>
   </entry>
   <entry>
@@ -979,7 +991,7 @@
   <entry>
     <title><![CDATA[git如何找回被删除的分支]]></title>
     <url>%2F2018%2F11%2F15%2Fgit%E5%A6%82%E4%BD%95%E6%89%BE%E5%9B%9E%E8%A2%AB%E5%88%A0%E9%99%A4%E7%9A%84%E5%88%86%E6%94%AF%2F</url>
-    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#102;&#100;&#105;&#112;&#122;&#x6f;&#110;&#x65;&#64;&#115;&#x69;&#110;&#x61;&#46;&#99;&#x6f;&#x6d;)Reflog message: commit: add test.txtAuthor: fdipzone &#102;&#100;&#105;&#112;&#122;&#x6f;&#x6e;&#101;&#64;&#x73;&#x69;&#x6e;&#97;&#46;&#99;&#111;&#x6d;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
+    <content type="text"><![CDATA[在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。 首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。1.创建分支 abc git branch abc1 2.查看分支列表 git branch -a abc developremotes/origin-dev/develop1234 3.切换到abc分支，随便修改一下东西后 commit 切换分支git checkout abcSwitched to branch ‘abc’ 创建一个文件echo ‘abc’ &gt; test.txt commitgit add .git commit -m ‘add test.txt’[abc 3eac14d] add test.txt 1 file changed, 1 insertion(+) create mode 100644 test.txt12345678910111213 4.删除分支abc git branch -D abcDeleted branch abc (was 3eac14d).12 5.查看分支列表，abc分支已不存在 git branch -a developremotes/origin-dev/develop123 恢复步骤如下：1.使用git log -g 找回之前提交的commitcommit 3eac14d05bc1264cda54a7c21f04c3892f32406aReflog: HEAD@{1} (fdipzone &#x66;&#x64;&#x69;&#x70;&#x7a;&#111;&#x6e;&#101;&#x40;&#115;&#105;&#110;&#x61;&#x2e;&#99;&#x6f;&#x6d;)Reflog message: commit: add test.txtAuthor: fdipzone &#102;&#x64;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#115;&#x69;&#x6e;&#x61;&#x2e;&#99;&#111;&#109;Date: Sun Jan 31 22:26:33 2016 +0800 add test.txt 123456789 2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a git branch -a developrecover_branch_abcremotes/origin-dev/develop123456可以见到recover_branch_abc已创建 3.切换到recover_branch_abc分支，检查文件是否存在git checkout recover_branch_abcSwitched to branch ‘recover_branch_abc’ ls -lttotal 8-rw-r–r– 1 fdipzone staff 4 1 31 22:38 test.txt123456 这样就可以恢复被误删的分支了原文：https://blog.csdn.net/fdipzone/article/details/50616386版权声明：本文为博主原创文章，转载请附上博文链接！]]></content>
       <categories>
         <category>git</category>
       </categories>

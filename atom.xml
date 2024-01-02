@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2023-09-15T08:16:11.544Z</updated>
+  <updated>2024-01-02T09:11:41.752Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从 AutoMQ Kafka 导出数据到 Databend</title>
+    <link href="https://cloudsjhan.github.io/2024/01/02/%E4%BB%8E-AutoMQ-Kafka-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE%E5%88%B0-Databend/"/>
+    <id>https://cloudsjhan.github.io/2024/01/02/从-AutoMQ-Kafka-导出数据到-Databend/</id>
+    <published>2024-01-02T09:08:59.000Z</published>
+    <updated>2024-01-02T09:11:41.752Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p><a href="https://github.com/datafuselabs/databend" target="_blank" rel="noopener">Databend</a>是使用 Rust 研发、开源的、完全面向云架构、基于对象存储构建的新一代云原生数据仓库，为企业提供湖仓一体化、计<br>算和存储分离的大数据分析平台。</p><p>本文将介绍如何通过 <a href="https://github.com/databendcloud/bend-ingest-kafka" target="_blank" rel="noopener">bend-ingest-kafka</a> 将数据从 AutoMQ for Kafka 导入 Databend。</p><blockquote><p>本文中提及的 AutoMQ Kafka 术语，均特指安托盟丘（杭州）科技有限公司通过 GitHub <a href="https://github.com/AutoMQ" target="_blank" rel="noopener">AutoMQ </a>组织下开源的 <a href="https://github.com/AutoMQ/automq-for-kafka" target="_blank" rel="noopener">automq-for-kafka</a> 项目。</p></blockquote><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="准备-Databend-Cloud-以及测试数据"><a href="#准备-Databend-Cloud-以及测试数据" class="headerlink" title="准备 Databend Cloud 以及测试数据"></a>准备 Databend Cloud 以及测试数据</h3><p>首先到 <a href="https://docs.databend.cn/guides/cloud/new-account" target="_blank" rel="noopener">Databend Cloud</a> 开启你的 Warehouse ，并在 worksheet 中创建数据库库和测试表:</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> automq_db;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">users</span> (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">bigint</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="keyword">string</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">    ts <span class="keyword">timestamp</span>,</span><br><span class="line">    <span class="keyword">status</span> <span class="keyword">string</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure><h3 id="准备-AutoMQ-Kafka-环境和测试数据"><a href="#准备-AutoMQ-Kafka-环境和测试数据" class="headerlink" title="准备 AutoMQ Kafka 环境和测试数据"></a>准备 AutoMQ Kafka 环境和测试数据</h3><p>参考 <a href="https://docs.automq.com/zh/docs/automq-s3kafka/EKcdwqXFWixsm0kH5zVcqYzhnle" target="_blank" rel="noopener">部署 AutoMQ 到 AWS▸</a> 部署好 AutoMQ Kafka 集群，确保 AutoMQ Kafka 与 StarRocks 之间保持网络连通。</p><p>在AutoMQ Kafka中快速创建一个名为 example_topic 的主题并向其中写入一条测试 JSON 数据，可以通过以下步骤实现：</p><h4 id="创建Topic"><a href="#创建Topic" class="headerlink" title="创建Topic:"></a><strong>创建Topic</strong>:</h4><p>使用 Apache Kafka 命令行工具来创建主题。你需要有 Kafka 环境的访问权限，并且确保 Kafka 服务正在运行。以下是创建主题的命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --topic exampleto_topic --bootstrap-server 10.0.96.4:9092  --partitions 1 --replication-factor 1</span><br></pre></td></tr></table></figure><blockquote><p>注意：执行命令时，需要将 topic 和 bootstarp-server 替换为实际使用的 Kafka 服务器地址。</p></blockquote><p>创建 topic 之后可以用以下命令检查 topic 创建的结果。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --describe example_topic --bootstrap-server 10.0.96.4:9092</span><br></pre></td></tr></table></figure><h4 id="生成测试数据"><a href="#生成测试数据" class="headerlink" title="生成测试数据:"></a><strong>生成测试数据</strong>:</h4><p>生成一条简单的 JSON 格式的测试数据，和前文的表需要对应。</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"id"</span>:<span class="number">1</span>,</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"Test User"</span>,</span><br><span class="line">    <span class="attr">"ts"</span>:<span class="string">"2023-11-10T12:00:00"</span>,</span><br><span class="line">    <span class="attr">"status"</span>:<span class="string">"active"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="写入测试数据"><a href="#写入测试数据" class="headerlink" title="写入测试数据"></a><strong>写入测试数据</strong></h4><p>使用 Kafka 的命令行工具或者编程方式将测试数据写入到 <code>example_topic</code>。以下是使用命令行工具的一个示例：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo '&#123;"id": 1, "name": "测试用户", "ts": "2023-11-10T12:00:00", "status": "active"&#125;' | sh kafka-console-producer.sh --broker-list 10.0.96.4:9092 --topic example_topic</span><br></pre></td></tr></table></figure><p>使用如下命令可以查看刚写入的 topic 数据：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh kafka-console-consumer.sh --bootstrap-server 10.0.96.4:9092 --topic example_topic --from-beginning</span><br></pre></td></tr></table></figure><h2 id="创建-bend-ingest-databend-job"><a href="#创建-bend-ingest-databend-job" class="headerlink" title="创建 bend-ingest-databend job"></a>创建 bend-ingest-databend job</h2><p><a href="https://github.com/databendcloud/bend-ingest-kafka" target="_blank" rel="noopener">bend-ingest-kafka</a> 能够监控 kafka 并将数据批量写入 Databend Table。</p><p>部署 <code>bend-ingest-kafka</code> 之后，即可开启数据导入 job。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bend-ingest-kafka --kafka-bootstrap-servers="localhost:9094" --kafka-topic="example_topic" --kafka-consumer-group="Consumer Group" --databend-dsn="https://cloudapp:password@host:443" --databend-table="automq_db.users" --data-format="json" --batch-size=5 --batch-max-interval=30s</span><br></pre></td></tr></table></figure><blockquote><p>注意：将 kafka_broker_list 替换为实际使用的 Kafka 服务器地址。</p></blockquote><h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><h4 id="databend-dsn"><a href="#databend-dsn" class="headerlink" title="databend-dsn"></a><strong>databend-dsn</strong></h4><p>Databend Cloud 提供的连接到 warehouse 的 DSN，可以参考<a href="https://docs.databend.cn/guides/cloud/using-databend-cloud/warehouses#connecting" target="_blank" rel="noopener">该文档</a> 获取。</p><h4 id="batch-size"><a href="#batch-size" class="headerlink" title="batch-size"></a><strong>batch-size</strong></h4><p><code>bend-ingest-kafka</code> 会积攒到 batch-size 条数据再触发一次数据同步。</p><h2 id="验证数据导入"><a href="#验证数据导入" class="headerlink" title="验证数据导入"></a>验证数据导入</h2><p>到 Databend Cloud worksheet 中查询 <code>automq_db.users</code> 表，可以看到数据已经从 AutoMq 同步到 Databend Table。</p><p><img src="https://dlink.host/wx1.sinaimg.cn/large/005UfcOkly8hlfe8hc6ocj31si0u0acx.jpg" alt=""></p><hr>]]></content>
+    
+    <summary type="html">
+    
+      从 AutoMQ Kafka 导出数据到 Databend
+    
+    </summary>
+    
+      <category term="Databend" scheme="https://cloudsjhan.github.io/categories/Databend/"/>
+    
+    
+      <category term="Databend" scheme="https://cloudsjhan.github.io/tags/Databend/"/>
+    
+      <category term="kafka" scheme="https://cloudsjhan.github.io/tags/kafka/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 LF Edge eKuiper 将物联网流处理数据写入 Databend</title>
@@ -34,9 +58,9 @@
       <category term="Databend" scheme="https://cloudsjhan.github.io/categories/Databend/"/>
     
     
-      <category term="EMQ" scheme="https://cloudsjhan.github.io/tags/EMQ/"/>
-    
       <category term="Databend" scheme="https://cloudsjhan.github.io/tags/Databend/"/>
+    
+      <category term="EMQ" scheme="https://cloudsjhan.github.io/tags/EMQ/"/>
     
       <category term="stream data" scheme="https://cloudsjhan.github.io/tags/stream-data/"/>
     
@@ -542,9 +566,9 @@
       <category term="kubernetes" scheme="https://cloudsjhan.github.io/categories/kubernetes/"/>
     
     
-      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
-    
       <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
+    
+      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -676,9 +700,9 @@
       <category term="docker" scheme="https://cloudsjhan.github.io/categories/docker/"/>
     
     
-      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
-    
       <category term="docker" scheme="https://cloudsjhan.github.io/tags/docker/"/>
+    
+      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -1987,7 +2011,7 @@
     <published>2018-11-15T10:37:28.000Z</published>
     <updated>2018-11-15T10:39:44.797Z</updated>
     
-    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#100;&#105;&#112;&#122;&#x6f;&#110;&#x65;&#64;&#115;&#x69;&#110;&#x61;&#46;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#105;&#112;&#122;&#x6f;&#110;&#x65;&#64;&#115;&#x69;&#110;&#x61;&#46;&#99;&#x6f;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#100;&#105;&#112;&#122;&#x6f;&#x6e;&#101;&#64;&#x73;&#x69;&#x6e;&#97;&#46;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#105;&#112;&#122;&#x6f;&#x6e;&#101;&#64;&#x73;&#x69;&#x6e;&#97;&#46;&#99;&#111;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#x64;&#x69;&#x70;&#x7a;&#111;&#x6e;&#101;&#x40;&#115;&#105;&#110;&#x61;&#x2e;&#99;&#x6f;&#x6d;" target="_blank" rel="noopener">&#x66;&#x64;&#x69;&#x70;&#x7a;&#111;&#x6e;&#101;&#x40;&#115;&#105;&#110;&#x61;&#x2e;&#99;&#x6f;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#x64;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#115;&#x69;&#x6e;&#x61;&#x2e;&#99;&#111;&#109;" target="_blank" rel="noopener">&#102;&#x64;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#115;&#x69;&#x6e;&#x61;&#x2e;&#99;&#111;&#109;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
     
     <summary type="html">
     
