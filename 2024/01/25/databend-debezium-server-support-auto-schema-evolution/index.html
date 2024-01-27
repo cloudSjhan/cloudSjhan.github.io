@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="OpenKruise,kubernetes," />
+  <meta name="keywords" content="databend,CDC," />
 
 
 
@@ -92,20 +92,23 @@
 
 
 
-<meta name="description" content="OpenKruise 源码分析之 ResourceDistribution">
-<meta name="keywords" content="OpenKruise,kubernetes">
+<meta name="description" content="Databend debezium server support auto schema evolution">
+<meta name="keywords" content="databend,CDC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenKruise 源码分析之 ResourceDistribution">
-<meta property="og:url" content="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/index.html">
+<meta property="og:title" content="databend debezium server support  auto schema evolution">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="OpenKruise 源码分析之 ResourceDistribution">
+<meta property="og:description" content="Databend debezium server support auto schema evolution">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/index.html">
-<meta property="og:updated_time" content="2022-07-11T04:18:27.592Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/index.html">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/21ddf1f4-e2e5-4f07-8d9a-ea7fe08b7771.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/37999730-dc82-4073-a9cb-fe6e318e6b1a.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/18336d1a-8df3-46cf-8051-6013e3ff4256.png">
+<meta property="og:updated_time" content="2024-01-27T15:49:04.579Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenKruise 源码分析之 ResourceDistribution">
-<meta name="twitter:description" content="OpenKruise 源码分析之 ResourceDistribution">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/index.html">
+<meta name="twitter:title" content="databend debezium server support  auto schema evolution">
+<meta name="twitter:description" content="Databend debezium server support auto schema evolution">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/index.html">
 
 
 
@@ -135,7 +138,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/"/>
 
 
 
@@ -150,7 +153,7 @@
   </script>
 
 
-  <title>OpenKruise 源码分析之 ResourceDistribution | cloud world</title>
+  <title>databend debezium server support  auto schema evolution | cloud world</title>
   
 
 
@@ -332,7 +335,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -349,7 +352,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">OpenKruise 源码分析之 ResourceDistribution</h2>
+          <h2 class="post-title" itemprop="name headline">databend debezium server support  auto schema evolution</h2>
         
 
         <div class="post-meta">
@@ -361,8 +364,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-11T11:52:53+08:00">
-                2022-07-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-01-25T17:29:12+08:00">
+                2024-01-25
               </time>
             
 
@@ -384,8 +387,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenKruise/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenKruise</span>
+                  <a href="/categories/Databend/" itemprop="url" rel="index">
+                    <span itemprop="name">Databend</span>
                   </a>
                 </span>
 
@@ -401,7 +404,7 @@
 
           
           
-             <span id="/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/" class="leancloud_visitors" data-flag-title="OpenKruise 源码分析之 ResourceDistribution">
+             <span id="/2024/01/25/databend-debezium-server-support-auto-schema-evolution/" class="leancloud_visitors" data-flag-title="databend debezium server support  auto schema evolution">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -433,7 +436,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  75
+                  1,442
                 </span>
               
 
@@ -449,7 +452,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  7
                 </span>
               
             </div>
@@ -457,7 +460,7 @@
 
           
               <div class="post-description">
-                  OpenKruise 源码分析之 ResourceDistribution
+                  Databend debezium server support auto schema evolution
               </div>
           
 
@@ -478,10 +481,50 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<blockquote>
-<p>OpenKruise 是基于 CRD 的拓展，包含了很多应用工作负载和运维增强能力，本系列文章会从源码和底层原理上解读各个组件，以帮助大家更好地使用和理解 OpenKruise。让我们开始 OpenKruise 的源码之旅吧！</p>
-</blockquote>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><a href="https://github.com/databendcloud/debezium-server-databend" target="_blank" rel="noopener">Debezium Server Databend</a> 是一个基于 Debezium Engine 自研的轻量级 CDC 项目，用于实时捕获数据库更改并将其作为事件流传递最终将数据写入目标数据库 Databend。它提供了一种简单的方式来监视和捕获关系型数据库的变化，并支持将这些变化转换为可消费事件。使用 Debezium server databend 实现 CDC 无须依赖大型的 Data Infra 比如 Flink, Kafka, Spark 等，只需一个启动脚本即可开启实时数据同步。</p>
+<p>CDC 过程中的 Schema 变更处理是上游数据库中十分常见的用户场景，也是数据同步框架实现的难点。针对该场景，Databend-debezium-server 0.3.0 引入了 Auto Schema Evolution 的能力，在每一批次的数据中协调并控制作业拓扑中的 schema 变更事件处理。</p>
+<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><p>Debezium  Server Databend 实现 Schema Auto Evolution 功能的原理大致是：</p>
+<p>在配置文件中新增 <code>debezium.sink.databend.schema.evolution</code> 的配置，默认为 false 不开启该功能。</p>
+<p>当上游数据源发生 schema 变更时，先将流水线中已经读出的的数据全部刷出以保证进入数据流的这一批 schema 的一致性：</p>
+<p>然后先将该类 schemachangekey 事件暂存到 schemaEvolutionEvents 的 ArrayList 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;DatabendChangeEvent&gt; schemaEvolutionEvents = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (DatabendChangeEvent event : events) &#123;</span><br><span class="line">   <span class="keyword">if</span> (DatabendUtil.isSchemaChanged(event.schema()) &amp;&amp; isSchemaEvolutionEnabled) &#123;</span><br><span class="line">             schemaEvolutionEvents.add(event);</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>先将上面刷出的数据执行写入操作，写入这批数据之后且解析 schema 变更的事件之前的时间里不会有新的数据进来。数据处理完后再去解析 schema change events，如果事件类型属于 DDL 并且为 alter table 语句，就对目标 database.table 执行该 DDL。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// handle schema evolution</span></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          schemaEvolution(table, schemaEvolutionEvents);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage());</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">schemaEvolution</span><span class="params">(RelationalTable table, List&lt;DatabendChangeEvent&gt; events)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">for</span> (DatabendChangeEvent event : events) &#123;</span><br><span class="line">         Map&lt;String, Object&gt; values = event.valueAsMap();</span><br><span class="line">         <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : values.entrySet()) &#123;</span><br><span class="line">             <span class="keyword">if</span> (entry.getKey().contains(<span class="string">"ddl"</span>) &amp;&amp; entry.getValue().toString().toLowerCase().contains(<span class="string">"alter table"</span>)) &#123;</span><br><span class="line">                 String tableName = getFirstWordAfterAlterTable(entry.getValue().toString());</span><br><span class="line">                 String ddlSql = replaceFirstWordAfterTable(entry.getValue().toString(), table.databaseName + <span class="string">"."</span> + tableName);</span><br><span class="line">                 <span class="keyword">try</span> (PreparedStatement statement = connection.prepareStatement(ddlSql)) &#123;</span><br><span class="line">                     System.out.println(ddlSql);</span><br><span class="line">                     statement.execute(ddlSql);</span><br><span class="line">                 &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                     <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage());</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>当 schema 变更事件处理成功后，会继续新的数据同步流程。</p>
+<p>基本的处理流程如下图所示：</p>
+<p><img src="https://files.mdnice.com/user/4760/21ddf1f4-e2e5-4f07-8d9a-ea7fe08b7771.png" alt=""></p>
+<h3 id="实践-amp-演示"><a href="#实践-amp-演示" class="headerlink" title="实践&amp;演示"></a>实践&amp;演示</h3><h4 id="Debezium-Server-Databend"><a href="#Debezium-Server-Databend" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h4><ul>
+<li><p>Clone 项目: <code>git clone `</code><a href="https://github.com/databendcloud/debezium-server-databend.git`" target="_blank" rel="noopener">https://github.com/databendcloud/debezium-server-databend.git`</a></p>
+</li>
+<li><p>从项目根目录开始:</p>
+<ul>
+<li>构建和打包 debezium server: <code>mvn -Passembly -Dmaven.test.skip package</code></li>
+<li>构建完成后，解压服务器分发包: <code>unzip debezium-server-databend-dist/target/debezium-server-databend-dist*.zip -d databendDist</code></li>
+<li>进入解压后的文件夹: <code>cd databendDist</code></li>
+<li>创建 <code>application.properties</code> 文件并修改: <code>nano conf/application.properties</code>，将下面的 application.properties 拷贝进去，根据用户实际情况修改相应的配置。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.type=databend</span><br><span class="line">debezium.sink.databend.upsert=<span class="keyword">true</span></span><br><span class="line">debezium.sink.databend.upsert-keep-deletes=<span class="keyword">false</span></span><br><span class="line">debezium.sink.databend.database.databaseName=debezium</span><br><span class="line">debezium.sink.databend.database.url=jdbc:databend:<span class="comment">//tnf34b0rm--xxxxxx.default.databend.cn:443</span></span><br><span class="line">debezium.sink.databend.database.username=cloudapp</span><br><span class="line">debezium.sink.databend.database.password=password</span><br><span class="line">debezium.sink.databend.database.primaryKey=id</span><br><span class="line">debezium.sink.databend.database.tableName=products</span><br><span class="line">debezium.sink.databend.database.param.ssl=<span class="keyword">true</span></span><br><span class="line">debezium.sink.databend.schema.evolution=<span class="keyword">true</span> <span class="comment">// Enable Auto Schema Evolution</span></span><br><span class="line"></span><br><span class="line"># enable event schemas</span><br><span class="line">debezium.format.value.schemas.enable=<span class="keyword">true</span></span><br><span class="line">debezium.format.key.schemas.enable=<span class="keyword">true</span></span><br><span class="line">debezium.format.value=json</span><br><span class="line">debezium.format.key=json</span><br><span class="line"></span><br><span class="line"># mysql source</span><br><span class="line">debezium.source.connector.class=io.debezium.connector.mysql.MySqlConnector</span><br><span class="line">debezium.source.offset.storage.file.filename=data/offsets.dat</span><br><span class="line">debezium.source.offset.flush.interval.ms=<span class="number">60000</span></span><br><span class="line"></span><br><span class="line">debezium.source.database.hostname=<span class="number">127.0</span>.0.1</span><br><span class="line">debezium.source.database.port=<span class="number">3306</span></span><br><span class="line">debezium.source.database.user=root</span><br><span class="line">debezium.source.database.password=<span class="number">123456</span></span><br><span class="line">debezium.source.database.dbname=mydb</span><br><span class="line">debezium.source.database.server.name=from_mysql</span><br><span class="line">debezium.source.include.schema.changes=<span class="keyword">false</span></span><br><span class="line">debezium.source.table.include.list=mydb.products</span><br><span class="line"># debezium.source.database.ssl.mode=required</span><br><span class="line"># Run without Kafka, use local file to store checkpoints</span><br><span class="line">debezium.source.database.history=io.debezium.relational.history.FileDatabaseHistory</span><br><span class="line">debezium.source.database.history.file.filename=data/status.dat</span><br><span class="line"># do event flattening. unwrap message!</span><br><span class="line">debezium.transforms=unwrap</span><br><span class="line">debezium.transforms.unwrap.type=io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode=rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones=<span class="keyword">true</span></span><br><span class="line"></span><br><span class="line"># ############ SET LOG LEVELS ############</span><br><span class="line">quarkus.log.level=INFO</span><br><span class="line"># Ignore messages below warning level from Jetty, because it's a bit verbose</span><br><span class="line">quarkus.log.category.<span class="string">"org.eclipse.jetty"</span>.level=WARN</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>使用提供的脚本运行服务: <code>bash run.sh</code></li>
+<li>Debezium Server with Databend 将会启动</li>
+</ul>
+<h4 id="Mysql-中准备表和数据"><a href="#Mysql-中准备表和数据" class="headerlink" title="Mysql 中准备表和数据"></a>Mysql 中准备表和数据</h4><p>创建数据库 mydb 和表 <code>products</code>，并插入数据:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> mydb;</span><br><span class="line"><span class="keyword">USE</span> mydb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (<span class="keyword">id</span> <span class="built_in">INTEGER</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT PRIMARY <span class="keyword">KEY</span>,<span class="keyword">name</span> <span class="built_in">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,description <span class="built_in">VARCHAR</span>(<span class="number">512</span>));</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> products AUTO_INCREMENT = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,<span class="string">"scooter"</span>,<span class="string">"Small 2-wheel scooter"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"car battery"</span>,<span class="string">"12V car battery"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"12-pack drill bits"</span>,<span class="string">"12-pack of drill bits with sizes ranging from #40 to #3"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"12oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"14oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"hammer"</span>,<span class="string">"16oz carpenter's hammer"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"rocks"</span>,<span class="string">"box of assorted rocks"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"jacket"</span>,<span class="string">"water resistent black wind breaker"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"cloud"</span>,<span class="string">"test for databend"</span>),</span><br><span class="line">(<span class="keyword">default</span>,<span class="string">"spare tire"</span>,<span class="string">"24 inch spare tire"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="Databend-Cloud-中创建-Database"><a href="#Databend-Cloud-中创建-Database" class="headerlink" title="Databend Cloud 中创建 Database"></a>Databend Cloud 中创建 Database</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> debezium</span><br></pre></td></tr></table></figure>
+<p>NOTE: 用户可以不必先在 Databend 中创建表，系统检测到后会自动为用户建表。</p>
+<h4 id="启动-Debezium-Server-Databend"><a href="#启动-Debezium-Server-Databend" class="headerlink" title="启动 Debezium Server Databend"></a>启动 Debezium Server Databend</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run.sh</span><br></pre></td></tr></table></figure>
+<p>首次启动会进入 init snapshot 模式，通过配置的 Batch Size 全量将 MySQL 中的数据同步到 Databend，所以在 Databend 中可以看到 MySQL 中的数据已经同步过来了：</p>
+<h4 id="改变-Mysql-表结构"><a href="#改变-Mysql-表结构" class="headerlink" title="改变 Mysql 表结构"></a>改变 Mysql 表结构</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> products <span class="keyword">add</span> columm a <span class="built_in">int</span>;</span><br></pre></td></tr></table></figure>
+<p>在 products 表中新增一列 <code>a int</code></p>
+<p>同时在 Databend Cloud 中也可以看到目标同步表的结构也随之变更了：</p>
+<p><img src="https://files.mdnice.com/user/4760/37999730-dc82-4073-a9cb-fe6e318e6b1a.png" alt=""></p>
+<p>此时在 mysql 中插入数据，新的数据就会以新的 Schema 形式写入目标表：</p>
+<p><img src="https://files.mdnice.com/user/4760/18336d1a-8df3-46cf-8051-6013e3ff4256.png" alt=""></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>Debezium Server Databend 在支持 Auto Schema Evolution 之后，用户无需在数据源发生 schema 变更时手动介入，大大降低用户的运维成本；只需对同步任务进行简单配置即可将多表、多个数据库同步至下游，提高了数据同步的效率并且降低了用户的开发难度。</p>
+<hr>
 
       
     </div>
@@ -509,12 +552,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/">OpenKruise 源码分析之 ResourceDistribution</a></p>
+  <p><span>本文标题:</span><a href="/2024/01/25/databend-debezium-server-support-auto-schema-evolution/">databend debezium server support  auto schema evolution</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2022年07月11日 - 11:07</p>
-  <p><span>最后更新:</span>2022年07月11日 - 12:07</p>
-  <p><span>原始链接:</span><a href="/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/" title="OpenKruise 源码分析之 ResourceDistribution">https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2024年01月25日 - 17:01</p>
+  <p><span>最后更新:</span>2024年01月27日 - 23:01</p>
+  <p><span>原始链接:</span><a href="/2024/01/25/databend-debezium-server-support-auto-schema-evolution/" title="databend debezium server support  auto schema evolution">https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -582,9 +625,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/OpenKruise/" rel="tag"><i class="fa fa-tag"></i> OpenKruise</a>
+            <a href="/tags/databend/" rel="tag"><i class="fa fa-tag"></i> databend</a>
           
-            <a href="/tags/kubernetes/" rel="tag"><i class="fa fa-tag"></i> kubernetes</a>
+            <a href="/tags/CDC/" rel="tag"><i class="fa fa-tag"></i> CDC</a>
           
         </div>
       
@@ -610,8 +653,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/07/03/OpenKruise-源码分析之-ContainerRecreateRequest/" rel="next" title="OpenKruise 源码分析之 ContainerRecreateRequest">
-                <i class="fa fa-chevron-left"></i> OpenKruise 源码分析之 ContainerRecreateRequest
+              <a href="/2024/01/06/Databend-SDK-接入最佳实践-常见问题/" rel="next" title="(持续更新)Databend SDK 接入最佳实践&常见问题">
+                <i class="fa fa-chevron-left"></i> (持续更新)Databend SDK 接入最佳实践&常见问题
               </a>
             
           </div>
@@ -619,10 +662,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/07/24/2022-30-Open-source-weekly-report/" rel="prev" title="2022 NO.30 Open source weekly report">
-                2022 NO.30 Open source weekly report <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -808,7 +847,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现过程"><span class="nav-number">2.</span> <span class="nav-text">实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践-amp-演示"><span class="nav-number">3.</span> <span class="nav-text">实践&amp;演示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Debezium-Server-Databend"><span class="nav-number">3.1.</span> <span class="nav-text">Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mysql-中准备表和数据"><span class="nav-number">3.2.</span> <span class="nav-text">Mysql 中准备表和数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Databend-Cloud-中创建-Database"><span class="nav-number">3.3.</span> <span class="nav-text">Databend Cloud 中创建 Database</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-Debezium-Server-Databend"><span class="nav-number">3.4.</span> <span class="nav-text">启动 Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改变-Mysql-表结构"><span class="nav-number">3.5.</span> <span class="nav-text">改变 Mysql 表结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
