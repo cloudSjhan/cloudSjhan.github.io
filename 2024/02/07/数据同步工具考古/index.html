@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Databend,CDC," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="数据同步工具考古">
+<meta name="keywords" content="Databend,CDC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据同步工具考古">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="数据同步工具考古">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/index.html">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201228326-998648964.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201323485-1206770473.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201353040-1767931733.png">
+<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Library/Application%20Support/typora-user-images/image-20240207164331400.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201719487-1576349571.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201947879-1559499273.png">
+<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Library/Application%20Support/typora-user-images/image-20240207172125425.png">
+<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Library/Application%20Support/typora-user-images/image-20240207172616108.png">
+<meta property="og:image" content="https://cloudsjhan.github.io/Users/hanshanjie/Library/Application%20Support/typora-user-images/image-20240207174105516.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/8AsYBicEePu5jcrqPkbBtpvia0ylHw1U5ZJTUOylwjRtACMmjnEMU6Hd0SnTPzuZjylz1icmsG7T4KRaDNZl23KWQ/640?wx_fmt=png&from=appmsg&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207202635796-865910289.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207202726572-1435073125.png">
+<meta property="og:image" content="https://p.ipic.vip/bdt2l9.png">
+<meta property="og:updated_time" content="2024-02-07T11:03:31.477Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据同步工具考古">
+<meta name="twitter:description" content="数据同步工具考古">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>数据同步工具考古 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">数据同步工具考古</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-02-07T15:21:03+08:00">
+                2024-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Databend/" itemprop="url" rel="index">
+                    <span itemprop="name">Databend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/02/07/数据同步工具考古/" class="leancloud_visitors" data-flag-title="数据同步工具考古">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,223
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  数据同步工具考古
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在过去的一年里，我除了日常的 <a href="https://app.databend.com/" title="Databend Cloud" target="_blank" rel="noopener">Databend Cloud </a>开发工作之外，还围绕着 Databend 做了大量的数据生态工作。这包括在 <a href="https://docs.databend.com/developer/apis/http" title="Databend REST API" target="_blank" rel="noopener">Databend Native</a> 协议的基础上提供了多语言的 SDK，并在 SDK 基础上增加了对诸如 <a href="https://github.com/databendcloud/databend-tableau-connector-jdbc" title="databend tableau connector" target="_blank" rel="noopener">Tableau</a>、<a href="https://github.com/databendcloud/metabase-databend-driver" title="metabase databend driver" target="_blank" rel="noopener">Metabase</a>、<a href="https://github.com/apache/superset/pull/23308" title="support databend in superset" target="_blank" rel="noopener">SuperSet</a>、<a href="https://github.com/getredash/redash/pull/5902" title="support databend in redash" target="_blank" rel="noopener">Redash</a>等BI工具的支持。此外，我还完善了关于数据传输和实时同步领域的生态，涉及到 Debezium Engine、Flink CDC、Kafka Connect、Airbyte、Datax Plugin、TapData 等工具。</p>
+<p>在这一系列的工作中，数据同步是一个非常关键的环节，它构建了用户从外部数据、数据库到 <a href="https://github.com/datafuselabs/databend" title="Databend Github" target="_blank" rel="noopener">Databend</a> 的桥梁。起初我对于一些流行的数据同步工具只是略有耳闻，有些甚至从未听说过，更不了解它们的内部原理。通过一段时间的摸索和开发，成功实现了几个工具的整合之后，我对这些工具和平台有了更深入的了解。</p>
+<p>所以在本文中，我将对几个目前广泛使用、比较流行的数据同步工具进行考古。这包括它们的发展历史、技术特点以及在实际应用中的使用情况。通过对这些工具的分析介绍，在给自己做笔记的同时希望能够为其他读者提供对数据同步领域的全面认识。</p>
+<h2 id="数据同步工具"><a href="#数据同步工具" class="headerlink" title="数据同步工具"></a>数据同步工具</h2><h3 id="Debezium"><a href="#Debezium" class="headerlink" title="Debezium"></a>Debezium</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Debezium is an open source distributed platform for change data capture. Start it up, point it at your databases, and your apps can start responding to all of the inserts, updates, and deletes that other apps commit to your databases. Debezium is durable and fast, so your apps can respond quickly and never miss an event, even when things go wrong.</span><br></pre></td></tr></table></figure>
+<p><a href="https://debezium.io/documentation/reference/stable/tutorial.html#introduction-debezium" title="Debezium" target="_blank" rel="noopener">Debezium</a> 是一种 CDC（Change Data Capture）工具，工作原理类似大家所熟知的 Canal, DataBus, Maxwell 等，是通过抽取数据库日志来获取变更事件。Debezium 最初设计成一个 Kafka Connect 的 Source Plugin，目前开发者虽致力于将其与 Kafka Connect 解耦。下图引自 Debeizum 官方文档，可以看到一个 Debezium 在一个完整 CDC 系统中的位置。</p>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201228326-998648964.png" alt="img"></p>
+<p>Kafka Connect 为 Source Plugin 提供了一系列的编程接口，最主要的就是要实现 SourceTask 的 poll 方法，其返回 List 将会被以最少一次语义(At Least Once)的方式投递至 Kafka。</p>
+<h4 id="Debezium-抽取原理"><a href="#Debezium-抽取原理" class="headerlink" title="Debezium 抽取原理"></a>Debezium 抽取原理</h4><p>下图是 Debezium 从 PG 中抽取数据到 kafka topic 的流程，对于 PG 连接器来说是从逻辑复制流读取到变更日志，经由 kafka 发送到下游的数据处理服务以及相应的 writer plugin。</p>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201323485-1206770473.png" alt="img"></p>
+<p>再来看下 Debezium MySQL Reader 的代码，Reader体系构成了 MySQL 模块中代码的主线。</p>
+<p>Reader 的继承关系如下图所示：</p>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201353040-1767931733.png" alt="img"></p>
+<p>SnapshotReader 和 BinlogReader 分别实现了对 MySQL 数据的全量读取和增量读取，他们继承于 AbstractReader，里面封装了一些共用的逻辑代码。AbstractReader 的流程如下图所示：</p>
+<p><img src="/Users/hanshanjie/Library/Application Support/typora-user-images/image-20240207164331400.png" alt="image-20240207164331400"></p>
+<p>从图中可以看到 AbstractReader 在实现时，并没有直接将 enqueue 进来的 event record 直接写到 Kafka，而是通过一个内存阻塞队列BlockingQueue进行了解耦，这样写的好处是：</p>
+<ol>
+<li>职责解耦</li>
+</ol>
+<p>Event Record 在进入 BlockingQueue之前，要根据条件判断是否接受该 record；在向 Kafka 投递 record 之前，判断 task 的 running 状态。</p>
+<ol start="2">
+<li>线程隔离</li>
+</ol>
+<p>BlockingQueue 是一个线程安全的阻塞队列，通过 BlockingQueue 实现的生产者消费者模型，是可以跑在不同的线程里的，这样避免局部的阻塞带来的整体的干扰。如上图所示，系统会定期判断 running 标志位，若 running 被stop信号置为了false，可以立刻停止整个task,而不会因 MySQL IO 阻塞延迟响应。</p>
+<ol start="3">
+<li>单条与Batch的互相转化</li>
+</ol>
+<p>Enqueue record 是单条的投递 record，drain_to 是批量的消费 records。这个用法也可以反过来，实现 batch 到 single 的转化。</p>
+<p>而 MySQL Connector 每日次获取 snapshot 的时候基本上是沿用了 MySQL 官方从库搭建的方案，详细步骤是：</p>
+<ol>
+<li>获取一个全局读锁，从而阻塞住其他数据库客户端的写操作。</li>
+<li>开启一个可重复读语义的事务，来保证后续的在同一个事务内读操作都是在一个一致性快照中完成的。</li>
+<li>读取binlog的当前位置。</li>
+<li>读取连接器中配置的数据库和表的模式（schema）信息。</li>
+<li>释放全局读锁，允许其他的数据库客户端对数据库进行写操作。</li>
+<li>（可选）把DDL改变事件写入模式改变 topic（schema change topic），包括所有的必要的DROP和CREATEDDL语句。</li>
+<li>扫描所有数据库的表，并且为每一个表产生一个和特定表相关的kafka topic创建事件（即为每一个表创建一个kafka topic）。</li>
+<li>提交事务。</li>
+<li>记录连接器成功完成快照任务时的连接器偏移量。</li>
+</ol>
+<h4 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h4><h5 id="基于-Kafka-Connect"><a href="#基于-Kafka-Connect" class="headerlink" title="基于 Kafka Connect"></a><strong>基于 Kafka Connect</strong></h5><p>最常见的架构是通过 <a href="https://kafka.apache.org/documentation/#connect" title="Apache Kafka Connect" target="_blank" rel="noopener">Apache Kafka Connect</a> 部署 Debezium。Kafka Connect 为在 Kafka 和外部存储系统之间系统数据提供了一种可靠且可伸缩性的方式。它为 Connector 插件提供了一组 API 和一个运行时：Connect 负责运行这些插件，它们则负责移动数据。通过 Kafka Connect 可以快速实现 Source Connector 和 Sink Connector 进行交互构造一个低延迟的数据 Pipeline：</p>
+<ul>
+<li>Source Connector（例如，Debezium）：将记录发送到 Kafka</li>
+<li>Sink Connector：将 Kafka Topic 中的记录发送到其他系统</li>
+</ul>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201719487-1576349571.png" alt="img"></p>
+<p>如上图所示，部署了 MySQL 和 PostgresSQL 的 Debezium Connector 以捕获这两种类型数据库的变更。每个 Debezium Connector 都会与其源数据库建立连接：</p>
+<ul>
+<li>MySQL Connector 使用客户端库来访问 binlog。</li>
+<li>PostgreSQL Connector 从逻辑副本流中读取数据。</li>
+</ul>
+<p>除了 Kafka Broker 之外，Kafka Connect 也作为一个单独的服务运行。默认情况下，数据库表的变更会写入名称与表名称对应的 Kafka Topic 中。如果需要，您可以通过配置 Debezium 的 Topic 路由转换来调整目标 Topic 名称。例如，您可以：</p>
+<ul>
+<li>将记录路由到名称与表名不同的 Topic 中</li>
+<li>将多个表的变更事件记录流式传输到一个 Topic 中</li>
+</ul>
+<p>变更事件记录在 Apache Kafka 中后，Kafka Connect 生态系统中的不同 Sink Connector 可以将记录流式传输到其他系统、数据库，例如 Elasticsearch、Databend、分析系统或者缓存。</p>
+<h5 id="基于Debezium-Server"><a href="#基于Debezium-Server" class="headerlink" title="基于Debezium Server"></a>基于<strong>Debezium Server</strong></h5><p>第二种部署 Debezium 的方法是使用 <a href="https://debezium.io/documentation/reference/stable/operations/debezium-server.html" title="Debezium Server" target="_blank" rel="noopener">Debezium Server</a>。Debezium Server 是一个可配置的、随时可用的应用程序，可以将变更事件从源数据库流式传输到各种消息中间件上。</p>
+<p>下图展示了基于 Debezium Server 的变更数据捕获 Pipeline 架构：</p>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207201947879-1559499273.png" alt="img"></p>
+<p>Debezium Server 配置使用 Debezium Source Connector 来捕获源数据库中的变更。变更事件可以序列化为不同的格式，例如 JSON 或 Apache Avro，然后发送到各种消息中间件，例如 Amazon Kinesis、Apache Pulsar。</p>
+<h5 id="基于-Debezium-Engine"><a href="#基于-Debezium-Engine" class="headerlink" title="基于 Debezium Engine"></a><strong>基于 Debezium Engine</strong></h5><p>使用 Debezium Connector 的另一种方法是基于 <a href="https://debezium.io/documentation/reference/stable/development/engine.html" title="Debezium Engine" target="_blank" rel="noopener">Debezium Engine</a>。在这种情况下，Debezium 不会通过 Kafka Connect 运行，而是作为嵌入到用户自定义 Java 应用程序中的库运行。这对于在应用程序本身获取变更事件非常有帮助，无需部署完整的 Kafka 和 Kafka Connect 集群，也不用将变更流式传输到消息中间件上。这篇文章展示了如何使用 Debezium Databend Server 实现从 MySQL 的数据全增量同步。</p>
+<h5 id="特性总结"><a href="#特性总结" class="headerlink" title="特性总结"></a><strong>特性总结</strong></h5><p>Debezium 是一组用于 Apache Kafka Connect 的 Source Connector。每个 Connector 都通过使用该数据库的变更数据捕获 (CDC) 功能从不同的数据库中获取变更。与其他方法（例如轮询或双重写入）不同，Debezium 的实现基于日志的 CDC：</p>
+<ul>
+<li>确保捕获所有的数据变更。</li>
+<li>以极低的延迟生成变更事件，同时避免因为频繁轮询导致 CPU 使用率增加。例如，对于 MySQL 或 PostgreSQL，延迟在毫秒范围内。</li>
+<li>不需要更改数据模型，例如增加 ‘Last Updated’ 列。</li>
+<li>可以捕获删除操作。</li>
+<li>可以捕获旧记录状态以及其他元数据，例如，事务 ID，具体取决于数据库的功能和配置。</li>
+</ul>
+<h3 id="Flink-CDC"><a href="#Flink-CDC" class="headerlink" title="Flink CDC"></a>Flink CDC</h3><p><a href="https://github.com/ververica/flink-cdc-connectors" title="Flink CDC" target="_blank" rel="noopener">Flink CDC</a> 是基于数据库日志 CDC（Change Data Capture）技术的实时数据集成框架，支持了全增量一体化、无锁读取、并行读取、表结构变更自动同步、分布式架构等高级特性。Flink CDC 发展了三年多的时间。2020 年，从作为个人的 Side project 出发，后来被越来越多人认识到。</p>
+<p><img src="/Users/hanshanjie/Library/Application Support/typora-user-images/image-20240207172125425.png" alt="image-20240207172125425"></p>
+<h4 id="Flink-CDC-迭代历程"><a href="#Flink-CDC-迭代历程" class="headerlink" title="Flink CDC 迭代历程"></a>Flink CDC 迭代历程</h4><h5 id="1-0"><a href="#1-0" class="headerlink" title="1.0"></a><strong>1.0</strong></h5><p>Flink CDC 1.0 比简单，直接就是底层封装了 Debezium， 而 Debezium 同步一张表分为两个阶段：</p>
+<ul>
+<li>全量阶段：查询当前表中所有记录；</li>
+<li>增量阶段：从 binlog 消费变更数据。</li>
+</ul>
+<p>大部分用户使用的场景都是全量 + 增量同步，加锁是发生在全量阶段，目的是为了确定全量阶段的初始位点，保证增量 + 全量实现一条不多，一条不少，从而保证数据一致性。从下图中我们可以分析全局锁和表锁的一些加锁流程，左边红色线条是锁的生命周期，右边是 MySQL 开启可重复读事务的生命周期。</p>
+<p><img src="/Users/hanshanjie/Library/Application Support/typora-user-images/image-20240207172616108.png" alt="image-20240207172616108"></p>
+<p>以全局锁为例，首先是获取一个锁，然后再去开启可重复读的事务。这里锁住操作是读取 binlog 的起始位置和当前表的 schema。这样做的目的是保证 binlog 的起始位置和读取到的当前 schema 是可以对应上的，因为表的 schema 是会改变的，比如如删除列或者增加列。在读取这两个信息后，SnapshotReader 会在可重复读事务里读取全量数据，在全量数据读取完成后，会启动 BinlogReader 从读取的 binlog 起始位置开始增量读取，从而保证全量数据 + 增量数据的无缝衔接。</p>
+<p>表锁是全局锁的退化版，因为全局锁的权限会比较高，因此在某些场景，用户只有表锁。表锁锁的时间会更长，因为表锁有个特征：锁提前释放了可重复读的事务默认会提交，所以锁需要等到全量数据读完后才能释放。而 FLUSH TABLE WITH READ LOCK 的操作会存在以下问题：</p>
+<ol>
+<li>该命令等待所有正在进行的 update 完成，同时阻止所有新来的 update;</li>
+<li>执行成功之前必须等待所有正在运行的 select 完成，等待执行的 update 就会等待的更久。</li>
+<li>会阻止其他的事务 commit。</li>
+</ol>
+<p>所以对于加锁来说在时间上是不确定的，严重的可能会 hang 住数据库。</p>
+<p>当然，Flink CDC 1.x 版本也可以不加锁，但是会丢失一定的数据准确性。总的来说 1.x 存在的问题是：</p>
+<ul>
+<li>全量 + 增量读取的过程需要保证所有数据的一致性，因此需要通过加锁保证，但是加锁在数据库层面上是一个十分高危的操作。底层 Debezium 在保证数据一致性时，需要对读取的库或表加锁，全局锁可能导致数据库锁住，表级锁会锁住表的读，DBA 一般不给锁权限。</li>
+<li>不支持水平扩展，因为 Flink CDC 底层是基于 Debezium，起架构是单节点，所以Flink CDC 只支持单并发。在全量阶段读取阶段，如果表非常大 (亿级别)，读取时间在小时甚至天级别，用户不能通过增加资源去提升作业速度。</li>
+<li>全量读取阶段不支持 checkpoint：CDC 读取分为两个阶段，全量读取和增量读取，目前全量读取阶段是不支持 checkpoint 的，因此会存在一个问题：当我们同步全量数据时，假设需要 5 个小时，当我们同步了 4 小时的时候作业失败，这时候就需要重新开始，再读取 5 个小时。</li>
+</ul>
+<h5 id="2-0"><a href="#2-0" class="headerlink" title="2.0"></a><strong>2.0</strong></h5><p>了解了 1.0 的痛点之后，2.0 主要解决的问题有三个：支持无锁、水平扩展、checkpoint。</p>
+<p><img src="/Users/hanshanjie/Library/Application Support/typora-user-images/image-20240207174105516.png" alt="image-20240207174105516"></p>
+<p>Flink CDC 2.0 在借鉴了 <a href="https://arxiv.org/pdf/2010.12597.pdf" title="DBLog: A Watermark Based Change-Data-Capture Framework" target="_blank" rel="noopener">Netflix 这篇论文</a> 之后可以做到全程无锁和并发读取。</p>
+<h5 id="3-0"><a href="#3-0" class="headerlink" title="3.0"></a><strong>3.0</strong></h5><p><img src="https://mmbiz.qpic.cn/mmbiz_png/8AsYBicEePu5jcrqPkbBtpvia0ylHw1U5ZJTUOylwjRtACMmjnEMU6Hd0SnTPzuZjylz1icmsG7T4KRaDNZl23KWQ/640?wx_fmt=png&amp;from=appmsg&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="图片"></p>
+<p>Flink CDC 3.0 拥有了更多数据同步过程中的实用特性，成为了一个端到端的数据集成框架：</p>
+<ul>
+<li>上游 schema 变更自动同步到下游，已有作业支持动态加表</li>
+<li>空闲资源自动回收，一个 sink 实例支持写入多表</li>
+<li>API 设计直接面向数据集成场景，帮助用户轻松构建同步作业</li>
+</ul>
+<p>Databend 也提供了 <a href="https://github.com/databendcloud/flink-connector-databend" title="Flink Databend Connector" target="_blank" rel="noopener">Flink-Databend-Connector</a>，这篇文章展示了如何使用 databend connector 实现从 MySQL 的数据同步。</p>
+<h3 id="Canal"><a href="#Canal" class="headerlink" title="Canal"></a>Canal</h3><p>canal [kə’næl]，译意为水道/管道/沟渠，主要用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费。</p>
+<p>早期阿里巴巴因为杭州和美国双机房部署，存在跨机房同步的业务需求，实现方式主要是基于业务 trigger 获取增量变更。从 2010 年开始，业务逐步尝试数据库日志解析获取增量变更进行同步，由此衍生出了大量的数据库增量订阅和消费业务。</p>
+<p>基于日志增量订阅和消费的业务包括：</p>
+<ul>
+<li>数据库镜像</li>
+<li>数据库实时备份</li>
+<li>索引构建和实时维护(拆分异构索引、倒排索引等)</li>
+<li>业务 cache 刷新</li>
+<li>带业务逻辑的增量数据处理</li>
+</ul>
+<p>当前的canal支持源端MySQL版本包括 5.1.x , 5.5.x , 5.6.x , 5.7.x , 8.0.x。</p>
+<h4 id="canal-工作原理"><a href="#canal-工作原理" class="headerlink" title="canal 工作原理"></a><strong>canal 工作原理</strong></h4><ul>
+<li>canal 模拟 MySQL slave 的交互协议，伪装自己为MySQL slave,向MySQL master发送dump协议</li>
+<li>MySQL master收到 dump 请求，开始推送 binary log 给 slave (即 canal )</li>
+<li>canal 解析 binary log 对象(原始为 byte 流)</li>
+</ul>
+<h4 id="Binlog获取详解"><a href="#Binlog获取详解" class="headerlink" title="Binlog获取详解"></a>Binlog获取详解</h4><p>Binlog发送接收流程，流程如下图所示:</p>
+<p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207202635796-865910289.png" alt="img"></p>
+<p>首先，我们需要伪造一个slave，向master注册，这样master才会发送binlog event。注册很简单，就是向master发送COM_REGISTER_SLAVE命令，带上slave相关信息。这里需要注意，因为在MySQL的replication topology中，都需要使用一个唯一的server id来区别标示不同的server实例，所以这里我们伪造的slave也需要一个唯一的server id。</p>
+<p>接着实现binlog的dump。MySQL只支持一种 binlog dump方式，也就是指定binlog filename + position，向master发送COM_BINLOG_DUMP命令。在发送dump命令的时候，我们可以指定flag为BINLOG_DUMP_NON_BLOCK，这样master在没有可发送的binlog event之后，就会返回一个EOF package。不过通常对于slave来说，一直把连接挂着可能更好，这样能更及时收到新产生的binlog event。</p>
+<h4 id="Canal-架构"><a href="#Canal-架构" class="headerlink" title="Canal 架构"></a>Canal 架构</h4><p><img src="https://img2020.cnblogs.com/blog/799065/202112/799065-20211207202726572-1435073125.png" alt="img"></p>
+<ul>
+<li>server代表一个canal运行实例，对应于一个jvm，也可以理解为一个进程</li>
+<li>instance对应于一个数据队列 （1个server对应1..n个instance)，每一个数据队列可以理解为一个数据库实例。</li>
+</ul>
+<p>instance代表了一个实际运行的数据队列，包括了EventPaser,EventSink,EventStore等组件。</p>
+<p>抽象了CanalInstanceGenerator，主要是考虑配置的管理方式：</p>
+<p>manager方式：和你自己的内部web console/manager系统进行对接。(目前主要是公司内部使用，Otter采用这种方式) spring方式：基于spring xml + properties进行定义，构建spring配置.</p>
+<p>下面是 canalServer 和 instance 代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">canalServer.setCanalInstanceGenerator(<span class="keyword">new</span> CanalInstanceGenerator() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> CanalInstance <span class="title">generate</span><span class="params">(String destination)</span> </span>&#123;</span><br><span class="line">                Canal canal = canalConfigClient.findCanal(destination);</span><br><span class="line">                <span class="comment">// 此处省略部分代码 大致逻辑是设置canal一些属性</span></span><br><span class="line"></span><br><span class="line">                CanalInstanceWithManager instance = <span class="keyword">new</span> CanalInstanceWithManager(canal, filter) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="function"><span class="keyword">protected</span> CanalHAController <span class="title">initHaController</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        HAMode haMode = parameters.getHaMode();</span><br><span class="line">                        <span class="keyword">if</span> (haMode.isMedia()) &#123;</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">new</span> MediaHAController(parameters.getMediaGroup(),</span><br><span class="line">                                parameters.getDbUsername(),</span><br><span class="line">                                parameters.getDbPassword(),</span><br><span class="line">                                parameters.getDefaultDatabaseName());</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">super</span>.initHaController();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">startEventParserInternal</span><span class="params">(CanalEventParser parser, <span class="keyword">boolean</span> isGroup)</span> </span>&#123;</span><br><span class="line">                        <span class="comment">//大致逻辑是 设置支持的类型</span></span><br><span class="line">                        <span class="comment">//初始化设置MysqlEventParser的主库信息，这处抽象不好，目前只支持mysql</span></span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125;;</span><br><span class="line">                <span class="keyword">return</span> instance;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        canalServer.start(); <span class="comment">//启动canalServer</span></span><br><span class="line"></span><br><span class="line">        canalServer.start(destination);<span class="comment">//启动对应instance</span></span><br><span class="line">        <span class="keyword">this</span>.clientIdentity = <span class="keyword">new</span> ClientIdentity(destination, pipeline.getParameters().getMainstemClientId(), filter);</span><br><span class="line">        canalServer.subscribe(clientIdentity);<span class="comment">// 发起一次订阅，当监听到instance配置时，调用generate方法注入新的instance</span></span><br></pre></td></tr></table></figure>
+<p>instance模块：</p>
+<ul>
+<li>eventParser (数据源接入，模拟slave协议和master进行交互，协议解析)</li>
+<li>eventSink (Parser和Store链接器，进行数据过滤，加工，分发的工作)</li>
+<li>eventStore (数据存储)</li>
+<li>metaManager (增量订阅&amp;消费信息管理器)</li>
+</ul>
+<p>基于 Canal 的实现原理来看，Canal 并不支持全量+增量的同步模式。</p>
+<h3 id="Airbyte"><a href="#Airbyte" class="headerlink" title="Airbyte"></a>Airbyte</h3><p><a href="https://github.com/airbytehq/airbyte" title="Airbyte" target="_blank" rel="noopener">Airbyte</a> 是一个比较新的数据集成平台，提供了非常多的 connector，号称支持上千种数据源。Databend 也提供了<a href="https://docs.airbyte.com/integrations/destinations/databend" target="_blank" rel="noopener">Airbyte Destination Connecto</a>，用户可以从 Airbyte 支持的上百个 source connector 比如 mysql, es, pg 等同步数据到 Databend。</p>
+<p><img src="https://p.ipic.vip/bdt2l9.png" alt=""></p>
+<p>Airbyte 的优势是支持的数据源非常多，甚至像 Google Docs, Facebook 都支持。 Airbyte 是 ELT 模式，先抽取数据到目标表后，再进行清洗。但是缺点也非常明显，Airbyte 是一个打包的平台，所有的数据源都要被集成到里面，所以使用起来非常地重。并且Airbyte 同步过来的数据是一张大宽表，依赖 dbt Normalization 或者一些 ELT 工作才能够表展开。所以适合的是数据源多，并且需要统一管理的场景。</p>
+<h3 id="DataX"><a href="#DataX" class="headerlink" title="DataX"></a>DataX</h3><p><a href="https://github.com/alibaba/DataX" title="Datax" target="_blank" rel="noopener">DataX</a> 是阿里开源的一个异构数据源离线同步工具，能够实现包括关系型数据库(MySQL、Oracle等)、HDFS、Hive等各种异构数据源之间稳定高效的数据同步功能。DataX 本身作为数据同步框架，将不同数据源的同步, 抽象为从 source 端读取数据的 Reader 插件，以及向目标端写入数据的Writer插件，理论上DataX框架可以支持任意数据源的数据同步工作。</p>
+<p>Databend 提供了 <a href="https://github.com/alibaba/DataX/tree/master/databendwriter" title="Datax Databend Writer" target="_blank" rel="noopener">Databend Writer 的 Datax Plugin</a> , 可以支持从任意具有 Datax Reader 插件的数据库同步数据到 Databend，并且支持全量insert 和 upsert 两种同步模式。Datax 最适合的场景是 T+1 的离线数据同步。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>CDC 的技术方案非常多，目前业界主流的实现机制可以分为两种：</p>
+<h4 id="基于查询的-CDC："><a href="#基于查询的-CDC：" class="headerlink" title="基于查询的 CDC："></a>基于查询的 CDC：</h4><ul>
+<li>离线调度查询作业，批处理。把一张表同步到其他系统，每次通过查询去获取表中最新的数据；</li>
+<li>无法保障数据一致性，查的过程中有可能数据已经发生了多次变更；</li>
+<li>不保障实时性，基于离线调度存在天然的延迟。</li>
+</ul>
+<h4 id="基于日志的-CDC："><a href="#基于日志的-CDC：" class="headerlink" title="基于日志的 CDC："></a>基于日志的 CDC：</h4><ul>
+<li>实时消费日志，流处理，例如 MySQL 的 binlog 日志完整记录了数据库中的变更，可以把 binlog 文件当作流的数据源；</li>
+<li>保障数据一致性，因为 binlog 文件包含了所有历史变更明细；</li>
+<li>保障实时性，因为类似 binlog 的日志文件是可以流式消费的，提供的是实时数据。</li>
+</ul>
+<p>对比常见的开源 CDC 方案，我们可以发现，对比增量同步能力:</p>
+<blockquote>
+<ul>
+<li>基于日志的方式，可以很好的做到增量同步；</li>
+<li>而基于查询的方式是很难做到增量同步的。</li>
+</ul>
+</blockquote>
+<ul>
+<li>对比全量同步能力，基于查询或者日志的 CDC 方案基本都支持，除了 Canal。</li>
+<li>而对比全量 + 增量同步的能力，只有 Flink CDC、Debezium 支持较好。</li>
+<li><p>从架构角度去看，该表将架构分为单机和分布式，这里的分布式架构不单纯体现在数据读取能力的水平扩展上，更重要的是在大数据场景下分布式系统接入能力。例如 Flink CDC 的数据入湖或者入仓的时候，下游通常是分布式的系统，如 Hive、HDFS、Iceberg、Hudi 等，那么从对接入分布式系统能力上看，Flink CDC 的架构能够很好地接入此类系统。</p>
+</li>
+<li><p>在数据转换 / 数据清洗能力上，当数据进入到 CDC 工具的时候是否能较方便的对数据做一些过滤或者清洗</p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>在 Flink CDC 上操作很简单，可以通过 Flink SQL 去操作；</li>
+<li>但是像 DataX、Debezium 等则需要通过脚本或者模板去做，所以用户的使用门槛会比较高。</li>
+</ul>
+</blockquote>
+<p>另外，在生态方面，这里指的是下游的一些数据库或者数据源的支持。Flink CDC 下游有丰富的 Connector，例如写入到 Databend、MySQL、Pg、ClickHouse 等常见的一些系统，也支持各种自定义 connector。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2024/02/07/数据同步工具考古/">数据同步工具考古</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2024年02月07日 - 15:02</p>
+  <p><span>最后更新:</span>2024年02月07日 - 19:02</p>
+  <p><span>原始链接:</span><a href="/2024/02/07/数据同步工具考古/" title="数据同步工具考古">https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/02/07/数据同步工具考古/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Databend/" rel="tag"><i class="fa fa-tag"></i> Databend</a>
+          
+            <a href="/tags/CDC/" rel="tag"><i class="fa fa-tag"></i> CDC</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/01/25/databend-debezium-server-support-auto-schema-evolution/" rel="next" title="databend debezium server support  auto schema evolution">
+                <i class="fa fa-chevron-left"></i> databend debezium server support  auto schema evolution
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">119</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据同步工具"><span class="nav-number">2.</span> <span class="nav-text">数据同步工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Debezium"><span class="nav-number">2.1.</span> <span class="nav-text">Debezium</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Debezium-抽取原理"><span class="nav-number">2.1.1.</span> <span class="nav-text">Debezium 抽取原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署方式"><span class="nav-number">2.1.2.</span> <span class="nav-text">部署方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基于-Kafka-Connect"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">基于 Kafka Connect</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基于Debezium-Server"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">基于Debezium Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基于-Debezium-Engine"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">基于 Debezium Engine</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#特性总结"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">特性总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flink-CDC"><span class="nav-number">2.2.</span> <span class="nav-text">Flink CDC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Flink-CDC-迭代历程"><span class="nav-number">2.2.1.</span> <span class="nav-text">Flink CDC 迭代历程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-0"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">1.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-0"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">2.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-0"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">3.0</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Canal"><span class="nav-number">2.3.</span> <span class="nav-text">Canal</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#canal-工作原理"><span class="nav-number">2.3.1.</span> <span class="nav-text">canal 工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Binlog获取详解"><span class="nav-number">2.3.2.</span> <span class="nav-text">Binlog获取详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Canal-架构"><span class="nav-number">2.3.3.</span> <span class="nav-text">Canal 架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Airbyte"><span class="nav-number">2.4.</span> <span class="nav-text">Airbyte</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DataX"><span class="nav-number">2.5.</span> <span class="nav-text">DataX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.6.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于查询的-CDC："><span class="nav-number">2.6.1.</span> <span class="nav-text">基于查询的 CDC：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于日志的-CDC："><span class="nav-number">2.6.2.</span> <span class="nav-text">基于日志的 CDC：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">223.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:223.4k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
