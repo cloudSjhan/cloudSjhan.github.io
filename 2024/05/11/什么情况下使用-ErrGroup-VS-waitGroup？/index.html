@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="go," />
+  <meta name="keywords" content="Go," />
 
 
 
@@ -92,20 +92,20 @@
 
 
 
-<meta name="description" content="详解Go regexp包中 ReplaceAllString 的用法">
-<meta name="keywords" content="go">
+<meta name="description" content="什么情况下使用 ErrGroup VS waitGroup？">
+<meta name="keywords" content="Go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="详解Go regexp包中 ReplaceAllString 的用法">
-<meta property="og:url" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
+<meta property="og:title" content="什么情况下使用 ErrGroup VS waitGroup？">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="详解Go regexp包中 ReplaceAllString 的用法">
+<meta property="og:description" content="什么情况下使用 ErrGroup VS waitGroup？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
-<meta property="og:updated_time" content="2019-02-01T09:37:45.426Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/index.html">
+<meta property="og:updated_time" content="2024-05-11T12:46:03.738Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="详解Go regexp包中 ReplaceAllString 的用法">
-<meta name="twitter:description" content="详解Go regexp包中 ReplaceAllString 的用法">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/index.html">
+<meta name="twitter:title" content="什么情况下使用 ErrGroup VS waitGroup？">
+<meta name="twitter:description" content="什么情况下使用 ErrGroup VS waitGroup？">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/index.html">
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/"/>
 
 
 
@@ -150,7 +150,7 @@
   </script>
 
 
-  <title>详解Go regexp包中 ReplaceAllString 的用法 | cloud world</title>
+  <title>什么情况下使用 ErrGroup VS waitGroup？ | cloud world</title>
   
 
 
@@ -332,7 +332,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -349,7 +349,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">详解Go regexp包中 ReplaceAllString 的用法</h2>
+          <h2 class="post-title" itemprop="name headline">什么情况下使用 ErrGroup VS waitGroup？</h2>
         
 
         <div class="post-meta">
@@ -361,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T12:23:12+08:00">
-                2019-02-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-05-11T20:43:56+08:00">
+                2024-05-11
               </time>
             
 
@@ -384,8 +384,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/go/" itemprop="url" rel="index">
-                    <span itemprop="name">go</span>
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
                   </a>
                 </span>
 
@@ -401,7 +401,7 @@
 
           
           
-             <span id="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/" class="leancloud_visitors" data-flag-title="详解Go regexp包中 ReplaceAllString 的用法">
+             <span id="/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/" class="leancloud_visitors" data-flag-title="什么情况下使用 ErrGroup VS waitGroup？">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -433,7 +433,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,455
+                  832
                 </span>
               
 
@@ -449,7 +449,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  4
                 </span>
               
             </div>
@@ -457,7 +457,7 @@
 
           
               <div class="post-description">
-                  详解Go regexp包中 ReplaceAllString 的用法
+                  什么情况下使用 ErrGroup VS waitGroup？
               </div>
           
 
@@ -478,58 +478,36 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>昨天有同事在看k8s源码，突然问了一个看似很简单的问题，<a href="https://golang.org/pkg/regexp/#Regexp.ReplaceAllString" target="_blank" rel="noopener">https://golang.org/pkg/regexp/#Regexp.ReplaceAllString</a> 官方文档中<code>ReplaceAllString</code>的解释，到底是什么意思？到底怎么用？</p>
-<p>官方英文原文：</p>
-<p><code>func (re *Regexp) ReplaceAllString(src, repl string) string</code></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ReplaceAllString returns a copy of src, replacing matches of the Regexp with the replacement <span class="built_in">string</span> repl. Inside repl, $ signs are interpreted as in Expand, so <span class="keyword">for</span> instance $<span class="number">1</span> represents the text of the first submatch.</span><br></pre></td></tr></table></figure>
-<p>中文文档：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReplaceAllLiteral返回src的一个拷贝，将src中所有re的匹配结果都替换为repl。在替换时，repl中的&apos;$&apos;符号会按照Expand方法的规则进行解释和替换，例如$1会被替换为第一个分组匹配结果。</span><br></pre></td></tr></table></figure>
-<p>看上去一脸懵逼，还是不理解这个函数到底怎么用。</p>
-<p>又去看官方的示例：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Example：</span><br><span class="line">re := regexp.MustCompile(<span class="string">"a(x*)b"</span>)</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"T"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$1"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$1W"</span>))</span><br><span class="line">fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"$&#123;1&#125;W"</span>))</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line"></span><br><span class="line">-T-T-</span><br><span class="line">--xx-</span><br><span class="line">---</span><br><span class="line">-W-xxW-</span><br></pre></td></tr></table></figure>
-<p>第一个替换勉强能看明白，是用<code>T</code>去替换<code>-ab-axxb-</code>中符合正则表达式匹配的部分；第二个中的<code>$</code>是什么意思？<code>$1</code>看起来像是匹配正则表达式分组中第一部分，那<code>$1W</code>呢？<code>${1}W</code>呢？带着这些问题，开始深入研究这个函数到底怎么用。</p>
-<p>首先，<code>$</code>符号在<code>Expand</code>函数中有解释过：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func (re *Regexp) Expand(dst []byte, template []byte, src []byte, match []int) []byte</span><br><span class="line"></span><br><span class="line">Expand返回新生成的将template添加到dst后面的切片。在添加时，Expand会将template中的变量替换为从src匹配的结果。match应该是被FindSubmatchIndex返回的匹配结果起止位置索引。（通常就是匹配src，除非你要将匹配得到的位置用于另一个[]byte）</span><br><span class="line"></span><br><span class="line">在template参数里，一个变量表示为格式如：$name或$&#123;name&#125;的字符串，其中name是长度&gt;0的字母、数字和下划线的序列。一个单纯的数字字符名如$1会作为捕获分组的数字索引；其他的名字对应(?P&lt;name&gt;...)语法产生的命名捕获分组的名字。超出范围的数字索引、索引对应的分组未匹配到文本、正则表达式中未出现的分组名，都会被替换为空切片。</span><br><span class="line"></span><br><span class="line">$name格式的变量名，name会尽可能取最长序列：$1x等价于$&#123;1x&#125;而非$&#123;1&#125;x，$10等价于$&#123;10&#125;而非$&#123;1&#125;0。因此$name适用在后跟空格/换行等字符的情况，$&#123;name&#125;适用所有情况。</span><br><span class="line"></span><br><span class="line">如果要在输出中插入一个字面值&apos;$&apos;，在template里可以使用$$。</span><br></pre></td></tr></table></figure>
-<p>说了这么多，其实最终要的部分可以概括为三点：</p>
-<ol>
-<li><code>$</code>后面只有数字，则代表正则表达式的分组索引，关于正则表达式的分组解释：</li>
-</ol>
-<p>捕获组可以通过从左到右计算其开括号来编号 。例如，在表达式 (A)(B(C)) 中，存在四个这样的组：</p>
-<table>
-<thead>
-<tr>
-<th><strong>0</strong></th>
-<th>(A)(B(C))</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1</strong></td>
-<td>(A)</td>
-</tr>
-<tr>
-<td><strong>2</strong></td>
-<td>(B(C))</td>
-</tr>
-<tr>
-<td><strong>3</strong></td>
-<td>(C)</td>
-</tr>
-</tbody>
-</table>
-<p>组零始终代表整个表达式</p>
-<p>之所以这样命名捕获组是因为在匹配中，保存了与这些组匹配的输入序列的每个子序列。捕获的子序列稍后可以通过 Back 引用（反向引用） 在表达式中使用，也可以在匹配操作完成后从匹配器检索。</p>
-<p>匹配正则表达式的<code>$1</code>部分，保留该部分，去掉其余部分；</p>
-<ol start="2">
-<li><code>$</code>后面是字符串，即<code>$name</code>,代表匹配<strong>对应(?P<name>…)语法产生的命名捕获分组的名字</name></strong></li>
-<li><code>${数字}字符串</code>,即<code>${1}xxx</code>，意思是匹配正则表达式的分组1，<code>src</code>中匹配分组1的保留，并删除<code>src</code>剩余部分，追加<code>xxx</code>，后面会有代码示例解释这部分，也是最难理解的部分</li>
-<li>最简单的情况，参数<code>repl</code>是字符串，将src中所有re的匹配结果都替换为repl</li>
-</ol>
-<p>下面用代码来解释以上几种情况：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">"fmt"</span></span><br><span class="line"><span class="string">"regexp"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	s := <span class="string">"Hello World, 123 Go!"</span></span><br><span class="line">	<span class="comment">//定义一个正则表达式reg，匹配Hello或者Go</span></span><br><span class="line">	reg := regexp.MustCompile(<span class="string">`(Hell|G)o`</span>)</span><br><span class="line">	</span><br><span class="line">	s2 := <span class="string">"2019-12-01,test"</span></span><br><span class="line">	<span class="comment">//定义一个正则表达式reg2,匹配 YYYY-MM-DD 的日期格式</span></span><br><span class="line">	reg2 := regexp.MustCompile(<span class="string">`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//最简单的情况，用“T替换”"-ab-axxb-"中符合正则"a(x*)b"的部分</span></span><br><span class="line">    reg3 := regexp.MustCompile(<span class="string">"a(x*)b"</span>)</span><br><span class="line">	fmt.Println(re.ReplaceAllString(<span class="string">"-ab-axxb-"</span>, <span class="string">"T"</span>))</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//$&#123;1&#125;匹配"Hello World, 123 Go!"中符合正则`(Hell|G)`的部分并保留，去掉"Hello"与"Go"中的'o'并用"ddd"追加</span></span><br><span class="line">	rep1 := <span class="string">"$&#123;1&#125;ddd"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg.ReplaceAllString(s, rep1))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;4&#125;)'的'2019'保留，去掉剩余部分</span></span><br><span class="line">    rep2 := <span class="string">"$&#123;1&#125;"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep2))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;2&#125;)'的'12'保留，去掉剩余部分</span></span><br><span class="line">     rep3 := <span class="string">"$&#123;2&#125;"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep3))</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//首先，"2019-12-01,test"中符合正则表达式`(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)`的部分是"2019-12-01",将该部分匹配'(\d&#123;2&#125;)'的'01'保留，去掉剩余部分,并追加"13:30:12"</span></span><br><span class="line">    rep4 := <span class="string">"$&#123;3&#125;:13:30:12"</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q\n"</span>, reg2.ReplaceAllString(s2,rep4))</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>上面代码输出依次是：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> go run main.go</span></span><br><span class="line">-T-T-</span><br><span class="line">"Hellddd World, 123 Gddd!"</span><br><span class="line">"2019,test"</span><br><span class="line">"12,test"</span><br><span class="line">"01:13:30:12,test"</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go<code>regexp</code>包中的<code>ReplaceAllString</code>设计有些许反人类，理解和使用上感觉不方便，如果你有更好的理解或者示例代码，Call me!</p>
+<p>Goroutine 是编写 Go 语言并发程序的强大工具。然而管理协程，特别是在处理协程的错误时，可能会变得繁琐。这时，x/sync 包中的 errgroup 就派上用场了。它提供了一种简化的方法来处理并发任务及其错误。</p>
+<h3 id="Example-for-ErrGroup"><a href="#Example-for-ErrGroup" class="headerlink" title="Example for ErrGroup"></a>Example for ErrGroup</h3><p>下面是一个使用 errorGroup 的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">"context"</span></span><br><span class="line"> <span class="string">"errors"</span></span><br><span class="line"> <span class="string">"fmt"</span></span><br><span class="line"> <span class="string">"time"</span></span><br><span class="line"></span><br><span class="line"> <span class="string">"golang.org/x/sync/errgroup"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">task1</span><span class="params">(ctx context.Context)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"> fmt.Println(<span class="string">"Task 1 started successfully"</span>)</span><br><span class="line"> <span class="keyword">select</span> &#123;</span><br><span class="line"> <span class="keyword">case</span> &lt;-time.After(<span class="number">1</span> * time.Second):</span><br><span class="line">  fmt.Println(<span class="string">"Task 1 completed successfully"</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line"> <span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">  fmt.Println(<span class="string">"Task 1 canceled"</span>)</span><br><span class="line">  <span class="keyword">return</span> ctx.Err()</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">task2</span><span class="params">(ctx context.Context)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"> fmt.Println(<span class="string">"Task 2 started successfully"</span>)</span><br><span class="line"> <span class="keyword">select</span> &#123;</span><br><span class="line"> <span class="keyword">case</span> &lt;-time.After(<span class="number">2</span> * time.Second):</span><br><span class="line">  fmt.Println(<span class="string">"Task 2 processed failed"</span>)</span><br><span class="line">  <span class="keyword">return</span> errors.New(<span class="string">"Task 2 processed failed due to error"</span>)</span><br><span class="line"> <span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">  fmt.Println(<span class="string">"Task 2 canceled"</span>)</span><br><span class="line">  <span class="keyword">return</span> ctx.Err()</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">task3</span><span class="params">(ctx context.Context)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"> fmt.Println(<span class="string">"Task 3 started successfully"</span>)</span><br><span class="line"> <span class="keyword">select</span> &#123;</span><br><span class="line"> <span class="keyword">case</span> &lt;-time.After(<span class="number">3</span> * time.Second):</span><br><span class="line">  fmt.Println(<span class="string">"Task 3 completed successfully"</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line"> <span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">  fmt.Println(<span class="string">"Task 3 canceled"</span>)</span><br><span class="line">  <span class="keyword">return</span> ctx.Err()</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line"> <span class="keyword">defer</span> cancel() <span class="comment">// Ensure cancellation happens when main() exits</span></span><br><span class="line"></span><br><span class="line"> g, ctx := errgroup.WithContext(ctx)</span><br><span class="line"></span><br><span class="line"> g.Go(<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> task1(ctx)</span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line"> g.Go(<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> task2(ctx)</span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line"> g.Go(<span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> task3(ctx)</span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> err := g.Wait(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">"Encountered error:"</span>, err)</span><br><span class="line">  cancel()</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">"All tasks completed successfully"</span>)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面程序的输出是：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Task <span class="number">1</span> started successfully</span><br><span class="line">Task <span class="number">2</span> started successfully</span><br><span class="line">Task <span class="number">3</span> started successfully</span><br><span class="line">Task <span class="number">1</span> completed successfully</span><br><span class="line">Task <span class="number">2</span> processed failed</span><br><span class="line">Encountered error: Task <span class="number">2</span> processed failed due to error</span><br></pre></td></tr></table></figure>
+<p>在这个例子中：</p>
+<ul>
+<li>我们创建了一个带有可取消上下文的 <code>errgroup</code>。</li>
+<li>定义了3个任务，task1 和 task3 在一定时间后模拟成功完成，而 task2 在更长的时间后通过返回错误来模拟失败。</li>
+<li>使用 g.Go 在单独的 goroutine 中启动每个任务。</li>
+<li>调用 g.Wait 等待所有任务完成。如果任何任务遇到错误，g.Wait() 会立即返回该错误。<br>在主执行之后，task1 成功完成，task2 遇到了处理失败，而 task3 由于 task2 中的上述失败而被取消。</li>
+</ul>
+<h3 id="ErrGroup-vs-WaitGroup"><a href="#ErrGroup-vs-WaitGroup" class="headerlink" title="ErrGroup vs WaitGroup"></a>ErrGroup vs WaitGroup</h3><h4 id="ErrGroup"><a href="#ErrGroup" class="headerlink" title="ErrGroup:"></a>ErrGroup:</h4><ul>
+<li>使用 ErrGroup 来管理并发任务中的错误。它聚合了所有协程中的错误，并返回遇到的第一个错误。</li>
+<li>需要管理多个可能产生错误的并发任务。</li>
+<li>想要利用上下文取消功能来优雅地关闭程序。</li>
+<li>不想手动检查多个 WaitGroup 调用的错误</li>
+<li>它与 Go 的上下文包无缝集成。任何来自协程的错误都会取消上下文，自动停止其他正在运行的任务。</li>
+</ul>
+<h4 id="WaitGroup"><a href="#WaitGroup" class="headerlink" title="WaitGroup"></a>WaitGroup</h4><ul>
+<li>使用 WaitGroup 进行基本同步。它简单地等待指定数量的 goroutine 完成后再继续。</li>
+<li>]当你只关心任务完成而不预期错误时，它是理想的选择。</li>
+<li>它不直接处理错误。你需要在每个 goroutine 中检查错误并单独处理它们。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>使用 WaitGroup 进行简单的同步</li>
+<li>使用 ErrGroup 进行错误管理，并希望在优雅关闭时有上下文感知的取消。</li>
+<li>也可以同时使用它们，WaitGroup 用于基本同步，ErrGroup 用于一组任务中的详细错误处理。</li>
+</ul>
+<p>相关的 <a href="https://github.com/golang/go/issues/23595" title="x/sync/errgroup: get all errors" target="_blank" rel="noopener">issue</a></p>
 <hr>
 
       
@@ -558,12 +536,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/">详解Go regexp包中 ReplaceAllString 的用法</a></p>
+  <p><span>本文标题:</span><a href="/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/">什么情况下使用 ErrGroup VS waitGroup？</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2019年02月01日 - 12:02</p>
-  <p><span>最后更新:</span>2019年02月01日 - 17:02</p>
-  <p><span>原始链接:</span><a href="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/" title="详解Go regexp包中 ReplaceAllString 的用法">https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2024年05月11日 - 20:05</p>
+  <p><span>最后更新:</span>2024年05月11日 - 20:05</p>
+  <p><span>原始链接:</span><a href="/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/" title="什么情况下使用 ErrGroup VS waitGroup？">https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/05/11/什么情况下使用-ErrGroup-VS-waitGroup？/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -631,7 +609,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
           
         </div>
       
@@ -657,8 +635,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/31/go语言坑之for-range/" rel="next" title="go语言坑之for range">
-                <i class="fa fa-chevron-left"></i> go语言坑之for range
+              <a href="/2024/05/07/Golang-实现枚举的各种方法及最佳实践/" rel="next" title="Golang 实现枚举的各种方法及最佳实践">
+                <i class="fa fa-chevron-left"></i> Golang 实现枚举的各种方法及最佳实践
               </a>
             
           </div>
@@ -666,10 +644,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/26/git-保持fork的项目与上游同步/" rel="prev" title="git-保持fork的项目与上游同步">
-                git-保持fork的项目与上游同步 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -855,7 +829,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-for-ErrGroup"><span class="nav-number">1.</span> <span class="nav-text">Example for ErrGroup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ErrGroup-vs-WaitGroup"><span class="nav-number">2.</span> <span class="nav-text">ErrGroup vs WaitGroup</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ErrGroup"><span class="nav-number">2.1.</span> <span class="nav-text">ErrGroup:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WaitGroup"><span class="nav-number">2.2.</span> <span class="nav-text">WaitGroup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
