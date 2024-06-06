@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2024-06-03T14:10:30.865Z</updated>
+  <updated>2024-06-06T08:54:34.697Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang GC 基础: 三色标记清除和 STW</title>
+    <link href="https://cloudsjhan.github.io/2024/06/06/Golang-GC-%E5%9F%BA%E7%A1%80-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E5%92%8C-STW/"/>
+    <id>https://cloudsjhan.github.io/2024/06/06/Golang-GC-基础-三色标记清除和-STW/</id>
+    <published>2024-06-06T08:54:11.000Z</published>
+    <updated>2024-06-06T08:54:34.697Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>今天大家讨论一下 Golang 中垃圾回收的一些基础知识，这些知识往往让人难以理解。要知道，在垃圾回收过程中，Go 会首先:<br>（1）将根对象标记为灰色，<br>（2）然后将它们自己标记为黑色，将它们的后代标记为灰色，<br>（3）最后删除剩余的（白色）对象。<br>这就是所谓的标记和清除。但为什么我们需要三种颜色呢？为什么不是两种呢？让我们在下文中进一步讨论这个问题，并确定 STW (stop the world)的实际开销。</p><h3 id="标记和清除"><a href="#标记和清除" class="headerlink" title="标记和清除"></a>标记和清除</h3><p>如果 GC 的全部任务都归结为标记不能删除的对象和删除未标记的对象，那么为什么不使用双色算法呢？事实上，我们可以简单地用黑色标记所有可到达的对象，然后删除白色的对象。</p><p><img src="https://files.mdnice.com/user/4760/c0fc2f94-81fc-439a-ade4-8c3da5ec3970.png" alt=""></p><p>这一切似乎都合乎逻辑，但现在我们决定让垃圾回收器增量运行，也就是说，我们赋予它将标记阶段分成几个低延迟阶段的能力。</p><p><img src="https://files.mdnice.com/user/4760/18b600b8-5659-4511-9b50-83a3bbc46e52.png" alt=""><br>如图所示，在第一阶段，我们首先将节点 1 标记为黑色，然后查找该节点的连接，找到节点 2，并将其也标记为黑色。然后，标记暂停，给应用程序一点 CPU 时间来执行其主要任务。最后，我们进入第二阶段标记。由于没有灰色/黑色之分，我们不知道节点 1 的引用是否已被检查过，因此必须再次检查。算法最终很可能会完成，但不能保证它会在程序本身完成之前完成（导致 OOM）。</p><p>为了解决这个问题，我们增加了一个不变量：黑色物体应被视为扫描对象。</p><p>这个算法似乎是有效的，即使在增量垃圾回收的情况下也能正确终止。但有一个问题却打破了一切：在这种天真版本的标记和清扫算法的整个运行过程中，我们必须保持程序处于 “STW”状态。</p><h3 id="如果在没有-STW-的情况下进行标记和清扫，会发生什么情况？"><a href="#如果在没有-STW-的情况下进行标记和清扫，会发生什么情况？" class="headerlink" title="如果在没有 STW 的情况下进行标记和清扫，会发生什么情况？"></a>如果在没有 STW 的情况下进行标记和清扫，会发生什么情况？</h3><p><img src="https://files.mdnice.com/user/4760/5f390365-4631-4d39-8daf-7464b6d4500c.png" alt=""></p><p>正如你所看到的，在这两个标记阶段之间，已经添加了许多新对象，但我们并没有标记表明需要对它们进行扫描。这就导致了内存泄漏。唯一的解决办法就是禁止我们的程序（突变器）在垃圾回收器运行时进行任何更改。</p><h3 id="三色标记和清扫是如何实现并发垃圾回收的？"><a href="#三色标记和清扫是如何实现并发垃圾回收的？" class="headerlink" title="三色标记和清扫是如何实现并发垃圾回收的？"></a>三色标记和清扫是如何实现并发垃圾回收的？</h3><p>正如我们之前所发现的，在标记和扫描算法中，我们遇到了 “世界停止”（STW）的问题。不过，如果我们引入一个额外的标记 “未扫描但不符合删除条件”（灰色），STW 问题就会自动解决！</p><p>需要注意的是，在 Golang 中，GC 不仅是增量式的，而且是并发式的。其逻辑与增量方法相同–GC 工作被分为不同的部分，但它们不是按顺序执行，而是由后台工作者并发执行。</p><p>下面是 Golang 中的三色标记：<br><img src="https://files.mdnice.com/user/4760/8fd19e35-2603-4ff2-ae18-30aead44df37.png" alt=""></p><p>我们将黑色节点引用但尚未扫描的对象标记为灰色节点。让我们看看这如何帮助我们消除 STW。</p><p><img src="https://files.mdnice.com/user/4760/ba5d3b17-d581-494a-bea0-2289bb201056.png" alt=""></p><p>新添加的对象会被标记为灰色，并由 gcBgMarkWorker2 或其他可用的工作程序进行扫描。这并不能完全消除对 STW 的需求，但会大大减少花费在 STW 上的时间。至少在标记阶段，我们不需要让世界停止运行，以防止堆发生变化。接下来，我们将深入探讨 Golang 中仍会出现的特定 STW。</p><h3 id="“Stop-the-world”-in-Go-is-not-a-problem"><a href="#“Stop-the-world”-in-Go-is-not-a-problem" class="headerlink" title="“Stop the world” in Go is not a problem"></a>“Stop the world” in Go is not a problem</h3><p>其实，仔细想想，在 99% 的情况下，这都与你无关。垃圾回收器的主要工作与程序的执行同时进行，而 STW 在两个阶段之间发生的时间很短：</p><ul><li>从扫频过渡到标记（扫频终止）。</li><li>从标记过渡到扫描（标记终止）。</li></ul><p>在这两种情况下，世界的停顿都是为了下一阶段做准备：启动 Worker、清除 P 缓存（用 Go 调度器术语来说就是处理器）、等待清扫阶段完成（对于在运行时启动垃圾回收的同时从程序代码中触发 runtime.GC()的情况）、设置/取消写入障碍–而这一切都与已分配对象的数量无关。</p><p>如果你分配了 1 兆字节，然后开始分配千兆字节的对象，这并不意味着 STW 会按比例增长，因为 STW 只在下一个标记或扫描阶段的初始化过程中短暂需要。该数据数组的实际标记和扫描是在后台进行的。</p><p>STW 的持续时间取决于所涉及的 P 的数量和 goroutines 的数量，并与管理其状态的需要有关。STW 不受堆上分配数量的影响。</p><p>世界只在两个短时间内停止：标记终止和扫描终止。标记和扫描在后台进行，不会阻塞应用程序。</p><h3 id="Benchmark"><a href="#Benchmark" class="headerlink" title="Benchmark"></a>Benchmark</h3><p>这里做一个简单的测试，测试两种分配小对象的情况。我使用 env GOGC=off 禁用了垃圾回收器，并在每次测试结束时直接调用 runtime.GC() 来触发垃圾回收：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">func Test1000Allocs(t *testing.T) &#123;</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          i := 123</span><br><span class="line">          reader(&amp;i)</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 1000; i++ &#123;</span><br><span class="line">       ii := i</span><br><span class="line">       i = *reader(&amp;ii)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    runtime.GC()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Test10000000000Allocs(t *testing.T) &#123;</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          i := 123</span><br><span class="line">          reader(&amp;i)</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 10000000000; i++ &#123;</span><br><span class="line">       ii := i</span><br><span class="line">       i = *reader(&amp;ii)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    runtime.GC()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func reader(i *int) *int &#123;</span><br><span class="line">    ii := i</span><br><span class="line">    return ii</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>我们运行每个测试时都启用了跟踪信息：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GOGC=off go test -run=Test1000Allocs -trace=trace1.out</span><br><span class="line">GOGC=off go test -run=Test10000000000Allocs -trace=trace2.out</span><br><span class="line">go tool trace trace1.out</span><br><span class="line">go tool trace trace2.out</span><br></pre></td></tr></table></figure><p>Test1000Allocs</p><p><img src="https://files.mdnice.com/user/4760/36f28032-0aea-4d2d-90ab-9c5fdcb04cc8.png" alt=""></p><p>Test10000000000Allocs</p><p><img src="https://files.mdnice.com/user/4760/50d734c8-f479-4514-8d8d-323309f6c1e2.png" alt=""></p><p>Test10000000000Allocs<br><img src="https://files.mdnice.com/user/4760/fd736e5e-ee33-4e58-a116-a9980657d45b.png" alt=""></p><p>在 Test1000Allocs 测试的扫描终止阶段，STW 为 80384 ns。测试 10000000000Allocs 时为 88384 ns。有区别吗？我也没发现。</p><p>在 Test1000Allocs 测试的标记终止阶段，STW 为 87616 ns。测试 10000000000Allocs 时为 120128 毫微秒。这里的差异更为明显，但我们谈论的还是毫秒级的微小差异。在 GC 运行的大部分时间里，我们的程序成功并行运行。</p><p>在分配数量多、GOGC 值低的情况下，这些带有小 STW 阶段的短 GC 循环可能会频繁出现，并可能被视为一个问题。由于我禁用了 GC，并且只通过直接调用触发了一次，所以测试有点像是合成的。但这恰恰说明，有时值得考虑所选的 GOGC 值。</p><p>总之，Golang 中的垃圾回收器显然是并发运行的，在大多数情况下，STW 时的停顿都是可以忽略不计的问题。</p><hr>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p class=&quot;description&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://&quot; alt=&quot;&quot; style=&quot;width:100%&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Go" scheme="https://cloudsjhan.github.io/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://cloudsjhan.github.io/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 Golang 构建你的第一个 k8s Operator</title>
@@ -266,9 +290,9 @@
       <category term="CDC" scheme="https://cloudsjhan.github.io/categories/CDC/"/>
     
     
-      <category term="CDC" scheme="https://cloudsjhan.github.io/tags/CDC/"/>
-    
       <category term="Golang" scheme="https://cloudsjhan.github.io/tags/Golang/"/>
+    
+      <category term="CDC" scheme="https://cloudsjhan.github.io/tags/CDC/"/>
     
   </entry>
   
@@ -412,9 +436,9 @@
       <category term="Databend" scheme="https://cloudsjhan.github.io/categories/Databend/"/>
     
     
-      <category term="EMQ" scheme="https://cloudsjhan.github.io/tags/EMQ/"/>
-    
       <category term="Databend" scheme="https://cloudsjhan.github.io/tags/Databend/"/>
+    
+      <category term="EMQ" scheme="https://cloudsjhan.github.io/tags/EMQ/"/>
     
       <category term="stream data" scheme="https://cloudsjhan.github.io/tags/stream-data/"/>
     
@@ -488,9 +512,9 @@
       <category term="rust" scheme="https://cloudsjhan.github.io/categories/rust/"/>
     
     
-      <category term="rust" scheme="https://cloudsjhan.github.io/tags/rust/"/>
-    
       <category term="databend" scheme="https://cloudsjhan.github.io/tags/databend/"/>
+    
+      <category term="rust" scheme="https://cloudsjhan.github.io/tags/rust/"/>
     
   </entry>
   
@@ -920,9 +944,9 @@
       <category term="kubernetes" scheme="https://cloudsjhan.github.io/categories/kubernetes/"/>
     
     
-      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
-    
       <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
+    
+      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -2365,7 +2389,7 @@
     <published>2018-11-15T10:37:28.000Z</published>
     <updated>2018-11-15T10:39:44.797Z</updated>
     
-    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#x64;&#105;&#x70;&#x7a;&#111;&#110;&#x65;&#x40;&#115;&#x69;&#110;&#97;&#46;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#x64;&#105;&#x70;&#x7a;&#111;&#110;&#x65;&#x40;&#115;&#x69;&#110;&#97;&#46;&#x63;&#111;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#x73;&#x69;&#x6e;&#x61;&#46;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#122;&#111;&#110;&#x65;&#64;&#x73;&#x69;&#x6e;&#x61;&#46;&#x63;&#111;&#109;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#x64;&#105;&#x70;&#122;&#x6f;&#x6e;&#101;&#x40;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#x66;&#x64;&#105;&#x70;&#122;&#x6f;&#x6e;&#101;&#x40;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#111;&#109;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#x66;&#100;&#x69;&#x70;&#122;&#111;&#x6e;&#101;&#64;&#x73;&#x69;&#x6e;&#97;&#46;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#100;&#x69;&#x70;&#122;&#111;&#x6e;&#101;&#64;&#x73;&#x69;&#x6e;&#97;&#46;&#x63;&#111;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
     
     <summary type="html">
     
