@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="python, go, Docker, k8s,爬虫,Django" />
+  <meta name="keywords" content="Go," />
 
 
 
@@ -92,17 +92,18 @@
 
 
 
-<meta name="description" content="关于技术，关于生活">
-<meta name="keywords" content="go, python, Docker, k8s">
-<meta property="og:type" content="website">
-<meta property="og:title" content="cloud world">
-<meta property="og:url" content="https://cloudsjhan.github.io/tags/go/index.html">
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速吃透 Golang Channels">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="关于技术，关于生活">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/index.html">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/36cd608c-5f74-4aae-8baa-e0924b74f31b.png">
+<meta property="og:updated_time" content="2024-06-08T15:58:31.649Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cloud world">
-<meta name="twitter:description" content="关于技术，关于生活">
+<meta name="twitter:title" content="快速吃透 Golang Channels">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/index.html">
 
 
 
@@ -132,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/tags/go/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/"/>
 
 
 
@@ -147,7 +148,7 @@
   </script>
 
 
-  <title>标签: go | cloud world</title>
+  <title>快速吃透 Golang Channels | cloud world</title>
   
 
 
@@ -166,7 +167,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
@@ -315,310 +316,333 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>go<small>标签</small>
-        </h2>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2021/07/21/掌门下一代容器发布系统-Triton/" itemprop="url">
-              
-                <span itemprop="name">掌门下一代容器发布系统 Triton</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">快速吃透 Golang Channels</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-07-21T13:45:59+08:00"
-              content="2021-07-21" >
-          07-21
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-06-08T23:57:11+08:00">
+                2024-06-08
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/06/08/快速吃透-Golang-Channels/" class="leancloud_visitors" data-flag-title="快速吃透 Golang Channels">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,054
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2020/06/12/重磅！微软-VS-Code-的-Go-语言插件迁移至由-Go-官方团队维护/" itemprop="url">
-              
-                <span itemprop="name">重磅！微软 VS Code 的 Go 语言插件迁移至由 Go 官方团队维护</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-06-12T19:49:44+08:00"
-              content="2020-06-12" >
-          06-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
+        <p class="description"></p>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2020/06/09/Uber-Go-语言编码规范/" itemprop="url">
-              
-                <span itemprop="name">Uber Go 语言编码规范</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-06-09T10:36:29+08:00"
-              content="2020-06-09" >
-          06-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2020/04/22/并发访问-slice-如何做到优雅和安全？/" itemprop="url">
-              
-                <span itemprop="name">并发访问 slice 如何做到优雅和安全？</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-04-22T11:43:15+08:00"
-              content="2020-04-22" >
-          04-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2020/04/06/fuckdb-Lite-帮助你更快地生成go-struct代码/" itemprop="url">
-              
-                <span itemprop="name">fuckdb Lite, 帮助你更快地生成go struct代码</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-04-06T09:07:07+08:00"
-              content="2020-04-06" >
-          04-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/12/10/使用swaggo自动生成API文档/" itemprop="url">
-              
-                <span itemprop="name">使用swaggo自动生成API文档</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-12-10T15:16:23+08:00"
-              content="2019-12-10" >
-          12-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/01/详解Go-regexp包中-ReplaceAllString-的用法/" itemprop="url">
-              
-                <span itemprop="name">详解Go regexp包中 ReplaceAllString 的用法</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-02-01T12:23:12+08:00"
-              content="2019-02-01" >
-          02-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/31/go语言坑之for-range/" itemprop="url">
-              
-                <span itemprop="name">go语言坑之for range</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-31T09:59:59+08:00"
-              content="2019-01-31" >
-          01-31
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/" itemprop="url">
-              
-                <span itemprop="name">20181202-Postmortem-debugging-Go-services-with-Delve[翻译]</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-20T23:39:57+08:00"
-              content="2019-01-20" >
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/12/自动化脚本实现go安装与升级/" itemprop="url">
-              
-                <span itemprop="name">自动化脚本实现go安装与升级</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-12T23:55:47+08:00"
-              content="2019-01-12" >
-          01-12
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<p>Golang 可以通过启动 goroutines 来并发执行任务。它们可以通过一种名为 “通道”的通信媒介相互通信。话不多说，下面我列举了几种不同情况下 channel 的使用以及其适用条件，最后总结出一张 channel table，能够帮助你快速吃透 channel 的所有要点。Let’t go!</p>
+<h3 id="Nil-Channels"><a href="#Nil-Channels" class="headerlink" title="Nil Channels"></a>Nil Channels</h3><p>如果你像创建普通变量一样创建一个通道，通道将被初始化为零值。这里要提到的另一个重要细节是，通道的发送方和接收方都必须做好通信准备，否则我们将收到一个死锁错误。这可以通过缓冲通道来避免，我们将在后面讨论。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// NOTE: Deadlock</span><br><span class="line">func nilChannel() &#123;</span><br><span class="line"> var ch chan int</span><br><span class="line"></span><br><span class="line">// creating a goroutine and sending value on the channel</span><br><span class="line"> go func() &#123;</span><br><span class="line">  ch &lt;- 1</span><br><span class="line"> &#125;()</span><br><span class="line"></span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你在 main 中调用这个函数，你会得到以下错误和一些其他信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
+<p>这是因为我们试图在往 nil channel上发送一个值，这是坚决不允许的操作。</p>
+<h3 id="Empty-Channel"><a href="#Empty-Channel" class="headerlink" title="Empty Channel"></a>Empty Channel</h3><p>在以下代码中，我们将收到同样的死锁错误，因为我们正试图在 channel receiver 尚未准备好的通道上发送值。从下面的代码中可以看到，在接收器创建之前，值就已经在通道上发送了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// NOTE: Deadlock</span><br><span class="line">func emptyChannel() &#123;</span><br><span class="line"> var ch = make(chan int)</span><br><span class="line"></span><br><span class="line"> ch &lt;- 1</span><br><span class="line"></span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="UN-Buffered-Channel"><a href="#UN-Buffered-Channel" class="headerlink" title="UN Buffered Channel"></a>UN Buffered Channel</h3><p>错误的代码已经够多了。这次让我给出一个有效的代码。在下面的代码中，我们编写了与上一个示例相同的代码，但不是创建一个 nil 通道，而是使用 make 函数创建了一个用默认值初始化的通道。 不过，如果在这种情况下没有接收器，就会错过结果，但不会产生死锁错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// NOTE: send single value through goroutine</span><br><span class="line">func simpleChannel() &#123;</span><br><span class="line"> var ch = make(chan int)</span><br><span class="line"></span><br><span class="line"> go func() &#123;</span><br><span class="line">  ch &lt;- 1</span><br><span class="line"> &#125;()</span><br><span class="line"></span><br><span class="line">// NOTE: if you comment this line. You will not be able to receive the result but code will not crash</span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Channel-方向"><a href="#Channel-方向" class="headerlink" title="Channel 方向"></a>Channel 方向</h3><p>默认情况下通道是双向的。下面的代码显示了一个只能用于发送值的通道。如果我们试图从中获取值，就会出错。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func uniDirectionalChannel() &#123;</span><br><span class="line">// Bidirectional [outside goroutine]</span><br><span class="line"> var ch = make(chan int)</span><br><span class="line"></span><br><span class="line"> go func(ch chan&lt;- int) &#123;</span><br><span class="line"> // unidirectinal [within goroutine]</span><br><span class="line">  ch &lt;- 1</span><br><span class="line"> &#125;(ch)</span><br><span class="line"></span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Buffered-Channel"><a href="#Buffered-Channel" class="headerlink" title="Buffered Channel"></a>Buffered Channel</h3><p>这些通道可以像数组一样容纳多个值，因此在非缓冲通道中，如果我们尝试在没有接收器的情况下向其写入数据，就会出错，但在缓冲通道中，我们可以向其写入数据，直到缓冲区满为止。当缓冲区已满时，如果我们尝试向其中写入新值，就会出错。<br>如果我们这里不注释该函数的最后一行，就会出现死锁错误，因为这里将从空通道读取数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// using buffered channel</span><br><span class="line">func bufferdChannelWithoutLoop() &#123;</span><br><span class="line"> var ch = make(chan int, 2)</span><br><span class="line"></span><br><span class="line"> ch &lt;- 1</span><br><span class="line"> ch &lt;- 2</span><br><span class="line"></span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line"> fmt.Println(&lt;-ch)</span><br><span class="line"> // fmt.Println(&lt;-ch) // NOTE: Deadlock, Reading from empty channel</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从通道读取数值还有另一种方法，即使用循环。在前面的示例中，我们逐个读取数值，但我们也可以通过循环读取接收通道中的数值，因此每当通道中发送一个新数值时，循环就会迭代，执行完正文中的代码后，就会等待下一个数值。如果接收器试图读取，但通道上已没有其他值，则会出现同样的死锁错误。</p>
+<p>开发人员的职责是在通道使用后将其关闭，因为如果接收器试图读取已经关闭的通道，就会出现上述死锁问题。</p>
+<h3 id="Channels-Table"><a href="#Channels-Table" class="headerlink" title="Channels Table"></a>Channels Table</h3><p>我们已经讨论了通道的所有情况，但怎么才能快速记住它们呢？ 别紧张😎，有我在，下表可以作为快速指南，对照着表盘一下我们写的 channel 就能避免出现死锁，并显示它们在不同情况下的行为。</p>
+<p><img src="https://files.mdnice.com/user/4760/36cd608c-5f74-4aae-8baa-e0924b74f31b.png" alt=""></p>
+<hr>
 
       
     </div>
+    
+    
+    
 
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2024/06/08/快速吃透-Golang-Channels/">快速吃透 Golang Channels</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2024年06月08日 - 23:06</p>
+  <p><span>最后更新:</span>2024年06月08日 - 23:06</p>
+  <p><span>原始链接:</span><a href="/2024/06/08/快速吃透-Golang-Channels/" title="快速吃透 Golang Channels">https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/06/08/快速吃透-Golang-Channels/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/06/06/Golang-GC-基础-三色标记清除和-STW/" rel="next" title="Golang GC 基础: 三色标记清除和 STW">
+                <i class="fa fa-chevron-left"></i> Golang GC 基础: 三色标记清除和 STW
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/tags/go/page/2/">2</a><a class="extend next" rel="next" href="/tags/go/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -626,6 +650,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -646,8 +679,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -756,6 +798,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nil-Channels"><span class="nav-number">1.</span> <span class="nav-text">Nil Channels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Empty-Channel"><span class="nav-number">2.</span> <span class="nav-text">Empty Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UN-Buffered-Channel"><span class="nav-number">3.</span> <span class="nav-text">UN Buffered Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Channel-方向"><span class="nav-number">4.</span> <span class="nav-text">Channel 方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffered-Channel"><span class="nav-number">5.</span> <span class="nav-text">Buffered Channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Channels-Table"><span class="nav-number">6.</span> <span class="nav-text">Channels Table</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -926,6 +984,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -954,6 +1016,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
@@ -1420,6 +1493,23 @@
 
   
   
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
 
   
 
