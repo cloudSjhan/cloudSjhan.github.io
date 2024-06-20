@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://cloudsjhan.github.io/"/>
-  <updated>2024-06-19T09:25:48.597Z</updated>
+  <updated>2024-06-20T02:49:38.113Z</updated>
   <id>https://cloudsjhan.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go 如何基于 MVS 解决依赖关系问题</title>
+    <link href="https://cloudsjhan.github.io/2024/06/20/Go-%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E-MVS-%E8%A7%A3%E5%86%B3%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E9%97%AE%E9%A2%98/"/>
+    <id>https://cloudsjhan.github.io/2024/06/20/Go-如何基于-MVS-解决依赖关系问题/</id>
+    <published>2024-06-20T02:49:10.000Z</published>
+    <updated>2024-06-20T02:49:38.113Z</updated>
+    
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><blockquote><p>摘要：文章主要介绍了 Go 如何解决依赖关系和版本冲突问题，以及模块管理系统，包括 go.mod 文件的作用、go get 和 go install 命令的使用</p></blockquote><p>Go 使用一种名为 “最小版本选择(Minimal version selection)”（<a href="https://go.dev/ref/mod#minimal-version-selection" title="MVS" target="_blank" rel="noopener">MVS</a>）的方法来处理依赖关系和解决版本冲突。<br>MVS 听起来很复杂，但要点如下：它为每个模块挑选最低版本，以满足其他模块的所有要求。这样，它就能在满足所有相关需求的同时，尽可能减少依赖性。</p><p>例如，假设我们有三个模块：A、B 和 C。</p><p>模块 <a href="mailto:A@1.3.2" target="_blank" rel="noopener">A@1.3.2</a> 和模块 <a href="mailto:B@1.0.0" target="_blank" rel="noopener">B@1.0.0</a> 都依赖于模块 C。</p><p>但 A 需要 <a href="mailto:C@2.3.2" target="_blank" rel="noopener">C@2.3.2</a>，B 需要 <a href="mailto:C@2.3.0" target="_blank" rel="noopener">C@2.3.0</a>。</p><p>同时 C 也有一个更新的版本，即 2.4.1。</p><p>Go 如何决定使用哪个版本的 C？</p><p><img src="https://files.mdnice.com/user/4760/6ccc54d0-95a5-4812-8705-50a37fbf0c5a.png" alt=""></p><blockquote><p>如果选择的 2.3.2 版本与模块 B 不兼容怎么办？</p></blockquote><p>Go 模块使用语义版本控制（<a href="https://semver.org/" title="semver" target="_blank" rel="noopener">semver</a>）来处理兼容性问题。<br>如果模块遵循 semver，则任何破坏性修改都应修改主版本（major.minor.patch）。由于 2.3.0 和 2.3.2 两个版本的主要版本（2.3.x）相同，因此它们应该相互向后兼容。<br>模块作者有责任确保不同版本保持兼容。</p><blockquote><p>如果 A 需要 3.0.0 版本的 C，这会破坏与 B 的兼容性，怎么办？</p></blockquote><p>当模块达到主版本 2 或更高版本时，其路径会包含主版本号（如 /v2 或 /v3）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.com/user/project/v2</span><br><span class="line">github.com/user/project/v3</span><br></pre></td></tr></table></figure></p><p>不同主要版本的模块被视为不同的模块。因此，我们可以在同一项目中同时使用 <a href="mailto:C@2.3.2" target="_blank" rel="noopener">C@2.3.2</a> 和 <a href="mailto:C@3.0.0" target="_blank" rel="noopener">C@3.0.0</a>。</p><p>例如，我们的 go.mod 文件可能如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module yourproject</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">    github.com/user/A v1.0.0</span><br><span class="line">    github.com/user/B v1.0.0</span><br><span class="line">)</span><br><span class="line">require (</span><br><span class="line">    github.com/user/C/v2 v2.3.2 // indirect</span><br><span class="line">    github.com/user/C/v3 v3.0.0 // indirect</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p><p><code>// indirect</code> 注释表示这里的项目没有直接导入 C 模块，而是因为 A 或 B 需要它才导入的。</p><p>还有一个要注意点：<code>go get</code> 不会更新或添加缺失的测试依赖项。要包含这些依赖项，请使用 -t 标志，如 <code>go get -t ./...</code></p><h3 id="go-get"><a href="#go-get" class="headerlink" title="go get"></a>go get</h3><p>这里举几个例子，看看 go get 在不同情况下是如何工作的。</p><p>使用 go get .或 go get ./…查找当前目录或其子目录中所有缺失的依赖项，并将其添加到 go.mod 文件中。<br>这意味着它会检查任何尚未列出的依赖项，并将其添加进来。除非你特别要求，否则它不会将现有的依赖项更新到最新版本，比如下一个例子中的 -u 标志。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u .</span><br></pre></td></tr></table></figure><p>在 go get .中使用 -u 标志，会将当前目录中的现有依赖项更新到最新的次版本或补丁版本。请记住，它不会更新到新的主版本，因为它们被视为不同的模块。<br>要将主模块的所有依赖项更新到最新版本，可以使用 <code>go get -u ./...</code></p><p>在下面的几个情况下，即使不指定 -u 标志，go get 仍会更新过时或丢失的依赖项。</p><h4 id="go-get-github-com-user-project"><a href="#go-get-github-com-user-project" class="headerlink" title="go get github.com/user/project"></a>go get github.com/user/project</h4><p>此命令下载模块 github.com/user/project，并将其添加到 go.mod 文件中。如果该模块已列在该文件中，则会将其更新为最新的次版本或补丁版本。基本上，如果你不指定版本（或版本查询后缀），它会假定你想升级到最新版本，就像使用 go get github.com/user/project@upgrade 一样。</p><h4 id="go-get-github-com-user-project-v1-2-3"><a href="#go-get-github-com-user-project-v1-2-3" class="headerlink" title="go get github.com/user/project@v1.2.3"></a>go get <a href="mailto:github.com/user/project@v1.2.3" target="_blank" rel="noopener">github.com/user/project@v1.2.3</a></h4><p>此命令将模块更新到指定版本，即 v1.2.3。根据当前的版本，它可能会升级或降级模块以匹配该版本。</p><h4 id="go-install-build-and-install-packages"><a href="#go-install-build-and-install-packages" class="headerlink" title="go install: build and install packages"></a>go install: build and install packages</h4><p>与下载依赖项以便在项目中使用其源代码不同，go install 会将依赖项的源代码编译成二进制文件，并将其移动到 $GOPATH/bin 目录中进行安装。这样就可以在终端上使用它了。</p><p>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go install golang.org/x/tools/gopls@latest</span><br></pre></td></tr></table></figure></p><p>运行该命令并查看 $GOBIN 文件夹（我们之前提到过）后，你会在其中看到一个名为 gopls 的可执行文件。如果 $GOBIN 在您的 $PATH 中，您就可以在终端中运行 gopls。</p><p>如果只是在没有任何参数的情况下运行 go install 会怎样呢？<br><code>go install</code> 就会下载缺失的依赖项，并在当前目录下构建当前模块。<br>这导致一些人误用 go install 来管理依赖关系，因为它确实会下载依赖关系。但这并不是它的主要工作，它实际上是要构建你的项目，并将生成的二进制文件安装到 $GOBIN 目录中。</p><p>go install 用于构建和安装软件包，而 go get 用于管理依赖关系。有些开发者经常会感到困惑，这是因为在旧版本的 Go 中，go get 确实是用来在更新 go.mod 文件后构建软件包，然后将它们安装到 $GOPATH/bin。</p><p>但从 Go 1.16 开始，go install 成为了构建和安装的首选命令，而 go get 则专注于管理 go.mod 文件中的需求。</p><hr>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p class=&quot;description&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://&quot; alt=&quot;&quot; style=&quot;width:100%&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Go" scheme="https://cloudsjhan.github.io/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://cloudsjhan.github.io/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>Robust generic functions on slices</title>
@@ -1016,9 +1040,9 @@
       <category term="kubernetes" scheme="https://cloudsjhan.github.io/categories/kubernetes/"/>
     
     
-      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
-    
       <category term="go" scheme="https://cloudsjhan.github.io/tags/go/"/>
+    
+      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -1150,9 +1174,9 @@
       <category term="docker" scheme="https://cloudsjhan.github.io/categories/docker/"/>
     
     
-      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
-    
       <category term="docker" scheme="https://cloudsjhan.github.io/tags/docker/"/>
+    
+      <category term="kubernetes" scheme="https://cloudsjhan.github.io/tags/kubernetes/"/>
     
   </entry>
   
@@ -2461,7 +2485,7 @@
     <published>2018-11-15T10:37:28.000Z</published>
     <updated>2018-11-15T10:39:44.797Z</updated>
     
-    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#x66;&#x64;&#105;&#x70;&#122;&#x6f;&#110;&#x65;&#x40;&#115;&#x69;&#110;&#97;&#x2e;&#99;&#x6f;&#109;" target="_blank" rel="noopener">&#x66;&#x64;&#105;&#x70;&#122;&#x6f;&#110;&#x65;&#x40;&#115;&#x69;&#110;&#97;&#x2e;&#99;&#x6f;&#109;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#102;&#x64;&#x69;&#x70;&#122;&#x6f;&#x6e;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#x6f;&#x6d;" target="_blank" rel="noopener">&#102;&#x64;&#x69;&#x70;&#122;&#x6f;&#x6e;&#101;&#64;&#115;&#x69;&#110;&#x61;&#x2e;&#x63;&#x6f;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
+    <content type="html"><![CDATA[<p class="description"></p><p><img src="https://" alt="" style="width:100%"></p><a id="more"></a><p>在使用git的过程中，因为人为因素造成分支（commit)被删除，可以使用以下步骤进行恢复。</p><p>首先用以下步骤创建一个新分支，修改一些文件后删除，以便进行恢复。<br>1.创建分支 abc</p><p>git branch abc<br>1</p><p>2.查看分支列表</p><p>git branch -a<br>  abc</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4</li></ul><p>3.切换到abc分支，随便修改一下东西后 commit</p><p>切换分支<br>git checkout abc<br>Switched to branch ‘abc’</p><p>创建一个文件<br>echo ‘abc’ &gt; test.txt</p><p>commit<br>git add .<br>git commit -m ‘add test.txt’<br>[abc 3eac14d] add test.txt<br> 1 file changed, 1 insertion(+)<br> create mode 100644 test.txt<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13</p><p>4.删除分支abc</p><p>git branch -D abc<br>Deleted branch abc (was 3eac14d).<br>1<br>2</p><p>5.查看分支列表，abc分支已不存在</p><p>git branch -a</p><ul><li>develop<br>remotes/origin-dev/develop<br>1<br>2<br>3</li></ul><p>恢复步骤如下：<br>1.使用git log -g 找回之前提交的commit<br>commit 3eac14d05bc1264cda54a7c21f04c3892f32406a<br>Reflog: HEAD@{1} (fdipzone <a href="mailto:&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#x6e;&#101;&#64;&#x73;&#105;&#x6e;&#97;&#x2e;&#x63;&#111;&#x6d;" target="_blank" rel="noopener">&#102;&#100;&#x69;&#x70;&#x7a;&#x6f;&#x6e;&#101;&#64;&#x73;&#105;&#x6e;&#97;&#x2e;&#x63;&#111;&#x6d;</a>)<br>Reflog message: commit: add test.txt<br>Author: fdipzone <a href="mailto:&#x66;&#100;&#x69;&#x70;&#x7a;&#x6f;&#x6e;&#x65;&#x40;&#x73;&#105;&#110;&#97;&#x2e;&#99;&#111;&#x6d;" target="_blank" rel="noopener">&#x66;&#100;&#x69;&#x70;&#x7a;&#x6f;&#x6e;&#x65;&#x40;&#x73;&#105;&#110;&#97;&#x2e;&#99;&#111;&#x6d;</a><br>Date:   Sun Jan 31 22:26:33 2016 +0800</p><pre><code>add test.txt</code></pre><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9</p><p>2.使用git branch recover_branch[新分支] commit_id命令用这个commit创建一个分支<br>git branch recover_branch_abc 3eac14d05bc1264cda54a7c21f04c3892f32406a</p><p>git branch -a</p><ul><li>develop<br>recover_branch_abc<br>remotes/origin-dev/develop<br>1<br>2<br>3<br>4<br>5<br>6<br>可以见到recover_branch_abc已创建 </li></ul><p>3.切换到recover_branch_abc分支，检查文件是否存在<br>git checkout recover_branch_abc<br>Switched to branch ‘recover_branch_abc’</p><p>ls -lt<br>total 8<br>-rw-r–r–   1 fdipzone  staff     4  1 31 22:38 test.txt<br>1<br>2<br>3<br>4<br>5<br>6</p><h2 id="这样就可以恢复被误删的分支了"><a href="#这样就可以恢复被误删的分支了" class="headerlink" title="这样就可以恢复被误删的分支了"></a>这样就可以恢复被误删的分支了</h2><p>原文：<a href="https://blog.csdn.net/fdipzone/article/details/50616386" target="_blank" rel="noopener">https://blog.csdn.net/fdipzone/article/details/50616386</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p><hr>]]></content>
     
     <summary type="html">
     
