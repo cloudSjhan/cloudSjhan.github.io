@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="databend," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="2024/08/14 公司分享">
+<meta name="keywords" content="databend">
+<meta property="og:type" content="article">
+<meta property="og:title" content="db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="2024/08/14 公司分享">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/index.html">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/47d5c110-c0c6-43c3-a447-06427d1eed9a/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/3d809bea-6d84-49de-a4f5-1f41d76c85ca/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/114701ad-7d29-46b3-afb4-94884d562de9/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/f31e617a-b2da-441b-a09d-7a20916db5d9/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/be58dd3d-077d-41c1-9c95-f2e655c9bb43/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/370686bb-47d0-4d8c-a0db-b2728cfd8e4d/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/c2b38a5e-47a6-473c-9b34-d6ea73cbbc9a/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/72e7bf1f-c05b-42d3-97e6-9e577246b62d/image.png">
+<meta property="og:updated_time" content="2024-08-14T10:31:07.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案">
+<meta name="twitter:description" content="2024/08/14 公司分享">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-08-14T18:22:46+08:00">
+                2024-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/databend/" itemprop="url" rel="index">
+                    <span itemprop="name">databend</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/" class="leancloud_visitors" data-flag-title="db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,530
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  2024/08/14 公司分享
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="2024-08-14-分享备份。"><a href="#2024-08-14-分享备份。" class="headerlink" title="2024/08/14 分享备份。"></a>2024/08/14 分享备份。</h2><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>db-archiver （ <a href="https://github.com/databendcloud/db-archiver" target="_blank" rel="noopener">https://github.com/databendcloud/db-archiver</a> ） 是我们自研的一个能够实现从 RDBMS 全量或增量 T+1 归档数据的工具，基于 db-archiver 目前可以实现 Mysql Or Tidb 的归档。</p>
+<p>在此之前我们先来看一下目前在 databend 的生态中，我们提供实现数据同步的方案大概有这么几种，Flink CDC, kafka connect, debezium，Airbyte ，但是像 Flink CDC 等这几个方案，首先就需要用户已经有了 Flink 或者本身就搭建 kafka 等基础设施，而很多小公司都不会有人力去维护这么一套。或者用户只是想一次性迁移数据到 Databend，这种情况下就要求工具尽量简单，开箱即用，用完即走。能符合这个条件的，在这个图里只有 Datax 符合。</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/47d5c110-c0c6-43c3-a447-06427d1eed9a/image.png" alt="image.png"></p>
+<p>所以 Db-archiver 设计的初衷是为了平替 datax 。DataX 是阿里云 <a href="https://www.aliyun.com/product/bigdata/ide" target="_blank" rel="noopener">DataWorks数据集成</a> 的开源版本，在阿里内被广泛使用的离线数据同步工具/平台。DataX 实现了包括 MySQL、Oracle、OceanBase、SqlServer、Postgre、databend 等各种异构数据源之间高效的数据同步功能。但是在实施过程中我们发现 Datax 有诸多的痛点，导致用户在数据迁移过程中困难重重, 体验很差。</p>
+<h2 id="db-archiver-VS-Datax"><a href="#db-archiver-VS-Datax" class="headerlink" title="db-archiver VS Datax"></a>db-archiver VS Datax</h2><ol>
+<li><strong>打包速度以及可执行文件大小</strong></li>
+</ol>
+<p>Datax 是java 写的，需要加载各种 jar 包，整个项目较为臃肿编译速度非常慢，且生成的可执行文件总共有 2 个多 G，使用起来非常灾难。</p>
+<p>db-archiver 呢编译速度快，最终可执行文件只有 10M ，十分清爽。</p>
+<p>2.<strong>开发以及 bug fix 的速度</strong></p>
+<p>Datax 的维护方是阿里，该项目目前基本处于一种半维护状态， issue 的解决以及 pr 的合并速度都极慢，所以我们每次 fix 问题之后，都是在 fork 的分支上打包给客户，鉴于第一条中提到的包大小有 2G 之多，整个过程对用户很不友好。</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/3d809bea-6d84-49de-a4f5-1f41d76c85ca/image.png" alt="image.png"></p>
+<ol>
+<li><strong>指标和日志</strong></li>
+</ol>
+<p>db-archiver 增加了非常多的指标和日志，对排查问题很有帮助，基本上哪里有问题，一眼就能定位出来。下面截取了一次同步过程中的部分日志。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">INFO[<span class="number">0011</span>] upload by presigned url cost: <span class="number">6076</span> ms</span><br><span class="line">INFO[<span class="number">0012</span>] upload by presigned url cost: <span class="number">7262</span> ms</span><br><span class="line">INFO[<span class="number">0012</span>] thread-<span class="number">7</span>: copy into cost: <span class="number">1400</span> ms             ingest_databend=IngestData</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">7</span>: ingest <span class="number">39999</span> rows (<span class="number">4201.005115</span> rows/s), <span class="number">23639409</span> bytes (<span class="number">2482794.023097</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0012</span>] thread-<span class="number">4</span>: copy into cost: <span class="number">1408</span> ms             ingest_databend=IngestData</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">4</span>: ingest <span class="number">39999</span> rows (<span class="number">4125.188979</span> rows/s), <span class="number">22799430</span> bytes (<span class="number">2437986.686345</span> bytes/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> Globla speed: total ingested <span class="number">79998</span> rows (<span class="number">8315.510453</span> rows/s), <span class="number">15279619</span> bytes (<span class="number">1588262.600387</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0012</span>] condition: (id &gt;= <span class="number">1439993</span> and id &lt; <span class="number">1479992</span>)</span><br><span class="line">INFO[<span class="number">0012</span>] thread-<span class="number">2</span>: copy into cost: <span class="number">1713</span> ms             ingest_databend=IngestData</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">2</span>: ingest <span class="number">39999</span> rows (<span class="number">4095.170564</span> rows/s), <span class="number">22799430</span> bytes (<span class="number">2420245.803072</span> bytes/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> Globla speed: total ingested <span class="number">119997</span> rows (<span class="number">8162.421021</span> rows/s), <span class="number">29719259</span> bytes (<span class="number">1559022.517010</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0012</span>] condition: (id &gt;= <span class="number">839996</span> and id &lt; <span class="number">879995</span>)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> Globla speed: total ingested <span class="number">119997</span> rows (<span class="number">8087.586352</span> rows/s), <span class="number">44158899</span> bytes (<span class="number">1544729.094295</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0012</span>] condition: (id &gt;= <span class="number">439998</span> and id &lt; <span class="number">479997</span>)</span><br><span class="line">INFO[<span class="number">0012</span>] thread-<span class="number">0</span>: copy into cost: <span class="number">1824</span> ms             ingest_databend=IngestData</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">0</span>: ingest <span class="number">39999</span> rows (<span class="number">4035.346363</span> rows/s), <span class="number">21726145</span> bytes (<span class="number">2384889.700537</span> bytes/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">7</span>: extract <span class="number">39999</span> rows (<span class="number">0.000000</span> rows/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">4</span>: extract <span class="number">39999</span> rows (<span class="number">0.000000</span> rows/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> Globla speed: total ingested <span class="number">159996</span> rows (<span class="number">7927.205481</span> rows/s), <span class="number">57525254</span> bytes (<span class="number">1514096.345894</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0013</span>] condition: (id &gt;= <span class="number">40000</span> and id &lt; <span class="number">79999</span>)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">2</span>: extract <span class="number">39999</span> rows (<span class="number">0.000000</span> rows/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">58</span> thread-<span class="number">0</span>: extract <span class="number">39999</span> rows (<span class="number">0.000000</span> rows/s)</span><br><span class="line">INFO[<span class="number">0013</span>] upload by presigned url cost: <span class="number">8293</span> ms</span><br><span class="line">INFO[<span class="number">0013</span>] thread-<span class="number">3</span>: copy into cost: <span class="number">1241</span> ms             ingest_databend=IngestData</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">59</span> thread-<span class="number">3</span>: ingest <span class="number">39999</span> rows (<span class="number">3748.537451</span> rows/s), <span class="number">22799430</span> bytes (<span class="number">2215219.768763</span> bytes/s)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">59</span> Globla speed: total ingested <span class="number">199995</span> rows (<span class="number">7375.987130</span> rows/s), <span class="number">71964894</span> bytes (<span class="number">1408761.080845</span> bytes/s)</span><br><span class="line">INFO[<span class="number">0013</span>] condition: (id &gt;= <span class="number">639997</span> and id &lt; <span class="number">679996</span>)</span><br><span class="line"><span class="number">2024</span>/<span class="number">08</span>/<span class="number">13</span> <span class="number">15</span>:<span class="number">43</span>:<span class="number">59</span> thread-<span class="number">3</span>: extract <span class="number">39999</span> rows (<span class="number">40001.375235</span> rows/s)</span><br></pre></td></tr></table></figure>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/114701ad-7d29-46b3-afb4-94884d562de9/image.png" alt="image.png"></p>
+<ul>
+<li>从 MySQL 中抽取 数据的速率</li>
+<li>每次 presign 的效率</li>
+<li>upload stage</li>
+<li>copy into</li>
+<li>每个线程的同步速率  (<code>2024/08/13 15:43:58 thread-2: ingest 39999 rows (4095.170564 rows/s), 22799430 bytes (2420245.803072 bytes/s</code>))</li>
+<li>全局的同步速率 (<code>2024/08/13 15:43:59 Globla speed: total ingested 199995 rows (7375.987130 rows/s), 71964894 bytes (1408761.080845 bytes/s)</code>)</li>
+</ul>
+<p>通过全局的同步速率我们可以确定当前的配置参数是不是最优的，比如 batchSize，thread 数量与机器的配置搭配是不是最优。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>可执行文件大小</th>
+<th>开发以及 bug fix 的速度</th>
+<th>指标和日志</th>
+<th>速率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>db-archiver</td>
+<td>10M</td>
+<td>快</td>
+<td>多</td>
+<td>200w 数据 2min</td>
+</tr>
+<tr>
+<td>Datax</td>
+<td>2G</td>
+<td>慢</td>
+<td>少</td>
+<td>200w 数据 10min</td>
+</tr>
+</tbody>
+</table>
+<p>总之我们自研 db-archiver 之后，整个过程更加的可控，再比如我们刚刚对接的一个客户，他们与 databend Cloud 不在同一个 region，同步数据走公网非常慢的问题，这时候我们增加 userStage 参数让用户创建并指定 external stage，这在 datax 中是无法通过参数配置的，所以这样也能够给到用户最佳的体验。</p>
+<p>下面来看下 db-archiver 提供的两种同步模式。</p>
+<h2 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a>两种模式</h2><p>第一种是</p>
+<h3 id="根据-sourceSplitKey-同步数据"><a href="#根据-sourceSplitKey-同步数据" class="headerlink" title="根据 sourceSplitKey 同步数据"></a>根据 <code>sourceSplitKey</code> 同步数据</h3><p>如果源表有自增主键，可以设置 <code>sourceSplitKey</code>为主键。db-archiver 将根据 <code>sourceSplitKey</code> 按照规则切分数据，并发同步数据到 Databend。这是性能最高的模式。后面会讲这个切分数据的规则。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"sourceHost"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="string">"sourcePort"</span>: <span class="number">3306</span>,</span><br><span class="line">  <span class="string">"sourceUser"</span>: <span class="string">"root"</span>,</span><br><span class="line">  <span class="string">"sourcePass"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="string">"sourceDB"</span>: <span class="string">"mydb"</span>,</span><br><span class="line">  <span class="string">"sourceTable"</span>: <span class="string">"test_table1"</span>,</span><br><span class="line">  <span class="string">"sourceWhereCondition"</span>: <span class="string">"id &gt; 0"</span>,</span><br><span class="line">  <span class="string">"sourceSplitKey"</span>: <span class="string">"id"</span>,</span><br><span class="line">  <span class="string">"databendDSN"</span>: <span class="string">"&lt;https://cloudapp:ajynnyvfk7ue@tn3ftqihs--medium-p8at.gw.aws-us-east-2.default.databend.com:443&gt;"</span>,</span><br><span class="line">  <span class="string">"databendTable"</span>: <span class="string">"testSync.test_table1"</span>,</span><br><span class="line">  <span class="string">"batchSize"</span>: <span class="number">40000</span>,</span><br><span class="line">  <span class="string">"batchMaxInterval"</span>: <span class="number">30</span>,</span><br><span class="line">  <span class="string">"userStage"</span>: <span class="string">"USER STAGE"</span>,</span><br><span class="line">  <span class="string">"maxThread"</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="根据-sourceSplitTimeKey-同步数据"><a href="#根据-sourceSplitTimeKey-同步数据" class="headerlink" title="根据 sourceSplitTimeKey 同步数据"></a>根据 <code>sourceSplitTimeKey</code> 同步数据</h3><p>某些情况下用户的源表没有自增主键,但是有时间列，这个时候可以设置 <code>sourceSplitTimeKey</code> 同步数据。db-archiver 将根据 <code>sourceSplitTimeKey</code> 分割数据。</p>
+<p><code>sourceSplitTimeKey</code> 必须与 <code>timeSplitUnit</code> 一起设置。<code>timeSplitUnit</code> 是切片数据的时间颗粒度，可以是 <code>minute</code>, <code>hour</code>, <code>day</code>。由于数据在时间上的密集度用户是最了解的，用户就可以自定义<code>timeSplitUnit</code> 按时间列分割数据，以达到最合理的同步效率。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"sourceHost"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">  <span class="string">"sourcePort"</span>: <span class="number">3306</span>,</span><br><span class="line">  <span class="string">"sourceUser"</span>: <span class="string">"root"</span>,</span><br><span class="line">  <span class="string">"sourcePass"</span>: <span class="string">"123456"</span>,</span><br><span class="line">  <span class="string">"sourceDB"</span>: <span class="string">"mydb"</span>,</span><br><span class="line">  <span class="string">"sourceTable"</span>: <span class="string">"my_table2"</span>,</span><br><span class="line">  <span class="string">"sourceWhereCondition"</span>: <span class="string">"t1 &gt;= '2024-06-01' and t1 &lt; '2024-07-01'"</span>,</span><br><span class="line">  <span class="string">"sourceSplitKey"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="string">"sourceSplitTimeKey"</span>: <span class="string">"t1"</span>,</span><br><span class="line">  <span class="string">"timeSplitUnit"</span>: <span class="string">"minute"</span>,</span><br><span class="line">  <span class="string">"databendDSN"</span>: <span class="string">"&lt;https://cloudapp:password@tn3ftqihs--medium-p8at.gw.aws-us-east-2.default.databend.com:443&gt;"</span>,</span><br><span class="line">  <span class="string">"databendTable"</span>: <span class="string">"testSync.my_table2"</span>,</span><br><span class="line">  <span class="string">"batchSize"</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="string">"batchMaxInterval"</span>: <span class="number">30</span>,</span><br><span class="line">  <span class="string">"userStage"</span>: <span class="string">"~"</span>,</span><br><span class="line">  <span class="string">"deleteAfterSync"</span>: <span class="keyword">false</span>,</span><br><span class="line">  <span class="string">"maxThread"</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>压测的过程中按照 <code>sourceSplitTimeKey</code> 同步性能不如按照主键 id，且并发的话会对 MySQL 的性能造成影响，为了保障MySQL 不受影响，所以这个模式不支持并发。</p>
+</blockquote>
+<h2 id="数据切片算法"><a href="#数据切片算法" class="headerlink" title="数据切片算法"></a>数据切片算法</h2><p>对于 Databend 的数据同步没有太多可以分享的，核心的链路就是 源表(MySQL) → NDJSON→ Stage→ Copy into→ databend table。</p>
+<p>比较核心的是数据切片的算法，这关乎数据同步的准确性、同步的效率，下面就重点讲下这个。</p>
+<p>db-archiver 会取源表的主键为 <code>sourceSplitKey</code> 。将根据 <code>sourceSplitKey</code> 分割数据，并行同步数据到 Databend。</p>
+<p><code>sourceSplitTimeKey</code> 用于按时间列分割数据。<code>sourceSplitTimeKey</code> 和 <code>sourceSplitKey</code> 至少需要设置一个。</p>
+<h3 id="Sync-data-according-to-the-sourceSplitKey"><a href="#Sync-data-according-to-the-sourceSplitKey" class="headerlink" title="Sync data according to the sourceSplitKey"></a><em>Sync data according to the <code>sourceSplitKey</code></em></h3><p>下面详细讲一下 db-archiver 按照 id primary key 对数据切片的算法原理：</p>
+<ol>
+<li>首先用户会传入一个 sourceWhereCondition 作为整体的数据范围圈定，比如 ‘id&gt; 100 and id &lt; 10000000’，这样就可以获取范围内的 min(id) 和 max(id)</li>
+<li>根据上面拿到的 min, max id，再根据分配的线程数量计算出每个线程需要处理的数据范围：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rangeSize := (maxSplitKey - minSplitKey) / s.cfg.MaxThread</span><br><span class="line">for i := 0; i &lt; s.cfg.MaxThread; i++ &#123;</span><br><span class="line">   lowerBound := minSplitKey + rangeSize*i</span><br><span class="line">   upperBound := lowerBound + rangeSize</span><br><span class="line">   if i == s.cfg.MaxThread-1 &#123;</span><br><span class="line">      // Ensure the last condition includes maxSplitKey</span><br><span class="line">      upperBound = maxSplitKey</span><br><span class="line">   &#125;</span><br><span class="line">   conditions = append(conditions, []int&#123;lowerBound, upperBound&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意处理这里的边界条件，当达到最后一个线程的时候，该线程内的 upperBound 直接等于 maxSplitKey，这里线程内的范围是一个全闭区间。</p>
+<ol>
+<li>将上面得到的每个线程内的数据范围数组，分别再按照 batchSize 切分</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (minSplitKey + s.cfg.BatchSize - 1) &gt;= allMax &#123;</span><br><span class="line">   conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= %d and %s &lt;= %d)&quot;, s.cfg.SourceSplitKey, minSplitKey, s.cfg.SourceSplitKey, allMax))</span><br><span class="line">   return conditions</span><br><span class="line">&#125;</span><br><span class="line">conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= %d and %s &lt; %d)&quot;, s.cfg.SourceSplitKey, minSplitKey, s.cfg.SourceSplitKey, minSplitKey+s.cfg.BatchSize-1))</span><br><span class="line">minSplitKey += s.cfg.BatchSize - 1</span><br></pre></td></tr></table></figure>
+<p>这里也要处理一些边界条件，否则会导致切片范围有误最终导致同步过去的数据量不准确。</p>
+<p>对于最后一次 (minSplitKey + s.cfg.BatchSize - 1) &gt;= maxSplitKey，的情况，如果最小的 key 都比整个范围最大的 maxKey 大了，就直接返回。</p>
+<p>如果当前的 maxSplitKey 恰好与 maxKey 相等，那这就是最后一批，需要保证右侧区间是闭区间，这样才能保证整个数据是连续的。</p>
+<p>其余的情况就是左闭右开的数据区间。最终的切分效果就是：[1,100), [100, 200), [200,300), [300, 400)……, [9900, 10000]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">for&#123;</span><br><span class="line">...</span><br><span class="line">if (minSplitKey + s.cfg.BatchSize - 1) &gt;= maxSplitKey &#123;</span><br><span class="line">   if minSplitKey &gt; allMax &#123;</span><br><span class="line">      return conditions // minkey &gt; allMax return directly</span><br><span class="line">   &#125; </span><br><span class="line">   if maxSplitKey == allMax &#123;</span><br><span class="line">      conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= %d and %s &lt;= %d)&quot;, s.cfg.SourceSplitKey, minSplitKey, s.cfg.SourceSplitKey, maxSplitKey)) // corner case, must &lt;=x&lt;=</span><br><span class="line">   &#125; else &#123;</span><br><span class="line">      conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= %d and %s &lt; %d)&quot;, s.cfg.SourceSplitKey, minSplitKey, s.cfg.SourceSplitKey, maxSplitKey)) // other condition is [)</span><br><span class="line">   &#125;</span><br><span class="line">   break</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在每个线程中，对按照 batchSize 切分后的数据进行同步</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for _, condition := range conditions &#123;</span><br><span class="line">// processing</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整个切片的流程可以参考下图：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/f31e617a-b2da-441b-a09d-7a20916db5d9/image.png" alt="image.png"></p>
+<h3 id="Sync-data-according-to-the-sourceSplitTimeKey"><a href="#Sync-data-according-to-the-sourceSplitTimeKey" class="headerlink" title="Sync data according to the sourceSplitTimeKey"></a><em>Sync data according to the <code>sourceSplitTimeKey</code></em></h3><p>我们在给客户演示的时候得知，有些表是没有指定自增的 id，这种情况下上面按照 primary key id 进行数据同步的算法就失效了，所以我们需要支持按照时间字段切片同步。</p>
+<ol>
+<li>跟 id 一样，也是先根据 where condition 确定 min, max time 的数据范围</li>
+<li>第二步跟 id 有所区别，由于是按照时间字段切片，所以再使用 batchSize 来分割会让问题复杂并且容易出错， 并且数据在时间上的密集度用户是最了解的，所以这里我们引入新的字段 <code>timeSplitUnit</code> ，其取值有：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">switch StringToTimeSplitUnit[c.TimeSplitUnit] &#123;</span><br><span class="line">caseMinute:</span><br><span class="line">   return 10 * time.Minute</span><br><span class="line">caseQuarter:</span><br><span class="line">   return 15 * time.Minute</span><br><span class="line">caseHour:</span><br><span class="line">   return 2 * time.Hour</span><br><span class="line">caseDay:</span><br><span class="line">   return 24 * time.Hour</span><br><span class="line">default:</span><br><span class="line">   return 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样可以让用户根据不同的数据密集程度，来决定用什么时间范围来切分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">if minTime.After(maxTime) &#123;</span><br><span class="line">   conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= &apos;%s&apos; and %s &lt;= &apos;%s&apos;)&quot;, s.cfg.SourceSplitTimeKey, minTime.Format(&quot;2006-01-02 15:04:05&quot;), s.cfg.SourceSplitTimeKey, maxTime.Format(&quot;2006-01-02 15:04:05&quot;)))</span><br><span class="line">   break</span><br><span class="line">&#125;</span><br><span class="line">if minTime.Equal(maxTime) &#123;</span><br><span class="line">   conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= &apos;%s&apos; and %s &lt;= &apos;%s&apos;)&quot;, s.cfg.SourceSplitTimeKey, minTime.Format(&quot;2006-01-02 15:04:05&quot;), s.cfg.SourceSplitTimeKey, maxTime.Format(&quot;2006-01-02 15:04:05&quot;)))</span><br><span class="line">   break</span><br><span class="line">&#125;</span><br><span class="line">conditions = append(conditions, fmt.Sprintf(&quot;(%s &gt;= &apos;%s&apos; and %s &lt; &apos;%s&apos;)&quot;, s.cfg.SourceSplitTimeKey, minTime.Format(&quot;2006-01-02 15:04:05&quot;), s.cfg.SourceSplitTimeKey, minTime.Add(s.cfg.GetTimeRangeBySplitUnit()).Format(&quot;2006-01-02 15:04:05&quot;)))</span><br><span class="line">minTime = minTime.Add(s.cfg.GetTimeRangeBySplitUnit())</span><br></pre></td></tr></table></figure>
+<ol>
+<li>根据 batchSize 分批同步数据</li>
+</ol>
+<p>这里取了个巧把 batchSize 切分放到了 SQL 里面，可以结合 offset 可以减小对源端的压力。</p>
+<p>具体流程如下图：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/be58dd3d-077d-41c1-9c95-f2e655c9bb43/image.png" alt="image.png"></p>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>…</p>
+<h3 id="归档可视化-TODO"><a href="#归档可视化-TODO" class="headerlink" title="归档可视化((TODO))"></a>归档可视化((TODO))</h3><p>为了进一步方便用户使用，简化数据进入 databend 的流程，我们计划将 db-archiver 可视化。</p>
+<p>能够让用户通过在界面上配置同步任务，管理同步任务，点点点就能完成数据从外部迁移到 Databend。</p>
+<h3 id="配置页"><a href="#配置页" class="headerlink" title="配置页"></a>配置页</h3><p>配置的流程</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/370686bb-47d0-4d8c-a0db-b2728cfd8e4d/image.png" alt="image.png"></p>
+<h3 id="任务管理页面"><a href="#任务管理页面" class="headerlink" title="任务管理页面"></a>任务管理页面</h3><p>同步任务的界面如下：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/c2b38a5e-47a6-473c-9b34-d6ea73cbbc9a/image.png" alt="image.png"></p>
+<p>也可以参考 dataworks 的任务界面：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/cadd555d-a114-4e10-96fa-64b11aa0b5ac/72e7bf1f-c05b-42d3-97e6-9e577246b62d/image.png" alt="image.png"></p>
+<p>可以查看目标任务的基本信息及运行情况。</p>
+<ul>
+<li><strong>任务名称</strong>：为您展示任务的名称。单击任务名称，即可进入目标任务的详情页面。</li>
+<li><strong>任务ID</strong>：为您展示任务的ID。</li>
+<li><strong>运行状态</strong>：任务的运行状态，包括<strong>Runing, Stop, Success, Fail..</strong>等状态。</li>
+<li><strong>开始运行</strong>：任务的开始运行时间。</li>
+<li><strong>结束运行</strong>：任务的结束运行时间。</li>
+<li><strong>运行时长</strong>：任务的运行时长，单位为秒。</li>
+<li><strong>任务类型</strong>：任务的类型。</li>
+<li><strong>运行速率</strong>: 数据导入的速率</li>
+<li><strong>同步进度</strong>：数据同步的进度百分比</li>
+</ul>
+<p>同样可以操作任务，对任务进行开始，暂停，继续，结束等操作。</p>
+<p>前端直接在 <a href="https://github.com/databendcloud/db-archiver" target="_blank" rel="noopener">https://github.com/databendcloud/db-archiver</a> 项目中开发，然后通过 go embed 将前端一同打包，这样用户直接使用一个二进制启动项目即可。</p>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><p>由于 db-archiver 可以根据用户配置信息使用了并发数据抽取，因此不能严格保证数据一致性：根据splitKey 进行数据切分后，会先后启动多个并发任务完成数据同步。由于多个并发任务相互之间不属于同一个读事务，同时多个并发任务存在时间间隔。因此这份数据并不是<code>完整的</code>、<code>一致的</code>数据快照信息。</p>
+<p>针对多线程的一致性快照需求，在技术上目前无法实现，只能从工程角度解决，我们提供几个解决思路给用户，用户可以自行选择：</p>
+<ol>
+<li>使用单线程同步，即不再进行数据切片。缺点是速度比较慢，但是能够很好保证一致性。</li>
+<li>关闭其他数据写入方，保证当前数据为静态数据，例如，锁表、关闭备库同步等等。缺点是可能影响在线业务。</li>
+</ol>
+<p>不过 db-archiver 适用的是归档场景，基本能够保证当前为静态数据。</p>
+<h2 id="RoadMap"><a href="#RoadMap" class="headerlink" title="RoadMap"></a>RoadMap</h2><ul>
+<li style="list-style: none"><input type="checkbox"> 支持 RDBMS 的更多数据源，比如 pg, oracle 等</li>
+<li style="list-style: none"><input type="checkbox"> 支持分库分表到一张表</li>
+<li style="list-style: none"><input type="checkbox"> 可视化归档</li>
+</ul>
+<p>最后，希望 db-archiver 能够取代 datax ，成为日后我们给客户推荐离线数据同步的最佳方案。</p>
+<p>我的分享就到这里，感谢大家。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/">db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2024年08月14日 - 18:08</p>
+  <p><span>最后更新:</span>2024年08月14日 - 18:08</p>
+  <p><span>原始链接:</span><a href="/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/" title="db-archiver 如何平替 Datax 成为 Databend 离线数据同步的最佳方案">https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/08/14/db-archiver-如何平替-Datax-成为-Databend-离线数据同步的最佳方案/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/databend/" rel="tag"><i class="fa fa-tag"></i> databend</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/08/04/从源代码中窥探-Go-的-WaitGroup-实现和应用/" rel="next" title="从源代码中窥探 Go 的 WaitGroup 实现和应用">
+                <i class="fa fa-chevron-left"></i> 从源代码中窥探 Go 的 WaitGroup 实现和应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">146</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2024-08-14-分享备份。"><span class="nav-number">1.</span> <span class="nav-text">2024/08/14 分享备份。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">2.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#db-archiver-VS-Datax"><span class="nav-number">3.</span> <span class="nav-text">db-archiver VS Datax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种模式"><span class="nav-number">4.</span> <span class="nav-text">两种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#根据-sourceSplitKey-同步数据"><span class="nav-number">4.1.</span> <span class="nav-text">根据 sourceSplitKey 同步数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据-sourceSplitTimeKey-同步数据"><span class="nav-number">4.2.</span> <span class="nav-text">根据 sourceSplitTimeKey 同步数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据切片算法"><span class="nav-number">5.</span> <span class="nav-text">数据切片算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sync-data-according-to-the-sourceSplitKey"><span class="nav-number">5.1.</span> <span class="nav-text">Sync data according to the sourceSplitKey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sync-data-according-to-the-sourceSplitTimeKey"><span class="nav-number">5.2.</span> <span class="nav-text">Sync data according to the sourceSplitTimeKey</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#演示"><span class="nav-number">6.</span> <span class="nav-text">演示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#归档可视化-TODO"><span class="nav-number">6.1.</span> <span class="nav-text">归档可视化((TODO))</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置页"><span class="nav-number">6.2.</span> <span class="nav-text">配置页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务管理页面"><span class="nav-number">6.3.</span> <span class="nav-text">任务管理页面</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存在问题"><span class="nav-number">7.</span> <span class="nav-text">存在问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoadMap"><span class="nav-number">8.</span> <span class="nav-text">RoadMap</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">270.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:270.8k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
