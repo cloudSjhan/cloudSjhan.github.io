@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Go," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译] Range Over Function Types">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/index.html">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/92215706-581f-4151-a75d-9f0cb7d7dbac.png">
+<meta property="og:updated_time" content="2024-08-23T09:16:55.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译] Range Over Function Types">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>[译] Range Over Function Types | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">[译] Range Over Function Types</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-08-23T17:15:48+08:00">
+                2024-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/08/23/译-Range-Over-Function-Types/" class="leancloud_visitors" data-flag-title="[译] Range Over Function Types">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6,346
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  25
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<p>在 Go 1.22 中作为试验特性发布，在 Go 1.23 中正式发布。我们可以在 for 循环的 range 子句中使用迭代器函数。就在前几天，官方也发布了 <a href="https://go.dev/blog/range-functions" title="Range Over Function Types" target="_blank" rel="noopener">Range over Function Types</a> 的教程。</p>
+<blockquote>
+<p>Ian Lance Taylor<br>in 20 August 2024</p>
+</blockquote>
+<hr>
+<p><img src="https://files.mdnice.com/user/4760/92215706-581f-4151-a75d-9f0cb7d7dbac.png" alt=""></p>
+<h1 id="Go-1-23版本中函数类型范围遍历的新特性介绍"><a href="#Go-1-23版本中函数类型范围遍历的新特性介绍" class="headerlink" title="Go 1.23版本中函数类型范围遍历的新特性介绍"></a>Go 1.23版本中函数类型范围遍历的新特性介绍</h1><blockquote>
+<p>这是 Ian 在2024年GopherCon大会上演讲的博客文章版本，下面开始正文（文章较长但干货真的很多，读完会对迭代器函数的用法有新的理解）。</p>
+</blockquote>
+<p>在 Go 1.23版本中，我们引入了一个新的语言特性：对函数类型进行范围遍历（Range over function types）。这篇博客文章将解释我们为什么要添加这个新特性，它究竟是什么，以及如何使用它。</p>
+<h2 id="WHY？"><a href="#WHY？" class="headerlink" title="WHY？"></a>WHY？</h2><p>自 Go 1.18 版本以来，我们就能够编写新的泛型容器类型。例如，让我们实现一个非常简单的 Set 类型，一个基于 map 实现的泛型类型。 </p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set 保存一组元素。</span></span><br><span class="line"><span class="keyword">type</span> Set[E comparable] <span class="keyword">struct</span> &#123;</span><br><span class="line">    m <span class="keyword">map</span>[E]<span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// New 返回一个新的[Set]。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">()</span> *<span class="title">Set</span>[<span class="title">E</span>]</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;Set[E]&#123;m: <span class="built_in">make</span>(<span class="keyword">map</span>[E]<span class="keyword">struct</span>&#123;&#125;)&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自然地，一个 set 类型有添加元素的方法和检查元素是否存在的方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Add 向set添加一个元素。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Set[E])</span> <span class="title">Add</span><span class="params">(v E)</span></span> &#123;</span><br><span class="line">    s.m[v] = <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Contains 报告一个元素是否在set中。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Set[E])</span> <span class="title">Contains</span><span class="params">(v E)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    _, ok := s.m[v]</span><br><span class="line">    <span class="keyword">return</span> ok</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还需要一个函数来返回两个集合的并集。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Union 返回两个set的并集。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Union</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s1, s2 *Set[E])</span> *<span class="title">Set</span>[<span class="title">E</span>]</span> &#123;</span><br><span class="line">    r := New[E]()</span><br><span class="line">    <span class="comment">// 注意for/range在内部Set字段m上。</span></span><br><span class="line">    <span class="comment">// 我们正在遍历s1和s2中的map。</span></span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> s1.m &#123;</span><br><span class="line">        r.Add(v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> s2.m &#123;</span><br><span class="line">        r.Add(v)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们花一点时间看看 Union 函数的实现。为了计算两个集合的并集，我们需要一种方法来获取每个集合中的所有元素。在这段代码中，我们使用了一个 for/range 语句来遍历 set 类型的未导出字段。这只在 Union 函数定义在set包中时才有效。</p>
+<p>但是，有很多原因可能会有人想要遍历集合中的所有元素。这个 set 包必须为其用户提供一些方法来做到这一点。</p>
+<p>这应该怎么实现呢？</p>
+<h2 id="Push-Set-元素"><a href="#Push-Set-元素" class="headerlink" title="Push Set 元素"></a>Push Set 元素</h2><p>一种方法是提供一个 Set 方法，该方法接受一个函数，并对 Set 中的每个元素调用该函数。我们将这称为 Push，因为 Set 将每个值推送到函数中。如果函数返回 false，我们停止调用它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Set[E])</span> <span class="title">Push</span><span class="params">(f <span class="keyword">func</span>(E)</span> <span class="title">bool</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> s.m &#123;</span><br><span class="line">        <span class="keyword">if</span> !f(v) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Go 标准库中，我们看到这种通用模式被用于 <a href="https://pkg.go.dev/sync#Map.Range" title="sync.Map.Range" target="_blank" rel="noopener">sync.Map.Range</a> 方法、<a href="https://pkg.go.dev/flag#Visit" title="flag.Visit" target="_blank" rel="noopener">flag.Visit</a> 函数和 <a href="https://pkg.go.dev/path/filepath#Walk" title="filepath.Walk" target="_blank" rel="noopener">filepath.Walk</a> 函数等场景。这是一个通用模式，并非完全相同的模式；实际上，这三个例子的工作原理并不完全相同。</p>
+<p>这就是使用 Push 方法打印 Set 中所有元素的样子：你用一个函数调用 Push，该函数对元素执行你想要的操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PrintAllElementsPush</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s *Set[E])</span></span> &#123;</span><br><span class="line">    s.Push(<span class="function"><span class="keyword">func</span><span class="params">(v E)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="拉取-Set-元素"><a href="#拉取-Set-元素" class="headerlink" title="拉取 Set 元素"></a>拉取 Set 元素</h2><p>另一种遍历 Set 元素的方法是返回一个函数。每次调用该函数时，它将从 Set 中返回一个值，以及一个布尔值，报告该值是否有效。当循环遍历完所有元素时，布尔结果将为 false。在这种情况下，我们还需要一个停止函数，当不再需要更多值时可以调用它。</p>
+<p>这个实现使用了一个通道对，一个用于集合中的值，一个用于停止返回值。我们使用一个 goroutine 在通道上发送值。next 函数通过从元素通道读取来从集合中返回一个元素，stop 函数通过关闭停止通道来告诉 goroutine 退出。我们需要 stop 函数以确保当不再需要更多值时 goroutine 能够退出。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Set[E])</span> <span class="title">Pull</span><span class="params">()</span> <span class="params">(<span class="keyword">func</span>()</span> <span class="params">(E, <span class="keyword">bool</span>)</span>, <span class="title">func</span><span class="params">()</span>)</span> &#123;</span><br><span class="line">    ch := <span class="built_in">make</span>(<span class="keyword">chan</span> E)</span><br><span class="line">    stopCh := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">defer</span> <span class="built_in">close</span>(ch)</span><br><span class="line">        <span class="keyword">for</span> v := <span class="keyword">range</span> s.m &#123;</span><br><span class="line">            <span class="keyword">select</span> &#123;</span><br><span class="line">            <span class="keyword">case</span> ch &lt;- v:</span><br><span class="line">            <span class="keyword">case</span> &lt;-stopCh:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    next := <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(E, <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">        v, ok := &lt;-ch</span><br><span class="line">        <span class="keyword">return</span> v, ok</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stop := <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">close</span>(stopCh)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next, stop</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>标准库中没有任何东西完全以这种方式工作。<a href="https://pkg.go.dev/runtime#CallersFrames" title="runtime.CallerFreames" target="_blank" rel="noopener">runtime.CallersFrames</a> 和 <a href="https://pkg.go.dev/reflect#Value.MapRange" title="reflect.Value.MapRange" target="_blank" rel="noopener">reflect.Value.MapRange</a> 有些相似，尽管它们返回的是带有方法的值，而不是直接返回函数。</p>
+<p>这就是使用 Pull 方法打印 Set 中所有元素的例子。你调用 Pull 来获取一个函数，并在 for 循环中反复调用该函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PrintAllElementsPull</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s *Set[E])</span></span> &#123;</span><br><span class="line">    next, stop := s.Pull()</span><br><span class="line">    <span class="keyword">defer</span> stop()</span><br><span class="line">    <span class="keyword">for</span> v, ok := next(); ok; v, ok = next() &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="标准化方法"><a href="#标准化方法" class="headerlink" title="标准化方法"></a>标准化方法</h2><p>现在我们已经看到了两种不同的方法来遍历一个集合的所有元素。不同的 Go 包使用这些方法和几种其他方法。这意味着，当你开始使用一个新的 Go 容器包时，你可能需要学习一种新的循环机制。同时，这意味着我们不能编写一个函数来与几种不同类型的容器一起工作，因为容器类型将以不同的方式处理循环。</p>
+<p>我们希望通过为容器遍历开发标准方法来改善 Go 生态系统。</p>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>这当然是许多编程语言中出现的问题。</p>
+<p>1994 年首次出版的流行书籍《<a href="https://en.wikipedia.org/wiki/Design_Patterns" title="Design_pattern book" target="_blank" rel="noopener">设计模式</a>》将此描述为迭代器模式。你使用迭代器来“提供一种顺序访问聚合对象元素的方法，而不需要暴露其底层表示。”这里所谓的聚合对象就是我一直所说的容器。聚合对象或容器只是保存其他值的值，比如我们一直在讨论的 Set 类型。</p>
+<p>像编程中的许多想法一样，迭代器可以追溯到 20 世纪 70 年代 Barbara Liskov 开发的 <a href="https://en.wikipedia.org/wiki/CLU_(programming_language" target="_blank" rel="noopener">CLU</a> “CLU”) 语言。</p>
+<p>今天，许多流行的语言以这样或那样的方式提供迭代器，包括但不限于 C++、Java、Javascript、Python和Rust。</p>
+<p>然而，在 1.23 版本之前，Go 并没有。</p>
+<h2 id="For-range"><a href="#For-range" class="headerlink" title="For/range"></a>For/range</h2><p>正如我们所知，Go 有内置于语言的容器类型：切片、数组和 map。它有一种访问这些值的元素的方法，而不需要暴露其底层表示：for/range语句。for/range语句适用于 Go 的内置容器类型（以及字符串、channel，以及从 Go 1.22 开始的 int）。</p>
+<p>for/range 语句是迭代，但它不是今天流行语言中出现的迭代器。尽管如此，能够使用 for/range 来迭代像Set类型这样的用户定义容器将是很好的。</p>
+<p>然而，在 1.23 版本之前的 Go 并不支持这一点。</p>
+<h2 id="此版本中的改进"><a href="#此版本中的改进" class="headerlink" title="此版本中的改进"></a>此版本中的改进</h2><p>对于 Go 1.23，我们决定支持对用户定义的容器类型进行 for/range，并支持迭代器的标准化形式。</p>
+<p>我们扩展了 for/range 语句，使其支持对函数类型进行范围遍历。我们将在下面看到这如何帮助循环遍历用户定义的容器。</p>
+<p>我们还添加了标准库类型和函数，以支持使用函数类型作为迭代器。标准迭代器的定义让我们能够编写与不同容器类型平滑协作的函数。</p>
+<h2 id="范围遍历（部分）函数类型"><a href="#范围遍历（部分）函数类型" class="headerlink" title="范围遍历（部分）函数类型"></a>范围遍历（部分）函数类型</h2><p>改进的 for/range 语句不支持任意函数类型。截至 Go 1.23，它现在支持对接受单个参数的函数进行范围遍历。这个单一参数本身必须是一个函数，它接受零到两个参数并返回一个 bool；按照惯例，我们称之为 yield函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>()</span> <span class="title">bool</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">func</span><span class="params">(yield <span class="keyword">func</span>(V)</span> <span class="title">bool</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">func</span><span class="params">(yield <span class="keyword">func</span>(K, V)</span> <span class="title">bool</span>)</span></span><br></pre></td></tr></table></figure>
+<p>当我们谈到 Go 中的迭代器时，我们指的是具有这三种类型之一的函数。正如我们将在下面讨论的，标准库中还有另一种迭代器：拉取迭代器。当需要区分标准迭代器和拉取迭代器时，我们称标准迭代器为推送迭代器。这是因为，正如我们将看到的，它们通过调用 yield 函数来推送一系列值。</p>
+<h2 id="标准（推送）迭代器"><a href="#标准（推送）迭代器" class="headerlink" title="标准（推送）迭代器"></a>标准（推送）迭代器</h2><p>为了使迭代器更易于使用，新的标准库包 iter 定义了两种类型：Seq 和 Seq2。这些是迭代器函数类型的名称，是可以与for/range语句一起使用的类型。Seq的名称是sequence（序列）的缩写，因为迭代器按顺序循环遍历一系列值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> iter</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Seq[V any] <span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>(V)</span> <span class="title">bool</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">type</span> <span class="title">Seq2</span>[<span class="title">K</span>, <span class="title">V</span> <span class="title">any</span>] <span class="title">func</span><span class="params">(yield <span class="keyword">func</span>(K, V)</span> <span class="title">bool</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">// 现在，没有<span class="title">Seq0</span></span></span><br></pre></td></tr></table></figure>
+<p>Seq 和 Seq2 之间的区别只是 Seq2 是一对序列，比如来自 map 的键和值。在这篇文章中，为了简单起见，我们将专注于 Seq，但我们所说的大部分也适用于 Seq2。</p>
+<p>最容易通过一个例子来解释迭代器是如何工作的。这里 Set 方法 All 返回一个函数。</p>
+<p>All 的返回类型是 iter.Seq[E]，所以我们知道它返回一个迭代器。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// All 是对s中元素的迭代器。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *Set[E])</span> <span class="title">All</span><span class="params">()</span> <span class="title">iter</span>.<span class="title">Seq</span>[<span class="title">E</span>]</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>(E)</span> <span class="title">bool</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> v := <span class="keyword">range</span> s.m &#123;</span><br><span class="line">            <span class="keyword">if</span> !yield(v) &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>迭代器函数本身接受另一个函数作为参数，即 yield 函数。迭代器用集合中的每个值调用 yield 函数。在这个例子中，迭代器，由 Set.All 返回的函数，与我们之前看到的 Set.Push 函数非常相似。</p>
+<p>这就是迭代器的工作原理：对于某些值序列，它们用序列中的每个值调用 yield 函数。如果 yield 函数返回 false，则不再需要更多的值，迭代器可以简单地返回，执行可能需要的任何清理工作。如果 yield 函数从不返回 false，则迭代器可以在用序列中的所有值调用 yield 之后简单地返回。</p>
+<p>这就是它们的工作原理，但让我们承认，当你第一次看到这些时，你的第一反应可能是“这里有很多函数在飞来飞去。”你对此的看法并没有错。让我们关注两件事。</p>
+<p>第一，一旦你越过这个函数代码的第一行，这个迭代器的实际实现实际上非常简单：用集合中的每个元素调用 yield，如果 yield 返回 false 则停止。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> v := <span class="keyword">range</span> s.m &#123;</span><br><span class="line">    <span class="keyword">if</span> !yield(v) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二，使用这个真的很容易。你调用 s.All 来获取一个迭代器，然后你使用 for/range 来循环遍历s中的所有元素。for/range 语句支持任何迭代器。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PrintAllElements</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s *Set[E])</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> v := <span class="keyword">range</span> s.All() &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这种代码中，s.All 是一个返回函数的方法。我们调用 s.All，然后使用 for/range 来遍历它返回的函数。在这种情况下，我们可以将 Set.All 做成一个迭代器函数本身，而不是让它返回一个迭代器函数。然而，在某些情况下，这行不通，比如如果返回迭代器的函数需要接受一个参数，或者需要做一些设置工作。作为一种惯例，我们鼓励所有容器类型都提供一个返回迭代器的 All 方法，这样程序员就不必记住是直接遍历 All 还是调用 All 来获取一个可以遍历的值。他们总是可以做后者。</p>
+<p>如果你仔细想想，你会看到编译器必须调整循环以创建一个 yield 函数传递给 s.All 返回的迭代器。在 Go 编译器和运行时有一些复杂性，使这变得高效，并正确处理像循环中的 break 或 panic 这样的事情。我们不会在这篇博客文章中涵盖这些内容。幸运的是，当涉及到实际使用这个特性时，实现细节并不重要。</p>
+<h2 id="拉取迭代器"><a href="#拉取迭代器" class="headerlink" title="拉取迭代器"></a>拉取迭代器</h2><p>现在我们已经看到了如何在 for/range 循环中使用迭代器。但一个简单的循环并不是使用迭代器的唯一方式。例如，有时我们可能需要并行地遍历两个容器。我们该怎么做呢？</p>
+<p>答案是我们使用一种不同类型的迭代器：拉取迭代器。我们已经看到，一个标准迭代器，也称为推送迭代器，是一个接受 yield 函数作为参数的函数，并通过调用 yield 函数推送序列中的每个值。</p>
+<p>拉取迭代器的工作方式正好相反：它是一个这样的函数，每次你调用它时，它都会从序列中拉取下一个值并返回它。</p>
+<p>我们将重复两种迭代器之间的区别，以帮助你记住：</p>
+<p>一个推送迭代器将序列中的每个值推送到yield函数。推送迭代器是 Go 标准库中的迭代器，并且直接被 for/range语句支持。<br>一个拉取迭代器的工作方式正好相反。每次你调用一个拉取迭代器时，它都会从序列中拉取另一个值并返回它。拉取迭代器不是直接被 for/range 语句支持的；然而，编写一个普通的 for 语句来遍历拉取迭代器是直接了当的。实际上，当我们看到使用 Set.Pull 方法时，我们已经看到了一个例子。</p>
+<p>你可以自己编写一个拉取迭代器，但通常你不必这么做。新标准库函数 iter.Pull 接受一个标准迭代器，也就是说，一个推送迭代器的函数，并返回一对函数。第一个是一个拉取迭代器：一个每次被调用时都返回序列中的下一个值的函数。第二个是一个停止函数，当我们完成对拉取迭代器的使用时应该调用它。这就像我们之前看到的 Set.Pull 方法。</p>
+<p>iter.Pull 返回的第二个函数，即停止函数，以防我们没有读取完整个序列。在一般情况下，推送迭代器，即传递给 iter.Pull 的参数，可能会启动 goroutines 或构建需要在迭代完成时清理的新数据结构。推送迭代器将在 yield 函数返回 false 时执行任何清理工作，这意味着不再需要更多的值。当与 for/range 语句一起使用时，for/range 语句将确保如果循环提前退出，无论是通过 break 语句还是其他任何原因，那么 yield 函数将返回 false。而使用拉取迭代器时，另一方面，没有办法强制 yield 函数返回 false，所以需要停止函数。</p>
+<p>另一种说法是，调用停止函数将导致 yield 函数在被推送迭代器调用时返回 false。</p>
+<p>严格来说，如果拉取迭代器返回 false 以表示它已经到达序列的末尾，你就不必调用停止函数，但通常简单地总是调用它会更简单。</p>
+<p>以下是一个使用拉取迭代器并行遍历两个序列的示例。这个函数报告任意两个序列是否包含相同的元素，顺序也相同。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// EqSeq报告两个迭代器是否包含相同的</span></span><br><span class="line"><span class="comment">// 元素，顺序也相同。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">EqSeq</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s1, s2 iter.Seq[E])</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    next1, stop1 := iter.Pull(s1)</span><br><span class="line">    <span class="keyword">defer</span> stop1()</span><br><span class="line">    next2, stop2 := iter.Pull(s2)</span><br><span class="line">    <span class="keyword">defer</span> stop2()</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        v1, ok1 := next1()</span><br><span class="line">        v2, ok2 := next2()</span><br><span class="line">        <span class="keyword">if</span> !ok1 &#123;</span><br><span class="line">            <span class="keyword">return</span> !ok2</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ok1 != ok2 || v1 != v2 &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数使用 iter.Pull 将两个推送迭代器 s1 和 s2 转换为拉取迭代器。它使用 defer 语句确保我们在完成对它们使用后停止拉取迭代器。</p>
+<p>然后代码循环，调用拉取迭代器检索值。如果第一个序列完成了，如果第二个序列也完成了，它返回 true，或者如果它没有完成，返回 false。然后它循环拉取下两个值。</p>
+<p>和推送迭代器一样，Go 运行时有一些复杂性，使拉取迭代器高效，但这不影响实际使用 iter.Pull 函数的代码。</p>
+<h2 id="在迭代器上迭代"><a href="#在迭代器上迭代" class="headerlink" title="在迭代器上迭代"></a>在迭代器上迭代</h2><p>现在你知道了关于函数类型范围遍历和迭代器的所有事情。我们希望你享受使用它们！</p>
+<p>尽管如此，还有一些值得提及的事情。</p>
+<h2 id="适配器"><a href="#适配器" class="headerlink" title="适配器"></a>适配器</h2><p>标准迭代器定义的一个优势是能够编写使用它们的标准适配器函数。</p>
+<p>例如，这里有一个函数，它过滤一个值序列，返回一个新的序列。这个 Filter 函数接受一个迭代器作为参数，并返回一个新的迭代器。另一个参数是一个过滤器函数，它决定哪些值应该包含在 Filter 返回的新迭代器中。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Filter 返回一个序列，其中包含 s 中</span></span><br><span class="line"><span class="comment">// 满足 f 返回 true 的元素。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Filter</span>[<span class="title">V</span> <span class="title">any</span>]<span class="params">(f <span class="keyword">func</span>(V)</span> <span class="title">bool</span>, <span class="title">s</span> <span class="title">iter</span>.<span class="title">Seq</span>[<span class="title">V</span>]) <span class="title">iter</span>.<span class="title">Seq</span>[<span class="title">V</span>]</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>(V)</span> <span class="title">bool</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> v := <span class="keyword">range</span> s &#123;</span><br><span class="line">            <span class="keyword">if</span> f(v) &#123;</span><br><span class="line">                <span class="keyword">if</span> !yield(v) &#123;</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和之前的例子一样，函数签名在你第一次看到它们时看起来很复杂。一旦你超越了签名，实现就很简单了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> v := <span class="keyword">range</span> s &#123;</span><br><span class="line">    <span class="keyword">if</span> f(v) &#123;</span><br><span class="line">        <span class="keyword">if</span> !yield(v) &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码遍历输入迭代器，检查过滤器函数，并用应该进入输出迭代器的值调用yield。</p>
+<p>我们将在下面展示使用 Filter 的示例。</p>
+<p>（Go标准库今天没有 Filter 的版本，但未来版本可能会添加。）</p>
+<h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p>作为推送迭代器对容器类型循环遍历的便利性的一个例子，让我们考虑这个简单的二叉树类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tree是一个二叉树。</span></span><br><span class="line"><span class="keyword">type</span> Tree[E any] <span class="keyword">struct</span> &#123;</span><br><span class="line">    val         E</span><br><span class="line">    left, right *Tree[E]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们不会展示将值插入树的代码，但自然应该有某种方法来遍历树中的所有值。</p>
+<p>事实证明，如果迭代器代码返回一个 bool，迭代器代码会更容易编写。由于 for/range 支持的函数类型不返回任何内容，这里的 All 方法返回一个小型函数字面量，它调用迭代器本身，这里称为 push，并忽略 bool 结果。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// All返回t中值的迭代器。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Tree[E])</span> <span class="title">All</span><span class="params">()</span> <span class="title">iter</span>.<span class="title">Seq</span>[<span class="title">E</span>]</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>(E)</span> <span class="title">bool</span>)</span> &#123;</span><br><span class="line">        t.push(yield)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// push将所有元素推送到yield函数。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Tree[E])</span> <span class="title">push</span><span class="params">(yield <span class="keyword">func</span>(E)</span> <span class="title">bool</span>) <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> t == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t.left.push(yield) &amp;&amp;</span><br><span class="line">        yield(t.val) &amp;&amp;</span><br><span class="line">        t.right.push(yield)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>push 方法使用递归来遍历整棵树，对每个元素调用 yield。如果 yield 函数返回false，该方法<br>会一直返回 false。否则，它只是在迭代完成时返回一次。</p>
+<p>这展示了使用这种迭代器方法遍历甚至是复杂数据结构有多么直接。没有必要维护一个单独的栈来记录树内的位置；我们可以使用 goroutine 调用栈为我们做这件事。</p>
+<h2 id="新的迭代器函数"><a href="#新的迭代器函数" class="headerlink" title="新的迭代器函数"></a>新的迭代器函数</h2><p>在 Go 1.23 中，slices 和 maps 包中也新增了一些与迭代器一起工作的功能。</p>
+<p>以下是 slices 包中的新函数。All 和 Values 是返回 slice 元素迭代器的函数。Collect 从迭代器中提取值，并返回包含这些值的 slice。查看其他函数的文档。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">All([]E) iter.Seq2[<span class="keyword">int</span>, E]</span><br><span class="line">Values([]E) iter.Seq[E]</span><br><span class="line">Collect(iter.Seq[E]) []E</span><br><span class="line">AppendSeq([]E, iter.Seq[E]) []E</span><br><span class="line">Backward([]E) iter.Seq2[<span class="keyword">int</span>, E]</span><br><span class="line">Sorted(iter.Seq[E]) []E</span><br><span class="line">SortedFunc(iter.Seq[E], <span class="function"><span class="keyword">func</span><span class="params">(E, E)</span> <span class="title">int</span>) []<span class="title">E</span></span></span><br><span class="line"><span class="function"><span class="title">SortedStableFunc</span><span class="params">(iter.Seq[E], <span class="keyword">func</span>(E, E)</span> <span class="title">int</span>) []<span class="title">E</span></span></span><br><span class="line"><span class="function"><span class="title">Repeat</span><span class="params">([]E, <span class="keyword">int</span>)</span> []<span class="title">E</span></span></span><br><span class="line"><span class="function"><span class="title">Chunk</span><span class="params">([]E, <span class="keyword">int</span>)</span> <span class="title">iter</span>.<span class="title">Seq</span>[<span class="title">E</span>]</span></span><br></pre></td></tr></table></figure>
+<p>以下是 maps 包中的新函数。All、Keys 和 Values 返回 map 内容的迭代器。Collect 从迭代器中提取键和值，并返回一个新的 map。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">All(<span class="keyword">map</span>[K]V) iter.Seq2[K, V]</span><br><span class="line">Keys(<span class="keyword">map</span>[K]V) iter.Seq[K]</span><br><span class="line">Values(<span class="keyword">map</span>[K]V) iter.Seq[V]</span><br><span class="line">Collect(iter.Seq2[K, V]) <span class="keyword">map</span>[K, V]</span><br><span class="line">Insert(<span class="keyword">map</span>[K, V], iter.Seq2[K, V])</span><br></pre></td></tr></table></figure>
+<h2 id="标准库迭代器示例"><a href="#标准库迭代器示例" class="headerlink" title="标准库迭代器示例"></a>标准库迭代器示例</h2><p>这里有一个示例，展示了如何使用这些新函数以及我们之前看到的 Filter 函数。这个函数接受一个从 int 到string 的 map，并返回一个只包含 map 中长度至少为某个参数 n 的值的 slice。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// LongStrings返回m中长度为n或更长的值的slice。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LongStrings</span><span class="params">(m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>, n <span class="keyword">int</span>)</span> []<span class="title">string</span></span> &#123;</span><br><span class="line">    isLong := <span class="function"><span class="keyword">func</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(s) &gt;= n</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> slices.Collect(Filter(isLong, maps.Values(m)))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>maps.Values 函数返回 m 中值的迭代器。Filter 读取该迭代器，并返回一个新的迭代器，其中只包含长字符串。slices.Collect 从该迭代器中读取到一个新的 slice。</p>
+<p>当然，你可以很容易地编写一个循环来完成这个任务，而且在许多情况下，循环会更清晰。我们不想鼓励大家一直以这种风格编写代码。也就是说，使用迭代器的优势在于，这类函数可以以相同的方式与任何序列一起工作。在这个例子中，注意 Filter 是如何使用 map 作为输入和 slice 作为输出的，而 Filter 中的代码根本不需要改变。</p>
+<h2 id="循环遍历文件中的行"><a href="#循环遍历文件中的行" class="headerlink" title="循环遍历文件中的行"></a>循环遍历文件中的行</h2><p>尽管我们看到的大多数示例都涉及到容器，但迭代器是灵活的。</p>
+<p>考虑这个简单的代码，它不使用迭代器，来循环遍历字节切片中的行。这是容易编写的，也是相当高效的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> bytes.Split(data, []<span class="keyword">byte</span>&#123;<span class="string">'\n'</span>&#125;) &#123;</span><br><span class="line">    handleLine(line)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而，bytes.Split 确实会分配并返回一个包含行的字节切片。垃圾回收器最终需要做一些工作来释放那个切片。</p>
+<p>以下是一个返回某些字节切片中行的迭代器的函数。在通常的迭代器签名之后，函数相当简单。我们不断从 data中提取行，直到没有剩余的，我们将每行传递给 yield 函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Lines返回data中行的迭代器。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Lines</span><span class="params">(data []<span class="keyword">byte</span>)</span> <span class="title">iter</span>.<span class="title">Seq</span>[[]<span class="title">byte</span>]</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(yield <span class="keyword">func</span>([]<span class="keyword">byte</span>)</span> <span class="title">bool</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">len</span>(data) &gt; <span class="number">0</span> &#123;</span><br><span class="line">            line, rest, _ := bytes.Cut(data, []<span class="keyword">byte</span>&#123;<span class="string">'\n'</span>&#125;)</span><br><span class="line">            <span class="keyword">if</span> !yield(line) &#123;</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">            data = rest</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们的代码循环遍历字节切片中的行看起来像这样。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, line := <span class="keyword">range</span> Lines(data) &#123;</span><br><span class="line">    handleLine(line)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这和之前的代码一样容易编写，而且更有效，因为它不需要分配一个行的切片。</p>
+<h2 id="将函数传递给推送迭代器"><a href="#将函数传递给推送迭代器" class="headerlink" title="将函数传递给推送迭代器"></a>将函数传递给推送迭代器</h2><p>作为最后一个示例，我们将看到，你不必在范围语句中使用推送迭代器。</p>
+<p>之前我们看到了PrintAllElements函数，它打印出集合的每个元素。这里是另一种打印集合所有元素的方法：调用s.All来获取一个迭代器，然后传递一个手写的yield函数。这个yield函数只是打印一个值并返回true。注意这里有两个函数调用：我们调用s.All来获取一个迭代器，它本身是一个函数，我们用我们的手写yield函数调用那个函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PrintAllElements</span>[<span class="title">E</span> <span class="title">comparable</span>]<span class="params">(s *Set[E])</span></span> &#123;</span><br><span class="line">    s.All()(<span class="function"><span class="keyword">func</span><span class="params">(v E)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">        fmt.Println(v)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没有特别的理由这样写代码。这只是作为一个示例，以展示 yield 函数不是魔法。它可以是你喜欢的任何函数。</p>
+<h2 id="更新-go-mod"><a href="#更新-go-mod" class="headerlink" title="更新 go.mod"></a>更新 go.mod</h2><p>最后一点注意事项：每个Go模块都指定了它所使用的语言版本。这意味着，要在现有模块中使用新的语言特性，你可能需要更新该版本。这对所有新的语言特性都是适用的；它并不是特定于对函数类型进行范围遍历的功能。由于在Go 1.23版本中新引入了对函数类型进行范围遍历的功能，使用它需要至少指定Go语言版本1.23。</p>
+<p>至少有四种方法可以设置语言版本：</p>
+<ol>
+<li>在命令行中运行 <code>go get go@1.23</code>（或者使用 <code>go mod edit -go=1.23</code> 仅编辑go指令）。</li>
+<li>手动编辑go.mod文件并更改go版本行。</li>
+<li>保持模块整体的旧语言版本，但使用 <code>//go:build go1.23</code> 构建标签，以允许在特定文件中使用对函数类型进行范围遍历的功能。</li>
+</ol>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2024/08/23/译-Range-Over-Function-Types/">[译] Range Over Function Types</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2024年08月23日 - 17:08</p>
+  <p><span>最后更新:</span>2024年08月23日 - 17:08</p>
+  <p><span>原始链接:</span><a href="/2024/08/23/译-Range-Over-Function-Types/" title="[译] Range Over Function Types">https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/08/23/译-Range-Over-Function-Types/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/08/21/使用-go-trace-优化-Golang-中的-GC/" rel="next" title="使用 go trace 优化 Golang 中的 GC">
+                <i class="fa fa-chevron-left"></i> 使用 go trace 优化 Golang 中的 GC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Go-1-23版本中函数类型范围遍历的新特性介绍"><span class="nav-number">1.</span> <span class="nav-text">Go 1.23版本中函数类型范围遍历的新特性介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WHY？"><span class="nav-number">1.1.</span> <span class="nav-text">WHY？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Push-Set-元素"><span class="nav-number">1.2.</span> <span class="nav-text">Push Set 元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-Set-元素"><span class="nav-number">1.3.</span> <span class="nav-text">拉取 Set 元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准化方法"><span class="nav-number">1.4.</span> <span class="nav-text">标准化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代器"><span class="nav-number">1.5.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#For-range"><span class="nav-number">1.6.</span> <span class="nav-text">For/range</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#此版本中的改进"><span class="nav-number">1.7.</span> <span class="nav-text">此版本中的改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#范围遍历（部分）函数类型"><span class="nav-number">1.8.</span> <span class="nav-text">范围遍历（部分）函数类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准（推送）迭代器"><span class="nav-number">1.9.</span> <span class="nav-text">标准（推送）迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取迭代器"><span class="nav-number">1.10.</span> <span class="nav-text">拉取迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在迭代器上迭代"><span class="nav-number">1.11.</span> <span class="nav-text">在迭代器上迭代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适配器"><span class="nav-number">1.12.</span> <span class="nav-text">适配器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉树"><span class="nav-number">1.13.</span> <span class="nav-text">二叉树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新的迭代器函数"><span class="nav-number">1.14.</span> <span class="nav-text">新的迭代器函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库迭代器示例"><span class="nav-number">1.15.</span> <span class="nav-text">标准库迭代器示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环遍历文件中的行"><span class="nav-number">1.16.</span> <span class="nav-text">循环遍历文件中的行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将函数传递给推送迭代器"><span class="nav-number">1.17.</span> <span class="nav-text">将函数传递给推送迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新-go-mod"><span class="nav-number">1.18.</span> <span class="nav-text">更新 go.mod</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">279.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:279.9k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
