@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Go," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在 Go 中构建可插拔库">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/index.html">
+<meta property="og:updated_time" content="2024-08-24T12:08:33.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在 Go 中构建可插拔库">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>如何在 Go 中构建可插拔库 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            阅读排行
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">如何在 Go 中构建可插拔库</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-08-24T20:08:09+08:00">
+                2024-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/08/24/如何在-Go-中构建可插拔库/" class="leancloud_visitors" data-flag-title="如何在 Go 中构建可插拔库">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,972
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  20
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<h2 id="什么是-go-buildmode-plugin"><a href="#什么是-go-buildmode-plugin" class="headerlink" title="什么是 go buildmode=plugin?"></a>什么是 go buildmode=plugin?</h2><p>go buildmode=plugin 选项允许开发者将 Go 代码编译成共享对象文件。另一个 Go 程序可以在运行时加载该文件。当我们想在应用程序中添加新功能而又不想重建它时，这个选项非常有用。可以将新功能作为插件加载。</p>
+<p>Go 中的插件是编译成共享对象（.so）文件的软件包。可以使用 Go 中的 <a href="https://pkg.go.dev/plugin" title="plugin package" target="_blank" rel="noopener">plugin package</a> 加载该文件，打开插件，查找符号（如函数或变量）并使用它们。</p>
+<h2 id="实践范例"><a href="#实践范例" class="headerlink" title="实践范例"></a>实践范例</h2><p>这里举了了一个简单的后端演示项目的示例，它提供了一个用于计算第 n 个 斐波那契数列的 API。出于演示目的，这里特意使用了慢速斐波那契实现。考虑到计算速度较慢，我需要添加了一个缓存层来存储结果，因此如果再次请求相同的 nth 斐波那契数字，无需重新计算，只需返回缓存结果即可。</p>
+<p>API 是 GET /fib/{n} ，其中 n 是要计算的斐波纳契数。下面我们来看看 API 是如何实现的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">// Fibonacci calculates the nth Fibonacci number.</span><br><span class="line">// This algorithm is not optimized and is used for demonstration purposes.</span><br><span class="line">func Fibonacci(n int64) int64 &#123;</span><br><span class="line"> if n &lt;= 1 &#123;</span><br><span class="line">  return n</span><br><span class="line"> &#125;</span><br><span class="line"> return Fibonacci(n-1) + Fibonacci(n-2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// NewHandler returns an HTTP handler that calculates the nth Fibonacci number.</span><br><span class="line">func NewHandler(l *slog.Logger, c cache.Cache, exp time.Duration) http.HandlerFunc &#123;</span><br><span class="line"> return func(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">  started := time.Now()</span><br><span class="line">  defer func() &#123;</span><br><span class="line">   l.Info(&quot;request completed&quot;, &quot;duration&quot;, time.Since(started).String())</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  param := r.PathValue(&quot;n&quot;)</span><br><span class="line">  n, err := strconv.ParseInt(param, 10, 64)</span><br><span class="line">  if err != nil &#123;</span><br><span class="line">   l.Error(&quot;cannot parse path value&quot;, &quot;param&quot;, param, &quot;error&quot;, err)</span><br><span class="line">   sendJSON(l, w, map[string]any&#123;&quot;error&quot;: &quot;invalid value&quot;&#125;, http.StatusBadRequest)</span><br><span class="line">   return</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ctx := r.Context()</span><br><span class="line"></span><br><span class="line">  result := make(chan int64)</span><br><span class="line">  go func() &#123;</span><br><span class="line">   cached, err := c.Get(ctx, param)</span><br><span class="line">   if err != nil &#123;</span><br><span class="line">    l.Debug(&quot;cache miss; calculating the fib(n)&quot;, &quot;n&quot;, n, &quot;cache_error&quot;, err)</span><br><span class="line">    v := Fibonacci(n)</span><br><span class="line">    l.Debug(&quot;fib(n) calculated&quot;, &quot;n&quot;, n, &quot;result&quot;, v)</span><br><span class="line">    if err := c.Set(ctx, param, strconv.FormatInt(v, 10), exp); err != nil &#123;</span><br><span class="line">     l.Error(&quot;cannot set cache&quot;, &quot;error&quot;, err)</span><br><span class="line">    &#125;</span><br><span class="line">    result &lt;- v</span><br><span class="line">    return</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   l.Debug(&quot;cache hit; returning the cached value&quot;, &quot;n&quot;, n, &quot;value&quot;, cached)</span><br><span class="line">   v, _ := strconv.ParseInt(cached, 10, 64)</span><br><span class="line">   result &lt;- v</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  select &#123;</span><br><span class="line">  case v := &lt;-result:</span><br><span class="line">   sendJSON(l, w, map[string]any&#123;&quot;result&quot;: v&#125;, http.StatusOK)</span><br><span class="line">  case &lt;-ctx.Done():</span><br><span class="line">   l.Info(&quot;request cancelled&quot;)</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码的解释如下:</p>
+<ul>
+<li>NewHandler 函数创建一个新的 http.Handler 程序。它依赖于日志记录器、缓存和过期时间。cache.Cache 是一个接口，我们很快就会定义它。</li>
+<li><p>返回的 http.Handler 会解析路径参数中的 n 值。如果出现错误，它会发送错误响应。否则，它会检查缓存中是否已经存在第 n 个斐波那契数字。如果没有，处理程序会计算出该数字并将其存储在缓存中，以备将来请求之用。</p>
+</li>
+<li><p>goroutine 在一个单独的进程中处理斐波那契计算和缓存，而 select 语句则等待计算完成或客户端取消请求。这样可以确保在客户端取消请求时，我们不会浪费资源等待计算完成。</p>
+</li>
+</ul>
+<p>现在，我们希望在运行时，即应用程序启动时，可以选择缓存的实现方式。一种直接的方法是在同一代码库中创建多个实现，并使用配置来选择所需的实现。但这样做的缺点是，未选择的实现仍将是编译后二进制文件的一部分，从而增加了二进制文件的大小。虽然构建标签可能是一种解决方案，但我们将留待下一篇文章讨论。现在，我们希望在运行时而不是在构建时选择实现。这就是 buildmode=plugin 的真正优势所在。</p>
+<h3 id="确保应用程序无需插件即可运行"><a href="#确保应用程序无需插件即可运行" class="headerlink" title="确保应用程序无需插件即可运行"></a>确保应用程序无需插件即可运行</h3><p>由于我们已将 cache.Cache 定义为一个接口，因此我们可以在任何地方创建该接口的实现，甚至可以在不同的存储库中创建。但首先，让我们来看看 Cache 接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">package cache</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;log/slog&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// consterror is a custom error type used to represent specific errors in the cache implementation.</span><br><span class="line">// It is derived from the int type to allow it to be used as a constant, ensuring immutability across packages.</span><br><span class="line">type consterror int</span><br><span class="line"></span><br><span class="line">// Possible errors returned by the cache implementation.</span><br><span class="line">const (</span><br><span class="line">	ErrNotFound consterror = iota</span><br><span class="line">	ErrExpired</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// _text maps consterror values to their corresponding error messages.</span><br><span class="line">var _text = map[consterror]string&#123;</span><br><span class="line">	ErrNotFound: &quot;cache: key not found&quot;,</span><br><span class="line">	ErrExpired:  &quot;cache: key expired&quot;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Error implements the error interface.</span><br><span class="line">func (e consterror) Error() string &#123;</span><br><span class="line">	txt, ok := _text[e]</span><br><span class="line">	if !ok &#123;</span><br><span class="line">		return &quot;cache: unknown error&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	return txt</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Cache defines the interface for a cache implementation.</span><br><span class="line">type Cache interface &#123;</span><br><span class="line">	// Set stores a key-value pair in the cache with a specified expiration time.</span><br><span class="line">	Set(ctx context.Context, key, val string, exp time.Duration) error</span><br><span class="line"></span><br><span class="line">	// Get retrieves a value from the cache by its key.</span><br><span class="line">	// Returns ErrNotFound if the key is not found.</span><br><span class="line">	// Returns ErrExpired if the key has expired.</span><br><span class="line">	Get(ctx context.Context, key string) (string, error)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Factory defines the function signature for creating a cache implementation.</span><br><span class="line">type Factory func(log *slog.Logger) (Cache, error)</span><br><span class="line"></span><br><span class="line">// nopCache is a no-operation cache implementation.</span><br><span class="line">type nopCache int</span><br><span class="line"></span><br><span class="line">// NopCache a singleton cache instance, which does nothing.</span><br><span class="line">const NopCache nopCache = 0</span><br><span class="line"></span><br><span class="line">// Ensure that NopCache implements the Cache interface.</span><br><span class="line">var _ Cache = NopCache</span><br><span class="line"></span><br><span class="line">// Set is a no-op and always returns nil.</span><br><span class="line">func (nopCache) Set(context.Context, string, string, time.Duration) error &#123; return nil &#125;</span><br><span class="line"></span><br><span class="line">// Get always returns ErrNotFound, indicating that the key does not exist in the cache.</span><br><span class="line">func (nopCache) Get(context.Context, string) (string, error) &#123; return &quot;&quot;, ErrNotFound &#125;</span><br></pre></td></tr></table></figure></p>
+<p>由于 NewHandler 需要依赖于 cache.Cache 实现，因此最好有一个默认实现，以确保代码不会中断。因此，让我们创建一个什么都不做的 no-op（无操作）实现。</p>
+<p>这个NopCache实现了cache.Cache接口，但实际上并不做任何事情。它只是为了确保处理程序正常工作。<br>如果我们不使用任何自定义的cache.Cache实现来运行代码，API将正常工作，但结果不会被缓存–这意味着每次调用都会重新计算斐波那契数字。以下是使用NopCache（n=45）时的日志：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">./bin/demo -port=8080 -log-level=debug</span><br><span class="line"></span><br><span class="line">time=2024-08-22T17:39:06.853+07:00 level=INFO msg=&quot;application started&quot;</span><br><span class="line">time=2024-08-22T17:39:06.854+07:00 level=DEBUG msg=&quot;using configuration&quot; config=&quot;&#123;Port:8080 LogLevel:DEBUG CacheExpiration:15s CachePluginPath: CachePluginFactoryName:Factory&#125;&quot;</span><br><span class="line">time=2024-08-22T17:39:06.854+07:00 level=INFO msg=&quot;no cache plugin configured; using nop cache&quot;</span><br><span class="line">time=2024-08-22T17:39:06.854+07:00 level=INFO msg=listening addr=:8080</span><br><span class="line"></span><br><span class="line">time=2024-08-22T17:39:19.465+07:00 level=DEBUG msg=&quot;cache miss; calculating the fib(n)&quot; n=45 cache_error=&quot;cache: key not found&quot;</span><br><span class="line">time=2024-08-22T17:39:23.246+07:00 level=DEBUG msg=&quot;fib(n) calculated&quot; n=45 result=1134903170</span><br><span class="line">time=2024-08-22T17:39:23.246+07:00 level=INFO msg=&quot;request completed&quot; duration=3.781674792s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">time=2024-08-22T17:39:26.409+07:00 level=DEBUG msg=&quot;cache miss; calculating the fib(n)&quot; n=45 cache_error=&quot;cache: key not found&quot;</span><br><span class="line">time=2024-08-22T17:39:30.222+07:00 level=DEBUG msg=&quot;fib(n) calculated&quot; n=45 result=1134903170</span><br><span class="line">time=2024-08-22T17:39:30.222+07:00 level=INFO msg=&quot;request completed&quot; duration=3.813693s</span><br></pre></td></tr></table></figure></p>
+<p>不出所料，由于没有缓存，两次调用都需要 3 秒左右。</p>
+<h2 id="插件实现"><a href="#插件实现" class="headerlink" title="插件实现"></a>插件实现</h2><p>由于我们要实现可插拔的库是 cache.Cache，因此我们需要实现该接口。您可以在任何地方实现该接口，甚至是在单独的存储库中。在本例中，我创建了两个实现：一个使用内存缓存，另一个使用 Redis，两者都在独立的存储库中。</p>
+<h3 id="In-Memory-Cache-Plugin"><a href="#In-Memory-Cache-Plugin" class="headerlink" title="In-Memory Cache Plugin"></a>In-Memory Cache Plugin</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"> &quot;context&quot;</span><br><span class="line"> &quot;log/slog&quot;</span><br><span class="line"> &quot;sync&quot;</span><br><span class="line"> &quot;time&quot;</span><br><span class="line"></span><br><span class="line"> &quot;github.com/josestg/yt-go-plugin/cache&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// Value represents a cache entry.</span><br><span class="line">type Value struct &#123;</span><br><span class="line"> Data  string</span><br><span class="line"> ExpAt time.Time</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Memcache is a simple in-memory cache.</span><br><span class="line">type Memcache struct &#123;</span><br><span class="line"> mu    sync.RWMutex</span><br><span class="line"> log   *slog.Logger</span><br><span class="line"> store map[string]Value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Factory is the symbol the plugin loader will try to load. It must implement the cache.Factory signature.</span><br><span class="line">var Factory cache.Factory = New</span><br><span class="line"></span><br><span class="line">// New creates a new Memcache instance.</span><br><span class="line">func New(log *slog.Logger) (cache.Cache, error) &#123;</span><br><span class="line"> log.Info(&quot;[plugin/memcache] loaded&quot;)</span><br><span class="line"> c := &amp;Memcache&#123;</span><br><span class="line">  mu:    sync.RWMutex&#123;&#125;,</span><br><span class="line">  log:   log,</span><br><span class="line">  store: make(map[string]Value),</span><br><span class="line"> &#125;</span><br><span class="line"> return c, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (m *Memcache) Set(ctx context.Context, key, val string, exp time.Duration) error &#123;</span><br><span class="line"> m.log.InfoContext(ctx, &quot;[plugin/memcache] set&quot;, &quot;key&quot;, key, &quot;val&quot;, val, &quot;exp&quot;, exp)</span><br><span class="line"> m.mu.Lock()</span><br><span class="line"> m.log.DebugContext(ctx, &quot;[plugin/memcache] lock acquired&quot;)</span><br><span class="line"> defer func() &#123;</span><br><span class="line">  m.mu.Unlock()</span><br><span class="line">  m.log.DebugContext(ctx, &quot;[plugin/memcache] lock released&quot;)</span><br><span class="line"> &#125;()</span><br><span class="line"></span><br><span class="line"> m.store[key] = Value&#123;</span><br><span class="line">  Data:  val,</span><br><span class="line">  ExpAt: time.Now().Add(exp),</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> return nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (m *Memcache) Get(ctx context.Context, key string) (string, error) &#123;</span><br><span class="line"> m.log.InfoContext(ctx, &quot;[plugin/memcache] get&quot;, &quot;key&quot;, key)</span><br><span class="line"> m.mu.RLock()</span><br><span class="line"> v, ok := m.store[key]</span><br><span class="line"> m.mu.RUnlock()</span><br><span class="line"> if !ok &#123;</span><br><span class="line">  return &quot;&quot;, cache.ErrNotFound</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> if time.Now().After(v.ExpAt) &#123;</span><br><span class="line">  m.log.InfoContext(ctx, &quot;[plugin/memcache] key expired&quot;, &quot;key&quot;, key, &quot;val&quot;, v)</span><br><span class="line">  m.mu.Lock()</span><br><span class="line">  delete(m.store, key)</span><br><span class="line">  m.mu.Unlock()</span><br><span class="line">  return &quot;&quot;, cache.ErrExpired</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> m.log.InfoContext(ctx, &quot;[plugin/memcache] key found&quot;, &quot;key&quot;, key, &quot;val&quot;, v)</span><br><span class="line"> return v.Data, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Redis-Cache-Plugin"><a href="#Redis-Cache-Plugin" class="headerlink" title="Redis Cache Plugin"></a>Redis Cache Plugin</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"> &quot;cmp&quot;</span><br><span class="line"> &quot;context&quot;</span><br><span class="line"> &quot;errors&quot;</span><br><span class="line"> &quot;fmt&quot;</span><br><span class="line"> &quot;log/slog&quot;</span><br><span class="line"> &quot;os&quot;</span><br><span class="line"> &quot;strconv&quot;</span><br><span class="line"> &quot;time&quot;</span><br><span class="line"></span><br><span class="line"> &quot;github.com/josestg/yt-go-plugin/cache&quot;</span><br><span class="line"> &quot;github.com/redis/go-redis/v9&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">// RedisCache is a cache implementation that uses Redis.</span><br><span class="line">type RedisCache struct &#123;</span><br><span class="line"> log    *slog.Logger</span><br><span class="line"> client *redis.Client</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Factory is the symbol the plugin loader will try to load. It must implement the cache.Factory signature.</span><br><span class="line">var Factory cache.Factory = New</span><br><span class="line"></span><br><span class="line">// New creates a new RedisCache instance.</span><br><span class="line">func New(log *slog.Logger) (cache.Cache, error) &#123;</span><br><span class="line"> log.Info(&quot;[plugin/rediscache] loaded&quot;)</span><br><span class="line"> db, err := strconv.Atoi(cmp.Or(os.Getenv(&quot;REDIS_DB&quot;), &quot;0&quot;))</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;parse redis db: %w&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> c := &amp;RedisCache&#123;</span><br><span class="line">  log: log,</span><br><span class="line">  client: redis.NewClient(&amp;redis.Options&#123;</span><br><span class="line">   Addr:     cmp.Or(os.Getenv(&quot;REDIS_ADDR&quot;), &quot;localhost:6379&quot;),</span><br><span class="line">   Password: cmp.Or(os.Getenv(&quot;REDIS_PASSWORD&quot;), &quot;&quot;),</span><br><span class="line">   DB:       db,</span><br><span class="line">  &#125;),</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> return c, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (r *RedisCache) Set(ctx context.Context, key, val string, exp time.Duration) error &#123;</span><br><span class="line"> r.log.InfoContext(ctx, &quot;[plugin/rediscache] set&quot;, &quot;key&quot;, key, &quot;val&quot;, val, &quot;exp&quot;, exp)</span><br><span class="line"> return r.client.Set(ctx, key, val, exp).Err()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (r *RedisCache) Get(ctx context.Context, key string) (string, error) &#123;</span><br><span class="line"> r.log.InfoContext(ctx, &quot;[plugin/rediscache] get&quot;, &quot;key&quot;, key)</span><br><span class="line"> res, err := r.client.Get(ctx, key).Result()</span><br><span class="line"> if errors.Is(err, redis.Nil) &#123;</span><br><span class="line">  r.log.InfoContext(ctx, &quot;[plugin/rediscache] key not found&quot;, &quot;key&quot;, key)</span><br><span class="line">  return &quot;&quot;, cache.ErrNotFound</span><br><span class="line"> &#125;</span><br><span class="line"> r.log.InfoContext(ctx, &quot;[plugin/rediscache] key found&quot;, &quot;key&quot;, key, &quot;val&quot;, res)</span><br><span class="line"> return res, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这两个插件都实现了 cache.Cache 接口。这里有几件重要的事情需要注意：</p>
+<ul>
+<li>这两个插件都是在 main 包中实现的。这是必须的，因为当我们将代码作为插件构建时，Go 至少需要一个 main 包。尽管如此，这并不意味着你必须在一个文件中编写所有代码。你可以像一个典型的 Go 项目那样，用多个文件和包来组织代码。为了简单起见，我在这里将其保留在一个文件中。</li>
+<li>这两个插件都有 var Factory cache.Factory=New。虽然不是强制性的，但这是一个很好的做法。我们创建了一种类型，希望每个插件都能将其作为实现构造函数的签名。两个插件都确保其 New 函数（实际构造函数）的类型为 cache.Factory。这在我们稍后查找构造函数时非常关键。</li>
+</ul>
+<p>构建插件非常简单，只需添加 -buildmode=plugin 标志即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># build the in memory cache plugin</span><br><span class="line">go build -buildmode=plugin -o memcache.so memcache.go</span><br><span class="line"></span><br><span class="line"># build the redis cache plugin</span><br><span class="line">go build -buildmode=plugin -o rediscache.so rediscache.go</span><br></pre></td></tr></table></figure>
+<p>运行这些命令将生成 memcache.so 和 rediscache.so，它们是共享对象二进制文件，可在运行时由 bin/demo 二进制文件加载。</p>
+<h2 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h2><p>插件加载器非常简单。我们可以使用 Go 中的标准插件库，它提供了两个函数，不言自明：</p>
+<ul>
+<li><a href="https://pkg.go.dev/plugin#Open" title="Open" target="_blank" rel="noopener">Open</a></li>
+<li><a href="https://pkg.go.dev/plugin#Plugin.Lookup" title="Lookup" target="_blank" rel="noopener">Lookip</a></li>
+</ul>
+<p>下面是加载插件的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// loadCachePlugin loads a cache implementation from a shared object (.so) file at the specified path.</span><br><span class="line">// It calls the constructor function by name, passing the necessary dependencies, and returns the initialized cache.</span><br><span class="line">// If path is empty, it returns the NopCache implementation.</span><br><span class="line">func loadCachePlugin(log *slog.Logger, path, name string) (cache.Cache, error) &#123;</span><br><span class="line"> if path == &quot;&quot; &#123;</span><br><span class="line">  log.Info(&quot;no cache plugin configured; using nop cache&quot;)</span><br><span class="line">  return cache.NopCache, nil</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> plug, err := plugin.Open(path)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;open plugin %q: %w&quot;, path, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> sym, err := plug.Lookup(name)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;lookup symbol New: %w&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> factoryPtr, ok := sym.(*cache.Factory)</span><br><span class="line"> if !ok &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;unexpected type %T; want %T&quot;, sym, factoryPtr)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> factory := *factoryPtr</span><br><span class="line"> return factory(log)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>仔细看看这一行：factoryPtr, ok := sym.(<em>cache.Factory)。我们要查找的符号是 plug.Lookup(“Factory”)，正如我们所看到的，每个实现都有 var Factory cache.Factory = New，而不是 var Factory </em>cache.Factory = New。</p>
+<h2 id="使用内存缓存插件"><a href="#使用内存缓存插件" class="headerlink" title="使用内存缓存插件"></a>使用内存缓存插件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/demo -port=8080 -log-level=debug -cache-plugin-path=./memcache.so -cache-plugin-factory-name=Factory</span><br></pre></td></tr></table></figure>
+<p>两次调用 <a href="http://localhost:8080/fib/45" target="_blank" rel="noopener">http://localhost:8080/fib/45</a> 后的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">time=2024-08-22T18:31:08.372+07:00 level=INFO msg=&quot;application started&quot;</span><br><span class="line">time=2024-08-22T18:31:08.372+07:00 level=DEBUG msg=&quot;using configuration&quot; config=&quot;&#123;Port:8080 LogLevel:DEBUG CacheExpiration:15s CachePluginPath:./memcache.so CachePluginFactoryName:Factory&#125;&quot;</span><br><span class="line">time=2024-08-22T18:31:08.376+07:00 level=INFO msg=&quot;[plugin/memcache] loaded&quot;</span><br><span class="line">time=2024-08-22T18:31:08.376+07:00 level=INFO msg=listening addr=:8080</span><br><span class="line"></span><br><span class="line">time=2024-08-22T18:31:16.850+07:00 level=INFO msg=&quot;[plugin/memcache] get&quot; key=45</span><br><span class="line">time=2024-08-22T18:31:16.850+07:00 level=DEBUG msg=&quot;cache miss; calculating the fib(n)&quot; n=45 cache_error=&quot;cache: key not found&quot;</span><br><span class="line">time=2024-08-22T18:31:20.752+07:00 level=DEBUG msg=&quot;fib(n) calculated&quot; n=45 result=1134903170</span><br><span class="line">time=2024-08-22T18:31:20.752+07:00 level=INFO msg=&quot;[plugin/memcache] set&quot; key=45 val=1134903170 exp=15s</span><br><span class="line">time=2024-08-22T18:31:20.752+07:00 level=DEBUG msg=&quot;[plugin/memcache] lock acquired&quot;</span><br><span class="line">time=2024-08-22T18:31:20.752+07:00 level=DEBUG msg=&quot;[plugin/memcache] lock released&quot;</span><br><span class="line">time=2024-08-22T18:31:20.753+07:00 level=INFO msg=&quot;request completed&quot; duration=3.903607875s</span><br><span class="line"></span><br><span class="line">time=2024-08-22T18:31:24.781+07:00 level=INFO msg=&quot;[plugin/memcache] get&quot; key=45</span><br><span class="line">time=2024-08-22T18:31:24.783+07:00 level=INFO msg=&quot;[plugin/memcache] key found&quot; key=45 val=&quot;&#123;Data:1134903170 ExpAt:2024-08-22 18:31:35.752647 +0700 WIB m=+27.380493292&#125;&quot;</span><br><span class="line">time=2024-08-22T18:31:24.783+07:00 level=DEBUG msg=&quot;cache hit; returning the cached value&quot; n=45 value=1134903170</span><br><span class="line">time=2024-08-22T18:31:24.783+07:00 level=INFO msg=&quot;request completed&quot; duration=1.825042ms</span><br></pre></td></tr></table></figure>
+<h2 id="使用-Redis-缓存插件"><a href="#使用-Redis-缓存插件" class="headerlink" title="使用 Redis 缓存插件"></a>使用 Redis 缓存插件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/demo -port=8080 -log-level=debug -cache-plugin-path=./rediscache.so -cache-plugin-factory-name=Factory</span><br></pre></td></tr></table></figure>
+<p>两次调用 <a href="http://localhost:8080/fib/45" target="_blank" rel="noopener">http://localhost:8080/fib/45</a> 后的日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">time=2024-08-22T18:33:49.920+07:00 level=INFO msg=&quot;application started&quot;</span><br><span class="line">time=2024-08-22T18:33:49.920+07:00 level=DEBUG msg=&quot;using configuration&quot; config=&quot;&#123;Port:8080 LogLevel:DEBUG CacheExpiration:15s CachePluginPath:./rediscache.so CachePluginFactoryName:Factory&#125;&quot;</span><br><span class="line">time=2024-08-22T18:33:49.937+07:00 level=INFO msg=&quot;[plugin/rediscache] loaded&quot;</span><br><span class="line">time=2024-08-22T18:33:49.937+07:00 level=INFO msg=listening addr=:8080</span><br><span class="line"></span><br><span class="line">time=2024-08-22T18:34:01.143+07:00 level=INFO msg=&quot;[plugin/rediscache] get&quot; key=45</span><br><span class="line">time=2024-08-22T18:34:01.150+07:00 level=INFO msg=&quot;[plugin/rediscache] key not found&quot; key=45</span><br><span class="line">time=2024-08-22T18:34:01.150+07:00 level=DEBUG msg=&quot;cache miss; calculating the fib(n)&quot; n=45 cache_error=&quot;cache: key not found&quot;</span><br><span class="line">time=2024-08-22T18:34:04.931+07:00 level=DEBUG msg=&quot;fib(n) calculated&quot; n=45 result=1134903170</span><br><span class="line">time=2024-08-22T18:34:04.931+07:00 level=INFO msg=&quot;[plugin/rediscache] set&quot; key=45 val=1134903170 exp=15s</span><br><span class="line">time=2024-08-22T18:34:04.934+07:00 level=INFO msg=&quot;request completed&quot; duration=3.791582708s</span><br><span class="line"></span><br><span class="line">time=2024-08-22T18:34:07.932+07:00 level=INFO msg=&quot;[plugin/rediscache] get&quot; key=45</span><br><span class="line">time=2024-08-22T18:34:07.936+07:00 level=INFO msg=&quot;[plugin/rediscache] key found&quot; key=45 val=1134903170</span><br><span class="line">time=2024-08-22T18:34:07.936+07:00 level=DEBUG msg=&quot;cache hit; returning the cached value&quot; n=45 value=1134903170</span><br><span class="line">time=2024-08-22T18:34:07.936+07:00 level=INFO msg=&quot;request completed&quot; duration=4.403083ms</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go 中的 <code>buildmode=plugin</code> 功能是增强应用程序的强大工具，例如在 <code>Envoy Proxy</code> 中添加自定义缓存解决方案。它允许你构建和使用插件，使你能够在运行时加载和执行自定义代码，而无需更改主程序。这不仅有助于减少二进制文件的大小，还能加快构建过程。由于插件可以独立组成和更新，因此只有当主应用程序发生变化时才需要重建，避免了重建未更改的插件。</p>
+<blockquote>
+<p>当然，这个方案也会存在缺点：插件加载会带来运行时开销，而且与静态链接代码相比，插件系统有一定的局限性。例如，可能存在跨平台兼容性和调试复杂性的问题。您应根据自己的具体需求仔细评估这些方面。有关使用插件的更多信息和详细警告，请参阅 Go 关于<a href="https://pkg.go.dev/plugin#hdr-Warnings" title="go official documents on plugin" target="_blank" rel="noopener">插件的官方文档</a>。</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2024/08/24/如何在-Go-中构建可插拔库/">如何在 Go 中构建可插拔库</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
+  <p><span>发布时间:</span>2024年08月24日 - 20:08</p>
+  <p><span>最后更新:</span>2024年08月24日 - 20:08</p>
+  <p><span>原始链接:</span><a href="/2024/08/24/如何在-Go-中构建可插拔库/" title="如何在 Go 中构建可插拔库">https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/08/24/如何在-Go-中构建可插拔库/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/08/23/译-Range-Over-Function-Types/" rel="next" title="[译] Range Over Function Types">
+                <i class="fa fa-chevron-left"></i> [译] Range Over Function Types
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">150</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-go-buildmode-plugin"><span class="nav-number">1.</span> <span class="nav-text">什么是 go buildmode=plugin?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践范例"><span class="nav-number">2.</span> <span class="nav-text">实践范例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确保应用程序无需插件即可运行"><span class="nav-number">2.1.</span> <span class="nav-text">确保应用程序无需插件即可运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件实现"><span class="nav-number">3.</span> <span class="nav-text">插件实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#In-Memory-Cache-Plugin"><span class="nav-number">3.1.</span> <span class="nav-text">In-Memory Cache Plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-Cache-Plugin"><span class="nav-number">3.2.</span> <span class="nav-text">Redis Cache Plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载插件"><span class="nav-number">4.</span> <span class="nav-text">加载插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用内存缓存插件"><span class="nav-number">5.</span> <span class="nav-text">使用内存缓存插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Redis-缓存插件"><span class="nav-number">6.</span> <span class="nav-text">使用 Redis 缓存插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">283.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:283.8k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
