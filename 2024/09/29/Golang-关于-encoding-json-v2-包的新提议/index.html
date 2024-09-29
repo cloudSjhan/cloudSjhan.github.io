@@ -79,7 +79,7 @@
 
 
 
-  <meta name="keywords" content="weekly-report," />
+  <meta name="keywords" content="Go," />
 
 
 
@@ -92,22 +92,17 @@
 
 
 
-<meta name="description" content="2022 NO.31 开源周报">
-<meta name="keywords" content="weekly-report">
+<meta name="keywords" content="Go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2022 NO.31 Open source weekly report">
-<meta property="og:url" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
+<meta property="og:title" content="Golang 关于 encoding&#x2F;json&#x2F;v2 包的新提议">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/index.html">
 <meta property="og:site_name" content="cloud world">
-<meta property="og:description" content="2022 NO.31 开源周报">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg">
-<meta property="og:updated_time" content="2022-07-25T05:52:29.756Z">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/index.html">
+<meta property="og:updated_time" content="2024-09-29T13:57:37.577Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2022 NO.31 Open source weekly report">
-<meta name="twitter:description" content="2022 NO.31 开源周报">
-<meta name="twitter:image" content="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/index.html">
+<meta name="twitter:title" content="Golang 关于 encoding&#x2F;json&#x2F;v2 包的新提议">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/index.html">
 
 
 
@@ -137,7 +132,7 @@
 
 
 
-  <link rel="canonical" href="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/"/>
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/"/>
 
 
 
@@ -152,7 +147,7 @@
   </script>
 
 
-  <title>2022 NO.31 Open source weekly report | cloud world</title>
+  <title>Golang 关于 encoding/json/v2 包的新提议 | cloud world</title>
   
 
 
@@ -334,7 +329,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cloud sjhan">
@@ -351,7 +346,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">2022 NO.31 Open source weekly report</h2>
+          <h2 class="post-title" itemprop="name headline">Golang 关于 encoding/json/v2 包的新提议</h2>
         
 
         <div class="post-meta">
@@ -363,8 +358,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-24T22:41:02+08:00">
-                2022-07-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-09-29T21:56:41+08:00">
+                2024-09-29
               </time>
             
 
@@ -386,8 +381,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/weekly-report/" itemprop="url" rel="index">
-                    <span itemprop="name">weekly-report</span>
+                  <a href="/categories/Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">Golang</span>
                   </a>
                 </span>
 
@@ -403,7 +398,7 @@
 
           
           
-             <span id="/2022/07/24/2022-31-Open-source-weekly-report/" class="leancloud_visitors" data-flag-title="2022 NO.31 Open source weekly report">
+             <span id="/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/" class="leancloud_visitors" data-flag-title="Golang 关于 encoding/json/v2 包的新提议">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -435,7 +430,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  832
+                  1,027
                 </span>
               
 
@@ -451,16 +446,12 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  5
                 </span>
               
             </div>
           
 
-          
-              <div class="post-description">
-                  2022 NO.31 开源周报
-              </div>
           
 
         </div>
@@ -480,30 +471,38 @@
 
 <p><img src="https://" alt="" style="width:100%"></p>
 <a id="more"></a>
-<p>2022 年第 31 周，以下是本周的开源周报。</p>
-<h3 id="事出有因"><a href="#事出有因" class="headerlink" title="事出有因"></a>事出有因</h3><p>周中的时候在 OpenKruise 开源社区群里看到有开发者提到能不能在 <code>kubectl-kruise</code> 插件中提供一种便捷的方式，让用户能够快速使用 <code>ContainerRecreateRequest</code> 实现原地重启容器的能力。<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4izm1vc8hj30w40dyzlb.jpg" alt=""></p>
-<p>其实这个想法我在很久之前就有了，<br><img src="https://tva1.sinaimg.cn/large/005UfcOkly8h4j31omjpfj30s8060aap.jpg" alt=""><br>当时搁置了一下就淹没在琐碎之中，详见这个 <a href="https://github.com/openkruise/kruise-tools/issues/36" target="_blank" rel="noopener">issue</a>。趁着这周末的空闲，打算把这个功能实现一把。</p>
-<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>ContainerRecreateRequest 是 OpenKruise 提供的一种运维增强的组件，可以帮助用户重启/重建存量 Pod 中一个或多个容器。<br>和 Kruise 提供的原地升级类似，当一个容器重建的时候，Pod 中的其他容器还保持正常运行。重建完成后，Pod 中除了该容器的 restartCount 增加以外不会有什么其他变化。</p>
-<p>目前用户创建 CRR 实现容器原地重启的方式主要有两种方式：</p>
+<h3 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h3><p>JSON 是一种轻量级数据交换格式，自十年前 Go 的编码/json 软件包问世以来，开发人员一直对其灵活的特性青睐有加。开发人员可以通过 struct 标记自定义 struct 字段的 JSON 表示法，也允许 Go 类型自定义自己的 JSON 表示法。然而，随着 Go 语言和 JSON 标准的发展，一些功能缺陷和性能限制也逐渐暴露出来。</p>
 <ul>
-<li>kubectl apply -f crr.yaml</li>
-<li>OpenKruise API</li>
+<li>功能缺失：例如，无法为 time.Time 类型指定自定义格式，无法在序列化过程中省略特定的 Go 值等。</li>
+<li>API 的缺陷：例如，没有简单的方法从 io.Reader.Reader 中正确反序列化 JSON。</li>
+<li>性能限制：标准 json 软件包的性能并不令人满意，尤其是在处理大量数据时。</li>
 </ul>
-<p>这两种方式对集群运维人员来说都不够友好，过于繁琐。最好的方式就是在 terminal 中使用一行命令就能创建 CRR 完成原地重启。而 <a href="https://github.com/openkruise/kruise-tools" title="kruise-tools" target="_blank" rel="noopener">Kruise-tools</a> 为 Kruise 的功能提供了一系列命令行工具，包括 kubectl-kruise，它的是 kubectl 的标准插件。在这个插件中可以很容易集成该功能。（关于 kubectl-kruise 后面打算专门开一篇文章来详细介绍。)</p>
-<h3 id="确定目标"><a href="#确定目标" class="headerlink" title="确定目标"></a>确定目标</h3><p>首先我们需要保证输入的参数尽量少，其他的必须参数都给到合理的默认值，以便用户能够以最快的速度创建 CRR 重启容器，所以我在插件中定义了 CRR 的一个默认策略：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">strategy:</span><br><span class="line">    failurePolicy: Fail                </span><br><span class="line">    orderedRecreate: false             </span><br><span class="line">    unreadyGracePeriodSeconds: 3       </span><br><span class="line">  	activeDeadlineSeconds: 300        </span><br><span class="line">  	ttlSecondsAfterFinished: 1800</span><br></pre></td></tr></table></figure>
-<p>确定最终的命令为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl kruise create ContainerRecreateRequest test-crr --pod=sample-k52bq --containers=nginx</span><br></pre></td></tr></table></figure>
-<p>执行这条命令就可以重启 pod sample-k52bq 中名字为 <code>nginx</code> 的容器，其中 <code>--containers</code> 为一个列表，如果为空就重启 pod 中所有的容器，否则重启指定容器。</p>
-<p>除了 <code>--pod</code>、<code>--containers</code> 还支持 <code>unreadyGracePeriodSeconds</code> 和 <code>terminationGracePeriodSeconds</code>，这两个参数都是选填。</p>
 <ul>
-<li>unreadyGracePeriodSeconds: 重建后新容器至少保持运行这段时间，才认为该容器重建成功</li>
-<li>terminationGracePeriodSeconds： 等待容器优雅退出的时间，不填默认用 Pod 中定义的</li>
+<li>行为缺陷：例如，JSON 语法的错误处理不够严格，反序列化不区分大小写等。</li>
 </ul>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>相关的代码实现可以查看这个 <a href="https://github.com/openkruise/kruise-tools/pull/66" target="_blank" rel="noopener">PR</a>。</p>
-<p>这部分代码合并后下周会 release 新版本，想要尝鲜的同学可以 clone 项目后自行编译。</p>
-<h3 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h3><p>这篇文章是 weekly-report 系列的第一篇，之所以开始这个系列，真是说来话长。差不多就是刚开始写 blog 的时候是想每周都输出一篇有点子质量的技术文章，发现这样太难了，一是没有这么多内容输出，二是很容易被其他杂事打乱，很难坚持。这次开始以开源周报的名义写每周的 blog，实际上是想以一种随意、自由的方式，输出一点东西，不计篇幅也不考究质量，只为记录，这样大概能坚持下去吧。</p>
-<p>都说日拱一卒，我先周拱一卒。</p>
+<p>与 math/v2 一样，Go 官方也提出了 <a href="https://github.com/golang/go/discussions/63397" title="json/v2 disscussion" target="_blank" rel="noopener">encoding/json/v2</a> 来解决上述问题。本文的主要目的是分析在 encoding/json 中有关空值的一些问题，以及在 encoding/json/v2 中如何解决这些问题。本文不涉及 encoding/json/v2 中的其他修改。</p>
+<h3 id="omitempty-行为"><a href="#omitempty-行为" class="headerlink" title="omitempty 行为"></a>omitempty 行为</h3><p>在 <code>encoding/json</code> 包中，对 omitempty 有如下描述：</p>
+<blockquote>
+<p>omitemptyoption 指定，如果字段的值为空（定义为 false、0、nil 指针、nil 接口值以及任何空数组、片、映射或字符串），则编码中应省略该字段。</p>
+</blockquote>
+<p>这种预定义的 nil value 的判断逻辑并不能满足所有实际场景的需要。让我们来看一个例子：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Post <span class="keyword">struct</span> &#123;  </span><br><span class="line">    Id         <span class="keyword">int64</span>           <span class="string">`json:"id,omitempty"`</span>  </span><br><span class="line">    CreateTime time.Time       <span class="string">`json:"create_time,omitempty"`</span>  </span><br><span class="line">    TagList    []Tag           <span class="string">`json:"tag_list,omitempty"`</span>  </span><br><span class="line">    Name       <span class="keyword">string</span>          <span class="string">`json:"name,omitempty"`</span>  </span><br><span class="line">    Score      <span class="keyword">float64</span>         <span class="string">`json:"score,omitempty"`</span>  </span><br><span class="line">    Category   Category        <span class="string">`json:"category,omitempty"`</span>  </span><br><span class="line">    LikePost   <span class="keyword">map</span>[<span class="keyword">string</span>]Post <span class="string">`json:"like,omitempty"`</span>  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">type</span> Tag <span class="keyword">struct</span> &#123;  </span><br><span class="line">    ID   <span class="keyword">string</span> <span class="string">`json:"id"`</span>  </span><br><span class="line">    Name <span class="keyword">string</span> <span class="string">`json:"name"`</span>  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">type</span> Category <span class="keyword">struct</span> &#123;  </span><br><span class="line">    ID   <span class="keyword">float64</span> <span class="string">`json:"id"`</span>  </span><br><span class="line">    Name <span class="keyword">string</span>  <span class="string">`json:"name"`</span>  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;  </span><br><span class="line">    b, _ := json.Marshal(<span class="built_in">new</span>(Post))  </span><br><span class="line">    fmt.Println(<span class="keyword">string</span>(b))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;create_time&quot;:&quot;0001-01-01T00:00:00Z&quot;,&quot;category&quot;:&#123;&quot;id&quot;:0,&quot;name&quot;:&quot;&quot;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然在 Post 的每个字段中都添加了 omitempty，但结果并不尽如人意。</p>
+<ul>
+<li>omitempty 不能处理空结构，如 Post.Category</li>
+<li>omitempty 处理 time.Time 的方式不是我们理解的 UTC =0，即 1970-01-01 00:00:00，而是 0001-01-01T00:00:00Z。</li>
+</ul>
+<h3 id="omitzero-Tag"><a href="#omitzero-Tag" class="headerlink" title="omitzero Tag"></a>omitzero Tag</h3><p>在 <a href="https://github.com/golang/go/discussions/63397" title="json/v2/disscusstion" target="_blank" rel="noopener">encoding/json/v2</a> 中，将添加一个新标签 omitzero，它增加了两个功能来解决上述两个问题。(此功能仍在开发中，开发者可以通过 <code>go-json-experiment/json</code> 提前体验新功能）</p>
+<ul>
+<li>更好地处理时间类型</li>
+<li>支持自定义 IsZero 函数，例如以下代码：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">package main  </span><br><span class="line">  </span><br><span class="line">import (  </span><br><span class="line">    &quot;encoding/json&quot;  </span><br><span class="line">    &quot;fmt&quot;    v2_json &quot;github.com/go-json-experiment/json&quot;  </span><br><span class="line">    &quot;math&quot;    &quot;time&quot;)  </span><br><span class="line">  </span><br><span class="line">type Post struct &#123;  </span><br><span class="line">    Id         int64           `json:&quot;id,omitempty,omitzero&quot;`  </span><br><span class="line">    CreateTime time.Time       `json:&quot;create_time,omitempty,omitzero&quot;`  </span><br><span class="line">    TagList    []Tag           `json:&quot;tag_list,omitempty&quot;`  </span><br><span class="line">    Name       string          `json:&quot;name,omitempty&quot;`  </span><br><span class="line">    Score      ScoreType       `json:&quot;score,omitempty,omitzero&quot;`  </span><br><span class="line">    Category   Category        `json:&quot;category,omitempty,omitzero&quot;`  </span><br><span class="line">    LikePost   map[string]Post `json:&quot;like,omitempty&quot;`  </span><br><span class="line">&#125;  </span><br><span class="line">type ScoreType float64  </span><br><span class="line">  </span><br><span class="line">func (s ScoreType) IsZero() bool &#123;  </span><br><span class="line">    return s &lt; math.MinInt64  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">type Tag struct &#123;  </span><br><span class="line">    ID   string `json:&quot;id&quot;`  </span><br><span class="line">    Name string `json:&quot;name&quot;`  </span><br><span class="line">&#125;  </span><br><span class="line">type Category struct &#123;  </span><br><span class="line">    ID   float64 `json:&quot;id&quot;`  </span><br><span class="line">    Name string  `json:&quot;name&quot;`  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">func main() &#123;  </span><br><span class="line">    v1String, _ := json.Marshal(new(Post))  </span><br><span class="line">    fmt.Println(string(v1String))  </span><br><span class="line">    v2String, _ := v2_json.Marshal(new(Post))  </span><br><span class="line">    fmt.Println(string(v2String))  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>与 encoding/json 相比，encoding/json/v2 解决了上述问题。</p>
+<p>输出结果为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;create_time&quot;:&quot;0001-01-01T00:00:00Z&quot;,&quot;category&quot;:&#123;&quot;id&quot;:0,&quot;name&quot;:&quot;&quot;&#125;&#125;</span><br><span class="line">&#123;&quot;score&quot;:0&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>通过引入 omitzero 标记，Go 在解决 JSON 编码中 nil value 处理的痛点方面迈出了非常关键的一步。这一解决方案不仅满足了开发人员对更灵活的 nil 值定义的需求，还保持了与现有系统的兼容性。omitzero 的登陆时间尚未确定，最早也要等到 Go 1.24 版本。</p>
+<p>此外，<code>encoding/xml</code> 和其他软件包也将遵循 json 软件包，并添加 omitzero 标记。encoding/json/v2 还包括其他方面的更新，例如性能。感兴趣的 Gophers 可以提前了解这些变化，本博客也将继续关注这一提议。</p>
 <hr>
 
       
@@ -532,12 +531,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/">2022 NO.31 Open source weekly report</a></p>
+  <p><span>本文标题:</span><a href="/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/">Golang 关于 encoding/json/v2 包的新提议</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 cloud sjhan 的个人博客">cloud sjhan</a></p>
-  <p><span>发布时间:</span>2022年07月24日 - 22:07</p>
-  <p><span>最后更新:</span>2022年07月25日 - 13:07</p>
-  <p><span>原始链接:</span><a href="/2022/07/24/2022-31-Open-source-weekly-report/" title="2022 NO.31 Open source weekly report">https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/</a>
-    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2022/07/24/2022-31-Open-source-weekly-report/"  aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2024年09月29日 - 21:09</p>
+  <p><span>最后更新:</span>2024年09月29日 - 21:09</p>
+  <p><span>原始链接:</span><a href="/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/" title="Golang 关于 encoding/json/v2 包的新提议">https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/09/29/Golang-关于-encoding-json-v2-包的新提议/"  aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -605,7 +604,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/weekly-report/" rel="tag"><i class="fa fa-tag"></i> weekly-report</a>
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
           
         </div>
       
@@ -631,8 +630,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/07/11/OpenKruise-源码分析之-ResourceDistribution/" rel="next" title="OpenKruise 源码分析之 ResourceDistribution">
-                <i class="fa fa-chevron-left"></i> OpenKruise 源码分析之 ResourceDistribution
+              <a href="/2024/09/14/构建由大型语言模型（LLM）驱动的-Go-应用程序/" rel="next" title="构建由大型语言模型（LLM）驱动的 Go 应用程序">
+                <i class="fa fa-chevron-left"></i> 构建由大型语言模型（LLM）驱动的 Go 应用程序
               </a>
             
           </div>
@@ -640,10 +639,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/07/24/2022-30-Open-source-weekly-report/" rel="prev" title="2022 NO.30 Open source weekly report">
-                2022 NO.30 Open source weekly report <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -729,7 +724,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">156</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -740,7 +735,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -751,7 +746,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -829,7 +824,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事出有因"><span class="nav-number">1.</span> <span class="nav-text">事出有因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">2.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定目标"><span class="nav-number">3.</span> <span class="nav-text">确定目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#碎碎念"><span class="nav-number">5.</span> <span class="nav-text">碎碎念</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景介绍"><span class="nav-number">1.</span> <span class="nav-text">背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#omitempty-行为"><span class="nav-number">2.</span> <span class="nav-text">omitempty 行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#omitzero-Tag"><span class="nav-number">3.</span> <span class="nav-text">omitzero Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
             
 
           </div>
@@ -849,7 +844,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2022</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2024</span>
   <span class="with-love" id="heart">
     <i class="fa fa-heart"></i>
   </span>
@@ -863,7 +858,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">198.8k</span>
+    <span title="Site words total count">293.3k</span>
   
 </div>
 
@@ -876,7 +871,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:198.8k</span>
+  <span class="post-count">Total Words:293.3k</span>
 </div>
 
 
