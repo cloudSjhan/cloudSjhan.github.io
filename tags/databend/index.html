@@ -494,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">163</span>
+                  <span class="site-state-item-count">164</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -516,7 +516,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -612,7 +612,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">303.9k</span>
+    <span title="Site words total count">305.5k</span>
   
 </div>
 
@@ -625,7 +625,7 @@
 
   <div class="footer-custom">stay hungry,stay foolish</div>
 <div class="theme-info">
-  <span class="post-count">Total Words:303.9k</span>
+  <span class="post-count">Total Words:305.5k</span>
 </div>
 
 
@@ -1265,7 +1265,26 @@ $("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673
 <script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>
-ar newcounter = new Counter();
+ar query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
             /* Set ACL */
             var acl = new AV.ACL();
             acl.setPublicReadAccess(true);
