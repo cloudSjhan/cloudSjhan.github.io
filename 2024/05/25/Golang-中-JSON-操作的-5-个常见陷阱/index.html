@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+  <link rel="manifest" href="/images/manifest.json">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml" />
+
+
+
+  <meta name="keywords" content="Go," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/index.html">
+<meta property="og:updated_time" content="2024-05-25T10:07:36.089Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta name="twitter:description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta name="twitter:image" content="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/index.html">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/"/>
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "bf5b9806"
+    });
+  daovoice('update');
+  </script>
+
+
+  <title>Golang 中 JSON 操作的 5 个常见陷阱 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <a href="https://github.com/hantmac" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cloud world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">To be A geek</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-top">
+          <a href="/top" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-signal"></i> <br />
+            
+            top
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            about
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cloud sjhan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Golang 中 JSON 操作的 5 个常见陷阱</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">posted</span>
+              
+              <time title="created" itemprop="dateCreated datePublished" datetime="2024-05-25T18:06:53+08:00">
+                2024-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index">
+                    <span itemprop="name">Go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/" class="leancloud_visitors" data-flag-title="Golang 中 JSON 操作的 5 个常见陷阱">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">wordcount&#58;</span>
+                
+                <span title="wordcount">
+                  2,880
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">min2read &asymp;</span>
+                
+                <span title="min2read">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Golang 中 JSON 操作的 5 个常见陷阱
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p class="description"></p>
+
+<p><img src="https://" alt="" style="width:100%"></p>
+<a id="more"></a>
+<p>JSON 是许多开发人员在工作中经常使用的一种数据格式。它一般用于配置文件或网络数据传输等场景。由于其简单、易懂、可读性好，JSON 已成为整个 IT 界最常用的格式之一。对于这种情况，Golang 和许多其他语言一样，也提供了标准库级别的支持, <a href="https://pkg.go.dev/encoding/json" title="encoding/json" target="_blank" rel="noopener">encoding/json</a>。</p>
+<p>就像 JSON 本身很容易理解一样，用于操作 JSON 的编码/JSON 库也非常容易使用。但我相信，很多开发者可能会像我第一次使用这个库时一样，遇到各种奇怪的问题或 bug。本文总结了我个人在使用 Golang 操作 JSON 时遇到的问题和错误。希望能帮助更多阅读本文的开发者掌握 Golang 的使用技巧，更正确地操作 JSON，避免调用不必要的”坑”。</p>
+<p>本文内容基于 Go 1.22。不同版本之间可能存在细微差别。读者在阅读和使用时请注意。同时，本文列出的所有案例均使用 <code>encoding/json</code>，不涉及任何第三方 JSON 库。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>先来看下 <code>encoding/json</code> 的基本用法。<br>作为一种数据格式，JSON 的核心操作只有两个：序列化和反序列化。序列化是将 Go 对象转换为 JSON 格式的字符串（或字节序列）。反序列化则相反，是将 JSON 格式的数据转换成 Go 对象。</p>
+<p>这里提到的对象是一个宽泛的概念。它不仅指结构对象，还包括切片和映射类型的数据。它们也支持 JSON 序列化。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">"encoding/json"</span></span><br><span class="line">  <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line"> ID   <span class="keyword">uint</span></span><br><span class="line"> Name <span class="keyword">string</span></span><br><span class="line"> Age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MarshalPerson</span><span class="params">()</span></span> &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   <span class="number">1</span>,</span><br><span class="line">  Name: <span class="string">"Bruce"</span>,</span><br><span class="line">  Age:  <span class="number">18</span>,</span><br><span class="line"> &#125;</span><br><span class="line"> output, err := json.Marshal(p)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="built_in">println</span>(<span class="keyword">string</span>(output))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UnmarshalPerson</span><span class="params">()</span></span> &#123;</span><br><span class="line"> str := <span class="string">`&#123;"ID":1,"Name":"Bruce","Age":18&#125;`</span></span><br><span class="line"> <span class="keyword">var</span> p Person</span><br><span class="line"> err := json.Unmarshal([]<span class="keyword">byte</span>(str), &amp;p)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Printf(<span class="string">"%+v\n"</span>, p)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心是两个函数 <code>json.Marshal</code> 和 <code>json.Unmarshal</code>，分别用于序列化和反序列化。这两个函数都会返回错误，在这里我只是简单地 panic 一下。<br>使用过 <code>encoding/json</code> 的读者可能知道，还有另一对工具会经常用到：NewEncoder 和 NewDecoder。简单看一下源代码就会发现，这两个工具的底层核心逻辑调用与 Marshal 是一样的，所以我就不在这里举例说明了。</p>
+<h3 id="常见的-‘坑’"><a href="#常见的-‘坑’" class="headerlink" title="常见的 ‘坑’"></a>常见的 ‘坑’</h3><h4 id="1-public-or-private-字段处理"><a href="#1-public-or-private-字段处理" class="headerlink" title="1. public or private 字段处理"></a>1. public or private 字段处理</h4><p>这可能是刚接触 Go 的开发人员最容易犯的错误。也就是说，如果我们使用结构体处理 JSON，那么结构体的成员字段必须是公有的，即首字母大写的，而私有成员是无法解析的。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">  age  int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func MarshalPerson() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  age:  18,</span><br><span class="line"> &#125;</span><br><span class="line"> output, err := json.Marshal(p)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  panic(err)</span><br><span class="line"> &#125;</span><br><span class="line"> println(string(output))</span><br><span class="line">&#125;</span><br><span class="line">func UnmarshalPerson() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;,&quot;age&quot;:18&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> err := json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  panic(err)</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output Marshal:</span><br><span class="line">&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;</span><br><span class="line">// Output Unmarshal:</span><br><span class="line">&#123;ID:1 Name:Bruce age:0&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里，age 被设置为私有变量，因此序列化的 JSON 字符串中没有 age 字段。同样，在将 JSON 字符串反序列化为 Person 时，也无法正确读取 age 的值。<br>原因很简单。如果我们深入研究 Marshal 下的源代码，就会发现它实际上使用了 <code>reflect</code> 来动态解析 <code>struct</code> 对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// .../src/encoding/json/encode.go</span><br><span class="line"></span><br><span class="line">func (e *encodeState) marshal(v any, opts encOpts) (err error) &#123;</span><br><span class="line"> // ...skip</span><br><span class="line"> e.reflectValue(reflect.ValueOf(v), opts)</span><br><span class="line"> return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而 Golang 在语言设计层面禁止对结构的私有成员进行反射式访问，因此这种反射式解析自然会失败，反序列化也是如此。</p>
+<h4 id="2-警惕结构体组合"><a href="#2-警惕结构体组合" class="headerlink" title="2. 警惕结构体组合"></a>2. 警惕结构体组合</h4><p>Go 是面向对象的，但它没有类，只有结构，而结构没有继承性。因此，Go 使用一种组合来重用不同的结构。在许多情况下，这种组合非常方便，因为我们可以像操作结构本身的成员一样操作组合中的其他成员，就像下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">  address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type address struct &#123;</span><br><span class="line"> Code   int</span><br><span class="line"> Street string</span><br><span class="line">&#125;</span><br><span class="line">func (a address) PrintAddr() &#123;</span><br><span class="line"> fmt.Println(a.Code, a.Street)</span><br><span class="line">&#125;</span><br><span class="line">func Group() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  address: address&#123;</span><br><span class="line">   Code:   100,</span><br><span class="line">   Street: &quot;Main St&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line"> &#125;</span><br><span class="line"> // Access all address&apos;s fields and methods directly</span><br><span class="line"> fmt.Println(p.Code, p.Street)</span><br><span class="line"> p.PrintAddr()</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">100 Main St</span><br><span class="line">100 Main St</span><br></pre></td></tr></table></figure>
+<p>结构体组合使用起来确实挺方便。不过，在使用 JSON 解析时，我们需要注意一个小问题。请看下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// The structure used here is the same as the previous one, </span><br><span class="line">// so I won&apos;t repeat it. error is also not captured to save space.</span><br><span class="line"></span><br><span class="line">func MarshalPerson() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  address: address&#123;</span><br><span class="line">   Code:   100,</span><br><span class="line">   Street: &quot;Main St&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line"> &#125;</span><br><span class="line"> // It would be more pretty by MarshalIndent</span><br><span class="line"> output, _ := json.MarshalIndent(p, &quot;&quot;, &quot;  &quot;)</span><br><span class="line"> println(string(output))</span><br><span class="line">&#125;</span><br><span class="line">func UnmarshalPerson() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;,&quot;address&quot;:&#123;&quot;Code&quot;:100,&quot;Street&quot;:&quot;Main St&quot;&#125;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output MarshalPerson:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;ID&quot;: 1,</span><br><span class="line">  &quot;Name&quot;: &quot;Bruce&quot;,</span><br><span class="line">  &quot;Code&quot;: 100,</span><br><span class="line">  &quot;Street&quot;: &quot;Main St&quot;</span><br><span class="line">&#125;</span><br><span class="line">// Ouptput UnmarshalPerson:</span><br><span class="line">&#123;ID:1 Name:Bruce address:&#123;Code:0 Street:&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>这里先声明一个 Person 对象，然后使用 MarshalIndent 美化序列化结果并打印出来。从打印输出中我们可以看到，整个 Person 对象都被扁平化了。就 Person 结构而言，尽管进行了组合，但它看起来仍有一个地址成员字段。因此，有时我们会想当然地认为 Person 的序列化 JSON 看起来是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// The imagine of JSON serialization result</span><br><span class="line">&#123;</span><br><span class="line">  &quot;ID&quot;: 1,</span><br><span class="line">  &quot;Name&quot;: &quot;Bruce&quot;,</span><br><span class="line">  &quot;address&quot;: &#123;</span><br><span class="line">    &quot;Code&quot;: 100,</span><br><span class="line">    &quot;Street&quot;: &quot;Main St&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但事实并非如此，它被扁平化了。这更符合我们之前直接通过 Person 访问地址成员时的感觉，即地址成员似乎直接成为了 Person 的成员。这一点需要注意，因为这种组合会使序列化后的 JSON 结果扁平化。</p>
+<p>另一个有点违反直觉的问题是，地址结构是一个私有结构，而私有成员似乎不应该被序列化？没错，这也是这种组合结构体做 JSON 解析的缺点之一：它暴露了私有组合对象的公共成员。<br>如果没有特殊需要（例如，原始 JSON 数据已被扁平化，并且有多个结构体的重复字段需要重复使用），从我个人的角度来看，建议这样编写：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID      int</span><br><span class="line">  Name    string</span><br><span class="line">  Address address</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-反序列化部分成员字段"><a href="#3-反序列化部分成员字段" class="headerlink" title="3. 反序列化部分成员字段"></a>3. 反序列化部分成员字段</h4><p>直接查看代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// PartUpdateIssue simulates parsing two different </span><br><span class="line">// JSON strings with the same structure</span><br><span class="line">func PartUpdateIssue() &#123;</span><br><span class="line"> var p Person</span><br><span class="line"> // The first data has the ID field and is not 0</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> // The second data does not have an ID field, </span><br><span class="line"> // deserializing it again with p preserves the last value</span><br><span class="line"> str = `&#123;&quot;Name&quot;:&quot;Jim&quot;&#125;`</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> // Notice the output ID is still 1</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;ID:1 Name:Bruce&#125;</span><br><span class="line">&#123;ID:1 Name:Jim&#125;</span><br></pre></td></tr></table></figure>
+<p>从代码注释中可以知道，当我们重复使用同一结构来反序列化不同的 JSON 数据时，一旦某个 JSON 数据的值只包含部分成员字段，那么未包含的成员就会使用最后一次反序列化的值，会产生脏数据污染问题。</p>
+<h4 id="4-处理指针字段"><a href="#4-处理指针字段" class="headerlink" title="4. 处理指针字段"></a>4. 处理指针字段</h4><p>许多开发人员一听到指针这个词就头疼不已，其实大可不必。但 Go 中的指针确实给开发人员带来了 Go 程序中最常见的 panic 之一：空指针异常。当指针与 JSON 结合时会发生什么呢？</p>
+<p>看下面的代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID      uint</span><br><span class="line">  Name    string</span><br><span class="line">  Address *Address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func UnmarshalPtr() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> // It would panic this line</span><br><span class="line"> // fmt.Printf(&quot;%+v\n&quot;, p.Address.Street)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;ID:1 Name:Bruce Address:&lt;nil&gt;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们将 Address 成员定义为指针，当我们反序列化一段不包含 Address 的 JSON 数据时，指针字段会被设置为 nil，因为它没有对应的数据。如果我们直接调用 p.Address.xxx，程序会因为 p.Address 为空而崩溃。</p>
+<p>因此，如果有一个指针指向我们结构中的一个成员，请记住在使用它之前先确定指针是否为 nil。这有点繁琐，但也没办法。毕竟，编写几行代码与生产环境中的 panic 所造成的损失相比可能并不算什么。</p>
+<p>此外，在创建带有指针字段的结构时，指针字段的赋值也会相对繁琐：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   int    </span><br><span class="line">  Name string </span><br><span class="line">  Age  *int   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Foo() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  Age:  new(int),</span><br><span class="line"> &#125;</span><br><span class="line"> *p.Age = 20</span><br><span class="line"> // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-零值（默认值）可能造成的问题"><a href="#5-零值（默认值）可能造成的问题" class="headerlink" title="5. 零值（默认值）可能造成的问题"></a>5. 零值（默认值）可能造成的问题</h4><p>零值是 Golang 变量的一个特性，我们可以简单地将其视为默认值。也就是说，如果我们没有显式地给变量赋值，Golang 就会给它赋一个默认值。例如，我们在前面的例子中看到，int 的默认值为 0，string 的默认值为空字符串，指针的零值为 nil，等等。</p>
+<p>处理带有零值的 JSON 有哪些隐患？<br>请看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  Name        string</span><br><span class="line">  ChildrenCnt int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func ZeroValueConfusion() &#123;</span><br><span class="line"> str := `&#123;&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> str2 := `&#123;&quot;Name&quot;:&quot;Jim&quot;,&quot;ChildrenCnt&quot;:0&#125;`</span><br><span class="line"> var p2 Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str2), &amp;p2)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p2)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;Name:Bruce ChildrenCnt:0&#125;</span><br><span class="line">&#123;Name:Jim ChildrenCnt:0&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在 <code>Person</code> 结构中添加了一个 ChildrenCnt 字段，用于计算该人的子女数量。由于该字段的值为零，当 p 加载的 JSON 数据中没有 ChildrenCnt 数据时，该字段的赋值为 0。在 Bruce 和 Jim 的例子中，由于数据缺失，其中一个的子女数为 0，而另一个的子女数为 0。而实际上布鲁斯的子女数应该是 “未知”，如果我们真的将其视为 0，可能会在业务上造成问题。<br>在一些对数据有严格要求的场景中，这种混淆是非常致命的。那么，有没有办法避免这种零值干扰呢？<br>让我们将 Person 的 ChildrenCnt 类型改为 *int 并看看会发生什么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  Name        string</span><br><span class="line">  ChildrenCnt *int</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;Name:Bruce ChildrenCnt:&lt;nil&gt;&#125;</span><br><span class="line">&#123;Name:Jim ChildrenCnt:0xc0000124c8&#125;</span><br></pre></td></tr></table></figure>
+<p>不同之处在于 Bruce 没有数据，因此 ChildrenCnt 为零，而 Jim 是一个非零指针。这样就很明显了，Bruc 的孩子数量是未知的。 从本质上讲，这种方法仍然使用零值，即指针的零值，有点像以毒攻毒（笑）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>  在这篇文章中，我列举了自己在使用编码/json 库时犯过的 7 个错误，其中大部分都是我在工作中遇到的。如果你还没有遇到过，那么恭喜你！这也提醒我们今后在使用 JSON 时要小心谨慎；如果你遇到过这些问题，并为此感到困惑，希望本文能对你有所帮助。</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+    
+</div>
+
+  
+</div>
+
+<div>
+      
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>Title:</span><a href="/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/">Golang 中 JSON 操作的 5 个常见陷阱</a></p>
+  <p><span>Author:</span><a href="/" title="visit cloud sjhan blog">cloud sjhan</a></p>
+  <p><span>Publish Time:</span>2024年05月25日 - 18:05</p>
+  <p><span>Last Update:</span>2024年05月25日 - 18:05</p>
+  <p><span>Original Link:</span><a href="/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/" title="Golang 中 JSON 操作的 5 个常见陷阱">https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/</a>
+    <span class="copy-path"  title="copy"><i class="fa fa-clipboard" data-clipboard-text="https://cloudsjhan.github.io/2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/"  aria-label="copy success！"></i></span>
+  </p>
+  <p><span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">By-NC-ND 4.0 international</a>。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: 'Copy Success',
+          icon: "success", 
+          showConfirmButton: true
+          });
+	});
+    });  
+</script>
+
+
+      
+</div>
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qcode.jpg" alt="cloud sjhan wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>keep going, keep coding</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="cloud sjhan 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="cloud sjhan 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+                <div style="color: rgba(0, 0, 0, 0.75); font-size:13px; letter-spacing:3px">(&gt;给这篇博客打个分吧&lt;)</div>
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2024/05/17/使用-Golang-创建反向代理/" rel="next" title="使用 Golang 创建反向代理">
+                <i class="fa fa-chevron-left"></i> 使用 Golang 创建反向代理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2024/05/29/掌握-Golang-Mutex：安全并发的最佳实践/" rel="prev" title="掌握 Golang Mutex：安全并发的最佳实践">
+                掌握 Golang Mutex：安全并发的最佳实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTAyOS8xNTU1Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Content
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="cloud sjhan" />
+            
+              <p class="site-author-name" itemprop="name">cloud sjhan</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">166</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hantmac" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:hantmac@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/u012421976" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.w3school.com.cn/" title="w3school" target="_blank">w3school</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://search.chongbuluo.com/" title="快搜" target="_blank">快搜</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本用法"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的-‘坑’"><span class="nav-number">2.</span> <span class="nav-text">常见的 ‘坑’</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-public-or-private-字段处理"><span class="nav-number">2.1.</span> <span class="nav-text">1. public or private 字段处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-警惕结构体组合"><span class="nav-number">2.2.</span> <span class="nav-text">2. 警惕结构体组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-反序列化部分成员字段"><span class="nav-number">2.3.</span> <span class="nav-text">3. 反序列化部分成员字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-处理指针字段"><span class="nav-number">2.4.</span> <span class="nav-text">4. 处理指针字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-零值（默认值）可能造成的问题"><span class="nav-number">2.5.</span> <span class="nav-text">5. 零值（默认值）可能造成的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">308.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+  <div class="footer-custom">stay hungry,stay foolish</div>
+<div class="theme-info">
+  <span class="post-count">Total Words:308.0k</span>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("pJYxhylrFRaJscWTtFKMbPF7-gzGzoHsz", "SEOPiaT1ePi7gsc6bgpATqHB");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13320,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>;
+<script>
+$("body").backstretch("http://img18.3lian.com/d/file/201712/22/825586b224a321673396fa65620548e6.png");
+</script>
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
