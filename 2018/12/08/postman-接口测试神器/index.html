@@ -1,37 +1,878 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"সার্চ করা হচ্ছে...","empty":"আমরা উক্ত অনুসন্ধানের জন্য কোন ফলাফল খুঁজে পাইনি: ${query}","hits_time":"${hits} টি ফলাফল ${time} মিলিসেকেন্ড এ পাওয়া গেছে","hits":"${hits} টি ফলাফল পাওয়া গেছে"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="postman接口测试神器使用技巧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="postman 接口测试神器">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/08/postman-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%A5%9E%E5%99%A8/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="postman接口测试神器使用技巧">
+<meta property="og:locale">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/c7j24uyvhy.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/a43avzlvvt.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/kr7zu3lg54.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/7x0f5ohfxq.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/nvkjcxavj1.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/sde0dugknd.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/d4vmkb97c4.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/qgi9b1hmbs.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/u4cd93numl.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/oo22jbrg8v.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/n2p3eq0ie6.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/zntknyfx6w.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/sb5yb8cwpi.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/x3lmlaykbk.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/9kga5uhyuq.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/2agjjtnusz.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/atacmafooc.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/xn3piv6qv8.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/428i64obvu.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/gae7gd5ldb.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/k8h8cccbmy.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/q3ehctbg4b.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/cvxks97jg5.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6td22h0mcp.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/w9r9f2lhvj.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6w93zr891f.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/90i3wajcea.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/2o5e02t9ac.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/jbnnfhoye4.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/1srkh454hi.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/4hjkacbfao.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/4wjzn3wjr5.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/pyzrhod8jg.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/dhmfi3mz78.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/651td0ljtp.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6bte63z6hq.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6ckvn8fm3x.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/lokimruefe.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ggk7qt7s4f.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/w64q4ziv08.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ui0g94c42i.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/l7grallxhf.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/rzkb6ahdi2.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/pvj87t9bl9.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/4cqehxbdq1.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/t6gzc4ktvw.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/tdph8jo5u3.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/nvb1s1ht5r.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/zfvm8xnp5u.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/msdxb4rrwj.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/rs4j9obq5m.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/73l36ef55w.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/9n52eok8vu.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/h487ru075j.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/dg394n77xg.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6fqqywrz4h.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/jzcgi6c3lg.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/k3tppka6qg.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/fqnjm0392m.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6cz9xt9z7y.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/y6virrs94v.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/udsfrqtqxg.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6i5l61q5gz.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/fjqiinpdmd.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ems6iaymhz.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/n2mpfxcdv3.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/r9dvvipgd1.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/n935sl95gc.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/p5ijm3jotv.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/d40ouxqffx.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ynyz14nrsu.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/9h475eyqnd.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/f26rmodg14.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ilcrw9qu2a.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ij8lqwx97b.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/jz9xmkcowa.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/u82a7psrgy.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/qu330s3pfl.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/d17b0zdb4c.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/s7pgyjn13y.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/95ekutmlpe.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/ca0mw3r3x7.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/8yfixnbs9s.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/6qtob43od0.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/gy60gkar15.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/hmptft1z7u.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/nfsjy8thb8.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/84pbk6ppzq.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/z3ce5w7dfv.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/84j5ppdtoh.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/svcgj7qdll.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/kezpmqdfe8.png?imageView2/2/w/1620">
+<meta property="og:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/1iumgwfs2k.png?imageView2/2/w/1620">
+<meta property="article:published_time" content="2018-12-08T15:41:16.000Z">
+<meta property="article:modified_time" content="2018-12-08T15:54:58.525Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ask.qcloudimg.com/http-save/yehe-1171488/c7j24uyvhy.png?imageView2/2/w/1620">
 
 
-{% block content %}
+<link rel="canonical" href="https://cloudsjhan.github.io/2018/12/08/postman-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%A5%9E%E5%99%A8/">
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-Hans","comments":true,"permalink":"https://cloudsjhan.github.io/2018/12/08/postman-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%A5%9E%E5%99%A8/","path":"2018/12/08/postman-接口测试神器/","title":"postman 接口测试神器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>postman 接口测试神器 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="নেভিগেশন বারের দৃশ্যমানতা টগল করুন" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="সার্চ" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>হোম পেজ</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>ট্যাগ এর তালিকা</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>ক্যাটাগরি এর তালিকা</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>আর্কাইভ এর তালিকা</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>সম্পর্কে</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>সার্চ
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="সার্চ করা হচ্ছে..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          সূচীপত্র
+        </li>
+        <li class="sidebar-nav-overview">
+          সারাংশ
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Postman-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%A5%9E%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">Postman 接口测试神器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%EF%BC%8C%E6%80%BB%E4%BD%93%E4%BD%BF%E7%94%A8%E6%96%B9%E7%95%A5"><span class="nav-number">1.2.</span> <span class="nav-text">快速入门，总体使用方略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.2.1.</span> <span class="nav-text">新建接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE-HTTP-%E8%AF%B7%E6%B1%82%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">设置 HTTP 请求的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.3.</span> <span class="nav-text">设置相关请求头信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%9B%B8%E5%85%B3-GET-%E6%88%96-POST-%E7%AD%89%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">设置相关 GET 或 POST 等的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="nav-number">1.2.5.</span> <span class="nav-text">发送请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%93%8D%E5%BA%94-Response%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.6.</span> <span class="nav-text">查看响应 Response的信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E6%8E%A5%E5%8F%A3%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.7.</span> <span class="nav-text">保存接口配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-%E7%9A%84%E5%A4%9A%E5%8F%82%E6%95%B0%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">Request 的多参数操作详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A7%A3%E6%9E%90%E5%A4%9A%E4%B8%AA%E5%8F%82%E6%95%B0-Params"><span class="nav-number">1.3.1.</span> <span class="nav-text">自动解析多个参数 Params</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E7%A6%81%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">临时禁用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E7%BC%96%E8%BE%91-GET-%E7%9A%84%E5%A4%9A%E4%B8%AA%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">批量编辑 GET 的多个参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E6%8F%8F%E8%BF%B0%E4%B8%8E%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%96%87%E6%A1%A3"><span class="nav-number">1.4.</span> <span class="nav-text">接口描述与自动生成文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0%E6%94%AF%E6%8C%81-markdown-%E8%AF%AD%E6%B3%95"><span class="nav-number">1.4.1.</span> <span class="nav-text">描述支持 markdown 语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E6%8E%A5%E5%8F%A3%E5%B9%B6%E7%94%9F%E6%88%90-markdown-%E7%9A%84%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6"><span class="nav-number">1.4.2.</span> <span class="nav-text">发布接口并生成 markdown 的描述文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Response-%E6%B7%B1%E5%85%A5"><span class="nav-number">1.5.</span> <span class="nav-text">Response 深入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-%E6%95%B0%E6%8D%AE%E6%98%BE%E7%A4%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.5.1.</span> <span class="nav-text">Response 数据显示模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-%E7%9A%84-Cookies"><span class="nav-number">1.5.2.</span> <span class="nav-text">Response 的 Cookies</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-%E7%9A%84-Headers-%E5%A4%B4%E4%BF%A1%E6%81%AF"><span class="nav-number">1.5.3.</span> <span class="nav-text">Response 的 Headers 头信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%A4%9A%E4%B8%AA-Example"><span class="nav-number">1.6.</span> <span class="nav-text">保存多个 Example</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%B7%BB%E5%8A%A0-Example"><span class="nav-number">1.6.1.</span> <span class="nav-text">如何添加 Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E4%B8%AA-Example-%E5%9C%A8%E5%AF%BC%E5%87%BA%E7%9A%84-API-%E6%96%87%E6%A1%A3%E4%B8%AD%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">1.6.2.</span> <span class="nav-text">单个 Example 在导出的 API 文档中的效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA-Example-%E5%9C%A8%E5%AF%BC%E5%87%BA%E7%9A%84-API-%E6%96%87%E6%A1%A3%E4%B8%AD%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">1.6.3.</span> <span class="nav-text">多个 Example 在导出的 API 文档中的效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%A5%BD%E7%94%A8%E7%9A%84%E5%8A%9F%E8%83%BD%E5%8F%8A%E5%B7%A5%E5%85%B7"><span class="nav-number">1.7.</span> <span class="nav-text">其他好用的功能及工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84-Collection"><span class="nav-number">1.7.1.</span> <span class="nav-text">分组 Collection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95-History"><span class="nav-number">1.7.2.</span> <span class="nav-text">历史记录 History</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%89%88%E6%9C%AC"><span class="nav-number">1.7.3.</span> <span class="nav-text">用环境变量实现多服务器版本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%B0%E5%AD%98%E9%97%AE%E9%A2%98"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">现存问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Postman-%E6%94%AF%E6%8C%81%E7%94%A8-Environment-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8E%BB%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%89%88%E6%9C%AC"><span class="nav-number">1.7.4.</span> <span class="nav-text">Postman 支持用 Environment 环境变量去实现多服务器版本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8-Enviroment-%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%89%88%E6%9C%AC"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">如何使用 Enviroment 实现多服务器版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Postman-%E5%AF%BC%E5%87%BA-API-%E6%96%87%E6%A1%A3%E4%B8%AD%E5%A4%9A%E4%B8%AA%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E6%95%88%E6%9E%9C"><span class="nav-number">1.7.4.2.</span> <span class="nav-text">Postman 导出 API 文档中多个环境变量的效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="nav-number">1.7.4.3.</span> <span class="nav-text">环境变量的好处</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%B7%A5%E5%85%B7"><span class="nav-number">1.7.5.</span> <span class="nav-text">代码生成工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%AF%B7%E6%B1%82%E7%9A%84-HTTP-%E5%8E%9F%E5%A7%8B%E5%86%85%E5%AE%B9"><span class="nav-number">1.7.5.1.</span> <span class="nav-text">查看当前请求的 HTTP 原始内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80%E7%9A%84%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81Code-Generation-Tools"><span class="nav-number">1.7.5.2.</span> <span class="nav-text">各种语言的示例代码Code Generation Tools</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.7.6.</span> <span class="nav-text">测试接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MockServer"><span class="nav-number">1.7.7.</span> <span class="nav-text">MockServer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E7%95%8C%E9%9D%A2"><span class="nav-number">1.8.</span> <span class="nav-text">功能界面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A-Tab-%E5%88%86%E9%A1%B5"><span class="nav-number">1.8.1.</span> <span class="nav-text">多 Tab 分页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%8C%E9%9D%A2%E6%9F%A5%E7%9C%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.8.2.</span> <span class="nav-text">界面查看模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%A2%9C%E8%89%B2%E4%B8%BB%E9%A2%98"><span class="nav-number">1.8.3.</span> <span class="nav-text">多颜色主题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E6%96%87%E6%A1%A3%E7%94%9F%E6%88%90"><span class="nav-number">1.9.</span> <span class="nav-text">API 文档生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E8%A6%81%E6%A6%82%E8%BF%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.9.1.</span> <span class="nav-text">简要概述步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E8%A7%88-API-%E6%96%87%E6%A1%A3"><span class="nav-number">1.9.2.</span> <span class="nav-text">预览 API 文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B8%83-API-%E6%96%87%E6%A1%A3"><span class="nav-number">1.9.3.</span> <span class="nav-text">发布 API 文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E5%8F%91%E5%B8%83%E7%9A%84-API-%E6%96%87%E6%A1%A3%E6%94%AF%E6%8C%81%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.9.4.</span> <span class="nav-text">已发布的 API 文档支持自动更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.10.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">পোস্ট এর তালিকা</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">ক্যাটাগরি এর তালিকা</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">ট্যাগ এর তালিকা</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          লিঙ্কসমুহ
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/08/postman-%E6%8E%A5%E5%8F%A3%E6%B5%8B%E8%AF%95%E7%A5%9E%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="postman 接口测试神器 | cloud world">
+      <meta itemprop="description" content="postman接口测试神器使用技巧">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          postman 接口测试神器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">প্রকাশিত হয়েছে</span>
+
+      <time title="তৈরি করা হয়েছেঃ 2018-12-08 23:41:16" itemprop="dateCreated datePublished" datetime="2018-12-08T23:41:16+08:00">2018-12-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">শ্রেনী</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="ভিউ" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">ভিউঃ </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">postman接口测试神器使用技巧</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+<span id="more"></span>
+
+<h1 id="Postman-接口测试神器"><a href="#Postman-接口测试神器" class="headerlink" title="Postman 接口测试神器"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=postman-%e6%8e%a5%e5%8f%a3%e6%b5%8b%e8%af%95%e7%a5%9e%e5%99%a8">Postman 接口测试神器</a></h1><p>Postman 是一个接口测试和 http 请求的神器，非常好用。</p>
+<p>官方 github 地址: <a href="https://github.com/postmanlabs">https://github.com/postmanlabs</a></p>
+<p>Postman 的优点：</p>
+<ul>
+<li>支持各种的请求类型: get、post、put、patch、delete 等</li>
+<li>支持在线存储数据，通过账号就可以进行迁移数据</li>
+<li>很方便的支持请求 header 和请求参数的设置</li>
+<li>支持不同的认证机制，包括 Basic Auth，Digest Auth，OAuth 1.0，OAuth 2.0 等</li>
+<li>响应数据是自动按照语法格式高亮的，包括 HTML，JSON 和 XML</li>
+</ul>
+<blockquote>
+<p> 以下内容主要参考： <a href="https://github.com/crifan/api_tool_postman">Github: api_tool_postman</a>  </p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%ae%89%e8%a3%85">安装</a></h2><p>Postman 可以单独作为一个应用安装，也可以作为 chrome 的一个插件安装。</p>
+<ul>
+<li>chrome 插件安装, <a href="https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop">Postman 插件地址</a>  </li>
+<li><a href="http://files.cnblogs.com/files/mafly/postman-4.1.2.rar">单独应用安装下载</a></li>
+</ul>
+<p>下面主要介绍下载安装独立版本app 软件的 Postman 的过程：</p>
+<p>去主页<a href="https://www.getpostman.com/">Postman 官网</a>找到：<a href="https://www.getpostman.com/apps">Postman | Apps</a></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/c7j24uyvhy.png?imageView2/2/w/1620" alt="img"></p>
+<p>去下载自己平台的版本：</p>
+<ul>
+<li>Mac</li>
+<li>Windows（x86&#x2F;x64）</li>
+<li>Linux（x86&#x2F;x64） 即可。</li>
+</ul>
+<h2 id="快速入门，总体使用方略"><a href="#快速入门，总体使用方略" class="headerlink" title="快速入门，总体使用方略"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%bf%ab%e9%80%9f%e5%85%a5%e9%97%a8%ef%bc%8c%e6%80%bb%e4%bd%93%e4%bd%bf%e7%94%a8%e6%96%b9%e7%95%a5">快速入门，总体使用方略</a></h2><p>安装成功后，打开软件。</p>
+<h3 id="新建接口"><a href="#新建接口" class="headerlink" title="新建接口"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%96%b0%e5%bb%ba%e6%8e%a5%e5%8f%a3">新建接口</a></h3><p>对应的Request：<code>New -&gt; Request</code></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/a43avzlvvt.png?imageView2/2/w/1620" alt="img"></p>
+<p>或，在右边的 Tab 页面中点击加号+：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/kr7zu3lg54.png?imageView2/2/w/1620" alt="img"></p>
+<p>即可看到新建的 Tab 页：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/7x0f5ohfxq.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="设置-HTTP-请求的方法"><a href="#设置-HTTP-请求的方法" class="headerlink" title="设置 HTTP 请求的方法"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e8%ae%be%e7%bd%ae-http-%e8%af%b7%e6%b1%82%e7%9a%84%e6%96%b9%e6%b3%95">设置 HTTP 请求的方法</a></h3><p>设置 HTTP 的 Method 方法和输入 api 的地址</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/nvkjcxavj1.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="设置相关请求头信息"><a href="#设置相关请求头信息" class="headerlink" title="设置相关请求头信息"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e8%ae%be%e7%bd%ae%e7%9b%b8%e5%85%b3%e8%af%b7%e6%b1%82%e5%a4%b4%e4%bf%a1%e6%81%af">设置相关请求头信息</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/sde0dugknd.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/d4vmkb97c4.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="设置相关-GET-或-POST-等的参数"><a href="#设置相关-GET-或-POST-等的参数" class="headerlink" title="设置相关 GET 或 POST 等的参数"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e8%ae%be%e7%bd%ae%e7%9b%b8%e5%85%b3-get-%e6%88%96-post-%e7%ad%89%e7%9a%84%e5%8f%82%e6%95%b0">设置相关 GET 或 POST 等的参数</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/qgi9b1hmbs.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8f%91%e9%80%81%e8%af%b7%e6%b1%82">发送请求</a></h3><p>都填写好之后，点击 Send 去发送请求 Request：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/u4cd93numl.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="查看响应-Response的信息"><a href="#查看响应-Response的信息" class="headerlink" title="查看响应 Response的信息"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%9f%a5%e7%9c%8b%e5%93%8d%e5%ba%94-response%e7%9a%84%e4%bf%a1%e6%81%af">查看响应 Response的信息</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/oo22jbrg8v.png?imageView2/2/w/1620" alt="img"></p>
+<p>然后可以重复上述修改 Request 的参数，点击 Send 去发送请求的过程，以便调试到 API 接口正常工作为止。</p>
+<h3 id="保存接口配置"><a href="#保存接口配置" class="headerlink" title="保存接口配置"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e4%bf%9d%e5%ad%98%e6%8e%a5%e5%8f%a3%e9%85%8d%e7%bd%ae">保存接口配置</a></h3><p>待整个接口都调试完毕后，记得点击 Save 去保存接口信息：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/n2p3eq0ie6.png?imageView2/2/w/1620" alt="img"></p>
+<p>去保存当前 API 接口，然后需要填写相关的接口信息：</p>
+<ul>
+<li>Request Name: 请求的名字 <ul>
+<li>我一般习惯用保存为 接口的最后的字段名，比如<code>http://{{server_address}}/ucows/login/login</code>中的<code>/login/login</code></li>
+</ul>
+</li>
+<li>Request Description: 接口的描述 <ul>
+<li><code>可选</code> 最好写上该接口的要实现的基本功能和相关注意事项</li>
+<li>支持 Markdown 语法</li>
+</ul>
+</li>
+<li>Select a collection or folder to save: 选择要保存到哪个分组（或文件夹） <ul>
+<li>往往保存到某个 API 接口到所属的该项目名的分组</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/zntknyfx6w.png?imageView2/2/w/1620" alt="img"></p>
+<p>填写好内容，选择好分组，再点击保存：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/sb5yb8cwpi.png?imageView2/2/w/1620" alt="img"></p>
+<p>此时，Tab 的右上角的黄色点（表示没有保存）消失了，表示已保存。</p>
+<p>且对应的分组中可以看到对应的接口了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/x3lmlaykbk.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> [warning] 默认不保存返回的 Response 数据  </p>
+</blockquote>
+<ul>
+<li>直接点击 Save 去保存，只能保存 API 本身（的 Request 请求），不会保存 Response 的数据</li>
+<li>想要保存 Response 数据，需要用后面要介绍的 <a href="http://book.crifan.com/books/api_tool_postman/website/postman_func_resp/save_multi_example.html">多个 Example</a></li>
+</ul>
+<h2 id="Request-的多参数操作详解"><a href="#Request-的多参数操作详解" class="headerlink" title="Request 的多参数操作详解"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=request-%e7%9a%84%e5%a4%9a%e5%8f%82%e6%95%b0%e6%93%8d%e4%bd%9c%e8%af%a6%e8%a7%a3">Request 的多参数操作详解</a></h2><h3 id="自动解析多个参数-Params"><a href="#自动解析多个参数-Params" class="headerlink" title="自动解析多个参数 Params"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e8%87%aa%e5%8a%a8%e8%a7%a3%e6%9e%90%e5%a4%9a%e4%b8%aa%e5%8f%82%e6%95%b0-params">自动解析多个参数 Params</a></h3><p>比如，对于一个 GET 的请求的 url 是： <code>http://openapi.youdao.com/api?q=纠删码(EC)的学习&amp;from=zh_CHS&amp;to=EN&amp;appKey=152e0e77723a0026&amp;salt=4&amp;sign=6BE15F1868019AD71C442E6399DB1FE4</code></p>
+<p>对应着其实是<code>?key=value</code>形式中包含多个 Http 的 GET 的 query string&#x3D;query parameters</p>
+<p>Postman 可以自动帮我们解析出对应参数，可以点击 Params：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/9kga5uhyuq.png?imageView2/2/w/1620" alt="img"></p>
+<p>看到展开的多个参数：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/2agjjtnusz.png?imageView2/2/w/1620" alt="img"></p>
+<p>如此就可以很方便的修改，增删对应的参数了。</p>
+<h3 id="临时禁用参数"><a href="#临时禁用参数" class="headerlink" title="临时禁用参数"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e4%b8%b4%e6%97%b6%e7%a6%81%e7%94%a8%e5%8f%82%e6%95%b0">临时禁用参数</a></h3><p>且还支持，在不删除某参数的情况下，如果想要暂时不传参数，可以方便的通过不勾选的方式去实现：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/atacmafooc.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="批量编辑-GET-的多个参数"><a href="#批量编辑-GET-的多个参数" class="headerlink" title="批量编辑 GET 的多个参数"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%89%b9%e9%87%8f%e7%bc%96%e8%be%91-get-%e7%9a%84%e5%a4%9a%e4%b8%aa%e5%8f%82%e6%95%b0">批量编辑 GET 的多个参数</a></h3><p>当然，如果想要批量的编辑参数，可以点击右上角的Bulk Edit，去实现批量编辑。</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/xn3piv6qv8.png?imageView2/2/w/1620" alt="img"></p>
+<h2 id="接口描述与自动生成文档"><a href="#接口描述与自动生成文档" class="headerlink" title="接口描述与自动生成文档"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%8e%a5%e5%8f%a3%e6%8f%8f%e8%bf%b0%e4%b8%8e%e8%87%aa%e5%8a%a8%e7%94%9f%e6%88%90%e6%96%87%e6%a1%a3">接口描述与自动生成文档</a></h2><p>API 的描述中，也支持 Markdown，官方的接口说明文档：<a href="https://www.getpostman.com/docs/postman/api_documentation/intro_to_api_documentation">Intro to API documentation</a>。</p>
+<p>所以，可以很方便的添加有条理的接口描述，尤其是参数解释了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/428i64obvu.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="描述支持-markdown-语法"><a href="#描述支持-markdown-语法" class="headerlink" title="描述支持 markdown 语法"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%8f%8f%e8%bf%b0%e6%94%af%e6%8c%81-markdown-%e8%af%ad%e6%b3%95">描述支持 markdown 语法</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/gae7gd5ldb.png?imageView2/2/w/1620" alt="img"></p>
+<p>而对于要解释的参数，可以通过之前的<code>Param -&gt; Bulk Edit</code>的内容：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/k8h8cccbmy.png?imageView2/2/w/1620" alt="img"></p>
+<p>拷贝过来，再继续去编辑：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/q3ehctbg4b.png?imageView2/2/w/1620" alt="img"></p>
+<p>以及添加更多解释信息：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/cvxks97jg5.png?imageView2/2/w/1620" alt="img"></p>
+<p>点击 Update 后，即可保存。</p>
+<h3 id="发布接口并生成-markdown-的描述文件"><a href="#发布接口并生成-markdown-的描述文件" class="headerlink" title="发布接口并生成 markdown 的描述文件"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8f%91%e5%b8%83%e6%8e%a5%e5%8f%a3%e5%b9%b6%e7%94%9f%e6%88%90-markdown-%e7%9a%84%e6%8f%8f%e8%bf%b0%e6%96%87%e4%bb%b6">发布接口并生成 markdown 的描述文件</a></h3><p>去发布后：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6td22h0mcp.png?imageView2/2/w/1620" alt="img"></p>
+<p>对应的效果：<a href="https://documenter.getpostman.com/view/669382/collection/77fd4ek">有道翻译</a></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/w9r9f2lhvj.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6w93zr891f.png?imageView2/2/w/1620" alt="img"></p>
+<h2 id="Response-深入"><a href="#Response-深入" class="headerlink" title="Response 深入"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=response-%e6%b7%b1%e5%85%a5">Response 深入</a></h2><h3 id="Response-数据显示模式"><a href="#Response-数据显示模式" class="headerlink" title="Response 数据显示模式"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=response-%e6%95%b0%e6%8d%ae%e6%98%be%e7%a4%ba%e6%a8%a1%e5%bc%8f">Response 数据显示模式</a></h3><p>Postman 对于返回的 Response 数据，支持三种显示模式。</p>
+<ul>
+<li><code>默认</code>格式化后的 Pretty 模式</li>
+</ul>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/90i3wajcea.png?imageView2/2/w/1620" alt="img"></p>
+<ul>
+<li>Raw 原始模式</li>
+</ul>
+<p>点击Raw，可以查看到返回的没有格式化之前的原始数据：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/2o5e02t9ac.png?imageView2/2/w/1620" alt="img"></p>
+<ul>
+<li>Preview 预览模式</li>
+</ul>
+<p>以及 Preview，是对应 Raw 原始格式的预览模式：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/jbnnfhoye4.png?imageView2/2/w/1620" alt="img"></p>
+<p>Preview 这种模式的显示效果，好像是对于返回的是 html 页面这类，才比较有效果。</p>
+<h3 id="Response-的-Cookies"><a href="#Response-的-Cookies" class="headerlink" title="Response 的 Cookies"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=response-%e7%9a%84-cookies">Response 的 Cookies</a></h3><p>很多时候普通的 API 调用，倒是没有 Cookie 的：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/1srkh454hi.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="Response-的-Headers-头信息"><a href="#Response-的-Headers-头信息" class="headerlink" title="Response 的 Headers 头信息"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=response-%e7%9a%84-headers-%e5%a4%b4%e4%bf%a1%e6%81%af">Response 的 Headers 头信息</a></h3><p>举例，此处返回的是有 Headers 头信息的：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/4hjkacbfao.png?imageView2/2/w/1620" alt="img"></p>
+<p>可以从中看到服务器是 Nginx 的。</p>
+<h2 id="保存多个-Example"><a href="#保存多个-Example" class="headerlink" title="保存多个 Example"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e4%bf%9d%e5%ad%98%e5%a4%9a%e4%b8%aa-example">保存多个 Example</a></h2><p>之前想要实现，让导出的 API 文档中能看到接口返回的 Response 数据。后来发现是Example这个功能去实现此效果的。</p>
+<h3 id="如何添加-Example"><a href="#如何添加-Example" class="headerlink" title="如何添加 Example"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%a6%82%e4%bd%95%e6%b7%bb%e5%8a%a0-example">如何添加 Example</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/4wjzn3wjr5.png?imageView2/2/w/1620" alt="img"></p>
+<p>继续点击Save Example：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/pyzrhod8jg.png?imageView2/2/w/1620" alt="img"></p>
+<p>保存后，就能看到Example(1)了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/dhmfi3mz78.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="单个-Example-在导出的-API-文档中的效果"><a href="#单个-Example-在导出的-API-文档中的效果" class="headerlink" title="单个 Example 在导出的 API 文档中的效果"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8d%95%e4%b8%aa-example-%e5%9c%a8%e5%af%bc%e5%87%ba%e7%9a%84-api-%e6%96%87%e6%a1%a3%e4%b8%ad%e7%9a%84%e6%95%88%e6%9e%9c">单个 Example 在导出的 API 文档中的效果</a></h3><p>然后再去导出文档，导出文档中的确能看到返回数据的例子： </p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/651td0ljtp.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="多个-Example-在导出的-API-文档中的效果"><a href="#多个-Example-在导出的-API-文档中的效果" class="headerlink" title="多个 Example 在导出的 API 文档中的效果"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%a4%9a%e4%b8%aa-example-%e5%9c%a8%e5%af%bc%e5%87%ba%e7%9a%84-api-%e6%96%87%e6%a1%a3%e4%b8%ad%e7%9a%84%e6%95%88%e6%9e%9c">多个 Example 在导出的 API 文档中的效果</a></h3><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6bte63z6hq.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6ckvn8fm3x.png?imageView2/2/w/1620" alt="img"></p>
+<h2 id="其他好用的功能及工具"><a href="#其他好用的功能及工具" class="headerlink" title="其他好用的功能及工具"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%85%b6%e4%bb%96%e5%a5%bd%e7%94%a8%e7%9a%84%e5%8a%9f%e8%83%bd%e5%8f%8a%e5%b7%a5%e5%85%b7">其他好用的功能及工具</a></h2><h3 id="分组-Collection"><a href="#分组-Collection" class="headerlink" title="分组 Collection"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%88%86%e7%bb%84-collection">分组 Collection</a></h3><p>在刚开始一个项目时，为了后续便于组织和管理，把同属该项目的多个 API，放在一组里</p>
+<p>所以要先去新建一个 Collection: <code>New -&gt; Collection</code></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/lokimruefe.png?imageView2/2/w/1620" alt="img"></p>
+<p>使用了段时间后，建了多个分组的效果：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ggk7qt7s4f.png?imageView2/2/w/1620" alt="img"></p>
+<p>单个分组展开后的效果：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/w64q4ziv08.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="历史记录-History"><a href="#历史记录-History" class="headerlink" title="历史记录 History"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8e%86%e5%8f%b2%e8%ae%b0%e5%bd%95-history">历史记录 History</a></h3><p>Postman 支持 history 历史记录，显示出最近使用过的 API： </p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ui0g94c42i.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="用环境变量实现多服务器版本"><a href="#用环境变量实现多服务器版本" class="headerlink" title="用环境变量实现多服务器版本"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e7%94%a8%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%ae%9e%e7%8e%b0%e5%a4%9a%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%89%88%e6%9c%ac">用环境变量实现多服务器版本</a></h3><h4 id="现存问题"><a href="#现存问题" class="headerlink" title="现存问题"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e7%8e%b0%e5%ad%98%e9%97%ae%e9%a2%98">现存问题</a></h4><p>在测试 API 期间，往往存在多种环境，对应 IP 地址（或域名也不同）</p>
+<p>比如：</p>
+<ul>
+<li><p>Prod: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://116.62.25.57/ucows</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用于开发完成发布到生产环境</li>
+</ul>
+</li>
+<li><p>Dev: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://123.206.191.125/ucows</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用于开发期间的线上的 Development 的测试环境</li>
+</ul>
+</li>
+<li><p>LocalTest: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.0.140:80/ucows</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>用于开发期间配合后台开发人员的本地局域网内的本地环境，用于联合调试 API 接口</li>
+</ul>
+</li>
+</ul>
+<p>而在测试 API 期间，往往需要手动去修改 API 的地址：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/l7grallxhf.png?imageView2/2/w/1620" alt="img"></p>
+<p>效率比较低，且地址更换后之前地址就没法保留了。</p>
+<p>另外，且根据不同 IP 地址（或者域名）也不容易识别是哪套环境。</p>
+<h3 id="Postman-支持用-Environment-环境变量去实现多服务器版本"><a href="#Postman-支持用-Environment-环境变量去实现多服务器版本" class="headerlink" title="Postman 支持用 Environment 环境变量去实现多服务器版本"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=postman-%e6%94%af%e6%8c%81%e7%94%a8-environment-%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e5%8e%bb%e5%ae%9e%e7%8e%b0%e5%a4%9a%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%89%88%e6%9c%ac">Postman 支持用 Environment 环境变量去实现多服务器版本</a></h3><p>后来发现 Postman 中，有 Environment 和 Global Variable，用于解决这个问题，实现不同环境的管理：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/rzkb6ahdi2.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> 很明显，就可以用来实现不用手动修改 url 中的服务器地址，从而动态的实现，支持不同服务器环境:  </p>
+</blockquote>
+<ul>
+<li>Production 生产环境</li>
+<li>Development 开发环境</li>
+<li>Local 本地局域网环境</li>
+</ul>
+<h4 id="如何使用-Enviroment-实现多服务器版本"><a href="#如何使用-Enviroment-实现多服务器版本" class="headerlink" title="如何使用 Enviroment 实现多服务器版本"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8-enviroment-%e5%ae%9e%e7%8e%b0%e5%a4%9a%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%89%88%e6%9c%ac">如何使用 Enviroment 实现多服务器版本</a></h4><p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/pvj87t9bl9.png?imageView2/2/w/1620" alt="img"></p>
+<p>或者：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/4cqehxbdq1.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/t6gzc4ktvw.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> Environments are a group of variables &amp; values, that allow you to quickly switch the context for your requests and collections.  Learn more about environments  You can declare a variable in an environment and give it a starting value, then use it in a request by putting the variable name within curly-braces. Create an environment to get started.  </p>
+</blockquote>
+<p>输入 Key 和 value：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/tdph8jo5u3.png?imageView2/2/w/1620" alt="img"></p>
+<p>点击 Add 后：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/nvb1s1ht5r.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> [info] 环境变量可以使用的地方  </p>
+</blockquote>
+<ul>
+<li>URL</li>
+<li>URL params</li>
+<li>Header values</li>
+<li>form-data&#x2F;url-encoded values</li>
+<li>Raw body content</li>
+<li>Helper fields</li>
+<li>写 test 测试脚本中</li>
+<li>通过 postman 的接口，获取或设置环境变量的值。</li>
+</ul>
+<p>此处把之前的在 url 中的 IP 地址（或域名）换成环境变量：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/zfvm8xnp5u.png?imageView2/2/w/1620" alt="img"></p>
+<p>鼠标移动到环境变量上，可以动态显示出具体的值：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/msdxb4rrwj.png?imageView2/2/w/1620" alt="img"></p>
+<p>再去添加另外一个开发环境：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/rs4j9obq5m.png?imageView2/2/w/1620" alt="img"></p>
+<p>则可添加完 2 个环境变量，表示两个服务器地址，两个版本：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/73l36ef55w.png?imageView2/2/w/1620" alt="img"></p>
+<p>然后就可以切换不同服务器环境了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/9n52eok8vu.png?imageView2/2/w/1620" alt="img"></p>
+<p>可以看到，同样的变量 server_address，在切换后对应 IP 地址就变成希望的开发环境的 IP 了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/h487ru075j.png?imageView2/2/w/1620" alt="img"></p>
+<h4 id="Postman-导出-API-文档中多个环境变量的效果"><a href="#Postman-导出-API-文档中多个环境变量的效果" class="headerlink" title="Postman 导出 API 文档中多个环境变量的效果"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=postman-%e5%af%bc%e5%87%ba-api-%e6%96%87%e6%a1%a3%e4%b8%ad%e5%a4%9a%e4%b8%aa%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e7%9a%84%e6%95%88%e6%9e%9c">Postman 导出 API 文档中多个环境变量的效果</a></h4><p>顺带也去看看，导出为 API 文档后，带了这种 Environment 的变量的接口，文档长什么样子：</p>
+<p>发现是在发布之前，需要选择对应的环境的：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/dg394n77xg.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6fqqywrz4h.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/jzcgi6c3lg.png?imageView2/2/w/1620" alt="img"></p>
+<p>发布后的文档，可以看到所选环境和对应服务器的 IP 的：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/k3tppka6qg.png?imageView2/2/w/1620" alt="img"></p>
+<p>当然发布文档后，也可以实时切换环境：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/fqnjm0392m.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6cz9xt9z7y.png?imageView2/2/w/1620" alt="img"></p>
+<h4 id="环境变量的好处"><a href="#环境变量的好处" class="headerlink" title="环境变量的好处"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e7%9a%84%e5%a5%bd%e5%a4%84">环境变量的好处</a></h4><p>当更换服务器时，直接修改变量的 IP 地址：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/y6virrs94v.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/udsfrqtqxg.png?imageView2/2/w/1620" alt="img"></p>
+<p>即可实时更新，当鼠标移动到变量上即可看到效果：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6i5l61q5gz.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="代码生成工具"><a href="#代码生成工具" class="headerlink" title="代码生成工具"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e4%bb%a3%e7%a0%81%e7%94%9f%e6%88%90%e5%b7%a5%e5%85%b7">代码生成工具</a></h3><h4 id="查看当前请求的-HTTP-原始内容"><a href="#查看当前请求的-HTTP-原始内容" class="headerlink" title="查看当前请求的 HTTP 原始内容"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%9f%a5%e7%9c%8b%e5%bd%93%e5%89%8d%e8%af%b7%e6%b1%82%e7%9a%84-http-%e5%8e%9f%e5%a7%8b%e5%86%85%e5%ae%b9">查看当前请求的 HTTP 原始内容</a></h4><p>对于当前的请求，还可以通过点击 Code</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/fjqiinpdmd.png?imageView2/2/w/1620" alt="img"></p>
+<p>去查看对应的符合 HTTP 协议的原始的内容：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ems6iaymhz.png?imageView2/2/w/1620" alt="img"></p>
+<h4 id="各种语言的示例代码Code-Generation-Tools"><a href="#各种语言的示例代码Code-Generation-Tools" class="headerlink" title="各种语言的示例代码Code Generation Tools"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%90%84%e7%a7%8d%e8%af%ad%e8%a8%80%e7%9a%84%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81code-generation-tools">各种语言的示例代码Code Generation Tools</a></h4><p>比如：</p>
+<ul>
+<li>Swift 语言</li>
+</ul>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/n2mpfxcdv3.png?imageView2/2/w/1620" alt="img"></p>
+<ul>
+<li>Java 语言</li>
+</ul>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/r9dvvipgd1.png?imageView2/2/w/1620" alt="img"></p>
+<ul>
+<li>其他各种语言 还支持其他各种语言：</li>
+</ul>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/n935sl95gc.png?imageView2/2/w/1620" alt="img"></p>
+<p>目前支持的语言有：</p>
+<ul>
+<li>HTTP</li>
+<li>C (LibCurl)</li>
+<li>cURL</li>
+<li>C#(RestSharp)</li>
+<li>Go</li>
+<li>Java <ul>
+<li>OK HTTP</li>
+<li>Unirest</li>
+</ul>
+</li>
+<li>Javascript</li>
+<li>NodeJS</li>
+<li>Objective-C(NSURL)</li>
+<li>OCaml(Cohttp)</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby(NET::Http)</li>
+<li>Shell</li>
+<li>Swift(NSURL)</li>
+</ul>
+<p>代码生成工具的好处是：在写调用此 API 的代码时，就可以参考对应代码，甚至拷贝粘贴对应代码，即可。</p>
+<h3 id="测试接口"><a href="#测试接口" class="headerlink" title="测试接口"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e6%b5%8b%e8%af%95%e6%8e%a5%e5%8f%a3">测试接口</a></h3><p>选中某个分组后，点击 Runner</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/p5ijm3jotv.png?imageView2/2/w/1620" alt="img"></p>
+<p>选中某个分组后点击 Run</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/d40ouxqffx.png?imageView2/2/w/1620" alt="img"></p>
+<p>即可看到测试结果： </p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ynyz14nrsu.png?imageView2/2/w/1620" alt="img"></p>
+<p>关于此功能的介绍可参考<a href="https://www.getpostman.com/postman">Postman 官网</a>的<a href="https://www.getpostman.com/img/v2/postman/gifs/collection-runner.gif">git 图</a></p>
+<h3 id="MockServer"><a href="#MockServer" class="headerlink" title="MockServer"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=mockserver">MockServer</a></h3><p>直接参考官网。</p>
+<h2 id="功能界面"><a href="#功能界面" class="headerlink" title="功能界面"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8a%9f%e8%83%bd%e7%95%8c%e9%9d%a2">功能界面</a></h2><h3 id="多-Tab-分页"><a href="#多-Tab-分页" class="headerlink" title="多 Tab 分页"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%a4%9a-tab-%e5%88%86%e9%a1%b5">多 Tab 分页</a></h3><p>Postman 支持多 tab 页，于此对比之前有些 API 调试工具就不支持多 Tab 页，比如<code>Advanced Rest Client</code></p>
+<p>多 tab 的好处：</p>
+<p>方便在一个 tab 中测试，得到结果后，复制粘贴到另外的 tab 中，继续测试其它接口</p>
+<p>比如此处 tab1 中，测试了获取验证码接口后，拷贝手机号和验证码，粘贴到 tab2 中，继续测试注册的接口</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/9h475eyqnd.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/f26rmodg14.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="界面查看模式"><a href="#界面查看模式" class="headerlink" title="界面查看模式"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e7%95%8c%e9%9d%a2%e6%9f%a5%e7%9c%8b%e6%a8%a1%e5%bc%8f">界面查看模式</a></h3><p>Postman 的默认的 Request 和 Response 是上下布局：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ilcrw9qu2a.png?imageView2/2/w/1620" alt="img"></p>
+<p>此处点击右下角的<code>Two pane view</code>，就变成左右的了：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ij8lqwx97b.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> [info] 左右布局的用途  对于数据量很大，又想要同时看到请求和返回的数据的时候，应该比较有用。  </p>
+</blockquote>
+<h3 id="多颜色主题"><a href="#多颜色主题" class="headerlink" title="多颜色主题"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%a4%9a%e9%a2%9c%e8%89%b2%e4%b8%bb%e9%a2%98">多颜色主题</a></h3><p>Posman 支持两种主题：</p>
+<ul>
+<li>深色主题</li>
+</ul>
+<p>当前是深色主题，效果很不错：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/jz9xmkcowa.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/u82a7psrgy.png?imageView2/2/w/1620" alt="img"></p>
+<ul>
+<li>浅色主题</li>
+</ul>
+<p>可以切换到 浅色主题：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/qu330s3pfl.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/d17b0zdb4c.png?imageView2/2/w/1620" alt="img"></p>
+<h2 id="API-文档生成"><a href="#API-文档生成" class="headerlink" title="API 文档生成"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=api-%e6%96%87%e6%a1%a3%e7%94%9f%e6%88%90">API 文档生成</a></h2><p>在服务端后台的开发人员测试好了接口后，打算把接口的各种信息发给使用此 API 的前端的移动端人员时，往往会遇到：</p>
+<p>要么是用复制粘贴 -&gt; 格式不友好 要么是用 Postman 中截图 -&gt; 方便看，但是不方便获得 API 接口和字段等文字内容 要么是用 Postman 中导出为 JSON -&gt; json 文件中信息太繁杂，不利于找到所需要的信息 要么是用文档，比如去编写 Markdown 文档 -&gt; 但后续 API 的变更需要实时同步修改文档，也会很麻烦 这都会导致别人查看和使用 API 时很不方便。</p>
+<p>-&gt; 对此，Postman 提供了发布 API</p>
+<p>预览和发布 API 文档 下面介绍 Postman 中如何预览和发布 API 文档。</p>
+<h3 id="简要概述步骤"><a href="#简要概述步骤" class="headerlink" title="简要概述步骤"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e7%ae%80%e8%a6%81%e6%a6%82%e8%bf%b0%e6%ad%a5%e9%aa%a4">简要概述步骤</a></h3><ol>
+<li>Collection</li>
+<li>鼠标移动到某个 Collection，点击 三个点</li>
+<li>Publish Docs</li>
+<li>Publish</li>
+<li>得到 Public URL</li>
+<li>别人打开这个 Public URL，即可查看 API 文档</li>
+</ol>
+<h3 id="预览-API-文档"><a href="#预览-API-文档" class="headerlink" title="预览 API 文档"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e9%a2%84%e8%a7%88-api-%e6%96%87%e6%a1%a3">预览 API 文档</a></h3><p>点击分组右边的大于号&gt;</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/s7pgyjn13y.png?imageView2/2/w/1620" alt="img"></p>
+<p>如果只是预览，比如后台开发员自己查看 API 文档的话，可以选择：View in web</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/95ekutmlpe.png?imageView2/2/w/1620" alt="img"></p>
+<blockquote>
+<p> 等价于点击Publish Docs去发布：  </p>
+</blockquote>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/ca0mw3r3x7.png?imageView2/2/w/1620" alt="img"></p>
+<p>View in Web 后，有 Publish 的选项（见后面的截图）</p>
+<p>View in Web 后，会打开预览页面：</p>
+<p>比如：</p>
+<p>奶牛云</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://documenter.getpostman.com/collection/view/669382-42273840-6237-dbae-5455-26b16f45e2b9</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/8yfixnbs9s.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/6qtob43od0.png?imageView2/2/w/1620" alt="img"></p>
+<p>而右边的示例代码，也可以从默认的 cURL 换成其他的：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/gy60gkar15.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/hmptft1z7u.png?imageView2/2/w/1620" alt="img"></p>
+<h3 id="发布-API-文档"><a href="#发布-API-文档" class="headerlink" title="发布 API 文档"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8f%91%e5%b8%83-api-%e6%96%87%e6%a1%a3">发布 API 文档</a></h3><p>如果想要让其他人能看到这个文档，则点击 Publish：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/nfsjy8thb8.png?imageView2/2/w/1620" alt="img"></p>
+<p>然后会打开类似于这样的地址：</p>
+<p>Postman Documenter</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://documenter.getpostman.com/collection/publish?meta=Y29sbGVjdGlvbl9pZD00MjI3Mzg0MC02MjM3LWRiYWUtNTQ1NS0yNmIxNmY0NWUyYjkmb3duZXI9NjY5MzgyJmNvbGxlY3Rpb25fbmFtZT0lRTUlQTUlQjYlRTclODklOUIlRTQlQkElOTE=</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/84pbk6ppzq.png?imageView2/2/w/1620" alt="img"></p>
+<p>点击 Publish 后，可以生成对应的公开的网页地址：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/z3ce5w7dfv.png?imageView2/2/w/1620" alt="img"></p>
+<p>打开 API 接口文档地址：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://documenter.getpostman.com/view/669382/collection/77fd4RM</span><br></pre></td></tr></table></figure>
+
+<p>即可看到（和前面预览一样效果的 API 文档了）：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/84j5ppdtoh.png?imageView2/2/w/1620" alt="img"></p>
+<p>如此，别人即可查看对应的 API 接口文档。</p>
+<h3 id="已发布的-API-文档支持自动更新"><a href="#已发布的-API-文档支持自动更新" class="headerlink" title="已发布的 API 文档支持自动更新"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%b7%b2%e5%8f%91%e5%b8%83%e7%9a%84-api-%e6%96%87%e6%a1%a3%e6%94%af%e6%8c%81%e8%87%aa%e5%8a%a8%e6%9b%b4%e6%96%b0">已发布的 API 文档支持自动更新</a></h3><p>后续如果自己的 API 接口修改后：</p>
+<p>比如：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/svcgj7qdll.png?imageView2/2/w/1620" alt="img"></p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/kezpmqdfe8.png?imageView2/2/w/1620" alt="img"></p>
+<p>（后来发现，不用再去进入此预览和发布的流程，去更新文档，而是 Postman 自动支持）</p>
+<p>别人去刷新该文档的页面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://documenter.getpostman.com/view/669382/collection/77fd4RM</span><br></pre></td></tr></table></figure>
+
+<p>即可看到更新后的内容：</p>
+<p><img src="https://ask.qcloudimg.com/http-save/yehe-1171488/1iumgwfs2k.png?imageView2/2/w/1620" alt="img"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><a href="https://malun666.github.io/aicoder_vip_doc/#/pages/postman?id=%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">参考资料</a></h2><ul>
+<li>主要参考：Github: api_tool_postman</li>
+<li>Manage environments</li>
+<li>postman-变量&#x2F;环境&#x2F;过滤等 - 简书</li>
+<li>Postman 使用手册 3——环境变量 - 简书</li>
+<li>postman 使用之四：切换环境和设置读取变量 - 乔叶叶 - 博客园</li>
+</ul>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>আমাকে একটা কফি কিনে দাও</div>
+  <button>
+    দান করুন
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan উইচ্যাট পে">
+        <span>উইচ্যাট পে</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan আলি পে">
+        <span>আলি পে</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/postman/" rel="tag"># postman</a>
+              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"># 工具</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/08/%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A%E4%B9%8BinfluxDB%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/" rel="prev" title="技术周刊之influxDB使用入门">
+                  <i class="fa fa-angle-left"></i> 技术周刊之influxDB使用入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/15/%E4%BB%8E%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96%E5%88%B0Go%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95/" rel="next" title="从冒泡排序优化到Go基准测试">
+                  从冒泡排序优化到Go基准测试 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="মোট দর্শক">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="মোট দর্শক">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="উপরে ফিরে যান">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

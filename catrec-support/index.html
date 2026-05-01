@@ -1,70 +1,361 @@
-{% extends '_layout.swig' %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
 
-  {% block title %}{#
-  #}{% set page_title_suffix = ' | ' + config.title %}{#
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-  #}{% if page.type === "categories" and not page.title %}{#
-    #}{{ __('title.category') + page_title_suffix }}{#
-  #}{% elif page.type === "tags" and not page.title %}{#
-    #}{{ __('title.tag') + page_title_suffix }}{#
-  #}{% else %}{#
-    #}{{ page.title + page_title_suffix }}{#
-  #}{% endif %}{#
-#}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {##################}
-    {### PAGE BLOCK ###}
-    {##################}
-    <div class="post-block page">
-      {% include '_partials/page-header.swig' %}
-      {#################}
-      {### PAGE BODY ###}
-      {#################}
-      <div class="post-body{% if theme.han %} han-init-context{% endif %}{% if page.direction && page.direction.toLowerCase() === 'rtl' %} rtl{% endif %}">
-        {# tagcloud page support #}
-        {% if page.type === "tags" %}
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                {{ _p('counter.tag_cloud', site.tags.length) }}
-            </div>
-            <div class="tag-cloud-tags">
-              {{ tagcloud({min_font: 12, max_font: 30, amount: 300, color: true, start_color: '#ccc', end_color: '#111'}) }}
-            </div>
-          </div>
-        {% elif page.type === 'categories' %}
-          <div class="category-all-page">
-            <div class="category-all-title">
-                {{ _p('counter.categories', site.categories.length) }}
-            </div>
-            <div class="category-all">
-              {{ list_categories() }}
-            </div>
-          </div>
-        {% else %}
-          {{ page.content }}
-        {% endif %}
-      </div>
-      {#####################}
-      {### END PAGE BODY ###}
-      {#####################}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"সার্চ করা হচ্ছে...","empty":"আমরা উক্ত অনুসন্ধানের জন্য কোন ফলাফল খুঁজে পাইনি: ${query}","hits_time":"${hits} টি ফলাফল ${time} মিলিসেকেন্ড এ পাওয়া গেছে","hits":"${hits} টি ফলাফল পাওয়া গেছে"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="CatRec SupportAbout CatRecCatRec is a lightweight, elegant screen recorder for macOS. Record any area of your screen, overlay your camera, and annotate with a built-in whiteboard. Frequently Asked Que">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CatRec Support">
+<meta property="og:url" content="https://cloudsjhan.github.io/catrec-support/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="CatRec SupportAbout CatRecCatRec is a lightweight, elegant screen recorder for macOS. Record any area of your screen, overlay your camera, and annotate with a built-in whiteboard. Frequently Asked Que">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-04-29T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-29T03:58:13.981Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="go, python, Docker, k8s">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/catrec-support/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-Hans","comments":"","permalink":"https://cloudsjhan.github.io/catrec-support/index.html","path":"catrec-support/index.html","title":"CatRec Support"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CatRec Support | cloud world
+</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="নেভিগেশন বারের দৃশ্যমানতা টগল করুন" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-    {######################}
-    {### END PAGE BLOCK ###}
-    {######################}
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="সার্চ" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>হোম পেজ</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>ট্যাগ এর তালিকা</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>ক্যাটাগরি এর তালিকা</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>আর্কাইভ এর তালিকা</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>সম্পর্কে</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>সার্চ
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="সার্চ করা হচ্ছে..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          সূচীপত্র
+        </li>
+        <li class="sidebar-nav-overview">
+          সারাংশ
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CatRec-Support"><span class="nav-number">1.</span> <span class="nav-text">CatRec Support</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#About-CatRec"><span class="nav-number">1.1.</span> <span class="nav-text">About CatRec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frequently-Asked-Questions"><span class="nav-number">1.2.</span> <span class="nav-text">Frequently Asked Questions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-grant-screen-recording-permission"><span class="nav-number">1.2.1.</span> <span class="nav-text">How do I grant screen recording permission?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-select-a-recording-area"><span class="nav-number">1.2.2.</span> <span class="nav-text">How do I select a recording area?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-record-fullscreen"><span class="nav-number">1.2.3.</span> <span class="nav-text">How do I record fullscreen?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-enable-the-camera-overlay"><span class="nav-number">1.2.4.</span> <span class="nav-text">How do I enable the camera overlay?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-do-I-use-the-whiteboard"><span class="nav-number">1.2.5.</span> <span class="nav-text">How do I use the whiteboard?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Where-are-my-recordings-saved"><span class="nav-number">1.2.6.</span> <span class="nav-text">Where are my recordings saved?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-aspect-ratios-are-supported"><span class="nav-number">1.2.7.</span> <span class="nav-text">What aspect ratios are supported?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keyboard-Shortcuts"><span class="nav-number">1.3.</span> <span class="nav-text">Keyboard Shortcuts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-Requirements"><span class="nav-number">1.4.</span> <span class="nav-text">System Requirements</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contact"><span class="nav-number">1.5.</span> <span class="nav-text">Contact</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">পোস্ট এর তালিকা</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">ক্যাটাগরি এর তালিকা</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">ট্যাগ এর তালিকা</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          লিঙ্কসমুহ
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-Hans"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">CatRec Support
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <h1 id="CatRec-Support"><a href="#CatRec-Support" class="headerlink" title="CatRec Support"></a>CatRec Support</h1><h2 id="About-CatRec"><a href="#About-CatRec" class="headerlink" title="About CatRec"></a>About CatRec</h2><p>CatRec is a lightweight, elegant screen recorder for macOS. Record any area of your screen, overlay your camera, and annotate with a built-in whiteboard.</p>
+<h2 id="Frequently-Asked-Questions"><a href="#Frequently-Asked-Questions" class="headerlink" title="Frequently Asked Questions"></a>Frequently Asked Questions</h2><h3 id="How-do-I-grant-screen-recording-permission"><a href="#How-do-I-grant-screen-recording-permission" class="headerlink" title="How do I grant screen recording permission?"></a>How do I grant screen recording permission?</h3><p>Go to <strong>System Settings &gt; Privacy &amp; Security &gt; Screen Recording</strong>, then enable CatRec.</p>
+<h3 id="How-do-I-select-a-recording-area"><a href="#How-do-I-select-a-recording-area" class="headerlink" title="How do I select a recording area?"></a>How do I select a recording area?</h3><p>Use the keyboard shortcut <strong>⌥⇧2</strong> or click <strong>Record Screen</strong> from the menu bar. Draw a rectangle on screen to select your recording area. You can drag to move it, drag the corners to resize, or draw again to start over.</p>
+<h3 id="How-do-I-record-fullscreen"><a href="#How-do-I-record-fullscreen" class="headerlink" title="How do I record fullscreen?"></a>How do I record fullscreen?</h3><p>Use the keyboard shortcut <strong>⌥⇧1</strong> or click <strong>Record Fullscreen</strong> from the menu bar.</p>
+<h3 id="How-do-I-enable-the-camera-overlay"><a href="#How-do-I-enable-the-camera-overlay" class="headerlink" title="How do I enable the camera overlay?"></a>How do I enable the camera overlay?</h3><p>Click the camera icon in the control bar before or during recording. You can adjust the shape (circle, square, rectangle), size, and beauty level.</p>
+<h3 id="How-do-I-use-the-whiteboard"><a href="#How-do-I-use-the-whiteboard" class="headerlink" title="How do I use the whiteboard?"></a>How do I use the whiteboard?</h3><p>Click the whiteboard icon in the control bar to open the Excalidraw annotation panel. Draw, type, and annotate in real time. The whiteboard closes automatically when recording ends.</p>
+<h3 id="Where-are-my-recordings-saved"><a href="#Where-are-my-recordings-saved" class="headerlink" title="Where are my recordings saved?"></a>Where are my recordings saved?</h3><p>Recordings are saved to the output folder you select. You can change it from <strong>Select Output Folder…</strong> in the menu bar.</p>
+<h3 id="What-aspect-ratios-are-supported"><a href="#What-aspect-ratios-are-supported" class="headerlink" title="What aspect ratios are supported?"></a>What aspect ratios are supported?</h3><p>Free, 16:9, 9:16, 4:3, and 1:1.</p>
+<h2 id="Keyboard-Shortcuts"><a href="#Keyboard-Shortcuts" class="headerlink" title="Keyboard Shortcuts"></a>Keyboard Shortcuts</h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>⌥⇧2</td>
+<td>Record Area</td>
+</tr>
+<tr>
+<td>⌥⇧1</td>
+<td>Record Fullscreen</td>
+</tr>
+<tr>
+<td>⌥⇧S</td>
+<td>Stop Recording</td>
+</tr>
+<tr>
+<td>⌥⇧P</td>
+<td>Pause &#x2F; Resume</td>
+</tr>
+<tr>
+<td>⌘Q</td>
+<td>Quit</td>
+</tr>
+</tbody></table>
+<h2 id="System-Requirements"><a href="#System-Requirements" class="headerlink" title="System Requirements"></a>System Requirements</h2><ul>
+<li>macOS 12.3 or later</li>
+<li>Screen recording permission</li>
+</ul>
+<h2 id="Contact"><a href="#Contact" class="headerlink" title="Contact"></a>Contact</h2><p>For bug reports and feature requests, please email: <a href="mailto:&#x63;&#108;&#x6f;&#117;&#x64;&#x73;&#x6a;&#104;&#x61;&#x6e;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x63;&#108;&#x6f;&#117;&#x64;&#x73;&#x6a;&#104;&#x61;&#x6e;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;</a></p>
+<p>Or open an issue on GitHub: <a href="https://github.com/hantmac/CatRecorder/issues">CatRecorder Issues</a></p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="মোট দর্শক">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="মোট দর্শক">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="উপরে ফিরে যান">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
