@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/11/26/Testing-Databend-Applications-Using-Testcontainers-Multi-Language-Implementation-Guide/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p.ipic.vip/9bbqbg.png">
+<meta property="og:image" content="https://p.ipic.vip/xy6aci.png">
+<meta property="article:published_time" content="2024-11-26T14:06:56.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.790Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Databend">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p.ipic.vip/9bbqbg.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/11/26/Testing-Databend-Applications-Using-Testcontainers-Multi-Language-Implementation-Guide/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/11/26/Testing-Databend-Applications-Using-Testcontainers-Multi-Language-Implementation-Guide/","path":"2024/11/26/Testing-Databend-Applications-Using-Testcontainers-Multi-Language-Implementation-Guide/","title":"Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction-to-Testcontainers"><span class="nav-number">1.</span> <span class="nav-text">Introduction to Testcontainers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Core-Features"><span class="nav-number">1.1.</span> <span class="nav-text">Core Features:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Main-Use-Cases"><span class="nav-number">1.2.</span> <span class="nav-text">Main Use Cases:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Support-Databend-for-Testcontainers"><span class="nav-number">2.</span> <span class="nav-text">Support Databend for Testcontainers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prerequisites"><span class="nav-number">3.</span> <span class="nav-text">Prerequisites</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-Dependency-Configuration"><span class="nav-number">3.1.</span> <span class="nav-text">Java Dependency Configuration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Creating-Test-Class"><span class="nav-number">3.2.</span> <span class="nav-text">Creating Test Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go"><span class="nav-number">3.3.</span> <span class="nav-text">Go</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rust"><span class="nav-number">3.4.</span> <span class="nav-text">Rust</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-number">4.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/11/26/Testing-Databend-Applications-Using-Testcontainers-Multi-Language-Implementation-Guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide | cloud world">
+      <meta itemprop="description" content="Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-11-26 22:06:56" itemprop="dateCreated datePublished" datetime="2024-11-26T22:06:56+08:00">2024-11-26</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">Testing Databend Applications Using Testcontainers - Multi-Language Implementation Guide</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+
+
+<h3 id="Introduction-to-Testcontainers"><a href="#Introduction-to-Testcontainers" class="headerlink" title="Introduction to Testcontainers"></a>Introduction to Testcontainers</h3><p><a href="https://testcontainers.com/" title="Testcontainer website">Testcontainers</a> is an open-source library that provides lightweight, disposable instances of databases, message brokers, web browsers, or any service that can run in a Docker container.</p>
+<h4 id="Core-Features"><a href="#Core-Features" class="headerlink" title="Core Features:"></a>Core Features:</h4><ul>
+<li>Disposable: Can be discarded after testing</li>
+<li>Lightweight: Quick to start with minimal resource usage</li>
+<li>Docker-based: Leverages container technology for isolation</li>
+</ul>
+<h4 id="Main-Use-Cases"><a href="#Main-Use-Cases" class="headerlink" title="Main Use Cases:"></a>Main Use Cases:</h4><ul>
+<li>Database testing: MySQL, PostgreSQL, MongoDB, Databend etc.</li>
+<li>Message queue testing: RabbitMQ, Kafka, etc.</li>
+<li>Browser automation testing</li>
+<li>Testing any containerizable service<br>Using TestContainers for test cases helps avoid test environment pollution, ensures test environment consistency, simplifies test configuration, and improves test reliability.</li>
+</ul>
+<p>This tool is particularly suitable for testing scenarios that depend on external services, enabling quick creation of isolated test environments.</p>
+<h3 id="Support-Databend-for-Testcontainers"><a href="#Support-Databend-for-Testcontainers" class="headerlink" title="Support Databend for Testcontainers"></a>Support Databend for Testcontainers</h3><p><img src="https://p.ipic.vip/9bbqbg.png"></p>
+<p>The Databend team has completed support for Databend data source in three major programming languages through PRs in <a href="https://github.com/testcontainers/testcontainers-java/pull/9148" title="PR for support databend in testcontainer-java">testcontainer-java</a>, <a href="https://github.com/testcontainers/testcontainers-go/pull/2779" title="PR for support databend in testcontainers-go">testcontainers-go</a>, and <a href="https://github.com/testcontainers/testcontainers-rs-modules-community/pull/207" title="PR for support databend in testcontains-rs">testcontainers-rs</a>. This means developers can easily integrate Databend test environments in projects using these languages.</p>
+<h3 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h3><ul>
+<li>Docker installed in the operating environment</li>
+<li>Development environments for Java, Go, and Rust installed</li>
+</ul>
+<h4 id="Java-Dependency-Configuration"><a href="#Java-Dependency-Configuration" class="headerlink" title="Java Dependency Configuration"></a>Java Dependency Configuration</h4><p>First, create a new Java Demo project. Here’s an example using Maven, adding databend testcontainers and databend-jdbc dependencies in pom.xml:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;databend&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.20.4&lt;/version&gt;</span><br><span class="line">        &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;com.databend&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;databend-jdbc&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;0.2.8&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>For Gradle, use:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">testImplementation <span class="string">&quot;org.testcontainers:databend:1.20.4&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Creating-Test-Class"><a href="#Creating-Test-Class" class="headerlink" title="Creating Test Class"></a>Creating Test Class</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Create a `TestContainerDatabend` test <span class="keyword">class</span> <span class="title class_">with</span> its constructor:</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestContainerDatabend</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> DatabendContainer dockerContainer;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TestContainerDatabend</span><span class="params">()</span> &#123;</span><br><span class="line">        dockerContainer = <span class="keyword">new</span> <span class="title class_">DatabendContainer</span>(<span class="string">&quot;datafuselabs/databend:v1.2.615&quot;</span>);</span><br><span class="line">        dockerContainer.withUsername(<span class="string">&quot;databend&quot;</span>).withPassword(<span class="string">&quot;databend&quot;</span>).withUrlParam(<span class="string">&quot;ssl&quot;</span>, <span class="string">&quot;false&quot;</span>);</span><br><span class="line">        dockerContainer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We specified <code>datafuselabs/databend:v1.2.615</code> as the Docker image for starting Databend, other databend versions available at <a href="https://hub.docker.com/r/datafuselabs/databend">databend docker hub</a>, then set the username and password, and started the container service.</p>
+<p>Here’s the test case:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testSimple</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> (<span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> DriverManager.getConnection(getJdbcUrl())) &#123;</span><br><span class="line">        <span class="type">DatabendStatement</span> <span class="variable">statement</span> <span class="operator">=</span> (DatabendStatement) connection.createStatement();</span><br><span class="line">        statement.execute(<span class="string">&quot;SELECT 1&quot;</span>);</span><br><span class="line">        <span class="type">ResultSet</span> <span class="variable">r</span> <span class="operator">=</span> statement.getResultSet();</span><br><span class="line">        <span class="keyword">while</span> (r.next()) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">resultSetInt</span> <span class="operator">=</span> r.getInt(<span class="number">1</span>);</span><br><span class="line">            System.out.println(resultSetInt);</span><br><span class="line">            <span class="keyword">assert</span> resultSetInt == <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Failed to execute statement: &quot;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">getJdbcUrl</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> format(<span class="string">&quot;jdbc:databend://%s:%s@%s:%s/&quot;</span>,</span><br><span class="line">            dockerContainer.getUsername(),</span><br><span class="line">            dockerContainer.getPassword(),</span><br><span class="line">            dockerContainer.getHost(),</span><br><span class="line">            dockerContainer.getMappedPort(<span class="number">8000</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>While running the test, we can see that testcontainers has started a databend container service in our system:</p>
+<p><img src="https://p.ipic.vip/xy6aci.png"></p>
+<p>After the test completes, the container is immediately destroyed and resources are released.</p>
+<p>Besides Databend, Testcontainers supports most databases and message queues available in the market, making it easy to build test suites that depend on these resources.</p>
+<h4 id="Go"><a href="#Go" class="headerlink" title="Go"></a>Go</h4><p>Similarly, for Golang projects requiring Databend services, you can use <code>testcontainers-go</code>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;database/sql&quot;</span></span><br><span class="line">    <span class="string">&quot;testing&quot;</span></span><br><span class="line"></span><br><span class="line">    _ <span class="string">&quot;github.com/datafuselabs/databend-go&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/stretchr/testify/require&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="string">&quot;github.com/testcontainers/testcontainers-go&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/testcontainers/testcontainers-go/modules/databend&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDatabend</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">    ctx := context.Background()</span><br><span class="line"></span><br><span class="line">    ctr, err := databend.Run(ctx, <span class="string">&quot;datafuselabs/databend:v1.2.615&quot;</span>)</span><br><span class="line">    testcontainers.CleanupContainer(t, ctr)</span><br><span class="line">    require.NoError(t, err)</span><br><span class="line"></span><br><span class="line">    connectionString, err := ctr.ConnectionString(ctx, <span class="string">&quot;sslmode=disable&quot;</span>)</span><br><span class="line">    require.NoError(t, err)</span><br><span class="line"></span><br><span class="line">    mustConnectionString := ctr.MustConnectionString(ctx, <span class="string">&quot;sslmode=disable&quot;</span>)</span><br><span class="line">    require.Equal(t, connectionString, mustConnectionString)</span><br><span class="line"></span><br><span class="line">    db, err := sql.Open(<span class="string">&quot;databend&quot;</span>, connectionString)</span><br><span class="line">    require.NoError(t, err)</span><br><span class="line">    <span class="keyword">defer</span> db.Close()</span><br><span class="line"></span><br><span class="line">    err = db.Ping()</span><br><span class="line">    require.NoError(t, err)</span><br><span class="line"></span><br><span class="line">    _, err = db.Exec(<span class="string">&quot;CREATE TABLE IF NOT EXISTS a_table ( \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot; `col_1` VARCHAR(128) NOT NULL, \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot; `col_2` VARCHAR(128) NOT NULL \n&quot;</span> +</span><br><span class="line">        <span class="string">&quot;)&quot;</span>)</span><br><span class="line">    require.NoError(t, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Rust"><a href="#Rust" class="headerlink" title="Rust"></a>Rust</h4><p>Since Databend is written in Rust, you can naturally use testcontainer-rs to quickly start a Databend container service in Rust projects:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#[cfg(test)]</span><br><span class="line">mod tests &#123;</span><br><span class="line">    use databend_driver::Client;</span><br><span class="line"></span><br><span class="line">    use crate::&#123;databend::Databend as DatabendImage, testcontainers::runners::AsyncRunner&#125;;</span><br><span class="line"></span><br><span class="line">    #[tokio::test]</span><br><span class="line">    async fn test_databend() &#123;</span><br><span class="line">        let databend = DatabendImage::default().start().await.unwrap();</span><br><span class="line">        let http_port = databend.get_host_port_ipv4(8000).await.unwrap();</span><br><span class="line">        let dsn = format!(</span><br><span class="line">            &quot;databend://databend:databend@localhost:&#123;&#125;/default?sslmode=disable&quot;,</span><br><span class="line">            http_port</span><br><span class="line">        );</span><br><span class="line">        let client = Client::new(dsn.to_string());</span><br><span class="line">        let conn = client.get_conn().await.unwrap();</span><br><span class="line">        let row = conn.query_row(&quot;select &#x27;hello&#x27;&quot;).await.unwrap();</span><br><span class="line">        assert!(row.is_some());</span><br><span class="line">        let row = row.unwrap();</span><br><span class="line">        let (val,): (String,) = row.try_into().unwrap();</span><br><span class="line">        assert_eq!(val, &quot;hello&quot;);</span><br><span class="line"></span><br><span class="line">        let conn2 = conn.clone();</span><br><span class="line">        let row = conn2.query_row(&quot;select &#x27;world&#x27;&quot;).await.unwrap();</span><br><span class="line">        assert!(row.is_some());</span><br><span class="line">        let row = row.unwrap();</span><br><span class="line">        let (val,): (String,) = row.try_into().unwrap();</span><br><span class="line">        assert_eq!(val, &quot;world&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>For modern software development, reliable testing frameworks and toolchains are crucial foundations for ensuring code quality. With Databend’s multi-language support for Testcontainers, developers can more conveniently perform database-related integration testing, thereby improving overall development efficiency and code quality.</p>
+<p>Whether using Java, Go, or Rust, Testcontainers provides reliable support for Databend developers’ testing work. We look forward to seeing more developers apply this powerful testing tool in real projects to build more robust application systems.</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Databend/" rel="tag"># Databend</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/11/16/%E7%BC%96%E5%86%99-Dockerfile-%E7%9A%84-6-%E4%B8%AA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="prev" title="编写 Dockerfile 的 6 个最佳实践">
+                  <i class="fa fa-angle-left"></i> 编写 Dockerfile 的 6 个最佳实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/07/%E6%89%93%E7%A0%B4%E4%BF%A1%E6%81%AF%E5%B7%AE%EF%BC%8C%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2-DeepSeek/" rel="next" title="打破信息差，手把手教你本地部署 DeepSeek">
+                  打破信息差，手把手教你本地部署 DeepSeek <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

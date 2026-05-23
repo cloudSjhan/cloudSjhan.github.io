@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="go1.23: 对 &#x2F;&#x2F;go:linkname 的修改及其对开发人员的影响">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/05/30/go1-23-%E5%AF%B9-go-linkname-%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%9A%84%E5%BD%B1%E5%93%8D/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-30T08:46:35.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.765Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/05/30/go1-23-%E5%AF%B9-go-linkname-%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%9A%84%E5%BD%B1%E5%93%8D/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/05/30/go1-23-%E5%AF%B9-go-linkname-%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%9A%84%E5%BD%B1%E5%93%8D/","path":"2024/05/30/go1-23-对-go-linkname-的修改及其对开发人员的影响/","title":"go1.23: 对 //go:linkname 的修改及其对开发人员的影响"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>go1.23: 对 //go:linkname 的修改及其对开发人员的影响 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#linkname-%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.</span> <span class="nav-text">linkname 的作用是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Pull"><span class="nav-number">1.1.</span> <span class="nav-text">1. Pull</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Push"><span class="nav-number">1.2.</span> <span class="nav-text">2. Push</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-HandShake"><span class="nav-number">1.3.</span> <span class="nav-text">3. HandShake</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-linkname-%E7%9A%84%E9%A3%8E%E9%99%A9"><span class="nav-number">2.</span> <span class="nav-text">使用 linkname 的风险</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linkname-%E4%B9%9F%E6%9C%89%E6%9C%89%E7%94%A8%E7%9A%84%E6%97%B6%E5%80%99"><span class="nav-number">3.</span> <span class="nav-text">linkname 也有有用的时候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-1-23-%E4%B8%AD%E5%AF%B9-linkname-%E7%9A%84%E6%9B%B4%E6%94%B9"><span class="nav-number">4.</span> <span class="nav-text">Go 1.23 中对 linkname 的更改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linkname-%E7%9A%84%E6%9C%AA%E6%9D%A5"><span class="nav-number">5.</span> <span class="nav-text">linkname 的未来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/05/30/go1-23-%E5%AF%B9-go-linkname-%E7%9A%84%E4%BF%AE%E6%94%B9%E5%8F%8A%E5%85%B6%E5%AF%B9%E5%BC%80%E5%8F%91%E4%BA%BA%E5%91%98%E7%9A%84%E5%BD%B1%E5%93%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="go1.23: 对 &#x2F;&#x2F;go:linkname 的修改及其对开发人员的影响 | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          go1.23: 对 //go:linkname 的修改及其对开发人员的影响
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-30 16:46:35" itemprop="dateCreated datePublished" datetime="2024-05-30T16:46:35+08:00">2024-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<p>上周，Go 1.23 进入冻结期，这意味着不会添加任何新功能，已经添加的功能也不太可能被删除。今天，我们将讨论 Go 1.23 中 &#x2F;&#x2F;go:linkname 指令的变化。<br>相关的 issue 是：<a href="https://github.com/golang/go/issues/67401" title="linkname issue">cmd&#x2F;link: lock down future uses of linkname · Issue #67401 · golang&#x2F;go</a></p>
+<blockquote>
+<p>注：&#x2F;&#x2F;go:linkname 指令不是官方推荐使用的指令，不能保证向前或向后的兼容性。明智的做法是尽可能避免使用该指令。</p>
+</blockquote>
+<p>有鉴于此，让我们深入了解这些新变化。</p>
+<h3 id="linkname-的作用是什么"><a href="#linkname-的作用是什么" class="headerlink" title="linkname 的作用是什么"></a>linkname 的作用是什么</h3><p>简单来说，链接名指令用于向编译器和链接器传递信息。根据使用情况，可将其分为三类：</p>
+<h4 id="1-Pull"><a href="#1-Pull" class="headerlink" title="1. Pull"></a>1. Pull</h4><p><code>pull</code> 的用法是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;unsafe&quot; // Required to use linkname</span><br><span class="line"> ​</span><br><span class="line"> import _ &quot;fmt&quot; // The pulled package must be explicitly imported (except the runtime package)</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname my_func fmt.Println</span><br><span class="line"> func my_func(...any) (n int, err error)</span><br></pre></td></tr></table></figure>
+
+<p>该指令格式为 &#x2F;&#x2F;go:linkname &lt;本地函数或包级变量&gt; &lt;本包或其他包中完全定义的函数或变量&gt;。它告诉编译器和链接器 my_func 应直接使用 fmt.Println，使 my_func 成为 fmt.Println 的别名。</p>
+<p>这种用法可以忽略函数或变量是否被导出，甚至可以使用包私有元素。不过，这种方法有风险，如果出现类型不匹配，可能会引起 panic。</p>
+<h4 id="2-Push"><a href="#2-Push" class="headerlink" title="2. Push"></a>2. Push</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;unsafe&quot; // Required to use linkname</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname main.fastHandle</span><br><span class="line"> func fastHandle(input io.Writer) error &#123;</span><br><span class="line"> ...</span><br><span class="line"> &#125;</span><br><span class="line"> ​</span><br><span class="line"> // package main</span><br><span class="line"> func fastHandle(input io.Writer) error</span><br><span class="line"> ​</span><br><span class="line"> // The main package can directly use fastHandle</span><br></pre></td></tr></table></figure>
+
+<p>在这里，只需将函数或变量名作为第一个参数传递给指令，并指定使用该函数或变量的软件包名称。这种用法表示函数或变量将被命名为 xxx.yyy。</p>
+<h4 id="3-HandShake"><a href="#3-HandShake" class="headerlink" title="3. HandShake"></a>3. HandShake</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package mypkg</span><br><span class="line"> ​</span><br><span class="line"> import _ &quot;unsafe&quot; // Required to use linkname</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname fastHandle</span><br><span class="line"> func fastHandle(input io.Writer) error &#123;</span><br><span class="line"> ...</span><br><span class="line"> &#125;</span><br><span class="line"> ​</span><br><span class="line"> package main</span><br><span class="line"> ​</span><br><span class="line"> import _ &quot;unsafe&quot; // Required to use linkname</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname fastHandle mypkg.fastHandle</span><br><span class="line"> func fastHandle(input io.Writer) error</span><br></pre></td></tr></table></figure>
+<p>这种用法意味着两端要握手，明确标记哪个函数或变量应被链接。</p>
+<h3 id="使用-linkname-的风险"><a href="#使用-linkname-的风险" class="headerlink" title="使用 linkname 的风险"></a>使用 linkname 的风险</h3><p>主要风险是在软件包不知情的情况下使用软件包私有函数或变量的能力。 例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// pkg/mymath/mymath.go</span><br><span class="line"> package mymath</span><br><span class="line"> ​</span><br><span class="line"> func uintPow(n uint) uint &#123;</span><br><span class="line">     return n * n</span><br><span class="line"> &#125;</span><br><span class="line"> ​</span><br><span class="line"> // main.go</span><br><span class="line"> package main</span><br><span class="line"> ​</span><br><span class="line"> import (</span><br><span class="line">     &quot;fmt&quot;</span><br><span class="line">     _ &quot;linkname/pkg/mymath&quot;</span><br><span class="line">     _ &quot;unsafe&quot;</span><br><span class="line"> )</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname pow linkname/pkg/mymath.uintPow</span><br><span class="line"> func pow(n uint) uint</span><br><span class="line"> ​</span><br><span class="line"> func main() &#123;</span><br><span class="line">     fmt.Println(pow(6)) // 36</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通常，uintPow 不应在其软件包之外被访问。但 linkname 绕过了这一限制，可能导致严重的类型相关内存错误或运行时 panic。</p>
+<h3 id="linkname-也有有用的时候"><a href="#linkname-也有有用的时候" class="headerlink" title="linkname 也有有用的时候"></a>linkname 也有有用的时候</h3><p>尽管存在风险，但 linkname 的存在还是有其合理的原因，例如在 Go 程序启动时。例如，在 Go 的运行时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// runtime/proc.go</span><br><span class="line"> ​</span><br><span class="line"> //go:linkname main_main main.main</span><br><span class="line"> func main_main()</span><br><span class="line"> ​</span><br><span class="line"> // runtime.main</span><br><span class="line"> func main() &#123;</span><br><span class="line">     fn := main_main</span><br><span class="line">     fn()</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里，linkname 允许运行时调用用户定义的主函数。</p>
+<h3 id="Go-1-23-中对-linkname-的更改"><a href="#Go-1-23-中对-linkname-的更改" class="headerlink" title="Go 1.23 中对 linkname 的更改"></a>Go 1.23 中对 linkname 的更改</h3><p>考虑到上述风险，Go 核心团队决定限制链接名的使用： </p>
+<ul>
+<li>新的标准库软件包将禁止 linkname。</li>
+<li>新增了一个 ldflag -checklinkname&#x3D;1 来执行限制。默认值为 0，但在 1.23 的最终版本中将设置为 1。</li>
+<li>标准库将禁止只拉链接名，只允许握手模式。</li>
+</ul>
+<p>例如，以下代码在 1.23 版中就无法编译：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"> import _ &quot;unsafe&quot;</span><br><span class="line"> //go:linkname corostart runtime.corostart</span><br><span class="line"> func corostart()</span><br><span class="line"> ​</span><br><span class="line"> func main() &#123;</span><br><span class="line">     corostart()</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="linkname-的未来"><a href="#linkname-的未来" class="headerlink" title="linkname 的未来"></a>linkname 的未来</h3><p>长期目标是只允许使用握手模式。作为开发者，我们应该:</p>
+<ul>
+<li>使用 -checklinkname&#x3D;1 审核并删除不必要的链接名使用。</li>
+<li>建议在必要时公开私有 API。</li>
+<li>最后，使用 -ldflags&#x3D;-checklinkname&#x3D;0 禁用限制。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总之，我们还是应避免使用 <code>//go:linkname</code> 以防止出现不可预见的问题。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/29/%E6%8E%8C%E6%8F%A1-Golang-Mutex%EF%BC%9A%E5%AE%89%E5%85%A8%E5%B9%B6%E5%8F%91%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="prev" title="掌握 Golang Mutex：安全并发的最佳实践">
+                  <i class="fa fa-angle-left"></i> 掌握 Golang Mutex：安全并发的最佳实践
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/03/%E5%A6%82%E4%BD%95%E7%94%A8-golang-%E4%BB%8E-OpenAI-Ollama-%E5%92%8C-Claude-%E8%8E%B7%E5%8F%96%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA/" rel="next" title="如何用 golang 从 OpenAI,Ollama 和 Claude 获取可靠的结构化输出?">
+                  如何用 golang 从 OpenAI,Ollama 和 Claude 获取可靠的结构化输出? <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

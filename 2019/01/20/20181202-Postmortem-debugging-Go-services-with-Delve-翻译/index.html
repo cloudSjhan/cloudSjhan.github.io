@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20181202-Postmortem-debugging-Go-services-with-Delve[翻译]">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-%E7%BF%BB%E8%AF%91/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-20T15:39:57.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.752Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="go">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-%E7%BF%BB%E8%AF%91/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-%E7%BF%BB%E8%AF%91/","path":"2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-翻译/","title":"20181202-Postmortem-debugging-Go-services-with-Delve[翻译]"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>20181202-Postmortem-debugging-Go-services-with-Delve[翻译] | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Delve-%E8%B0%83%E8%AF%95Go%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%B8%80%E6%AC%A1%E7%BB%8F%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text">使用Delve 调试Go服务的一次经历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GDB%E5%92%8CCoredump"><span class="nav-number">1.1.</span> <span class="nav-text">GDB和Coredump</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Delve%E8%B0%83%E8%AF%95%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">使用Delve调试器</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/01/20/20181202-Postmortem-debugging-Go-services-with-Delve-%E7%BF%BB%E8%AF%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="20181202-Postmortem-debugging-Go-services-with-Delve[翻译] | cloud world">
+      <meta itemprop="description" content="Postmortem-debugging-Go-services-with-Delve[翻译]">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          20181202-Postmortem-debugging-Go-services-with-Delve[翻译]
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-20 23:39:57" itemprop="dateCreated datePublished" datetime="2019-01-20T23:39:57+08:00">2019-01-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">Postmortem-debugging-Go-services-with-Delve[翻译]</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h1 id="使用Delve-调试Go服务的一次经历"><a href="#使用Delve-调试Go服务的一次经历" class="headerlink" title="使用Delve 调试Go服务的一次经历"></a>使用Delve 调试Go服务的一次经历</h1><hr>
+<blockquote>
+<p>Vladimir Varankin 写于 2018&#x2F;12&#x2F;02</p>
+</blockquote>
+<p>某天，我们的生产服务上的几个实例突然不能处理外部进入的流量，HTTP请求成功通过负载均衡到达实例，但是之后却hang住了。接下来记录的是一次调试在线Go服务的惊心动魄的经历。</p>
+<p>正是下面逐步演示的操作，帮助我们定位了问题的根本原因。</p>
+<p>简单起见，我们将起一个Go写的HTTP服务作为调试使用，这个服务实现的细节暂时不做深究（之后我们将深入分析代码）。一个真实的生产应用可能包含很多组件，这些组件实现了业务罗和服务的基础架构。我们可以确信，这些应用已经在生产环境“身经百战” :)。</p>
+<p>源代码以及配置细节可以查看<a href="https://github.com/narqo/postmortem-debug-go">GitHub仓库</a>。为了完成接下来的工作，你需要一台Linux系统的虚机，这里我使用<a href="https://github.com/sevos/vagrant-hostmanager">vagrant-hostmanager</a>插件。<code>Vagrantfile</code>在GitHub仓库的根目录，可以查看更多细节。</p>
+<p>让我们开启虚机，构建HTTP服务并且运行起来，可以看到下面的输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vagrant up</span></span><br><span class="line">Bringing machine &#x27;server-test-1&#x27; up with &#x27;virtualbox&#x27; provider...</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vagrant ssh server-test-1</span></span><br><span class="line">Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-33-generic x86_64)</span><br><span class="line">···</span><br><span class="line">vagrant@server-test-1:~$ cd /vagrant/example/server</span><br><span class="line">vagrant@server-test-1:/vagrant/example/server$ go build</span><br><span class="line">vagrant@server-test-1:/vagrant/example/server$ ./server --addr=:10080</span><br><span class="line">server listening addr=:10080</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>curl</code>发送请求到所起的HTTP服务，可以判断其是否处于工作状态，新开一个terminal并执行下面的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl <span class="string">&#x27;http://server-test-1:10080&#x27;</span></span></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p>为了模拟失败的情况，我们需要发送大量请求到HTTP服务，这里我们使用HTTP benchmark测试工具<a href="https://github.com/wg/wrk">wrk</a>进行模拟。我的MacBook是4核的，所以使用4个线程运行wrk，能够产生1000个连接，基本能够满足需求。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">wrk -d1m -t4 -c1000 <span class="string">&#x27;http://server-test-1:10080&#x27;</span></span></span><br><span class="line">Running 1m test @ http://server-test-1:10080</span><br><span class="line">  4 threads and 1000 connections</span><br><span class="line">  ···</span><br></pre></td></tr></table></figure>
+
+<p>一会的时间，服务器hang住了。甚至等wrk跑完之后，服务器已经不能处理任何请求：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl --max-time 5 <span class="string">&#x27;http://server-test-1:10080/&#x27;</span></span></span><br><span class="line">curl: (28) Operation timed out after 5001 milliseconds with 0 bytes received</span><br></pre></td></tr></table></figure>
+
+<p>我们遇到麻烦了！让我们分析一下。</p>
+<hr>
+<p><em>在我们生产服务的真实场景中，服务器起来以后，goroutines的数量由于请求的增多而迅速增加，之后便失去响应。对pprof调试句柄的请求变得非常非常慢，看起来就像服务器“死掉了”。同样，我们也尝试使用<code>SIGQUIT</code>命令杀掉进程以<a href="https://golang.org/pkg/os/signal/#hdr-Default_behavior_of_signals_in_Go_programs">释放所运行goroutines堆栈</a>，但是收不到任何效果。</em></p>
+<h2 id="GDB和Coredump"><a href="#GDB和Coredump" class="headerlink" title="GDB和Coredump"></a>GDB和Coredump</h2><p>我们可以使用GDB（GNU Debugger）尝试进入正在运行的服务内部。</p>
+<hr>
+<p><em>在生产环境运行调试器可能需要额外的权限，所以与你的团队提前沟通是很明智的。</em></p>
+<hr>
+<p>在虚机上再开启一个SSH会话，找到服务器的进程id并使用调试器连接到该进程：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">vagrant ssh server-test-1</span></span><br><span class="line">Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-33-generic x86_64)</span><br><span class="line">···</span><br><span class="line">vagrant@server-test-1:~$ pgrep server</span><br><span class="line">1628</span><br><span class="line">vagrant@server-test-1:~$ cd /vagrant</span><br><span class="line">vagrant@server-test-1:/vagrant$ sudo gdb --pid=1628 example/server/server</span><br><span class="line">GNU gdb (Ubuntu 8.1-0ubuntu3) 8.1.0.20180409-git</span><br><span class="line">···</span><br></pre></td></tr></table></figure>
+
+<p>调试器连接到服务器进程之后，我们可以运行GDB的<code>bt</code>命令（aka backtrace）来检查当前线程的堆栈信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(gdb) bt</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">0  runtime.futex () at /usr/local/go/src/runtime/sys_linux_amd64.s:532</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">1  0x000000000042b08b <span class="keyword">in</span> runtime.futexsleep (addr=0xa9a160 &lt;runtime.m0+320&gt;, ns=-1, val=0) at /usr/local/go/src/runtime/os_linux.go:46</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">2  0x000000000040c382 <span class="keyword">in</span> runtime.notesleep (n=0xa9a160 &lt;runtime.m0+320&gt;) at /usr/local/go/src/runtime/lock_futex.go:151</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">3  0x0000000000433b4a <span class="keyword">in</span> runtime.stoplockedm () at /usr/local/go/src/runtime/proc.go:2165</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">4  0x0000000000435279 <span class="keyword">in</span> runtime.schedule () at /usr/local/go/src/runtime/proc.go:2565</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">5  0x00000000004353fe <span class="keyword">in</span> runtime.park_m (gp=0xc000066d80) at /usr/local/go/src/runtime/proc.go:2676</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">6  0x000000000045ae1b <span class="keyword">in</span> runtime.mcall () at /usr/local/go/src/runtime/asm_amd64.s:299</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">7  0x000000000045ad39 <span class="keyword">in</span> runtime.rt0_go () at /usr/local/go/src/runtime/asm_amd64.s:201</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">8  0x0000000000000000 <span class="keyword">in</span> ?? ()</span></span><br></pre></td></tr></table></figure>
+
+<p>说实话我并不是GDB的专家，但是显而易见Go运行时似乎使线程进入睡眠状态了，为什么呢？</p>
+<p>调试一个正在运行的进程是不明智的，不如将该线程的coredump保存下来，进行离线分析。我们可以使用GDB的<code>gcore</code>命令，该命令将core文件保存在当前工作目录并命名为<code>core.&lt;process_id&gt;</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) gcore</span><br><span class="line">Saved corefile core.1628</span><br><span class="line">(gdb) quit</span><br><span class="line">A debugging session is active.</span><br><span class="line"></span><br><span class="line">	Inferior 1 [process 1628] will be detached.</span><br><span class="line"></span><br><span class="line">Quit anyway? (y or n) y</span><br><span class="line">Detaching from program: /vagrant/example/server/server, process 1628</span><br></pre></td></tr></table></figure>
+
+<p>core文件保存后，服务器没必要继续运行，使用<code>kill -9</code>结束它。</p>
+<p>我们能够注意到，即使是一个简单的服务器，core文件依然会很大（我这一份是1.2G）,对于生产的服务来说，可能会更加巨大。</p>
+<p><em>如果需要了解更多使用GDB调试的技巧，可以继续阅读<a href="https://golang.org/doc/gdb">使用GDB调试Go代码</a>。</em></p>
+<h2 id="使用Delve调试器"><a href="#使用Delve调试器" class="headerlink" title="使用Delve调试器"></a>使用Delve调试器</h2><p><a href="https://github.com/derekparker/delve">Delve</a>是一个针对Go程序的调试器。它类似于GDB，但是更关注Go的运行时、数据结构以及其他内部的机制。</p>
+<p>如果你对Delve的内部实现机制很感兴趣，那么我十分推荐你阅读Alessandro Arzilli在GopherCon EU 2018所作的演讲，[<a href="https://www.youtube.com/watch?v=IKnTr7Zms1k">Internal Architecture of Delve, a Debugger For Go</a>]。</p>
+<p>Delve是用Go写的，所以安装起来非常简单：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">go get -u github.com/derekparker/delve/cmd/dlv</span></span><br></pre></td></tr></table></figure>
+
+<p>Delve安装以后，我们就可以通过运行<code>dlv core &lt;path to service binary&gt; &lt;core file&gt;</code>来分析core文件。我们先列出执行coredump时正在运行的所有goroutines。Delve的<code>goroutines</code>命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">dlv core example/server/server core.1628</span></span><br><span class="line"></span><br><span class="line">(dlv) goroutines</span><br><span class="line">  ···</span><br><span class="line">  Goroutine 4611 - User: /vagrant/example/server/metrics.go:113 main.(*Metrics).CountS (0x703948)</span><br><span class="line">  Goroutine 4612 - User: /vagrant/example/server/metrics.go:113 main.(*Metrics).CountS (0x703948)</span><br><span class="line">  Goroutine 4613 - User: /vagrant/example/server/metrics.go:113 main.(*Metrics).CountS (0x703948)</span><br></pre></td></tr></table></figure>
+
+<p>不幸的是，在真实生产环境下，这个列表可能会很长，甚至会超出terminal的缓冲区。由于服务器为每一个请求都生成一个对应的goroutine，所以<code>goroutines</code>命令生成的列表可能会有百万条。我们假设现在已经遇到这个问题，并想一个方法来解决它。</p>
+<p>Delve支持”headless”模式，并且能够通过<a href="https://github.com/derekparker/delve/tree/master/Documentation/api">JSON-RPC API</a>与调试器交互。</p>
+<p>运行<code>dlv core</code>命令，指定想要启动的Delve API server：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">dlv core example/server/server core.1628 --listen :44441 --headless --<span class="built_in">log</span></span></span><br><span class="line">API server listening at: [::]:44441</span><br><span class="line">INFO[0000] opening core file core.1628 (executable example/server/server)  layer=debugger</span><br></pre></td></tr></table></figure>
+
+<p>调试服务器运行后，我们可以发送命令到其TCP端口并将返回结果以原生JSON的格式存储。我们以上面相同的方式得到正在运行的goroutines，不同的是我们将结果存储到文件中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">echo</span> -n <span class="string">&#x27;&#123;&quot;method&quot;:&quot;RPCServer.ListGoroutines&quot;,&quot;params&quot;:[],&quot;id&quot;:2&#125;&#x27;</span> | nc -w 1 localhost 44441 &gt; server-test-1_dlv-rpc-list_goroutines.json</span></span><br></pre></td></tr></table></figure>
+
+<p>现在我们拥有了一个（比较大的）JSON文件，里面存储大量原始信息。推荐使用<a href="https://stedolan.github.io/jq/">jq</a>命令进一步了解JSON数据的原貌，举例：这里我获取JSON数据的result字段的前三个对象：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">jq <span class="string">&#x27;.result[0:3]&#x27;</span> server-test-1_dlv-rpc-list_goroutines.json</span></span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;id&quot;: 1,</span><br><span class="line">    &quot;currentLoc&quot;: &#123;</span><br><span class="line">      &quot;pc&quot;: 4380603,</span><br><span class="line">      &quot;file&quot;: &quot;/usr/local/go/src/runtime/proc.go&quot;,</span><br><span class="line">      &quot;line&quot;: 303,</span><br><span class="line">      &quot;function&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;runtime.gopark&quot;,</span><br><span class="line">        &quot;value&quot;: 4380368,</span><br><span class="line">        &quot;type&quot;: 0,</span><br><span class="line">        &quot;goType&quot;: 0,</span><br><span class="line">        &quot;optimized&quot;: true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;userCurrentLoc&quot;: &#123;</span><br><span class="line">      &quot;pc&quot;: 6438159,</span><br><span class="line">      &quot;file&quot;: &quot;/vagrant/example/server/main.go&quot;,</span><br><span class="line">      &quot;line&quot;: 52,</span><br><span class="line">      &quot;function&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;main.run&quot;,</span><br><span class="line">        &quot;value&quot;: 6437408,</span><br><span class="line">        &quot;type&quot;: 0,</span><br><span class="line">        &quot;goType&quot;: 0,</span><br><span class="line">        &quot;optimized&quot;: true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;goStatementLoc&quot;: &#123;</span><br><span class="line">      &quot;pc&quot;: 4547433,</span><br><span class="line">      &quot;file&quot;: &quot;/usr/local/go/src/runtime/asm_amd64.s&quot;,</span><br><span class="line">      &quot;line&quot;: 201,</span><br><span class="line">      &quot;function&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;runtime.rt0_go&quot;,</span><br><span class="line">        &quot;value&quot;: 4547136,</span><br><span class="line">        &quot;type&quot;: 0,</span><br><span class="line">        &quot;goType&quot;: 0,</span><br><span class="line">        &quot;optimized&quot;: true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;startLoc&quot;: &#123;</span><br><span class="line">      &quot;pc&quot;: 4379072,</span><br><span class="line">      &quot;file&quot;: &quot;/usr/local/go/src/runtime/proc.go&quot;,</span><br><span class="line">      &quot;line&quot;: 110,</span><br><span class="line">      &quot;function&quot;: &#123;</span><br><span class="line">        &quot;name&quot;: &quot;runtime.main&quot;,</span><br><span class="line">        &quot;value&quot;: 4379072,</span><br><span class="line">        &quot;type&quot;: 0,</span><br><span class="line">        &quot;goType&quot;: 0,</span><br><span class="line">        &quot;optimized&quot;: true</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;threadID&quot;: 0,</span><br><span class="line">    &quot;unreadable&quot;: &quot;&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  ···</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>JSON数据中的每个对象都代表了一个goroutine。通过<a href="https://github.com/derekparker/delve/blob/master/Documentation/cli/README.md#goroutines">命令手册</a></p>
+<p>可知，<code>goroutines</code>命令可以获得每一个goroutines的信息。通过手册我们能够分析出<code>userCurrentLoc</code>字段是服务器源码中goroutines最后出现的地方。</p>
+<p>为了能够了解当core file创建的时候，goroutines正在做什么，我们需要收集JSON文件中包含<code>userCurrentLoc</code>字段的函数名字以及其行号：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">jq -c <span class="string">&#x27;.result[] | [.userCurrentLoc.function.name, .userCurrentLoc.line]&#x27;</span> server-test-1_dlv-rpc-list_goroutines.json | <span class="built_in">sort</span> | <span class="built_in">uniq</span> -c</span></span><br><span class="line"></span><br><span class="line">   1 [&quot;internal/poll.runtime_pollWait&quot;,173]</span><br><span class="line">1000 [&quot;main.(*Metrics).CountS&quot;,95]</span><br><span class="line">   1 [&quot;main.(*Metrics).SetM&quot;,105]</span><br><span class="line">   1 [&quot;main.(*Metrics).startOutChannelConsumer&quot;,179]</span><br><span class="line">   1 [&quot;main.run&quot;,52]</span><br><span class="line">   1 [&quot;os/signal.signal_recv&quot;,139]</span><br><span class="line">   6 [&quot;runtime.gopark&quot;,303]</span><br></pre></td></tr></table></figure>
+
+<p>大量的goroutines(上面是1000个)在函数<code>main.(*Metrics).CoutS</code>的95行被阻塞。现在我们回头看一下我们服务器的<a href="https://github.com/narqo/postmortem-debug-go">源码</a>。</p>
+<p>在<code>main</code>包中找到<code>Metrics</code>结构体并且找到它的<code>CountS</code>方法（example&#x2F;server&#x2F;metrics.go）。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CountS increments counter per second.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *Metrics)</span></span> CountS(key <span class="type">string</span>) &#123;</span><br><span class="line">    m.inChannel &lt;- NewCountMetric(key, <span class="number">1</span>, second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们的服务器在往<code>inChannel</code>通道发送的时候阻塞住了。让我们找出谁负责从这个通道读取数据，深入研究代码之后我们找到了<a href="https://github.com/narqo/postmortem-debug-go/blob/2c42ca73ebd500fe8da1c6ac8ecaf4af143aca78/example/server/metrics.go#L109">下面的函数</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// starts a consumer for inChannel</span><br><span class="line">func (m *Metrics) startInChannelConsumer() &#123;</span><br><span class="line">    for inMetrics := range m.inChannel &#123;</span><br><span class="line">   	    // ···</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个函数逐个地从通道中读取数据并加以处理，那么什么情况下发送到这个通道的任务会被阻塞呢？</p>
+<p>当处理通道的时候，根据Dave Cheney的<a href="https://dave.cheney.net/2014/03/19/channel-axioms">通道准则</a>，只有四种情况可能导致通道有问题：</p>
+<ul>
+<li>向一个nil通道发送</li>
+<li>从一个nil通道接收</li>
+<li>向一个已关闭的通道发送</li>
+<li>从一个已关闭的通道接收并立即返回零值</li>
+</ul>
+<p>第一眼就看到了“向一个nil通道发送”，这看起来像是问题的原因。但是反复检查代码后，<code>inChannel</code>是由<code>Metrics</code>初始化的，不可能为nil。</p>
+<p>n你可能会注意到，使用<code>jq</code>命令获取到的信息中，没有<code>startInChannelConsumer</code>方法。会不会是因为在<code>main.(*Metrics).startInChannelConsumer</code>的某个地方阻塞而导致这个（可缓冲）通道满了？</p>
+<p>Delve能够提供从开始位置到<code>userCurrentLoc</code>字段之间的初始位置信息，这个信息存储到<code>startLoc</code>字段中。使用下面的jq命令可以查询出所有goroutines,其初始位置都在函数<code>startInChannelConsumer</code>中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">jq <span class="string">&#x27;.result[] | select(.startLoc.function.name | test(&quot;startInChannelConsumer$&quot;))&#x27;</span> server-test-1_dlv-rpc-list_goroutines.json</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 20,</span><br><span class="line">  &quot;currentLoc&quot;: &#123;</span><br><span class="line">    &quot;pc&quot;: 4380603,</span><br><span class="line">    &quot;file&quot;: &quot;/usr/local/go/src/runtime/proc.go&quot;,</span><br><span class="line">    &quot;line&quot;: 303,</span><br><span class="line">    &quot;function&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;runtime.gopark&quot;,</span><br><span class="line">      &quot;value&quot;: 4380368,</span><br><span class="line">      &quot;type&quot;: 0,</span><br><span class="line">      &quot;goType&quot;: 0,</span><br><span class="line">      &quot;optimized&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;userCurrentLoc&quot;: &#123;</span><br><span class="line">    &quot;pc&quot;: 6440847,</span><br><span class="line">    &quot;file&quot;: &quot;/vagrant/example/server/metrics.go&quot;,</span><br><span class="line">    &quot;line&quot;: 105,</span><br><span class="line">    &quot;function&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;main.(*Metrics).SetM&quot;,</span><br><span class="line">      &quot;value&quot;: 6440672,</span><br><span class="line">      &quot;type&quot;: 0,</span><br><span class="line">      &quot;goType&quot;: 0,</span><br><span class="line">      &quot;optimized&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;startLoc&quot;: &#123;</span><br><span class="line">    &quot;pc&quot;: 6440880,</span><br><span class="line">    &quot;file&quot;: &quot;/vagrant/example/server/metrics.go&quot;,</span><br><span class="line">    &quot;line&quot;: 109,</span><br><span class="line">    &quot;function&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;main.(*Metrics).startInChannelConsumer&quot;,</span><br><span class="line">      &quot;value&quot;: 6440880,</span><br><span class="line">      &quot;type&quot;: 0,</span><br><span class="line">      &quot;goType&quot;: 0,</span><br><span class="line">      &quot;optimized&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果中有一条信息非常振奋人心！</p>
+<p>在<code>main.(*Metrics).startInChannelConsumer</code>，109行（看结果中的startLoc字段），有一个id为20的goroutines阻塞住了！</p>
+<p>拿到goroutines的id能够大大降低我们搜索的范围（并且我们再也不用深入庞大的JSON文件了）。使用Delve的<code>goroutines</code>命令我们能够将当前goroutines切换到目标goroutines，然后可以使用<code>stack</code>命令打印该goroutines的堆栈信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">dlv core example/server/server core.1628</span></span><br><span class="line"></span><br><span class="line">(dlv) goroutine 20</span><br><span class="line">Switched from 0 to 20 (thread 1628)</span><br><span class="line"></span><br><span class="line">(dlv) stack -full</span><br><span class="line">0  0x000000000042d7bb in runtime.gopark</span><br><span class="line">   at /usr/local/go/src/runtime/proc.go:303</span><br><span class="line">       lock = unsafe.Pointer(0xc000104058)</span><br><span class="line">       reason = waitReasonChanSend</span><br><span class="line">···</span><br><span class="line">3  0x00000000004066a5 in runtime.chansend1</span><br><span class="line">   at /usr/local/go/src/runtime/chan.go:125</span><br><span class="line">       c = (unreadable empty OP stack)</span><br><span class="line">       elem = (unreadable empty OP stack)</span><br><span class="line"></span><br><span class="line">4  0x000000000062478f in main.(*Metrics).SetM</span><br><span class="line">   at /vagrant/example/server/metrics.go:105</span><br><span class="line">       key = (unreadable empty OP stack)</span><br><span class="line">       m = (unreadable empty OP stack)</span><br><span class="line">       value = (unreadable empty OP stack)</span><br><span class="line"></span><br><span class="line">5  0x0000000000624e64 in main.(*Metrics).sendMetricsToOutChannel</span><br><span class="line">   at /vagrant/example/server/metrics.go:146</span><br><span class="line">       m = (*main.Metrics)(0xc000056040)</span><br><span class="line">       scope = 0</span><br><span class="line">       updateInterval = (unreadable could not find loclist entry at 0x89f76 for address 0x624e63)</span><br><span class="line"></span><br><span class="line">6  0x0000000000624a2f in main.(*Metrics).startInChannelConsumer</span><br><span class="line">   at /vagrant/example/server/metrics.go:127</span><br><span class="line">       m = (*main.Metrics)(0xc000056040)</span><br><span class="line">       inMetrics = main.Metric &#123;Type: TypeCount, Scope: 0, Key: &quot;server.req-incoming&quot;,...+2 more&#125;</span><br><span class="line">       nextUpdate = (unreadable could not find loclist entry at 0x89e86 for address 0x624a2e)</span><br></pre></td></tr></table></figure>
+
+<p>从下往上分析：</p>
+<p>（6）一个来自通道的新<code>inMetrics</code>值在<code>main.(*Metrics).startInChannelConsumer</code>中被接收</p>
+<p>（5）我们调用<code>main.(*Metrics).sendMetricsToOutChannel</code>并且在<code>example/server/metrics.go</code>的146行进行处理</p>
+<p>（4）然后<code>main.(*Metrics).SetM</code>被调用</p>
+<p>一直运行到<code>runtime.gopark</code>中的<code>waitReasonChanSend</code>阻塞！</p>
+<p>一切的一切都明朗了！</p>
+<p>单个goroutines中，一个从缓冲通道读取数据的函数，同时也在往通道中发送数据。当进入通道的值达到通道的容量时，消费函数继续往已满的通道中发送数据就会造成自身的死锁。由于单个通道的消费者死锁，那么每一个尝试往通道中发送数据的请求都会被阻塞。</p>
+<hr>
+<p>这就是我们的故事，使用上述调试技术帮助我们发现了问题的根源。那些代码是很多年前写的，甚至从没有人看过这些代码，也万万没有想到会导致这么大的问题。</p>
+<p>如你所见，并不是所有问题都能由工具解决，但是工具能够帮助你更好地工作。我希望，通过此文能够激励你多多尝试这些工具。我非常乐意倾听你们处理类似问题的其它解决方案。</p>
+<p><strong>Vladimir<em>是一个后端开发工程师，目前就职于</em>adjust.com. @tvii on Twitter, @narqo on Github</strong></p>
+<hr>
+<p>via: <a href="https://blog.gopheracademy.com/advent-2018/postmortem-debugging-delve/">https://blog.gopheracademy.com/advent-2018/postmortem-debugging-delve/</a></p>
+<p>作者：<a href="https://blog.gopheracademy.com/advent-2018/postmortem-debugging-delve/">Vladimir Varankin</a><br>译者：<a href="https://github.com/hantmac">hantmac</a></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/go/" rel="tag"># go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/12/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC%E5%AE%9E%E7%8E%B0go%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%87%E7%BA%A7/" rel="prev" title="自动化脚本实现go安装与升级">
+                  <i class="fa fa-angle-left"></i> 自动化脚本实现go安装与升级
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/01/28/%E8%AE%B0%E7%AC%AC%E4%B8%80%E4%B8%AAVue%E9%A1%B9%E7%9B%AE%E5%8F%B0%E5%89%8D%E5%B9%95%E5%90%8E%E7%9A%84%E7%BB%8F%E5%8E%86/" rel="next" title="记第一个Vue项目台前幕后的经历">
+                  记第一个Vue项目台前幕后的经历 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

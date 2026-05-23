@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/05/25/Golang-%E4%B8%AD-JSON-%E6%93%8D%E4%BD%9C%E7%9A%84-5-%E4%B8%AA%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-25T10:06:53.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.767Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/05/25/Golang-%E4%B8%AD-JSON-%E6%93%8D%E4%BD%9C%E7%9A%84-5-%E4%B8%AA%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/05/25/Golang-%E4%B8%AD-JSON-%E6%93%8D%E4%BD%9C%E7%9A%84-5-%E4%B8%AA%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1/","path":"2024/05/25/Golang-中-JSON-操作的-5-个常见陷阱/","title":"Golang 中 JSON 操作的 5 个常见陷阱"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Golang 中 JSON 操作的 5 个常见陷阱 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-%E2%80%98%E5%9D%91%E2%80%99"><span class="nav-number">2.</span> <span class="nav-text">常见的 ‘坑’</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-public-or-private-%E5%AD%97%E6%AE%B5%E5%A4%84%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">1. public or private 字段处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%AD%A6%E6%83%95%E7%BB%93%E6%9E%84%E4%BD%93%E7%BB%84%E5%90%88"><span class="nav-number">2.2.</span> <span class="nav-text">2. 警惕结构体组合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%83%A8%E5%88%86%E6%88%90%E5%91%98%E5%AD%97%E6%AE%B5"><span class="nav-number">2.3.</span> <span class="nav-text">3. 反序列化部分成员字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%A4%84%E7%90%86%E6%8C%87%E9%92%88%E5%AD%97%E6%AE%B5"><span class="nav-number">2.4.</span> <span class="nav-text">4. 处理指针字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%9B%B6%E5%80%BC%EF%BC%88%E9%BB%98%E8%AE%A4%E5%80%BC%EF%BC%89%E5%8F%AF%E8%83%BD%E9%80%A0%E6%88%90%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.5.</span> <span class="nav-text">5. 零值（默认值）可能造成的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/05/25/Golang-%E4%B8%AD-JSON-%E6%93%8D%E4%BD%9C%E7%9A%84-5-%E4%B8%AA%E5%B8%B8%E8%A7%81%E9%99%B7%E9%98%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Golang 中 JSON 操作的 5 个常见陷阱 | cloud world">
+      <meta itemprop="description" content="Golang 中 JSON 操作的 5 个常见陷阱">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang 中 JSON 操作的 5 个常见陷阱
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-25 18:06:53" itemprop="dateCreated datePublished" datetime="2024-05-25T18:06:53+08:00">2024-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">Golang 中 JSON 操作的 5 个常见陷阱</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+
+<p>JSON 是许多开发人员在工作中经常使用的一种数据格式。它一般用于配置文件或网络数据传输等场景。由于其简单、易懂、可读性好，JSON 已成为整个 IT 界最常用的格式之一。对于这种情况，Golang 和许多其他语言一样，也提供了标准库级别的支持, <a href="https://pkg.go.dev/encoding/json" title="encoding/json">encoding&#x2F;json</a>。</p>
+<p>就像 JSON 本身很容易理解一样，用于操作 JSON 的编码&#x2F;JSON 库也非常容易使用。但我相信，很多开发者可能会像我第一次使用这个库时一样，遇到各种奇怪的问题或 bug。本文总结了我个人在使用 Golang 操作 JSON 时遇到的问题和错误。希望能帮助更多阅读本文的开发者掌握 Golang 的使用技巧，更正确地操作 JSON，避免调用不必要的”坑”。</p>
+<p>本文内容基于 Go 1.22。不同版本之间可能存在细微差别。读者在阅读和使用时请注意。同时，本文列出的所有案例均使用 <code>encoding/json</code>，不涉及任何第三方 JSON 库。</p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>先来看下 <code>encoding/json</code> 的基本用法。<br>作为一种数据格式，JSON 的核心操作只有两个：序列化和反序列化。序列化是将 Go 对象转换为 JSON 格式的字符串（或字节序列）。反序列化则相反，是将 JSON 格式的数据转换成 Go 对象。</p>
+<p>这里提到的对象是一个宽泛的概念。它不仅指结构对象，还包括切片和映射类型的数据。它们也支持 JSON 序列化。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">  <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line"> ID   <span class="type">uint</span></span><br><span class="line"> Name <span class="type">string</span></span><br><span class="line"> Age  <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">MarshalPerson</span><span class="params">()</span></span> &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   <span class="number">1</span>,</span><br><span class="line">  Name: <span class="string">&quot;Bruce&quot;</span>,</span><br><span class="line">  Age:  <span class="number">18</span>,</span><br><span class="line"> &#125;</span><br><span class="line"> output, err := json.Marshal(p)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="built_in">println</span>(<span class="type">string</span>(output))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UnmarshalPerson</span><span class="params">()</span></span> &#123;</span><br><span class="line"> str := <span class="string">`&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;,&quot;Age&quot;:18&#125;`</span></span><br><span class="line"> <span class="keyword">var</span> p Person</span><br><span class="line"> err := json.Unmarshal([]<span class="type">byte</span>(str), &amp;p)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="built_in">panic</span>(err)</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Printf(<span class="string">&quot;%+v\n&quot;</span>, p)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心是两个函数 <code>json.Marshal</code> 和 <code>json.Unmarshal</code>，分别用于序列化和反序列化。这两个函数都会返回错误，在这里我只是简单地 panic 一下。<br>使用过 <code>encoding/json</code> 的读者可能知道，还有另一对工具会经常用到：NewEncoder 和 NewDecoder。简单看一下源代码就会发现，这两个工具的底层核心逻辑调用与 Marshal 是一样的，所以我就不在这里举例说明了。</p>
+<h3 id="常见的-‘坑’"><a href="#常见的-‘坑’" class="headerlink" title="常见的 ‘坑’"></a>常见的 ‘坑’</h3><h4 id="1-public-or-private-字段处理"><a href="#1-public-or-private-字段处理" class="headerlink" title="1. public or private 字段处理"></a>1. public or private 字段处理</h4><p>这可能是刚接触 Go 的开发人员最容易犯的错误。也就是说，如果我们使用结构体处理 JSON，那么结构体的成员字段必须是公有的，即首字母大写的，而私有成员是无法解析的。<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">  age  int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func MarshalPerson() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  age:  18,</span><br><span class="line"> &#125;</span><br><span class="line"> output, err := json.Marshal(p)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  panic(err)</span><br><span class="line"> &#125;</span><br><span class="line"> println(string(output))</span><br><span class="line">&#125;</span><br><span class="line">func UnmarshalPerson() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;,&quot;age&quot;:18&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> err := json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> if err != nil &#123;</span><br><span class="line">  panic(err)</span><br><span class="line"> &#125;</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output Marshal:</span><br><span class="line">&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;</span><br><span class="line">// Output Unmarshal:</span><br><span class="line">&#123;ID:1 Name:Bruce age:0&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在这里，age 被设置为私有变量，因此序列化的 JSON 字符串中没有 age 字段。同样，在将 JSON 字符串反序列化为 Person 时，也无法正确读取 age 的值。<br>原因很简单。如果我们深入研究 Marshal 下的源代码，就会发现它实际上使用了 <code>reflect</code> 来动态解析 <code>struct</code> 对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// .../src/encoding/json/encode.go</span><br><span class="line"></span><br><span class="line">func (e *encodeState) marshal(v any, opts encOpts) (err error) &#123;</span><br><span class="line"> // ...skip</span><br><span class="line"> e.reflectValue(reflect.ValueOf(v), opts)</span><br><span class="line"> return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而 Golang 在语言设计层面禁止对结构的私有成员进行反射式访问，因此这种反射式解析自然会失败，反序列化也是如此。</p>
+<h4 id="2-警惕结构体组合"><a href="#2-警惕结构体组合" class="headerlink" title="2. 警惕结构体组合"></a>2. 警惕结构体组合</h4><p>Go 是面向对象的，但它没有类，只有结构，而结构没有继承性。因此，Go 使用一种组合来重用不同的结构。在许多情况下，这种组合非常方便，因为我们可以像操作结构本身的成员一样操作组合中的其他成员，就像下面这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">  address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type address struct &#123;</span><br><span class="line"> Code   int</span><br><span class="line"> Street string</span><br><span class="line">&#125;</span><br><span class="line">func (a address) PrintAddr() &#123;</span><br><span class="line"> fmt.Println(a.Code, a.Street)</span><br><span class="line">&#125;</span><br><span class="line">func Group() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  address: address&#123;</span><br><span class="line">   Code:   100,</span><br><span class="line">   Street: &quot;Main St&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line"> &#125;</span><br><span class="line"> // Access all address&#x27;s fields and methods directly</span><br><span class="line"> fmt.Println(p.Code, p.Street)</span><br><span class="line"> p.PrintAddr()</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">100 Main St</span><br><span class="line">100 Main St</span><br></pre></td></tr></table></figure>
+
+<p>结构体组合使用起来确实挺方便。不过，在使用 JSON 解析时，我们需要注意一个小问题。请看下面的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// The structure used here is the same as the previous one, </span><br><span class="line">// so I won&#x27;t repeat it. error is also not captured to save space.</span><br><span class="line"></span><br><span class="line">func MarshalPerson() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  address: address&#123;</span><br><span class="line">   Code:   100,</span><br><span class="line">   Street: &quot;Main St&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line"> &#125;</span><br><span class="line"> // It would be more pretty by MarshalIndent</span><br><span class="line"> output, _ := json.MarshalIndent(p, &quot;&quot;, &quot;  &quot;)</span><br><span class="line"> println(string(output))</span><br><span class="line">&#125;</span><br><span class="line">func UnmarshalPerson() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;,&quot;address&quot;:&#123;&quot;Code&quot;:100,&quot;Street&quot;:&quot;Main St&quot;&#125;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output MarshalPerson:</span><br><span class="line">&#123;</span><br><span class="line">  &quot;ID&quot;: 1,</span><br><span class="line">  &quot;Name&quot;: &quot;Bruce&quot;,</span><br><span class="line">  &quot;Code&quot;: 100,</span><br><span class="line">  &quot;Street&quot;: &quot;Main St&quot;</span><br><span class="line">&#125;</span><br><span class="line">// Ouptput UnmarshalPerson:</span><br><span class="line">&#123;ID:1 Name:Bruce address:&#123;Code:0 Street:&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里先声明一个 Person 对象，然后使用 MarshalIndent 美化序列化结果并打印出来。从打印输出中我们可以看到，整个 Person 对象都被扁平化了。就 Person 结构而言，尽管进行了组合，但它看起来仍有一个地址成员字段。因此，有时我们会想当然地认为 Person 的序列化 JSON 看起来是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// The imagine of JSON serialization result</span><br><span class="line">&#123;</span><br><span class="line">  &quot;ID&quot;: 1,</span><br><span class="line">  &quot;Name&quot;: &quot;Bruce&quot;,</span><br><span class="line">  &quot;address&quot;: &#123;</span><br><span class="line">    &quot;Code&quot;: 100,</span><br><span class="line">    &quot;Street&quot;: &quot;Main St&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但事实并非如此，它被扁平化了。这更符合我们之前直接通过 Person 访问地址成员时的感觉，即地址成员似乎直接成为了 Person 的成员。这一点需要注意，因为这种组合会使序列化后的 JSON 结果扁平化。</p>
+<p>另一个有点违反直觉的问题是，地址结构是一个私有结构，而私有成员似乎不应该被序列化？没错，这也是这种组合结构体做 JSON 解析的缺点之一：它暴露了私有组合对象的公共成员。<br>如果没有特殊需要（例如，原始 JSON 数据已被扁平化，并且有多个结构体的重复字段需要重复使用），从我个人的角度来看，建议这样编写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID      int</span><br><span class="line">  Name    string</span><br><span class="line">  Address address</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-反序列化部分成员字段"><a href="#3-反序列化部分成员字段" class="headerlink" title="3. 反序列化部分成员字段"></a>3. 反序列化部分成员字段</h4><p>直接查看代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   uint</span><br><span class="line">  Name string</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// PartUpdateIssue simulates parsing two different </span><br><span class="line">// JSON strings with the same structure</span><br><span class="line">func PartUpdateIssue() &#123;</span><br><span class="line"> var p Person</span><br><span class="line"> // The first data has the ID field and is not 0</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> // The second data does not have an ID field, </span><br><span class="line"> // deserializing it again with p preserves the last value</span><br><span class="line"> str = `&#123;&quot;Name&quot;:&quot;Jim&quot;&#125;`</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> // Notice the output ID is still 1</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;ID:1 Name:Bruce&#125;</span><br><span class="line">&#123;ID:1 Name:Jim&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从代码注释中可以知道，当我们重复使用同一结构来反序列化不同的 JSON 数据时，一旦某个 JSON 数据的值只包含部分成员字段，那么未包含的成员就会使用最后一次反序列化的值，会产生脏数据污染问题。</p>
+<h4 id="4-处理指针字段"><a href="#4-处理指针字段" class="headerlink" title="4. 处理指针字段"></a>4. 处理指针字段</h4><p>许多开发人员一听到指针这个词就头疼不已，其实大可不必。但 Go 中的指针确实给开发人员带来了 Go 程序中最常见的 panic 之一：空指针异常。当指针与 JSON 结合时会发生什么呢？</p>
+<p>看下面的代码:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID      uint</span><br><span class="line">  Name    string</span><br><span class="line">  Address *Address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func UnmarshalPtr() &#123;</span><br><span class="line"> str := `&#123;&quot;ID&quot;:1,&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> // It would panic this line</span><br><span class="line"> // fmt.Printf(&quot;%+v\n&quot;, p.Address.Street)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;ID:1 Name:Bruce Address:&lt;nil&gt;&#125;</span><br></pre></td></tr></table></figure>
+<p>我们将 Address 成员定义为指针，当我们反序列化一段不包含 Address 的 JSON 数据时，指针字段会被设置为 nil，因为它没有对应的数据。如果我们直接调用 p.Address.xxx，程序会因为 p.Address 为空而崩溃。</p>
+<p>因此，如果有一个指针指向我们结构中的一个成员，请记住在使用它之前先确定指针是否为 nil。这有点繁琐，但也没办法。毕竟，编写几行代码与生产环境中的 panic 所造成的损失相比可能并不算什么。</p>
+<p>此外，在创建带有指针字段的结构时，指针字段的赋值也会相对繁琐：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  ID   int    </span><br><span class="line">  Name string </span><br><span class="line">  Age  *int   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Foo() &#123;</span><br><span class="line"> p := Person&#123;</span><br><span class="line">  ID:   1,</span><br><span class="line">  Name: &quot;Bruce&quot;,</span><br><span class="line">  Age:  new(int),</span><br><span class="line"> &#125;</span><br><span class="line"> *p.Age = 20</span><br><span class="line"> // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-零值（默认值）可能造成的问题"><a href="#5-零值（默认值）可能造成的问题" class="headerlink" title="5. 零值（默认值）可能造成的问题"></a>5. 零值（默认值）可能造成的问题</h4><p>零值是 Golang 变量的一个特性，我们可以简单地将其视为默认值。也就是说，如果我们没有显式地给变量赋值，Golang 就会给它赋一个默认值。例如，我们在前面的例子中看到，int 的默认值为 0，string 的默认值为空字符串，指针的零值为 nil，等等。</p>
+<p>处理带有零值的 JSON 有哪些隐患？<br>请看下面的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  Name        string</span><br><span class="line">  ChildrenCnt int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func ZeroValueConfusion() &#123;</span><br><span class="line"> str := `&#123;&quot;Name&quot;:&quot;Bruce&quot;&#125;`</span><br><span class="line"> var p Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str), &amp;p)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p)</span><br><span class="line"> str2 := `&#123;&quot;Name&quot;:&quot;Jim&quot;,&quot;ChildrenCnt&quot;:0&#125;`</span><br><span class="line"> var p2 Person</span><br><span class="line"> _ = json.Unmarshal([]byte(str2), &amp;p2)</span><br><span class="line"> fmt.Printf(&quot;%+v\n&quot;, p2)</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;Name:Bruce ChildrenCnt:0&#125;</span><br><span class="line">&#123;Name:Jim ChildrenCnt:0&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们在 <code>Person</code> 结构中添加了一个 ChildrenCnt 字段，用于计算该人的子女数量。由于该字段的值为零，当 p 加载的 JSON 数据中没有 ChildrenCnt 数据时，该字段的赋值为 0。在 Bruce 和 Jim 的例子中，由于数据缺失，其中一个的子女数为 0，而另一个的子女数为 0。而实际上布鲁斯的子女数应该是 “未知”，如果我们真的将其视为 0，可能会在业务上造成问题。<br>在一些对数据有严格要求的场景中，这种混淆是非常致命的。那么，有没有办法避免这种零值干扰呢？<br>让我们将 Person 的 ChildrenCnt 类型改为 *int 并看看会发生什么：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">type Person struct &#123;</span><br><span class="line">  Name        string</span><br><span class="line">  ChildrenCnt *int</span><br><span class="line">&#125;</span><br><span class="line">// Output</span><br><span class="line">&#123;Name:Bruce ChildrenCnt:&lt;nil&gt;&#125;</span><br><span class="line">&#123;Name:Jim ChildrenCnt:0xc0000124c8&#125;</span><br></pre></td></tr></table></figure>
+<p>不同之处在于 Bruce 没有数据，因此 ChildrenCnt 为零，而 Jim 是一个非零指针。这样就很明显了，Bruc 的孩子数量是未知的。 从本质上讲，这种方法仍然使用零值，即指针的零值，有点像以毒攻毒（笑）。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>  在这篇文章中，我列举了自己在使用编码&#x2F;json 库时犯过的 7 个错误，其中大部分都是我在工作中遇到的。如果你还没有遇到过，那么恭喜你！这也提醒我们今后在使用 JSON 时要小心谨慎；如果你遇到过这些问题，并为此感到困惑，希望本文能对你有所帮助。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/17/%E4%BD%BF%E7%94%A8-Golang-%E5%88%9B%E5%BB%BA%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="prev" title="使用 Golang 创建反向代理">
+                  <i class="fa fa-angle-left"></i> 使用 Golang 创建反向代理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/29/%E6%8E%8C%E6%8F%A1-Golang-Mutex%EF%BC%9A%E5%AE%89%E5%85%A8%E5%B9%B6%E5%8F%91%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" rel="next" title="掌握 Golang Mutex：安全并发的最佳实践">
+                  掌握 Golang Mutex：安全并发的最佳实践 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

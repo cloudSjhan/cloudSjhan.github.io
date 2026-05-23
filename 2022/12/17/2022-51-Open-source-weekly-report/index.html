@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="2022 NO.51 周报">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022 51 Open source weekly report">
+<meta property="og:url" content="https://cloudsjhan.github.io/2022/12/17/2022-51-Open-source-weekly-report/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="2022 NO.51 周报">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h973opa25sj30pw0bamxw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h96n06kdcwj30qk0cg3zb.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h972vmd7aqj318v0s9n14.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h972v1gxwjj30zk0js76o.jpg">
+<meta property="article:published_time" content="2022-12-17T02:25:18.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.755Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="weekly-report">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008vxvgGgy1h973opa25sj30pw0bamxw.jpg">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2022/12/17/2022-51-Open-source-weekly-report/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2022/12/17/2022-51-Open-source-weekly-report/","path":"2022/12/17/2022-51-Open-source-weekly-report/","title":"2022 51 Open source weekly report"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2022 51 Open source weekly report | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-dbt"><span class="nav-number">1.</span> <span class="nav-text">What is dbt?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-use-dbt-with-Databend-Cloud"><span class="nav-number">2.</span> <span class="nav-text">How to use dbt with Databend Cloud</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Issue"><span class="nav-number">2.0.1.</span> <span class="nav-text">Issue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PR"><span class="nav-number">2.0.2.</span> <span class="nav-text">PR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Disscussion"><span class="nav-number">2.0.3.</span> <span class="nav-text">Disscussion</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-airbyte"><span class="nav-number">3.</span> <span class="nav-text">What is airbyte?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClickVisual-%E6%94%AF%E6%8C%81-databend-source"><span class="nav-number">4.</span> <span class="nav-text">ClickVisual 支持 databend source</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Openkruise-%E9%81%97%E7%95%99-PR"><span class="nav-number">5.</span> <span class="nav-text">Openkruise 遗留 PR</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2022/12/17/2022-51-Open-source-weekly-report/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2022 51 Open source weekly report | cloud world">
+      <meta itemprop="description" content="2022 NO.51 周报">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2022 51 Open source weekly report
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-17 10:25:18" itemprop="dateCreated datePublished" datetime="2022-12-17T10:25:18+08:00">2022-12-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/weekly-report/" itemprop="url" rel="index"><span itemprop="name">weekly-report</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">2022 NO.51 周报</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<p>距离上一次 weekly report 已经过去整整一个月，在 <a href="https://github.com/databendcloud/databend-py">databend-py</a>、<a href="https://github.com/databendcloud/databend-sqlalchemy">databend-sqlalchemy</a> 基本可用的前提下我开始着手在 <a href="https://docs.getdbt.com/">dbt</a> 的生态中支持 databend cloud。dbt 提供了一种插件生态，我们可以开发专有的 adapter plugin 从而将 DBT 扩展到任何数据平台。dbt 算是在数据领域的新物种，在国内感觉用的还不是很多，但是在国外已经俨然成为现代数据领域的后起之秀。所以下面先抛砖引玉，简单介绍一下 dbt。</p>
+<h2 id="What-is-dbt"><a href="#What-is-dbt" class="headerlink" title="What is dbt?"></a>What is dbt?</h2><p>dbt 是一个非常强大和灵活的数据工具，它可以快速构建数据 pipe、基于  jinjia 模板以自动测试、构建和填充分析模型，包括文档的自动生成和开箱即用的数据血缘，非常适合自动化数仓的工作。其核心代码是一个开源 Python 库 - <a href="https://github.com/dbt-labs/dbt-core">dbt-core</a> 。可以参考<a href="https://discourse.getdbt.com/t/how-we-set-up-our-computers-for-working-on-dbt-projects/243">这个项目</a>快速上手体验一下。</p>
+<p>需要强调的一点是 dbt 并不是传统的 ETL 工具，</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h973opa25sj30pw0bamxw.jpg" alt="ETL"></p>
+<p>它并不在系统之间传输或者加载数据，而是通过使用 SQL 和 YAML 来转换已经被加载到数仓中的数据。这种先加载后转换的概念，称为 ELT。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h96n06kdcwj30qk0cg3zb.jpg" alt="ELT"></p>
+<p>在 ELT 的过程中，数据无须等待即可进入数仓，转换出现错误也不需要重新加载，能够提高效率并降低成本。下面我也会介绍一个 EL 的工具 - airbyte，看 airbyte + dbt 如何实现完美的 ELT 流程。关于  dbt 的介绍就到这里，想要深入了解的同学可以参考 dbt 官网和 dbt-core 的 github 主页。</p>
+<h2 id="How-to-use-dbt-with-Databend-Cloud"><a href="#How-to-use-dbt-with-Databend-Cloud" class="headerlink" title="How to use dbt with Databend Cloud"></a>How to use dbt with Databend Cloud</h2><p>经过几周与 dbt 的搏斗，支持 databend 的 dbt adapter 插件 <a href="https://github.com/databendcloud/dbt-databend">dbt-databend-cloud</a> 终于能够跑通官方的 case 了✿✿ヽ(°▽°)ノ✿。开发的过程中也帮 databend 本身发现并解决了一些问题:</p>
+<h4 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h4><p><a href="https://github.com/datafuselabs/databend/issues/8906">Feature: support <code>a.*</code> in SQL</a></p>
+<p><a href="https://github.com/datafuselabs/databend/issues/8876">Feature: support <code>||</code> concat function in SQL</a></p>
+<p><a href="https://github.com/datafuselabs/databend/issues/9131">Feature: support SQL-style double-quoted identifier in get_path</a></p>
+<h4 id="PR"><a href="#PR" class="headerlink" title="PR"></a>PR</h4><p><a href="https://github.com/datafuselabs/databend/pull/9206">fix: double-quote in get_path</a></p>
+<p>期间也有跟 dbt 社区的讨论，非常感谢 dbt 社区的热心帮助:</p>
+<h4 id="Disscussion"><a href="#Disscussion" class="headerlink" title="Disscussion"></a>Disscussion</h4><p><a href="https://github.com/dbt-labs/dbt-core/discussions/6276">Field “path” of type Path in DatabendRelation has invalid value</a></p>
+<p>我们可以跟着这个 <a href="https://github.com/databendcloud/dbt-databend/wiki/How-to-use-dbt-with-Databend-Cloud">wiki - How to use dbt with Databend Cloud</a> 体验一下 dbt 的强大能力，希望后面能顺利将 dbt-databend 加入到官方 dbt-adapters 的维护阵营当中去。</p>
+<h2 id="What-is-airbyte"><a href="#What-is-airbyte" class="headerlink" title="What is airbyte?"></a>What is airbyte?</h2><p>上面我们介绍 ELT 的时候提到过 <code>airbyte</code>，这里再展开介绍一下。<a href="https://airbytehq.github.io/">Airbyte</a> 是一个开源的云原生数据集成平台，可以让用户从各种来源提取、转换和加载数据到各种目标。</p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h972vmd7aqj318v0s9n14.jpg" alt="airbyte"></p>
+<p>airbyte 的架构设计易于扩展，非常灵活，允许用户开发自定义的 source&#x2F;destination connector ，并且可以很方便地加入到 airbyte 的平台里。这里我主要是开发了一个 destination connector，将 databend cloud 作为数据的目的入口，这样用户就可以很容易地从各个数据源，比如 S3, Clickhouse, Filebot ，甚至本地文件同步数据到 databend cloud，并且 airbyte 的 Normalization 能力结合 dbt 后能够将原始数据转换成完整表结构的数据表。</p>
+<p>等这个 <a href="https://github.com/airbytehq/airbyte/pull/19815">PR</a> 合并后就可以在 airbyte cloud 上使用 databend cloud 作为 data source 了。</p>
+<h2 id="ClickVisual-支持-databend-source"><a href="#ClickVisual-支持-databend-source" class="headerlink" title="ClickVisual 支持 databend source"></a>ClickVisual 支持 databend source</h2><p>ClickVisual 是一个轻量级的由<a href="https://shimo.im/">石墨文档</a>开源的日志查询、分析、报警的可视化平台，提供一站式应用可靠性的可视化的解决方案。既可以独立部署使用，也可作为插件集成到第三方系统。目前是市面上唯一一款支持 ClickHouse 的类 Kibana 的业务日志查询平台。之前 ClickVisual 只支持 Clickhouse 作为数据源来存储、查询日志，我添加了一些代码经过调试后现在也能支持 databend cloud 作为数据源。</p>
+<p><a href="https://github.com/clickvisual/clickvisual/pull/823">Feat: support databend source</a></p>
+<p><a href="https://github.com/clickvisual/clickvisual/pull/835">feat: support exist log table for databend</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008vxvgGgy1h972v1gxwjj30zk0js76o.jpg"></p>
+<p>但是由于目前 databend 不支持类似 Clickhouse <code>status=&#39;200&#39;</code> ( <code>status</code> 是 <code>int32</code> 类型) 这样的语法，所以字段过滤查询的功能需要等这个 <a href="https://github.com/clickvisual/clickvisual/issues/836">issue-836</a> 解决后才能正常使用。</p>
+<h2 id="Openkruise-遗留-PR"><a href="#Openkruise-遗留-PR" class="headerlink" title="Openkruise 遗留 PR"></a>Openkruise 遗留 PR</h2><p>说起来真是非常惭愧，不仅已经很久没有参加 OpenKruise 的双周会了而且还遗留了一个陈年老 PR 没有完成，其实两周前 <a href="https://github.com/zmberg">zmberg</a> 就联系我尽快处理一下这个问题，所以这周无论如何也要把这个 <a href="https://github.com/openkruise/kruise/pull/1028">PR</a> 关掉 😭。</p>
+<hr>
+<p>综上，希望 2022 的最后两周工作顺利🎉。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/weekly-report/" rel="tag"># weekly-report</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/13/2022-47-Open-source-weekly-report/" rel="prev" title="2022 47 Open source weekly report">
+                  <i class="fa fa-angle-left"></i> 2022 47 Open source weekly report
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/17/2023-12-Open-Source-weekly-report/" rel="next" title="2023 12 Open Source weekly report">
+                  2023 12 Open Source weekly report <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 0 到 1 为 Databend 开发轻量级 CDC">
+<meta property="og:url" content="https://cloudsjhan.github.io/2023/07/18/%E4%BB%8E-0-%E5%88%B0-1-%E4%B8%BA-Databend-%E8%AE%BE%E8%AE%A1%E8%BD%BB%E9%87%8F%E7%BA%A7-CDC/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p.ipic.vip/0xvmti.png">
+<meta property="og:image" content="https://p.ipic.vip/4fgvvc.png">
+<meta property="og:image" content="https://p.ipic.vip/hauu8v.png">
+<meta property="og:image" content="https://p.ipic.vip/sdnd3u.jpg">
+<meta property="og:image" content="https://p.ipic.vip/c8zkw9.png">
+<meta property="og:image" content="https://p.ipic.vip/40yu3q.png">
+<meta property="og:image" content="https://p.ipic.vip/8sevgd.png">
+<meta property="og:image" content="https://p.ipic.vip/tfc5eg.png">
+<meta property="og:image" content="https://p.ipic.vip/plcu47.png">
+<meta property="og:image" content="https://p.ipic.vip/sr7ydp.png">
+<meta property="og:image" content="https://p.ipic.vip/e7k2bl.png">
+<meta property="og:image" content="https://p.ipic.vip/sbf8k0.png">
+<meta property="article:published_time" content="2023-07-18T02:24:52.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.737Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="CDC">
+<meta property="article:tag" content="Database">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p.ipic.vip/0xvmti.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2023/07/18/%E4%BB%8E-0-%E5%88%B0-1-%E4%B8%BA-Databend-%E8%AE%BE%E8%AE%A1%E8%BD%BB%E9%87%8F%E7%BA%A7-CDC/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2023/07/18/%E4%BB%8E-0-%E5%88%B0-1-%E4%B8%BA-Databend-%E8%AE%BE%E8%AE%A1%E8%BD%BB%E9%87%8F%E7%BA%A7-CDC/","path":"2023/07/18/从-0-到-1-为-Databend-设计轻量级-CDC/","title":"从 0 到 1 为 Databend 开发轻量级 CDC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从 0 到 1 为 Databend 开发轻量级 CDC | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-CDC"><span class="nav-number">1.</span> <span class="nav-text">什么是 CDC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E9%98%B6%E6%AE%B5%E4%B8%BB%E6%B5%81-CDC-%E6%96%B9%E6%A1%88%E5%92%8C%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">现阶段主流 CDC 方案和架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debezium-Server-Databend"><span class="nav-number">3.</span> <span class="nav-text">Debezium Server Databend</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-debezium-server-databend-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.1.</span> <span class="nav-text">源码分析 debezium-server-databend 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Append-mode"><span class="nav-number">3.2.</span> <span class="nav-text">Append mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Upsert-mode"><span class="nav-number">3.3.</span> <span class="nav-text">Upsert mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Delete"><span class="nav-number">3.4.</span> <span class="nav-text">Delete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BD%BB%E9%87%8F%E7%BA%A7-CDC-debezium-server-databend-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="nav-number">3.5.</span> <span class="nav-text">使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">3.5.1.</span> <span class="nav-text">准备阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%99%E7%A8%8B%E6%89%80%E9%9C%80%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-number">3.5.2.</span> <span class="nav-text">准备教程所需要的组件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#debezium-MySQL"><span class="nav-number">3.5.2.1.</span> <span class="nav-text">debezium-MySQL</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Debezium-Server-Databend-1"><span class="nav-number">3.5.2.2.</span> <span class="nav-text">Debezium Server Databend</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Debezium-Server-Databend-Application-Properties"><span class="nav-number">3.5.2.3.</span> <span class="nav-text">Debezium Server Databend Application Properties</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">3.5.3.</span> <span class="nav-text">准备数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9C%A8-MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">3.5.3.1.</span> <span class="nav-text">在 MySQL 数据库中准备数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9C%A8-Databend-%E4%B8%AD%E5%88%9B%E5%BB%BA-Database"><span class="nav-number">3.5.3.2.</span> <span class="nav-text">在 Databend 中创建 Database</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Debezium-Server-Databend"><span class="nav-number">3.5.4.</span> <span class="nav-text">启动 Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-Insert-%E6%95%B0%E6%8D%AE"><span class="nav-number">3.5.5.</span> <span class="nav-text">同步 Insert 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-Update-%E6%95%B0%E6%8D%AE"><span class="nav-number">3.5.6.</span> <span class="nav-text">同步 Update 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-Delete-%E6%95%B0%E6%8D%AE"><span class="nav-number">3.5.7.</span> <span class="nav-text">同步 Delete 数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%B8%85%E7%90%86"><span class="nav-number">3.5.8.</span> <span class="nav-text">环境清理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">3.6.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2023/07/18/%E4%BB%8E-0-%E5%88%B0-1-%E4%B8%BA-Databend-%E8%AE%BE%E8%AE%A1%E8%BD%BB%E9%87%8F%E7%BA%A7-CDC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="从 0 到 1 为 Databend 开发轻量级 CDC | cloud world">
+      <meta itemprop="description" content="从 0 到 1 为 Databend 实现轻量级 CDC">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从 0 到 1 为 Databend 开发轻量级 CDC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-18 10:24:52" itemprop="dateCreated datePublished" datetime="2023-07-18T10:24:52+08:00">2023-07-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CDC/" itemprop="url" rel="index"><span itemprop="name">CDC</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">从 0 到 1 为 Databend 实现轻量级 CDC</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><hr>
+<p class="description"></p>
+
+
+<span id="more"></span>
+
+<h2 id="什么是-CDC"><a href="#什么是-CDC" class="headerlink" title="什么是 CDC"></a>什么是 CDC</h2><p>CDC（Change Data Capture）是一种数据同步技术，用于实时捕获和传递数据库中的数据更改。通过 CDC，我们可以将数据库中的变更事件捕获并转换成数据流，然后将其传递给其他系统或应用程序，以实现数据的实时同步和分发。 常见的 CDC 格式为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;op&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Update&quot;</span><span class="punctuation">,</span> <span class="comment">// &quot;Insert&quot;, &quot;Delete&quot;,</span></span><br><span class="line">  <span class="attr">&quot;event_time&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2022-11-01 12:00:00&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;payload&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">123</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Franz Kafka&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Metamorphosis&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;published_at&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1915-01-01&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>一种生产可用的 CDC 系统架构可以是下图：</p>
+<p><img src="https://p.ipic.vip/0xvmti.png"></p>
+<h2 id="现阶段主流-CDC-方案和架构"><a href="#现阶段主流-CDC-方案和架构" class="headerlink" title="现阶段主流 CDC 方案和架构"></a>现阶段主流 CDC 方案和架构</h2><p>在目前的技术发展中，有几种主流的CDC方案和架构：</p>
+<p><strong>1. Flink CDC</strong></p>
+<p><a href="https://ververica.github.io/flink-cdc-connectors/release-2.1/content/about.html" title="Flink CDC">Flink CDC</a> 是基于 Apache Flink 的 CDC 方案。它可以实时捕获数据库的变更事件，并将其转换成流数据。Flink CDC 提供了非常多的连接器组件，可以在异构的数据源之间实现数据流动。</p>
+<p><img src="https://p.ipic.vip/4fgvvc.png" alt="Flink_CDC"></p>
+<p>Databend 也提供了 <a href="https://github.com/databendcloud/flink-connector-databend">flink-databend-connector</a>，可以与 MySQL，PG 等 RDBMS 构建实时数据同步。</p>
+<p><img src="https://p.ipic.vip/hauu8v.png"></p>
+<p><strong>2. Kafka Connector</strong></p>
+<p><a href="https://docs.confluent.io/platform/current/connect/index.html" title="Kafka Connector">Kafka Connector</a> 是基于 Apache Kafka 的 CDC 方案。Kafka 作为分布式消息队列，可以用于数据传递和分发。Kafka Connector 允许将数据从数据库中捕获，并将其发布到 Kafka 主题中，供其他系统消费。</p>
+<p><img src="https://p.ipic.vip/sdnd3u.jpg" alt="ingest-data-upstream-systems"></p>
+<p><strong>3. Canal</strong></p>
+<p><a href="https://github.com/alibaba/canal" title="Canal">Canal</a> 是阿里巴巴开源的 CDC 解决方案。它可以捕获 MySQL 数据库的变更，并将其转换成消息格式输出，常用于数据同步和业务解耦。限制是只能基于 MySQL 数据库增量日志解析。</p>
+<p><img src="https://p.ipic.vip/c8zkw9.png"></p>
+<p><strong>Debezium Server</strong></p>
+<p><a href="https://debezium.io/documentation/reference/1.6/overview.html" title="Debezium Server">Debezium Server</a> 是一个基于 Debezium Engine 的 CDC 项目。Debezium Engine 是 Debezium 项目的核心，用于捕获数据库的变更事件。Debezium Server 构建在该引擎之上，提供了一种轻量级的 CDC 解决方案，用于实时捕获数据库更改，并将其转换为事件流，最终将数据写入目标数据库。</p>
+<p><img src="https://p.ipic.vip/40yu3q.png"></p>
+<h2 id="Debezium-Server-Databend"><a href="#Debezium-Server-Databend" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h2><p><a href="https://github.com/databendcloud/debezium-server-databend" title="Debezium Server Databend">Debezium Server Databend</a> 是一个基于 Debezium Engine 自研的轻量级 CDC 项目，用于实时捕获数据库更改并将其作为事件流传递最终将数据写入目标数据库 Databend。它提供了一种简单的方式来监视和捕获关系型数据库的变化，并支持将这些变化转换为可消费事件。使用 Debezium server databend 实现 CDC 无须依赖大型的 Data Infra 比如 Flink, Kafka, Spark 等，只需一个启动脚本即可开启实时数据同步。</p>
+<p><img src="https://p.ipic.vip/8sevgd.png"></p>
+<h3 id="源码分析-debezium-server-databend-实现"><a href="#源码分析-debezium-server-databend-实现" class="headerlink" title="源码分析 debezium-server-databend 实现"></a>源码分析 debezium-server-databend 实现</h3><p><a href="https://github.com/databendcloud/debezium-server-databend/">Debezium Server Databend</a> 实现了轻量级CDC方案，通过 Debezium Engine 捕获数据库变更事件，将其转换成事件流，然后将事件流传递给 Databend 数据库，实现数据的实时同步。下面先从代码层面分析一下该组件的实现原理。</p>
+<p>主要代码的结构是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── DatabendChangeConsumer.java</span><br><span class="line">├── DatabendChangeEvent.java</span><br><span class="line">├── DatabendTypes.java</span><br><span class="line">├── DatabendUtil.java</span><br><span class="line">├── DebeziumMetrics.java</span><br><span class="line">├── batchsizewait</span><br><span class="line">│   ├── InterfaceBatchSizeWait.java</span><br><span class="line">│   ├── MaxBatchSizeWait.java</span><br><span class="line">│   └── NoBatchSizeWait.java</span><br><span class="line">└── tablewriter</span><br><span class="line">    ├── AppendTableWriter.java</span><br><span class="line">    ├── BaseTableWriter.java</span><br><span class="line">    ├── RelationalTable.java</span><br><span class="line">    ├── TableNotFoundException.java</span><br><span class="line">    ├── TableWriterFactory.java</span><br><span class="line">    └── UpsertTableWriter.java</span><br></pre></td></tr></table></figure>
+
+<p>Debezium server 的入口逻辑在 <code>DatabendChangeConsumer</code> 中，继承 <code>BaseChangeConsumer</code> 并实现相应方法， 作用是加载配置，初始化 server, database以及处理 batch event：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Implementation of the consumer that delivers the messages to databend database tables.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> hantmac</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Named(&quot;databend&quot;)</span></span><br><span class="line"><span class="meta">@Dependent</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DatabendChangeConsumer</span> <span class="keyword">extends</span> <span class="title class_">BaseChangeConsumer</span> <span class="keyword">implements</span> <span class="title class_">DebeziumEngine</span>.ChangeConsumer&lt;ChangeEvent&lt;Object, Object&gt;&gt; &#123;</span><br><span class="line">  ...<span class="comment">//  @ConfigProperty(name = &quot;debezium.sink.databend.xxx&quot;, defaultValue = &quot;&quot;)</span></span><br><span class="line">   <span class="keyword">void</span> <span class="title function_">connect</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleBatch</span><span class="params">(List&lt;ChangeEvent&lt;Object, Object&gt;&gt; records, DebeziumEngine.RecordCommitter&lt;ChangeEvent&lt;Object, Object&gt;&gt; committer)</span></span><br><span class="line">            <span class="keyword">throws</span> InterruptedException &#123;...&#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心代码是在 handleBatch 中，在这里接收变更事件并发送到 <code>tablewriter</code> 中进一步处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleBatch</span><span class="params">(List&lt;ChangeEvent&lt;Object, Object&gt;&gt; records, DebeziumEngine.RecordCommitter&lt;ChangeEvent&lt;Object, Object&gt;&gt; committer)</span></span><br><span class="line">          <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">      <span class="type">Instant</span> <span class="variable">start</span> <span class="operator">=</span> Instant.now();</span><br><span class="line"></span><br><span class="line">      <span class="comment">//group events by destination</span></span><br><span class="line">      Map&lt;String, List&lt;DatabendChangeEvent&gt;&gt; result =</span><br><span class="line">              records.stream()</span><br><span class="line">                      .map((ChangeEvent&lt;Object, Object&gt; e)</span><br><span class="line">                              -&gt; &#123;</span><br><span class="line">                          <span class="keyword">try</span> &#123;</span><br><span class="line">                              <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DatabendChangeEvent</span>(e.destination(),</span><br><span class="line">                                      valDeserializer.deserialize(e.destination(), getBytes(e.value())),</span><br><span class="line">                                      e.key() == <span class="literal">null</span> ? <span class="literal">null</span> : valDeserializer.deserialize(e.destination(), getBytes(e.key())),</span><br><span class="line">                                      mapper.readTree(getBytes(e.value())).get(<span class="string">&quot;schema&quot;</span>),</span><br><span class="line">                                      e.key() == <span class="literal">null</span> ? <span class="literal">null</span> : mapper.readTree(getBytes(e.key())).get(<span class="string">&quot;schema&quot;</span>)</span><br><span class="line">                              );</span><br><span class="line">                          &#125; <span class="keyword">catch</span> (IOException ex) &#123;</span><br><span class="line">                              <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">DebeziumException</span>(ex);</span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;)</span><br><span class="line">                      .collect(Collectors.groupingBy(DatabendChangeEvent::destination));</span><br><span class="line"></span><br><span class="line">      <span class="comment">// consume list of events for each destination table</span></span><br><span class="line">      <span class="keyword">for</span> (Map.Entry&lt;String, List&lt;DatabendChangeEvent&gt;&gt; tableEvents : result.entrySet()) &#123;</span><br><span class="line">          <span class="type">RelationalTable</span> <span class="variable">tbl</span> <span class="operator">=</span> <span class="built_in">this</span>.getDatabendTable(mapDestination(tableEvents.getKey()), tableEvents.getValue().get(<span class="number">0</span>).schema()); <span class="comment">// 获取 tablewriter 实例</span></span><br><span class="line">          tableWriter.addToTable(tbl, tableEvents.getValue()); <span class="comment">// 将事件推送至 tablewriter</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (ChangeEvent&lt;Object, Object&gt; record : records) &#123;</span><br><span class="line">          LOGGER.trace(<span class="string">&quot;Processed event &#x27;&#123;&#125;&#x27;&quot;</span>, record);</span><br><span class="line">          committer.markProcessed(record);</span><br><span class="line">      &#125;</span><br><span class="line">      committer.markBatchFinished();</span><br><span class="line">      <span class="built_in">this</span>.logConsumerProgress(records.size());</span><br><span class="line"></span><br><span class="line">      batchSizeWait.waitMs(records.size(), (<span class="type">int</span>) Duration.between(start, Instant.now()).toMillis());</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p><code>TableWriterFactory</code>中提供了 <code>Append</code> 和 <code>Upsert</code> 两种模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> BaseTableWriter <span class="title function_">get</span><span class="params">(<span class="keyword">final</span> Connection connection)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (upsert) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">UpsertTableWriter</span>(connection, identifierQuoteCharacter.orElse(<span class="string">&quot;&quot;</span>), upsertKeepDeletes);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AppendTableWriter</span>(connection, identifierQuoteCharacter.orElse(<span class="string">&quot;&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每种模式都实现了 <code>addTable</code> 方法。</p>
+<h3 id="Append-mode"><a href="#Append-mode" class="headerlink" title="Append mode"></a>Append mode</h3><p>在 CDC 中，Append Mode 是一种数据写入模式。当数据库的一条记录发生变化时，CDC 会将该变化作为一条新的事件追加到事件流中。</p>
+<h3 id="Upsert-mode"><a href="#Upsert-mode" class="headerlink" title="Upsert mode"></a>Upsert mode</h3><p>Upsert Mode 是另一种数据写入模式。当数据库的一条记录发生变化时，CDC 会将该变化作为一个更新操作，如果记录不存在，则作为插入操作，以实现数据的更新和插入。</p>
+<p>Upsert mode 用到了 Databend 的 <a href="https://databend.rs/doc/sql-commands/dml/dml-replace">Replace into</a> 语法，所以需要用户指定一个 conflict key，这里我们提供一个配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.databend.database.primaryKey=id</span><br></pre></td></tr></table></figure>
+
+<p>如果没有提供该配置，会退化成追加模式。</p>
+<h3 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h3><p>Delete操作是指数据库中的记录被删除，CDC 会将该操作作为一个事件写入事件流，以通知其他系统该记录已被删除。</p>
+<p> Debezim Server 对 Delete 的处理比较复杂，在 DELETE 操作下会生成两条事件记录：</p>
+<ol>
+<li>一个包含 “op”: “d”，其他的行数据以及字段；</li>
+<li>一个tombstones记录，它具有与被删除行相同的键，但值为null。</li>
+</ol>
+<p>这两条事件会同时发出，在 Debezium Server Databend 中我们选择对 Delete 数据实行软删除，这就要求我们在 target table 中拥有 <code>__deleted</code> 字段，当 Delete 事件过来的时候我们将该字段置为 TRUE 后插入到目标表。</p>
+<p>这样设计的好处是，有些用户最开始想要保留这些数据，但可能未来会想到将其删除，这样就为用户提供了可选的方案，未来想要删除这些数据的时候，只需要 <code>delete from table where __deleted=true</code> 即可。</p>
+<p>关于 Debezium 对删除事件的说明以及处理方式，详情可参考<a href="https://debezium.io/documentation/reference/stable/transformations/event-flattening.html" title="Debezium Event Flattening">文档</a>。</p>
+<h3 id="使用轻量级-CDC-debezium-server-databend-构建-MySQL-到-Databend-的-实时数据同步"><a href="#使用轻量级-CDC-debezium-server-databend-构建-MySQL-到-Databend-的-实时数据同步" class="headerlink" title="使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步"></a>使用轻量级 CDC debezium-server-databend 构建 MySQL 到 Databend 的 实时数据同步</h3><p>下面用一个实际案例展示如何基于 Debezium server databend 快速构建 MySQL 到 Databend 的实时数据同步。</p>
+<h4 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h4><p>准备一台已经安装了 Docker ，docker-compose 以及 Java 11 环境  的 Linux 或者 MacOS 。</p>
+<h4 id="准备教程所需要的组件"><a href="#准备教程所需要的组件" class="headerlink" title="准备教程所需要的组件"></a><strong>准备教程所需要的组件</strong></h4><p>接下来的教程将以 <code>docker-compose</code> 的方式准备所需要的组件。</p>
+<h5 id="debezium-MySQL"><a href="#debezium-MySQL" class="headerlink" title="debezium-MySQL"></a>debezium-MySQL</h5><p>docker-compose.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2.1&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">debezium/example-postgres:1.1</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5432:5432&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_DB=postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_USER=postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=postgres</span></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">debezium/example-mysql:1.1</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3306:3306&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=123456</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_USER=mysqluser</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_PASSWORD=mysqlpw</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Debezium-Server-Databend-1"><a href="#Debezium-Server-Databend-1" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h5><ul>
+<li>Clone 项目: <code>git clone ``https://github.com/databendcloud/debezium-server-databend.git</code></li>
+<li>从项目根目录开始:<ul>
+<li>构建和打包 debezium server: <code>mvn -Passembly -Dmaven.test.skip package</code></li>
+<li>构建完成后，解压服务器分发包: <code>unzip debezium-server-databend-dist/target/debezium-server-databend-dist*.zip -d databendDist</code></li>
+<li>进入解压后的文件夹: <code>cd databendDist</code></li>
+<li>创建 <code>application.properties</code> 文件并修改: <code>nano conf/application.properties</code>，将下面的 application.properties 拷贝进去，根据用户实际情况修改相应的配置。</li>
+<li>使用提供的脚本运行服务: <code>bash run.sh</code></li>
+<li>Debezium Server with Databend 将会启动</li>
+</ul>
+</li>
+</ul>
+<p>同时我们也提供了相应的 Docker image，可以在容器中一键启动：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">&#x27;2.1&#x27;</span></span><br><span class="line">services:</span><br><span class="line">  debezium:</span><br><span class="line">    image: ghcr.io/databendcloud/debezium-server-databend:pr-<span class="number">2</span></span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">&quot;8080:8080&quot;</span></span><br><span class="line">      - <span class="string">&quot;8083:8083&quot;</span></span><br><span class="line">    volumes:</span><br><span class="line">      - $PWD/conf:/app/conf</span><br><span class="line">      - $PWD/data:/app/data</span><br></pre></td></tr></table></figure>
+
+<p>NOTE: 在容器中启动注意所连接数据库的网络。</p>
+<h5 id="Debezium-Server-Databend-Application-Properties"><a href="#Debezium-Server-Databend-Application-Properties" class="headerlink" title="Debezium Server Databend Application Properties"></a>Debezium Server Databend Application Properties</h5><p>本文章使用下面提供的配置，更多的参数说明以及配置可以参考<a href="https://github.com/databendcloud/debezium-server-databend/blob/main/docs/docs.md" title="debezium-server-databend 配置文档">文档</a>。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.type<span class="operator">=</span>databend</span><br><span class="line">debezium.sink.databend.upsert<span class="operator">=</span><span class="literal">true</span></span><br><span class="line">debezium.sink.databend.upsert<span class="operator">-</span>keep<span class="operator">-</span>deletes<span class="operator">=</span><span class="literal">false</span></span><br><span class="line">debezium.sink.databend.database.databaseName<span class="operator">=</span>debezium</span><br><span class="line">debezium.sink.databend.database.url<span class="operator">=</span>jdbc:databend:<span class="operator">/</span><span class="operator">/</span>tnf34b0rm<span class="comment">--xxxxxx.default.databend.cn:443</span></span><br><span class="line">debezium.sink.databend.database.username<span class="operator">=</span>cloudapp</span><br><span class="line">debezium.sink.databend.database.password<span class="operator">=</span>password</span><br><span class="line">debezium.sink.databend.database.primaryKey<span class="operator">=</span>id</span><br><span class="line">debezium.sink.databend.database.tableName<span class="operator">=</span>products</span><br><span class="line">debezium.sink.databend.database.param.ssl<span class="operator">=</span><span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># enable event schemas</span><br><span class="line">debezium.format.value.schemas.enable<span class="operator">=</span><span class="literal">true</span></span><br><span class="line">debezium.format.key.schemas.enable<span class="operator">=</span><span class="literal">true</span></span><br><span class="line">debezium.format.value<span class="operator">=</span>json</span><br><span class="line">debezium.format.key<span class="operator">=</span>json</span><br><span class="line"></span><br><span class="line"># mysql source</span><br><span class="line">debezium.source.connector.class<span class="operator">=</span>io.debezium.connector.mysql.MySqlConnector</span><br><span class="line">debezium.source.offset.storage.file.filename<span class="operator">=</span>data<span class="operator">/</span>offsets.dat</span><br><span class="line">debezium.source.offset.flush.interval.ms<span class="operator">=</span><span class="number">60000</span></span><br><span class="line"></span><br><span class="line">debezium.source.database.hostname<span class="operator">=</span><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">debezium.source.database.port<span class="operator">=</span><span class="number">3306</span></span><br><span class="line">debezium.source.database.user<span class="operator">=</span>root</span><br><span class="line">debezium.source.database.password<span class="operator">=</span><span class="number">123456</span></span><br><span class="line">debezium.source.database.dbname<span class="operator">=</span>mydb</span><br><span class="line">debezium.source.database.server.name<span class="operator">=</span>from_mysql</span><br><span class="line">debezium.source.include.schema.changes<span class="operator">=</span><span class="literal">false</span></span><br><span class="line">debezium.source.table.include.list<span class="operator">=</span>mydb.products</span><br><span class="line"># debezium.source.database.ssl.mode<span class="operator">=</span>required</span><br><span class="line"># Run <span class="keyword">without</span> Kafka, use <span class="keyword">local</span> file <span class="keyword">to</span> store checkpoints</span><br><span class="line">debezium.source.database.history<span class="operator">=</span>io.debezium.relational.history.FileDatabaseHistory</span><br><span class="line">debezium.source.database.history.file.filename<span class="operator">=</span>data<span class="operator">/</span>status.dat</span><br><span class="line"># do event flattening. unwrap message<span class="operator">!</span></span><br><span class="line">debezium.transforms<span class="operator">=</span>unwrap</span><br><span class="line">debezium.transforms.unwrap.type<span class="operator">=</span>io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode<span class="operator">=</span>rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones<span class="operator">=</span><span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># ############ <span class="keyword">SET</span> LOG LEVELS ############</span><br><span class="line">quarkus.log.level<span class="operator">=</span>INFO</span><br><span class="line"># Ignore messages below warning level <span class="keyword">from</span> Jetty, because it<span class="string">&#x27;s a bit verbose</span></span><br><span class="line"><span class="string">quarkus.log.category.&quot;org.eclipse.jetty&quot;.level=WARN</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a><strong>准备数据</strong></h4><h5 id="在-MySQL-数据库中准备数据"><a href="#在-MySQL-数据库中准备数据" class="headerlink" title="在 MySQL 数据库中准备数据"></a><strong>在</strong> <strong>MySQL</strong> <strong>数据库中准备数据</strong></h5><p>进入 MySQL 容器</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">docker-compose</span> <span class="string">exec</span> <span class="string">mysql</span> <span class="string">mysql</span> <span class="string">-uroot</span> <span class="string">-p123456</span></span><br></pre></td></tr></table></figure>
+
+<p>创建数据库 mydb 和表 <code>products</code>，并插入数据:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE mydb;</span><br><span class="line">USE mydb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE TABLE</span> products (id <span class="type">INTEGER</span> <span class="keyword">NOT NULL</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,name <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT NULL</span>,description <span class="type">VARCHAR</span>(<span class="number">512</span>));</span><br><span class="line"><span class="keyword">ALTER TABLE</span> products AUTO_INCREMENT <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,&quot;scooter&quot;,&quot;Small 2-wheel scooter&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;car battery&quot;,&quot;12V car battery&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;12-pack drill bits&quot;,&quot;12-pack of drill bits with sizes ranging from #40 to #3&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;12oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;14oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;16oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;rocks&quot;,&quot;box of assorted rocks&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;jacket&quot;,&quot;water resistent black wind breaker&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;cloud&quot;,&quot;test for databend&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;spare tire&quot;,&quot;24 inch spare tire&quot;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="在-Databend-中创建-Database"><a href="#在-Databend-中创建-Database" class="headerlink" title="在 Databend 中创建 Database"></a>在 Databend 中创建 Database</h5><p><img src="https://p.ipic.vip/tfc5eg.png" alt="img"></p>
+<p>NOTE: 用户可以不必先在 Databend 中创建表，系统检测到后会自动为用户建表。</p>
+<h4 id="启动-Debezium-Server-Databend"><a href="#启动-Debezium-Server-Databend" class="headerlink" title="启动 Debezium Server Databend"></a>启动 Debezium Server Databend</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">bash</span> <span class="string">run.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>首次启动会进入 init snapshot 模式，通过配置的 Batch Size 全量将 MySQL 中的数据同步到 Databend，所以在 Databend 中可以看到 MySQL 中的数据已经同步过来了：</p>
+<p><img src="https://p.ipic.vip/plcu47.png" alt="img"></p>
+<h4 id="同步-Insert-数据"><a href="#同步-Insert-数据" class="headerlink" title="同步 Insert 数据"></a>同步 Insert 数据</h4><p>我们继续往 MySQL 中插入 5 条数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,&quot;scooter&quot;,&quot;Small 2-wheel scooter&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;car battery&quot;,&quot;12V car battery&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;12-pack drill bits&quot;,&quot;12-pack of drill bits with sizes ranging from #40 to #3&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;12oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;14oz carpenter&#x27;s hammer&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>Debezium server databend 日志：</p>
+<p><img src="https://p.ipic.vip/sr7ydp.png"></p>
+<p>同时在 Databend 中可以查到 5 条数据已经同步过来了：</p>
+<p><img src="https://p.ipic.vip/e7k2bl.png" alt="img"></p>
+<h4 id="同步-Update-数据"><a href="#同步-Update-数据" class="headerlink" title="同步 Update 数据"></a>同步 Update 数据</h4><p>配置文件中 <code>debezium.sink.databend.upsert=true</code> ，所以我们也可以处理 Update&#x2F;Delete 的事件。</p>
+<p>在 MySQL 中更新 id&#x3D;10 的数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> products <span class="keyword">set</span> name<span class="operator">=</span>&quot;from debezium&quot; <span class="keyword">where</span> id<span class="operator">=</span><span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 Databend 中可以查到 id 为 10 的数据已经被更新：</p>
+<p><img src="https://p.ipic.vip/sbf8k0.png" alt="img"></p>
+<h4 id="同步-Delete-数据"><a href="#同步-Delete-数据" class="headerlink" title="同步 Delete 数据"></a>同步 Delete 数据</h4><p>在配置文件中，有以下的配置，既可开启处理 Delete 事件的能力：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.databend.upsert<span class="operator">-</span>keep<span class="operator">-</span>deletes<span class="operator">=</span><span class="literal">false</span></span><br><span class="line">debezium.transforms<span class="operator">=</span>unwrap</span><br><span class="line">debezium.transforms.unwrap.type<span class="operator">=</span>io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode<span class="operator">=</span>rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones<span class="operator">=</span><span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL 中删除 id&#x3D;12 的数据：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> products <span class="keyword">where</span> id<span class="operator">=</span><span class="number">12</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 Databend 中可以观察到 id&#x3D;12 的值的 <code>__deleted</code> 字段已经被置为 <code>true</code>。</p>
+<h4 id="环境清理"><a href="#环境清理" class="headerlink" title="环境清理"></a><strong>环境清理</strong></h4><p>操作结束后，在 <code>docker-compose.yml</code> 文件所在的目录下执行如下命令停止所有容器：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker<span class="operator">-</span>compose down</span><br></pre></td></tr></table></figure>
+
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>文章介绍了 databend 的轻量级 CDC 实现原理，演示了基于轻量级 CDC debezium server databend 构建 MySQL 到 Databend 的 实时数据同步的全部过程，这种方式不需要依赖 Flink, Kafka 等大型组件，启动和管理非常方便。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CDC/" rel="tag"># CDC</a>
+              <a href="/tags/Database/" rel="tag"># Database</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/05/27/%E4%B8%BA-Databend-Rust-Driver-%E5%AE%9E%E7%8E%B0-Python-Binding/" rel="prev" title="为 Databend Rust Driver 实现 Python Binding">
+                  <i class="fa fa-angle-left"></i> 为 Databend Rust Driver 实现 Python Binding
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/08/databend-kafka-connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" rel="next" title="databend kafka connect 构建实时数据同步">
+                  databend kafka connect 构建实时数据同步 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

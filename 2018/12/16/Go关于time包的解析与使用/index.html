@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="golang time包的解析与使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go关于time包的解析与使用">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/16/Go%E5%85%B3%E4%BA%8Etime%E5%8C%85%E7%9A%84%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="golang time包的解析与使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-16T15:16:34.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.774Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2018/12/16/Go%E5%85%B3%E4%BA%8Etime%E5%8C%85%E7%9A%84%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2018/12/16/Go%E5%85%B3%E4%BA%8Etime%E5%8C%85%E7%9A%84%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/","path":"2018/12/16/Go关于time包的解析与使用/","title":"Go关于time包的解析与使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Go关于time包的解析与使用 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go%E5%85%B3%E4%BA%8E%E6%97%B6%E9%97%B4%E4%B8%8E%E6%97%A5%E6%9C%9F%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Go关于时间与日期的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Etime%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">关于time的数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8A%E7%B1%BB%E5%9E%8Breceiver%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">以上类型receiver的实现方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E6%8A%80%E5%B7%A7%E4%B8%8E%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">一些常用的技巧与代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%8F%82%E8%80%83"><span class="nav-number">2.1.</span> <span class="nav-text">相关参考</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/16/Go%E5%85%B3%E4%BA%8Etime%E5%8C%85%E7%9A%84%E8%A7%A3%E6%9E%90%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Go关于time包的解析与使用 | cloud world">
+      <meta itemprop="description" content="golang time包的解析与使用">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go关于time包的解析与使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-16 23:16:34" itemprop="dateCreated datePublished" datetime="2018-12-16T23:16:34+08:00">2018-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">golang time包的解析与使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h3 id="Go关于时间与日期的处理"><a href="#Go关于时间与日期的处理" class="headerlink" title="Go关于时间与日期的处理"></a>Go关于时间与日期的处理</h3><h4 id="关于time的数据类型"><a href="#关于time的数据类型" class="headerlink" title="关于time的数据类型"></a>关于time的数据类型</h4><ul>
+<li><p>time包依赖的数据类型有：<strong>time.Time</strong>,<strong>time.Month</strong>,<strong>time.WeekDay</strong>,<strong>time.Duration</strong>,<strong>time.Location</strong>.</p>
+</li>
+<li><p>详细介绍以上几种数据类型</p>
+<ul>
+<li><p>time.Time</p>
+</li>
+<li><p><code>/usr/local/go/src/time/time.go</code> 定义如下:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Time <span class="keyword">struct</span> &#123;</span><br><span class="line">    sec <span class="type">int64</span> <span class="comment">// 从1年1月1日 00:00:00 UTC 至今过去的秒数</span></span><br><span class="line">    nsec <span class="type">int32</span> <span class="comment">// 最近一秒到下一秒过去的纳秒数</span></span><br><span class="line">    loc *Location <span class="comment">// 时区</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>time.Time会返回纳秒时间精度的时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ti time.Time</span><br><span class="line">ti = time.Now()</span><br><span class="line">fmt.Printf(<span class="string">&quot;时间: %v, 时区:  %v,  时间类型: %T\n&quot;</span>, t, t.Location(), t)</span><br><span class="line"><span class="comment">//时间: 2018-12-15 09:06:05.816187261 +0800 CST, 时区:  Local,  时间类型: time.Time</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Month, go中自己重新定义了month的类型，与time.year和time.day不同。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">type Month int</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">    January Month = 1 + iota</span><br><span class="line">    February</span><br><span class="line">    March</span><br><span class="line">    April</span><br><span class="line">    May</span><br><span class="line">    June</span><br><span class="line">    July</span><br><span class="line">    August</span><br><span class="line">    September</span><br><span class="line">    October</span><br><span class="line">    November</span><br><span class="line">    December</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>iota是golang语言的常量计数器,只能在常量的表达式中使用。<br> iota在const关键字出现时将被重置为0(const内部的第一行之前)，const中每新增一行常量声明将使iota计数一次(iota可理解为const语句块中的行索引)。 使用iota能简化定义，在定义枚举时很有用。</p>
+</li>
+<li><p>time.WeekDay,代表一周之中的星期几（当然是按照西方的规则，他们把周日当做是一周的开始）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WeekDay <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Sunday Weekday = <span class="literal">iota</span></span><br><span class="line">    Monday</span><br><span class="line">    Tuesday</span><br><span class="line">    Wednesday</span><br><span class="line">    Thursday</span><br><span class="line">    Friday</span><br><span class="line">    Saturday</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Duration,代表两个时间点之间的纳秒差值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Duration <span class="type">int64</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Nanosecond  Duration = <span class="number">1</span></span><br><span class="line">    Microsecond          = <span class="number">1000</span> * Nanosecond</span><br><span class="line">    Millisecond          = <span class="number">1000</span> * Microsecond</span><br><span class="line">    Second               = <span class="number">1000</span> * Millisecond</span><br><span class="line">    Minute               = <span class="number">60</span> * Second</span><br><span class="line">    Hour                 = <span class="number">60</span> * Minute</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>time.Location,时区信息</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Location <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="type">string</span></span><br><span class="line">    zone []zone</span><br><span class="line">    tx   []zoneTrans</span><br><span class="line">    cacheStart <span class="type">int64</span></span><br><span class="line">    cacheEnd   <span class="type">int64</span></span><br><span class="line">    cacheZone  *zone</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//北京时间：Asia/Shanghai</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="以上类型receiver的实现方法"><a href="#以上类型receiver的实现方法" class="headerlink" title="以上类型receiver的实现方法"></a>以上类型receiver的实现方法</h4><ul>
+<li>time.Time相关方法</li>
+</ul>
+<p><code>func Now() Time &#123;&#125;</code> &#x2F;&#x2F; 当前本地时间</p>
+<p> <code>func Unix(sec int64, nsec int64) Time &#123;&#125;</code>  &#x2F;&#x2F; 根据时间戳返回本地时间</p>
+<p> <code>func Date(year int, month Month, day, hour, min, sec, nsec int, loc *Location) Time &#123;&#125;</code> &#x2F;&#x2F; 返回指定时间</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/ 当前本地时间</span><br><span class="line">t = time.Now()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;time.Now&#x27;: &quot;</span>, t)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据时间戳返回本地时间</span></span><br><span class="line">t_by_unix := time.Unix(<span class="number">1487780010</span>, <span class="number">0</span>)</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;time.Unix&#x27;: &quot;</span>, t_by_unix)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回指定时间</span></span><br><span class="line">t_by_date := time.Date(<span class="number">2017</span>, time.Month(<span class="number">2</span>), <span class="number">23</span>, <span class="number">1</span>, <span class="number">30</span>, <span class="number">30</span>, <span class="number">0</span>, l)</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;time.Date&#x27;: &quot;</span>, t_by_date)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>按照时区信息显示时间</p>
+</li>
+<li><p><code>func (t Time) UTC() Time &#123;&#125;</code> &#x2F;&#x2F; 获取指定时间在UTC 时区的时间表示</p>
+</li>
+<li><p><code>func (t Time) Local() Time &#123;&#125;</code> &#x2F;&#x2F; 以本地时区表示</p>
+</li>
+<li><p><code>func (t Time) In(loc *Location) Time &#123;&#125;</code> &#x2F;&#x2F; 时间在指定时区的表示</p>
+</li>
+<li><p><code>func (t Time) Format(layout string) string &#123;&#125;</code> &#x2F;&#x2F; 按指定格式显示时间</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取指定时间在UTC 时区的时间表示</span></span><br><span class="line">t_by_utc := t.UTC()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.UTC&#x27;: &quot;</span>, t_by_utc)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取本地时间表示</span></span><br><span class="line">t_by_local := t.Local()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.Local&#x27;: &quot;</span>, t_by_local)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间在指定时区的表示</span></span><br><span class="line">t_in := t.In(time.UTC)</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.In&#x27;: &quot;</span>, t_in)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Format</span></span><br><span class="line">fmt.Println(<span class="string">&quot;t.Format&quot;</span>, t.Format(time.RFC3339))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>获取年月日等信息</li>
+</ul>
+<p><code>func (t Time) Date() (year int, month Month, day int) &#123;&#125;</code> &#x2F;&#x2F; 返回时间的日期信息</p>
+<p> <code>func (t Time) Year() int &#123;&#125;</code> &#x2F;&#x2F; 返回年</p>
+<p> <code>func (t Time) Month() Month &#123;&#125;</code> &#x2F;&#x2F; 月</p>
+<p> <code>func (t Time) Day() int &#123;&#125;</code> &#x2F;&#x2F; 日</p>
+<p> <code>func (t Time) Weekday() Weekday &#123;&#125;</code> &#x2F;&#x2F; 星期</p>
+<p> <code>func (t Time) ISOWeek() (year, week int) &#123;&#125;</code> &#x2F;&#x2F; 返回年，星期范围编号</p>
+<p> <code>func (t Time) Clock() (hour, min, sec int) &#123;&#125;</code> &#x2F;&#x2F; 返回时间的时分秒</p>
+<p> <code>func (t Time) Hour() int &#123;&#125;</code> &#x2F;&#x2F; 返回小时</p>
+<p> <code>func (t Time) Minute() int &#123;&#125;</code> &#x2F;&#x2F; 分钟</p>
+<p> <code>func (t Time) Second() int &#123;&#125;</code> &#x2F;&#x2F; 秒</p>
+<p> <code>func (t Time) Nanosecond() int &#123;&#125;</code> &#x2F;&#x2F; 纳秒</p>
+<p> <code>func (t Time) YearDay() int &#123;&#125;</code> &#x2F;&#x2F; 一年中对应的天</p>
+<p> <code>func (t Time) Location() *Location &#123;&#125;</code> &#x2F;&#x2F; 时间的时区</p>
+<p> <code>func (t Time) Zone() (name string, offset int) &#123;&#125;</code> &#x2F;&#x2F; 时间所在时区的规范名和想对UTC 时间偏移量</p>
+<p> <code>func (t Time) Unix() int64 &#123;&#125;</code> &#x2F;&#x2F; 时间转为时间戳</p>
+<p> <code>func (t Time) UnixNano() int64 &#123;&#125;</code> &#x2F;&#x2F; 时间转为时间戳（纳秒）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回时间的日期信息</span></span><br><span class="line">year, month, day := t.Date()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.Date&#x27;: &quot;</span>, year, month, day)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 星期</span></span><br><span class="line">week := t.Weekday()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.Weekday&#x27;: &quot;</span>, week)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回年，星期范围编号</span></span><br><span class="line">year, week_int := t.ISOWeek()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.ISOWeek&#x27;: &quot;</span>, year, week_int)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回时间的时分秒</span></span><br><span class="line">hour, min, sec := t.Clock()</span><br><span class="line">fmt.Println(<span class="string">&quot;&#x27;t.Clock&#x27;: &quot;</span>, hour, min, sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间运算</li>
+</ul>
+<p><code>func (t Time) IsZero() bool &#123;&#125;</code> &#x2F;&#x2F; 是否是零时时间</p>
+<p> <code>func (t Time) After(u Time) bool &#123;&#125;</code> &#x2F;&#x2F; 时间在u 之前</p>
+<p> <code>func (t Time) Before(u Time) bool &#123;&#125;</code> &#x2F;&#x2F; 时间在u 之后</p>
+<p> <code>func (t Time) Equal(u Time) bool &#123;&#125;</code> &#x2F;&#x2F; 时间与u 相同</p>
+<p> <code>func (t Time) Add(d Duration) Time &#123;&#125;</code> &#x2F;&#x2F; 返回t +d 的时间点</p>
+<p> <code>func (t Time) Sub(u Time) Duration &#123;&#125;</code> &#x2F;&#x2F; 返回 t-u</p>
+<p> <code>func (t Time) AddDate(years int, months int, days int) Time &#123;&#125;</code> 返回增加了给出的年份、月份和天数的时间点Time</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 返回增加了给出的年份、月份和天数的时间点Time</span><br><span class="line">t_new := t.AddDate(0, 1, 1)</span><br><span class="line">fmt.Println(&quot;&#x27;t.AddDate&#x27;: &quot;, t_new)</span><br><span class="line"></span><br><span class="line">// 时间在u 之前</span><br><span class="line">is_after := t.After(t_new)</span><br><span class="line">fmt.Println(&quot;&#x27;t.After&#x27;: &quot;, is_after)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>time.Duration的类型receiver实现的方法</li>
+</ul>
+<p><code>func (d Duration) String() string</code> &#x2F;&#x2F; 格式化输出 Duration</p>
+<p> <code>func (d Duration) Nanoseconds() int64</code> &#x2F;&#x2F; 将时间段表示为纳秒</p>
+<p> <code>func (d Duration) Seconds() float64</code> &#x2F;&#x2F; 将时间段表示为秒</p>
+<p> <code>func (d Duration) Minutes() float64</code> &#x2F;&#x2F; 将时间段表示为分钟</p>
+<p> <code>func (d Duration) Hours() float64</code> &#x2F;&#x2F; 将时间段表示为小时</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// time.Duration 时间段</span></span><br><span class="line">fmt.Println(<span class="string">&quot;time.Duration 时间段&quot;</span>)</span><br><span class="line">d = time.Duration(<span class="number">10000000000000</span>)<span class="comment">//输入参数为int64类型</span></span><br><span class="line"></span><br><span class="line">fmt.Printf(<span class="string">&quot;&#x27;String: %v&#x27;, &#x27;Nanoseconds: %v&#x27;, &#x27;Seconds: %v&#x27;, &#x27;Minutes: %v&#x27;, &#x27;Hours: %v&#x27;\n&quot;</span>, </span><br><span class="line">d.String(), d.Nanoseconds(), d.Seconds(), d.Minutes(), d.Hours())</span><br><span class="line"><span class="comment">// &#x27;String: 2h46m40s&#x27;, &#x27;Nanoseconds: 10000000000000&#x27;, &#x27;Seconds: 10000&#x27;, &#x27;Minutes: 166.66666666666666&#x27;, &#x27;Hours: 2.7777777777777777&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>time.Location的receiver实现的方法</li>
+</ul>
+<p><code>func (l *Location) String() string</code> &#x2F;&#x2F; 输出时区名</p>
+<p> <code>func FixedZone(name string, offset int) *Location</code> &#x2F;&#x2F; FixedZone 使用给定的地点名name和时间偏移量offset（单位秒）创建并返回一个Location</p>
+<p> <code>func LoadLocation(name string) (*Location, error)</code> &#x2F;&#x2F; LoadLocation 使用给定的名字创建Location</p>
+<p><code>func Sleep(d Duration)</code> &#x2F;&#x2F; Sleep阻塞当前go程至少d代表的时间段。d&lt;&#x3D;0时，Sleep会立刻返回</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d_second := time.Second</span><br><span class="line">time.Sleep(d_second)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="一些常用的技巧与代码示例"><a href="#一些常用的技巧与代码示例" class="headerlink" title="一些常用的技巧与代码示例"></a>一些常用的技巧与代码示例</h3><ul>
+<li><p>string与time.Time互转</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	date        = <span class="string">&quot;2006-01-02&quot;</span></span><br><span class="line">	datetime    = <span class="string">&quot;2006-01-02 15:04:02&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">timeStamp := time.Now().Format(date) <span class="comment">//将当前时间，即time.Time类型转为string</span></span><br><span class="line"></span><br><span class="line">billTimeStamp, err := time.Parse(date,timeStamp)<span class="comment">//将String类型的时间转为time.Time类型</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>unix time与String互转</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">endTime := time.Unix(time.Now().Unix(), <span class="number">0</span>)<span class="comment">//此时endTime是time.Time类型</span></span><br><span class="line">endStr := endTime.Format(datetime)<span class="comment">//将unix time 转为了String，再根据上面的例子，可转为time.Time</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取时间戳</span></span><br><span class="line"></span><br><span class="line">timestamp := time.Now().Unix()</span><br><span class="line"></span><br><span class="line">fmt.Println(timestamp)</span><br><span class="line"></span><br><span class="line"><span class="comment">//格式化为字符串,tm为Time类型</span></span><br><span class="line"></span><br><span class="line">tm := time.Unix(timestamp, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">fmt.Println(tm.Format(<span class="string">&quot;2006-01-02 03:04:05 PM&quot;</span>))</span><br><span class="line"></span><br><span class="line">fmt.Println(tm.Format(<span class="string">&quot;02/01/2006 15:04:05 PM&quot;</span>))</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">//从字符串转为时间戳，第一个参数是格式，第二个是要转换的时间字符串</span></span><br><span class="line"></span><br><span class="line">tm2, _ := time.Parse(<span class="string">&quot;01/02/2006&quot;</span>, <span class="string">&quot;02/08/2018&quot;</span>)</span><br><span class="line"></span><br><span class="line">fmt.Println(tm2.Unix())</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><p><a href="https://link.jianshu.com/?t=http://studygolang.com/static/pkgdoc/pkg/time.htm">pkg&#x2F;time中文翻译</a></p>
+<p><a href="https://link.jianshu.com/?t=https://golang.org/pkg/time/">pkg&#x2F;time英文</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/15/%E4%BB%8E%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96%E5%88%B0Go%E5%9F%BA%E5%87%86%E6%B5%8B%E8%AF%95/" rel="prev" title="从冒泡排序优化到Go基准测试">
+                  <i class="fa fa-angle-left"></i> 从冒泡排序优化到Go基准测试
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/25/mysql-add-primary-key-auto-increment/" rel="next" title="mysql add primary key auto_increment">
+                  mysql add primary key auto_increment <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

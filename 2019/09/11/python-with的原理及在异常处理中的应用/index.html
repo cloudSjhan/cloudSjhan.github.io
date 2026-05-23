@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="python with的原理及在异常处理中的应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python with的原理及在异常处理中的应用">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/09/11/python-with%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%9C%A8%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="python with的原理及在异常处理中的应用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-11T03:37:54.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.785Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2019/09/11/python-with%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%9C%A8%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2019/09/11/python-with%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%9C%A8%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/","path":"2019/09/11/python-with的原理及在异常处理中的应用/","title":"python with的原理及在异常处理中的应用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>python with的原理及在异常处理中的应用 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E5%A4%84%E7%90%86%E4%B8%8A%E8%BF%B0%E5%BC%82%E5%B8%B8%E6%9C%9F%E9%97%B4%EF%BC%8C%E5%8F%91%E7%94%9F%E4%BA%86%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%BC%82%E5%B8%B8%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">在处理上述异常期间，发生了另一个异常：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E8%BF%B0%E5%BC%82%E5%B8%B8%E6%98%AF%E4%BB%A5%E4%B8%8B%E5%BC%82%E5%B8%B8%E7%9A%84%E7%9B%B4%E6%8E%A5%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">上述异常是以下异常的直接原因：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/09/11/python-with%E7%9A%84%E5%8E%9F%E7%90%86%E5%8F%8A%E5%9C%A8%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="python with的原理及在异常处理中的应用 | cloud world">
+      <meta itemprop="description" content="python with的原理及在异常处理中的应用">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python with的原理及在异常处理中的应用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-11 11:37:54" itemprop="dateCreated datePublished" datetime="2019-09-11T11:37:54+08:00">2019-09-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">python with的原理及在异常处理中的应用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+<span id="more"></span>
+
+<p>只要对象内实现 <strong>enter</strong>() 和 <strong>exit</strong>() 方法，就能兼容 with 语句，触发上下文管理。 </p>
+<p>一、上下文管理的简单执行流程<br>with 工作原理 （１）紧跟with后面的语句被求值后，返回对象的“<strong>enter</strong>()”方法被调用，这个方法的返回值将被赋值给as后面的变量； （２）当with后面的代码块全部被执行完之后，将调用前面返回对象的“<strong>exit</strong>()”方法。</p>
+<p>class Sample:<br>    def <strong>enter</strong>(self):<br>        print “in <strong>enter</strong>“<br>        return “Foo”<br>    def <strong>exit</strong>(self, exc_type, exc_val, exc_tb):<br>        ‘’’<br>        若在执行流程中因为错误而退出，调用exit时，会自动捕获错误信息<br>        exc_type：　错误的类型(异常类型)<br>        exc_val：　错误类型对应的值 (异常值)<br>        exc_tb：　代码中错误发生的位置 (错误栈)<br>        ‘’’<br>        print “in <strong>exit</strong>“</p>
+<p>def get_sample():<br>    return Sample()</p>
+<p>with get_sample() as sample:<br>    print “Sample: “, sample<br>‘’’<br>流程总结：<br>1- 执行get_sample()函数<br>2- 函数内实例化Sample对象，执行__enter__返回字符串赋予sample变量<br>3- 执行with内的代码块，输出sample变量值<br>4- 执行Sample对象内的__exit__方法<br>‘’’<br>二、错误执行流程<br>class Sample():<br>    def <strong>enter</strong>(self):<br>        print(‘in enter’)<br>        return self</p>
+<pre><code>def __exit__(self, exc_type, exc_val, exc_tb):
+    print &quot;type: &quot;, exc_type
+    print &quot;val: &quot;, exc_val
+    print &quot;tb: &quot;, exc_tb
+    
+def do_something(self):
+    bar = 1 / 0
+    return bar + 10
+</code></pre>
+<p>with Sample() as sample:<br>    sample.do_something()</p>
+<p>‘’’<br>in enter<br>Traceback (most recent call last):<br>type:  &lt;type ‘exceptions.ZeroDivisionError’&gt;<br>val:  integer division or modulo by zero<br>  File “&#x2F;home&#x2F;user&#x2F;cltdevelop&#x2F;Code&#x2F;TF_Practice_2017_06_06&#x2F;with_test.py”, line 36, in <module><br>tb:  &lt;traceback object at 0x7f9e13fc6050&gt;<br>    sample.do_something()<br>  File “&#x2F;home&#x2F;user&#x2F;cltdevelop&#x2F;Code&#x2F;TF_Practice_2017_06_06&#x2F;with_test.py”, line 32, in do_something<br>    bar &#x3D; 1 &#x2F; 0<br>ZeroDivisionError: integer division or modulo by zero</p>
+<p>Process finished with exit code 1</p>
+<p>‘’’<br>三、异常处理 with 应用<br>异常处理逻辑太多，以至于扰乱了代码核心逻辑。具体表现就是，代码里充斥着大量的 try、except、raise 语句，让核心逻辑变得难以辨识。</p>
+<p>def upload_avatar(request):<br>    “””用户上传新头像”””<br>    try:<br>        avatar_file &#x3D; request.FILES[‘avatar’]<br>    except KeyError:<br>        raise error_codes.AVATAR_FILE_NOT_PROVIDED</p>
+<pre><code>try:
+   resized_avatar_file = resize_avatar(avatar_file)
+except FileTooLargeError as e:
+    raise error_codes.AVATAR_FILE_TOO_LARGE
+except ResizeAvatarError as e:
+    raise error_codes.AVATAR_FILE_INVALID
+
+try:
+    request.user.avatar = resized_avatar_file
+    request.user.save()
+except Exception:
+    raise error_codes.INTERNAL_SERVER_ERROR
+return HttpResponse(&#123;&#125;)
+</code></pre>
+<p>这是一个处理用户上传头像的视图函数。这个函数内做了三件事情，并且针对每件事都做了异常捕获。如果做某件事时发生了异常，就返回对用户友好的错误到前端。</p>
+<p>这样的处理流程纵然合理，但是显然代码里的异常处理逻辑有点“喧宾夺主”了。一眼看过去全是代码缩进，很难提炼出代码的核心逻辑。</p>
+<p>早在 2.5 版本时，Python 语言就已经提供了对付这类场景的工具：“上下文管理器（context manager）”。上下文管理器是一种配合 with 语句使用的特殊 Python 对象，通过它，可以让异常处理工作变得更方便。</p>
+<p>class raise_api_error:<br>    “””<br>    captures specified exception and raise ApiErrorCode instead<br>    捕获指定的异常并改为引发ApiErrorCode<br>    :raises: AttributeError if code_name is not valid<br>    “””<br>    def <strong>init</strong>(self, captures, code_name):<br>        self.captures &#x3D; captures<br>        self.code &#x3D; getattr(error_codes, code_name)</p>
+<pre><code>def __enter__(self):
+    # 刚方法将在进入上下文时调用
+    return self
+
+def __exit__(self, exc_type, exc_val, exc_tb):
+    # 该方法将在退出上下文时调用
+    # exc_type, exc_val, exc_tb 分别表示该上下文内抛出的
+    # 异常类型、异常值、错误栈
+    if exc_type is None:
+        return False
+
+    if exc_type == self.captures:
+        raise self.code from exc_val
+    return False
+</code></pre>
+<p>在上面的代码里，我们定义了一个名为 raise_api_error 的上下文管理器，它在进入上下文时什么也不做。但是在退出上下文时，会判断当前上下文中是否抛出了类型为 self.captures 的异常，如果有，就用 APIErrorCode 异常类替代它。</p>
+<p>使用该上下文管理器后，整个函数可以变得更清晰简洁：</p>
+<p>def upload_avatar(request):<br>    “””用户上传新头像”””<br>    with raise_api_error(KeyError, ‘AVATAR_FILE_NOT_PROVIDED’):<br>        avatar_file &#x3D; request.FILES[‘avatar’]</p>
+<pre><code>with raise_api_error(ResizeAvatarError, &#39;AVATAR_FILE_INVALID&#39;),\
+        raise_api_error(FileTooLargeError, &#39;AVATAR_FILE_TOO_LARGE&#39;):
+    resized_avatar_file = resize_avatar(avatar_file)
+
+with raise_api_error(Exception, &#39;INTERNAL_SERVER_ERROR&#39;):
+    request.user.avatar = resized_avatar_file
+    request.user.save()
+return HttpResponse(&#123;&#125;)
+</code></pre>
+<p>四、raies 和 raise……from 的区别</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>…     print(1 &#x2F; 0)<br>… except:<br>…     raise RuntimeError(“Something bad happened”)<br>…</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>ZeroDivisionError: division by zero</p>
+<h1 id="在处理上述异常期间，发生了另一个异常："><a href="#在处理上述异常期间，发生了另一个异常：" class="headerlink" title="在处理上述异常期间，发生了另一个异常："></a>在处理上述异常期间，发生了另一个异常：</h1><p>During handling of the above exception, another exception occurred:</p>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 4, in <module><br>RuntimeError: Something bad happened</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>try:<br>…     print(1 &#x2F; 0)<br>… except Exception as exc:<br>…     raise RuntimeError(“Something bad happened”) from exc<br>…</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 2, in <module><br>ZeroDivisionError: division by zero</p>
+<h1 id="上述异常是以下异常的直接原因："><a href="#上述异常是以下异常的直接原因：" class="headerlink" title="上述异常是以下异常的直接原因："></a>上述异常是以下异常的直接原因：</h1><p>The above exception was the direct cause of the following exception:</p>
+<p>Traceback (most recent call last):<br>  File “<stdin>“, line 4, in <module><br>RuntimeError: Something bad happened<br>不同之处在于，from 会为异常对象设置 <em>cause</em> 属性表明异常的是由谁直接引起的。</p>
+<p>处理异常时发生了新的异常，在不使用 from 时更倾向于新异常与正在处理的异常没有关联。而 from 则是能指出新异常是因旧异常直接引起的。这样的异常之间的关联有助于后续对异常的分析和排查。from 语法会有个限制，就是第二个表达式必须是另一个异常类或实例。</p>
+<p>如果在异常处理程序或 finally 块中引发异常，默认情况下，异常机制会隐式工作会将先前的异常附加为新异常的 _context _属性。</p>
+<p>当然，也可以通过 with_traceback() 方法为异常设置上下文 <em>context</em> 属性，这也能在 traceback 更好的显示异常信息。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/10/TCP-IP%E8%AF%A6%E8%A7%A3-TCP%E8%BF%9E%E6%8E%A5%E4%B8%ADtime-wait%E7%8A%B6%E6%80%81%E8%BF%87%E5%A4%9A/" rel="prev" title="TCP&#x2F;IP详解--TCP连接中time_wait状态过多">
+                  <i class="fa fa-angle-left"></i> TCP/IP详解--TCP连接中time_wait状态过多
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/27/Docker-compose-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE/" rel="next" title="Docker compose 网络设置">
+                  Docker compose 网络设置 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

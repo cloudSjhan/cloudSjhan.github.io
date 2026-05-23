@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步">
+<meta property="og:url" content="https://cloudsjhan.github.io/2025/08/22/%E5%9F%BA%E4%BA%8E-Flink-CDC-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-22T09:52:20.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.741Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Databend">
+<meta property="article:tag" content="Flink">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2025/08/22/%E5%9F%BA%E4%BA%8E-Flink-CDC-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2025/08/22/%E5%9F%BA%E4%BA%8E-Flink-CDC-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/","path":"2025/08/22/基于-Flink-CDC-构建-MySQL-到-Databend-的-实时数据同步/","title":"基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-Flink-CDC-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="nav-number">1.1.</span> <span class="nav-text">准备阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%99%E7%A8%8B%E6%89%80%E9%9C%80%E8%A6%81%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">准备教程所需要的组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#debezium-MySQL"><span class="nav-number">1.1.2.</span> <span class="nav-text">debezium-MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Databend"><span class="nav-number">1.1.3.</span> <span class="nav-text">Databend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-Flink-%E5%92%8C%E6%89%80%E9%9C%80%E8%A6%81%E7%9A%84%E4%BE%9D%E8%B5%96%E5%8C%85"><span class="nav-number">1.1.4.</span> <span class="nav-text">下载 Flink 和所需要的依赖包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-flink-connector-databend"><span class="nav-number">1.2.</span> <span class="nav-text">编译 flink-connector-databend</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.1.</span> <span class="nav-text">准备数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-MySQL-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">在 MySQL 数据库中准备数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Databend-%E4%B8%AD%E5%BB%BA%E8%A1%A8"><span class="nav-number">1.2.3.</span> <span class="nav-text">Databend 中建表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Flink-%E9%9B%86%E7%BE%A4%E5%92%8C-Flink-SQL-CLI"><span class="nav-number">1.3.</span> <span class="nav-text">启动 Flink 集群和 Flink SQL CLI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Flink-SQL-CLI-%E4%B8%AD%E4%BD%BF%E7%94%A8-Flink-DDL-%E5%88%9B%E5%BB%BA%E8%A1%A8"><span class="nav-number">1.4.</span> <span class="nav-text">在 Flink SQL CLI 中使用 Flink DDL 创建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-Insert-Update-%E6%95%B0%E6%8D%AE"><span class="nav-number">1.5.</span> <span class="nav-text">同步 Insert&#x2F;Update 数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%B8%85%E7%90%86"><span class="nav-number">1.6.</span> <span class="nav-text">环境清理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.7.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2025/08/22/%E5%9F%BA%E4%BA%8E-Flink-CDC-%E6%9E%84%E5%BB%BA-MySQL-%E5%88%B0-Databend-%E7%9A%84-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步 | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-08-22 17:52:20" itemprop="dateCreated datePublished" datetime="2025-08-22T17:52:20+08:00">2025-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Databend/" itemprop="url" rel="index"><span itemprop="name">Databend</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h1 id="基于-Flink-CDC-构建-MySQL-到-Databend-的-实时数据同步"><a href="#基于-Flink-CDC-构建-MySQL-到-Databend-的-实时数据同步" class="headerlink" title="基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步"></a>基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步</h1><p>这篇教程将展示如何基于 Flink CDC 快速构建 MySQL 到 Databend 的实时数据同步。本教程的演示都将在 Flink SQL CLI 中进行，只涉及 SQL，无需一行 Java&#x2F;Scala 代码，也无需安装 IDE。</p>
+<p>假设我们有电子商务业务，商品的数据存储在 MySQL ，我们需要实时把它同步到 Databend 中。</p>
+<p>接下来的内容将介绍如何使用 Flink Mysql&#x2F;Databend CDC 来实现这个需求，系统的整体架构如下图所示：</p>
+<h2 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a><strong>准备阶段</strong></h2><p>准备一台已经安装了 Docker 的 Linux 或者 MacOS 电脑。</p>
+<h3 id="准备教程所需要的组件"><a href="#准备教程所需要的组件" class="headerlink" title="准备教程所需要的组件"></a><strong>准备教程所需要的组件</strong></h3><p>接下来的教程将以 <code>docker-compose</code> 的方式准备所需要的组件。</p>
+<h3 id="debezium-MySQL"><a href="#debezium-MySQL" class="headerlink" title="debezium-MySQL"></a>debezium-MySQL</h3><p>docker-compose.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;2.1&#x27;</span><br><span class="line">services:</span><br><span class="line">  postgres:</span><br><span class="line">    image: debezium/example-postgres:1.1</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5432:5432&quot;</span><br><span class="line">    environment:</span><br><span class="line">      - POSTGRES_DB=postgres</span><br><span class="line">      - POSTGRES_USER=postgres</span><br><span class="line">      - POSTGRES_PASSWORD=postgres</span><br><span class="line">  mysql:</span><br><span class="line">    image: debezium/example-mysql:1.1</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;3306:3306&quot;</span><br><span class="line">    environment:</span><br><span class="line">      - MYSQL_ROOT_PASSWORD=123456</span><br><span class="line">      - MYSQL_USER=mysqluser</span><br><span class="line">      - MYSQL_PASSWORD=mysqlpw</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Databend"><a href="#Databend" class="headerlink" title="Databend"></a>Databend</h3><p>docker-compose.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;3&#x27;</span><br><span class="line">services:</span><br><span class="line">  databend:</span><br><span class="line">    image: datafuselabs/databend</span><br><span class="line">    volumes:</span><br><span class="line">      - /Users/hanshanjie/databend/local-test/databend/databend-query.toml:/etc/databend/query.toml</span><br><span class="line">    environment:</span><br><span class="line">      QUERY_DEFAULT_USER: databend</span><br><span class="line">      QUERY_DEFAULT_PASSWORD: databend</span><br><span class="line">      MINIO_ENABLED: &#x27;true&#x27;</span><br><span class="line">    ports:</span><br><span class="line">      - &#x27;8000:8000&#x27;</span><br><span class="line">      - &#x27;9000:9000&#x27;</span><br><span class="line">      - &#x27;3307:3307&#x27;</span><br><span class="line">      - &#x27;8124:8124&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>docker-compose.yml</code> 所在目录下执行下面的命令来启动本教程需要的组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ocker-compose up -d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>该命令将以 detached 模式自动启动 Docker Compose 配置中定义的所有容器。你可以通过 docker ps 来观察上述的容器是否正常启动。</p>
+<h3 id="下载-Flink-和所需要的依赖包"><a href="#下载-Flink-和所需要的依赖包" class="headerlink" title="下载 Flink 和所需要的依赖包"></a><strong>下载 Flink 和所需要的依赖包</strong></h3><ol>
+<li>下载 <a href="https://archive.apache.org/dist/flink/flink-1.16.0/flink-1.16.0-bin-scala_2.12.tgz">Flink 1.16.0</a> 并将其解压至目录 <code>flink-1.16.0</code></li>
+<li>下载下面列出的依赖包，并将它们放到目录 <code>flink-1.16.0/lib/</code> 下：</li>
+<li><strong>下载链接只对已发布的版本有效, SNAPSHOT 版本需要本地编译</strong></li>
+</ol>
+<ul>
+<li><p><a href="https://repo1.maven.org/maven2/com/ververica/flink-sql-connector-mysql-cdc/2.3.0/flink-sql-connector-mysql-cdc-2.3.0.jar">flink-sql-connector-mysql-cdc-2.3.0.jar</a></p>
+</li>
+<li><p>最好将 conf&#x2F;flink-conf.yaml 中的 taskmanager.memory.process.size 改为 4096m</p>
+<p>以及将 <a href="http://taskmanager.sh/">taskmanager.sh</a> 中的 UseGCG1 去掉</p>
+</li>
+</ul>
+<h2 id="编译-flink-connector-databend"><a href="#编译-flink-connector-databend" class="headerlink" title="编译 flink-connector-databend"></a>编译 flink-connector-databend</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/databendcloud/flink-connector-databend</span><br><span class="line">cd flink-connector-databend</span><br><span class="line">mvn clean install -DskipTests</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将 target&#x2F;flink-connector-databend-1.16.0-SNAPSHOT.jar 拷贝到目录 <code>flink-1.16.0/lib/</code> 下。</p>
+<h3 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a><strong>准备数据</strong></h3><h3 id="在-MySQL-数据库中准备数据"><a href="#在-MySQL-数据库中准备数据" class="headerlink" title="在 MySQL 数据库中准备数据"></a><strong>在 MySQL 数据库中准备数据</strong></h3><p>进入 MySQL 容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose exec mysql mysql -uroot -p123456</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>创建数据库 mydb 和表 <code>products</code>，并插入数据:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE mydb;</span><br><span class="line">USE mydb;</span><br><span class="line"></span><br><span class="line">CREATE TABLE products (id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,name VARCHAR(255) NOT NULL,description VARCHAR(512));</span><br><span class="line">ALTER TABLE products AUTO_INCREMENT = 10;</span><br><span class="line"></span><br><span class="line">INSERT INTO products VALUES (default,&quot;scooter&quot;,&quot;Small 2-wheel scooter&quot;),</span><br><span class="line">(default,&quot;car battery&quot;,&quot;12V car battery&quot;),</span><br><span class="line">(default,&quot;12-pack drill bits&quot;,&quot;12-pack of drill bits with sizes ranging from #40 to #3&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;12oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;14oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;16oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;rocks&quot;,&quot;box of assorted rocks&quot;),</span><br><span class="line">(default,&quot;jacket&quot;,&quot;water resistent black wind breaker&quot;),</span><br><span class="line">(default,&quot;cloud&quot;,&quot;test for databend&quot;),</span><br><span class="line">(default,&quot;spare tire&quot;,&quot;24 inch spare tire&quot;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Databend-中建表"><a href="#Databend-中建表" class="headerlink" title="Databend 中建表"></a>Databend 中建表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE bend_products (id INT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(512) );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="启动-Flink-集群和-Flink-SQL-CLI"><a href="#启动-Flink-集群和-Flink-SQL-CLI" class="headerlink" title="启动 Flink 集群和 Flink SQL CLI"></a><strong>启动 Flink 集群和 Flink SQL CLI</strong></h2><p>使用下面的命令跳转至 Flink 目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd flink-16.0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用下面的命令启动 Flink 集群</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/start-cluster.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>启动成功的话，可以在 <a href="http://localhost:8081/">http://localhost:8081/</a> 访问到 Flink Web UI，如下所示：</p>
+<p>使用下面的命令启动 Flink SQL CLI</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/sql-client.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="在-Flink-SQL-CLI-中使用-Flink-DDL-创建表"><a href="#在-Flink-SQL-CLI-中使用-Flink-DDL-创建表" class="headerlink" title="在 Flink SQL CLI 中使用 Flink DDL 创建表"></a><strong>在 Flink SQL CLI 中使用 Flink DDL 创建表</strong></h2><p>首先，开启 checkpoint，每隔3秒做一次 checkpoint</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- Flink SQL</span><br><span class="line">Flink SQL&gt; SET execution.checkpointing.interval = 3s;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后, 对于数据库中的表 <code>products</code> 使用 Flink SQL CLI 创建对应的表，用于同步底层数据库表的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-- Flink SQL</span><br><span class="line">Flink SQL&gt; CREATE TABLE products (id INT,name STRING,description STRING,PRIMARY KEY (id) NOT ENFORCED)</span><br><span class="line">WITH (&#x27;connector&#x27; = &#x27;mysql-cdc&#x27;,</span><br><span class="line">&#x27;hostname&#x27; = &#x27;127.0.0.1&#x27;,</span><br><span class="line">&#x27;port&#x27; = &#x27;3306&#x27;,</span><br><span class="line">&#x27;username&#x27; = &#x27;root&#x27;,</span><br><span class="line">&#x27;password&#x27; = &#x27;123456&#x27;,</span><br><span class="line">&#x27;database-name&#x27; = &#x27;mydb&#x27;,</span><br><span class="line">&#x27;table-name&#x27; = &#x27;products&#x27;,</span><br><span class="line">&#x27;server-time-zone&#x27; = &#x27;UTC&#x27;</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最后，创建 d_products 表， 用来订单数据写入 Databend 中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- Flink SQL</span><br><span class="line">create table d_products (id INT,name String,description String)</span><br><span class="line">with (&#x27;connector&#x27; = &#x27;databend&#x27;,</span><br><span class="line">&#x27;url&#x27;=&#x27;databend://cloudapp:ssggkxgub3k0@tn3ftqihs.gw.aws-us-east-2.default.databend.com:443/testdb?warehouse=medium-p8at&amp;ssl=true&#x27;,</span><br><span class="line">&#x27;database-name&#x27;=&#x27;testdb&#x27;,</span><br><span class="line">&#x27;table-name&#x27;=&#x27;bend_products&#x27;,</span><br><span class="line">&#x27;sink.batch-size&#x27; = &#x27;1&#x27;,</span><br><span class="line">&#x27;sink.ignore-delete&#x27; = &#x27;false&#x27;,</span><br><span class="line">&#x27;sink.flush-interval&#x27; = &#x27;1000&#x27;,</span><br><span class="line">&#x27;sink.max-retries&#x27; = &#x27;3&#x27;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用 Flink SQL 将 products 表中的数据同步到 Databend 的 d_products 表中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into d_products select * from products;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时 flink job 就会提交成功，打开 flink UI 可以看到:</p>
+<p>同时在 databend 中可以看到 MySQL 中的数据已经同步过来了：</p>
+<h2 id="同步-Insert-Update-数据"><a href="#同步-Insert-Update-数据" class="headerlink" title="同步 Insert&#x2F;Update 数据"></a>同步 Insert&#x2F;Update 数据</h2><p>此时我们在 MySQL 中再插入 10 条数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO products VALUES</span><br><span class="line">(default,&quot;scooter&quot;,&quot;Small 2-wheel scooter&quot;),</span><br><span class="line">(default,&quot;car battery&quot;,&quot;12V car battery&quot;),</span><br><span class="line">(default,&quot;12-pack drill bits&quot;,&quot;12-pack of drill bits with sizes ranging from #40 to #3&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;12oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;14oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;hammer&quot;,&quot;16oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(default,&quot;rocks&quot;,&quot;box of assorted rocks&quot;),</span><br><span class="line">(default,&quot;jacket&quot;,&quot;water resistent black wind breaker&quot;),</span><br><span class="line">(default,&quot;cloud&quot;,&quot;test for databend&quot;),</span><br><span class="line">(default,&quot;spare tire&quot;,&quot;24 inch spare tire&quot;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这些数据会立即同步到 Databend 当中。</p>
+<p>假如此时 MySQL 中更新了一条数据:</p>
+<p>那么 id&#x3D;10 的数据在 databend 中也会被立即更新：</p>
+<h2 id="环境清理"><a href="#环境清理" class="headerlink" title="环境清理"></a><strong>环境清理</strong></h2><p>操作结束后，在 <code>docker-compose.yml</code> 文件所在的目录下执行如下命令停止所有容器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在 Flink 所在目录 <code>flink-1.16.0</code> 下执行如下命令停止 Flink 集群：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./bin/stop-cluster.sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>以上就是基于 Flink CDC 构建 MySQL 到 Databend 的 实时数据同步的全部过程。</p>
+<p>mysql flink connector is over 2.4.1</p>
+<p>flin version is 1.17.1</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Databend/" rel="tag"># Databend</a>
+              <a href="/tags/Flink/" rel="tag"># Flink</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/08/18/Deep-Dive-into-SeaTunnel-Databend-Sink-Connector-CDC-Implementation/" rel="prev" title="Deep Dive into SeaTunnel Databend Sink Connector CDC Implementation">
+                  <i class="fa fa-angle-left"></i> Deep Dive into SeaTunnel Databend Sink Connector CDC Implementation
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

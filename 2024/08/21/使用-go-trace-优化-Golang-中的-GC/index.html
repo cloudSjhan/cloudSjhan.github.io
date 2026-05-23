@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用 go trace 优化 Golang 中的 GC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 go trace 优化 Golang 中的 GC">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/08/21/%E4%BD%BF%E7%94%A8-go-trace-%E4%BC%98%E5%8C%96-Golang-%E4%B8%AD%E7%9A%84-GC/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="使用 go trace 优化 Golang 中的 GC">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/4bea10e9-4c3a-48a6-ad47-ca4992ce4f97.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/ace8dfbb-cdbf-479f-84ac-57b4a7385012.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/49ffc1b6-f591-41f5-bc10-a22303dcf87c.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/1da4932f-5409-4abc-92e5-1ad257debe30.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/5233df44-6bcb-442a-8998-e8c1e378f437.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/c34fe0ba-bc48-4f8d-a1af-b4e829d23cca.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/bacdaf85-22cd-4a34-b987-a900d3c10082.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/d94e15f7-8b87-4a5e-b23f-600ed9d1b1ff.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/a74bddd4-70f0-47a3-b5d2-d298be81507b.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/649fd2ed-000f-43bd-9531-14e4e3316e01.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/991c8eb6-a7aa-40b9-b9f1-47c216bb5d10.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/a241cf43-fcf0-4d64-b4a3-611079fec537.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/b659c057-a333-49ad-b66b-0fa0d77b891c.png">
+<meta property="article:published_time" content="2024-08-21T08:35:01.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.742Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.mdnice.com/user/4760/4bea10e9-4c3a-48a6-ad47-ca4992ce4f97.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/08/21/%E4%BD%BF%E7%94%A8-go-trace-%E4%BC%98%E5%8C%96-Golang-%E4%B8%AD%E7%9A%84-GC/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/08/21/%E4%BD%BF%E7%94%A8-go-trace-%E4%BC%98%E5%8C%96-Golang-%E4%B8%AD%E7%9A%84-GC/","path":"2024/08/21/使用-go-trace-优化-Golang-中的-GC/","title":"使用 go trace 优化 Golang 中的 GC"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用 go trace 优化 Golang 中的 GC | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-GOGC-%E5%92%8C-GOMEMLIMIT-%E6%89%8B%E5%8A%A8%E6%8E%A7%E5%88%B6%E5%86%85%E5%AD%98"><span class="nav-number">1.</span> <span class="nav-text">通过 GOGC 和 GOMEMLIMIT 手动控制内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">单线程方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8D%95%E4%B8%AA%E7%A8%8B%E5%BA%8F%E8%AE%A1%E7%AE%97%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">2.1.</span> <span class="nav-text">使用单个程序计算关键词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">并行方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-FinOut-%E8%AE%A1%E6%95%B0%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">3.1.</span> <span class="nav-text">使用 FinOut 计数关键词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GOGC-%E5%92%8C-GOMEMLIMIT"><span class="nav-number">4.</span> <span class="nav-text">GOGC 和 GOMEMLIMIT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GOGC"><span class="nav-number">4.1.</span> <span class="nav-text">GOGC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GOMEMLIMIT"><span class="nav-number">4.2.</span> <span class="nav-text">GOMEMLIMIT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%9C%A8%E9%A3%8E%E9%99%A9"><span class="nav-number">5.</span> <span class="nav-text">存在风险</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/08/21/%E4%BD%BF%E7%94%A8-go-trace-%E4%BC%98%E5%8C%96-Golang-%E4%B8%AD%E7%9A%84-GC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用 go trace 优化 Golang 中的 GC | cloud world">
+      <meta itemprop="description" content="使用 go trace 优化 Golang 中的 GC">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 go trace 优化 Golang 中的 GC
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-08-21 16:35:01" itemprop="dateCreated datePublished" datetime="2024-08-21T16:35:01+08:00">2024-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">使用 go trace 优化 Golang 中的 GC</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+<h2 id="通过-GOGC-和-GOMEMLIMIT-手动控制内存"><a href="#通过-GOGC-和-GOMEMLIMIT-手动控制内存" class="headerlink" title="通过 GOGC 和 GOMEMLIMIT 手动控制内存"></a>通过 GOGC 和 GOMEMLIMIT 手动控制内存</h2><p>在使用 Golang 进行开发时，我们通常不会过多关注内存管理，因为 Golang 的运行时会高效地处理垃圾回收（GC）。然而，了解 GC 对性能优化场景大有裨益。本文将通过一个 XML 解析服务示例，探讨如何使用 go trace 优化 GC 并提高代码性能。</p>
+<p>如果您对 go trace 不熟悉，可以先看下 Vincent 关于 <a href="https://readmedium.com/go-discovery-of-the-trace-package-e5a821743c3c" title="go trace page">trace 软件包</a>的文章。</p>
+<p>我们的目标是创建一个程序，处理多个 RSS XML 文件，并搜索标题中包含关键字 go 的项目。我们将以 RSS XML 文件为例，解析该文件 100 次，以模拟压力。</p>
+<h2 id="单线程方法"><a href="#单线程方法" class="headerlink" title="单线程方法"></a>单线程方法</h2><h3 id="使用单个程序计算关键词"><a href="#使用单个程序计算关键词" class="headerlink" title="使用单个程序计算关键词"></a>使用单个程序计算关键词</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">func freq(docs []string) int &#123;  </span><br><span class="line">     var count int  </span><br><span class="line">     for _, doc := range docs &#123;  </span><br><span class="line">        f, err := os.OpenFile(doc, os.O_RDONLY, 0)  </span><br><span class="line">        if err != nil &#123;  </span><br><span class="line">           return 0  </span><br><span class="line">        &#125;  </span><br><span class="line">        data, err := io.ReadAll(f)  </span><br><span class="line">        if err != nil &#123;  </span><br><span class="line">           return 0  </span><br><span class="line">        &#125;  </span><br><span class="line">        var d document  </span><br><span class="line">        if err := xml.Unmarshal(data, &amp;d); err != nil &#123;  </span><br><span class="line">           log.Printf(&quot;Decoding Document [Ns] : ERROR :%+v&quot;, err)  </span><br><span class="line">           return 0  </span><br><span class="line">        &#125;  </span><br><span class="line">        for _, item := range d.Channel.Items &#123;  </span><br><span class="line">           if strings.Contains(strings.ToLower(item.Title), &quot;go&quot;) &#123;  </span><br><span class="line">              count++  </span><br><span class="line">           &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">     &#125;  </span><br><span class="line">     return count  </span><br><span class="line"> &#125;</span><br><span class="line"> ​</span><br><span class="line"> func main() &#123;  </span><br><span class="line">     trace.Start(os.Stdout)  </span><br><span class="line">     defer trace.Stop()  </span><br><span class="line">     files := make([]string, 0)  </span><br><span class="line">     for i := 0; i &lt; 100; i++ &#123;  </span><br><span class="line">        files = append(files, &quot;index.xml&quot;)  </span><br><span class="line">     &#125;  </span><br><span class="line">     count := freq(files)  </span><br><span class="line">     log.Println(fmt.Sprintf(&quot;find key word go %d count&quot;, count))  </span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>代码非常简单，我们使用 for 循环来完成任务，然后执行它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  go_trace git:(main) ✗ go build                      </span><br><span class="line"> ➜  go_trace git:(main) ✗ time ./go_trace 2 &gt; trace_single.out</span><br><span class="line"> ​</span><br><span class="line"> -- result --</span><br><span class="line"> 2024/08/02 16:17:06 find key word go 2400 count</span><br><span class="line"> ./go_trace 2 &gt; trace_single.out  1.99s user 0.05s system 102% cpu 1.996 total</span><br></pre></td></tr></table></figure>
+<p>然后，我们使用 go trace 查看 trace_single.out。</p>
+<ul>
+<li>RunTime: 2031ms</li>
+<li>STW (Stop-the-World): 57ms</li>
+<li>GC Occurrences: 252ms</li>
+<li>GC STW AVE: 0.227ms</li>
+</ul>
+<p>GC 时间约占总运行时间的 57 &#x2F; 2031 ≈ 0.02。最大内存使用量约为 11.28MB。</p>
+<p>图 1：单线程 - 运行时间<br><img src="https://files.mdnice.com/user/4760/4bea10e9-4c3a-48a6-ad47-ca4992ce4f97.png"></p>
+<p>图 2：单线程 - GC</p>
+<p><img src="https://files.mdnice.com/user/4760/ace8dfbb-cdbf-479f-84ac-57b4a7385012.png"></p>
+<p>图 3：单线程 - 最大堆</p>
+<p><img src="https://files.mdnice.com/user/4760/49ffc1b6-f591-41f5-bc10-a22303dcf87c.png"><br>目前，我们只使用了一个内核，导致资源利用率很低。为了加快程序运行速度，最好使用 Golang 最擅长的并发功能。</p>
+<h2 id="并行方法"><a href="#并行方法" class="headerlink" title="并行方法"></a>并行方法</h2><h3 id="使用-FinOut-计数关键词"><a href="#使用-FinOut-计数关键词" class="headerlink" title="使用 FinOut 计数关键词"></a>使用 FinOut 计数关键词</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">func concurrent(docs []string) int &#123;  </span><br><span class="line">     var count int32  </span><br><span class="line">     g := runtime.GOMAXPROCS(0)  </span><br><span class="line">     wg := sync.WaitGroup&#123;&#125;  </span><br><span class="line">     wg.Add(g)  </span><br><span class="line">     ch := make(chan string, 100)  </span><br><span class="line">     go func() &#123;  </span><br><span class="line">        for _, v := range docs &#123;  </span><br><span class="line">           ch &lt;- v  </span><br><span class="line">        &#125;  </span><br><span class="line">        close(ch)  </span><br><span class="line">     &#125;()  </span><br><span class="line">   </span><br><span class="line">     for i := 0; i &lt; g; i++ &#123;  </span><br><span class="line">        go func() &#123;  </span><br><span class="line">           var iFound int32  </span><br><span class="line">           defer func() &#123;  </span><br><span class="line">              atomic.AddInt32(&amp;count, iFound)  </span><br><span class="line">              wg.Done()  </span><br><span class="line">           &#125;()  </span><br><span class="line">           for doc := range ch &#123;  </span><br><span class="line">              f, err := os.OpenFile(doc, os.O_RDONLY, 0)  </span><br><span class="line">              if err != nil &#123;  </span><br><span class="line">                 return  </span><br><span class="line">              &#125;  </span><br><span class="line">              data, err := io.ReadAll(f)  </span><br><span class="line">              if err != nil &#123;  </span><br><span class="line">                 return  </span><br><span class="line">              &#125;  </span><br><span class="line">              var d document  </span><br><span class="line">              if err = xml.Unmarshal(data, &amp;d); err != nil &#123;  </span><br><span class="line">                 log.Printf(&quot;Decoding Document [Ns] : ERROR :%+v&quot;, err)  </span><br><span class="line">                 return  </span><br><span class="line">              &#125;  </span><br><span class="line">              for _, item := range d.Channel.Items &#123;  </span><br><span class="line">                 if strings.Contains(strings.ToLower(item.Title), &quot;go&quot;) &#123;  </span><br><span class="line">                    iFound++  </span><br><span class="line">                 &#125;  </span><br><span class="line">              &#125;  </span><br><span class="line">           &#125;  </span><br><span class="line">        &#125;()  </span><br><span class="line">     &#125;  </span><br><span class="line">   </span><br><span class="line">     wg.Wait()  </span><br><span class="line">     return int(count)  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>用同样的方法运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go build</span><br><span class="line"> time ./go_trace 2 &gt; trace_pool.out</span><br><span class="line"> --- </span><br><span class="line"> 2024/08/02 19:27:13 find key word go 2400 count</span><br><span class="line"> ./go_trace 2 &gt; trace_pool.out  2.83s user 0.13s system 673% cpu 0.439 total</span><br></pre></td></tr></table></figure>
+<ul>
+<li>RunTime: 425ms</li>
+<li>STW: 154ms</li>
+<li>GC Occurrences: 39</li>
+<li>GC STW AVE: 3.9ms<br>GC 时间约占总运行时间的 154 &#x2F; 425 ≈ 0.36。最大内存使用量为 91.60MB。</li>
+</ul>
+<p>图 4：并发 - GC 计数</p>
+<p><img src="https://files.mdnice.com/user/4760/1da4932f-5409-4abc-92e5-1ad257debe30.png"></p>
+<p>图 5：并发 - 最大堆</p>
+<p><img src="https://files.mdnice.com/user/4760/5233df44-6bcb-442a-8998-e8c1e378f437.png"><br>并发版本比单线程版本快约 5 倍。在 go 跟踪结果中，我们可以看到并发版本的 GC 占用了 36% 的运行时间。有办法优化这段时间吗？从 Go 1.19 开始，我们有两个参数可以控制 GC。</p>
+<h2 id="GOGC-和-GOMEMLIMIT"><a href="#GOGC-和-GOMEMLIMIT" class="headerlink" title="GOGC 和 GOMEMLIMIT"></a>GOGC 和 GOMEMLIMIT</h2><p>在 Go 1.19 中，增加了两个控制 GC 的参数。GOGC 控制垃圾回收的频率，而 GOMEMLIMIT 则限制程序的最大内存使用量。有关 GOGC 和 GOMEMLIMIT 的详细信息，请参阅官方文档 gc-guide。</p>
+<h3 id="GOGC"><a href="#GOGC" class="headerlink" title="GOGC"></a>GOGC</h3><p>根据官方文档，计算公式如下：</p>
+<p><img src="https://files.mdnice.com/user/4760/c34fe0ba-bc48-4f8d-a1af-b4e829d23cca.png"><br>理论上，如果我们将 GOGC 设置为 1000，那么 GC 的频率将降低 10 倍，而内存使用量则会增加 10 倍（这只是理论模型，实际情况更为复杂）。让我们试一试。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  go_trace git:(main) ✗ time GOGC=1000 ./go_trace 2 &gt; trace_gogc_1000.out</span><br><span class="line"> 2024/08/05 16:57:29 find key word go 2400 count</span><br><span class="line"> GOGC=1000 ./go_trace 2 &gt; trace_gogc_1000.out  2.46s user 0.16s system 757% cpu 0.346 total</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>RunTime: 314ms</li>
+<li>STW: 9.572ms</li>
+<li>GC Occurrences: 5</li>
+<li>GC STW AVE: 1.194ms</li>
+</ul>
+<p>GC 时间约占总运行时间的 9.572 &#x2F; 314 ≈ 0.02。最大内存使用量为 451MB。</p>
+<p>图 6：GOGC - 最大堆</p>
+<p><img src="https://files.mdnice.com/user/4760/bacdaf85-22cd-4a34-b987-a900d3c10082.png"></p>
+<p>图 7：GOGC - GC 计数</p>
+<p><img src="https://files.mdnice.com/user/4760/d94e15f7-8b87-4a5e-b23f-600ed9d1b1ff.png"></p>
+<h3 id="GOMEMLIMIT"><a href="#GOMEMLIMIT" class="headerlink" title="GOMEMLIMIT"></a>GOMEMLIMIT</h3><p>GOMEMLIMIT 用于设置程序的内存使用上限。它通常用于禁用自动 GC 时，允许我们手动管理总的内存使用量。当分配的内存达到上限时，将触发 GC。请注意，即使 GC 努力工作，内存使用量仍有可能超过 GOMEMLIMIT。</p>
+<p>在单线程版本中，我们的程序使用了 11.28MB 内存。在并发版本中，有 10 个 goroutines 同时运行。根据 gc-guide 的规定，我们必须保留 10%的内存以备不时之需。因此，我们可以将 GOMEMLIMIT 设置为 11.28MB * 1.1 ≈ 124MB。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  go_trace git:(main) ✗ time GOGC=off GOMEMLIMIT=124MiB ./go_trace 2 &gt; trace_mem_limit.out  </span><br><span class="line"> 2024/08/05 18:10:55 find key word go 2400 count</span><br><span class="line"> GOGC=off GOMEMLIMIT=124MiB ./go_trace 2 &gt; trace_mem_limit.out  2.83s user 0.15s system 766% cpu 0.389 total</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>RunTime: 376.455ms</li>
+<li>STW: 41.578ms</li>
+<li>GC Occurrences: 14</li>
+<li>GC STW AVE: 2.969ms</li>
+</ul>
+<p>GC 时间约占总运行时间的 41.578 &#x2F; 376.455 ≈ 0.11。最大内存使用量为 120MB，接近我们设定的上限。</p>
+<p>图 8：GOMEMLIMIT - GC 最大堆</p>
+<p><img src="https://files.mdnice.com/user/4760/a74bddd4-70f0-47a3-b5d2-d298be81507b.png"></p>
+<p>图 9：GOMEMLIMIT - GC 计数</p>
+<p><img src="https://files.mdnice.com/user/4760/649fd2ed-000f-43bd-9531-14e4e3316e01.png"></p>
+<p>如下图所示，增加 GOMEMLIMIT 参数可以获得更好的结果，例如 GOMEMLIMIT&#x3D;248MiB 时。</p>
+<p>图 10：GOMEMLIMIT&#x3D;248MiB - GC</p>
+<p><img src="https://files.mdnice.com/user/4760/991c8eb6-a7aa-40b9-b9f1-47c216bb5d10.png"></p>
+<ul>
+<li>RunTime: 320.455ms</li>
+<li>STW: 11.429ms</li>
+<li>GC Occurrences: 5</li>
+<li>GC STW AVE: 2.285ms<br>不过，它也并非没有限制。例如，在 GOMEMLIMIT&#x3D;1024MiB 时，RunTime 已达到 406ms。</li>
+</ul>
+<p>图 11：GOMEMLIMIT&#x3D;1024MiB - GC</p>
+<p><img src="https://files.mdnice.com/user/4760/a241cf43-fcf0-4d64-b4a3-611079fec537.png"></p>
+<h2 id="存在风险"><a href="#存在风险" class="headerlink" title="存在风险"></a>存在风险</h2><p>官方文档的 <a href="https://tip.golang.org/doc/gc-guide#Suggested_uses" title="gc suggested_uses">建议用途</a> 部分提供了明确的建议。除非熟悉程序的运行环境和工作量，否则请勿使用这两个参数。请务必阅读 gc 指南。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>让我们来总结一下优化过程和结果：<br>图 12：结果比较</p>
+<p><img src="https://files.mdnice.com/user/4760/b659c057-a333-49ad-b66b-0fa0d77b891c.png"><br>在适当的情况下使用 GOGC 和 GOMEMLIMIT 可以有效提高性能。它提供了一种对不确定方面的控制感。不过，必须在受控环境中谨慎使用，以确保性能和可靠性。在资源共享或不受控的环境中应谨慎使用，以避免因设置不当而导致性能下降或程序崩溃。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/21/Notion-%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86-2000-%E4%BA%BF%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%AE%9E%E4%BD%93%EF%BC%9F/" rel="prev" title="Notion 如何处理 2000 亿个数据实体？">
+                  <i class="fa fa-angle-left"></i> Notion 如何处理 2000 亿个数据实体？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/23/%E8%AF%91-Range-Over-Function-Types/" rel="next" title="[译] Range Over Function Types">
+                  [译] Range Over Function Types <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

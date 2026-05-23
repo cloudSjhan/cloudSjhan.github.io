@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="在 Confluent Cloud 上使用 Databend Kafka Connect 构建实时数据流同步">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/07/25/%E5%9C%A8-Confluent-Cloud-%E4%B8%8A%E4%BD%BF%E7%94%A8-Databend-Kafka-Connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%8C%E6%AD%A5/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/f3a43cc7-a2f0-4c1f-9382-082a695fab4d.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/98a64e63-32a8-475f-8d14-e3ecf78611e6.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/a48ad287-d83a-4eb3-a634-beef35502ab0.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/d09db662-e41f-438c-b900-ad5f083efc25.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/6835ebf0-17da-463c-9fe9-0d5db8d47720.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/b7dcbb0b-bca7-4c59-9cf2-d81cd03a6ed2.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/56ed12dc-4700-46d2-b19c-fcf217032576.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/57e22044-1d49-4211-ae92-12539a15c680.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/256681ea-0f35-464d-9f14-1d5802ea2db2.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/fb3b0903-f227-44bb-bbaf-ac2fc4bb224e.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/7e5f2c3b-36bb-428d-af9b-7afa423e7261.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/77548f76-747d-44c8-9a39-72a860510212.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/f3a3c32b-7954-4db7-8b91-df153e11de70.png">
+<meta property="article:published_time" content="2024-07-25T07:32:43.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.739Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="databend">
+<meta property="article:tag" content="kafka connect">
+<meta property="article:tag" content="confluent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.mdnice.com/user/4760/f3a43cc7-a2f0-4c1f-9382-082a695fab4d.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/07/25/%E5%9C%A8-Confluent-Cloud-%E4%B8%8A%E4%BD%BF%E7%94%A8-Databend-Kafka-Connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%8C%E6%AD%A5/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/07/25/%E5%9C%A8-Confluent-Cloud-%E4%B8%8A%E4%BD%BF%E7%94%A8-Databend-Kafka-Connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%8C%E6%AD%A5/","path":"2024/07/25/在-Confluent-Cloud-上使用-Databend-Kafka-Connect-构建实时数据流同步/","title":"在 Confluent Cloud 上使用 Databend Kafka Connect 构建实时数据流同步"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在 Confluent Cloud 上使用 Databend Kafka Connect 构建实时数据流同步 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Confluent-Cloud"><span class="nav-number">1.</span> <span class="nav-text">Confluent Cloud</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Databend-Kafka-Connect"><span class="nav-number">2.</span> <span class="nav-text">Databend Kafka Connect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89-connector"><span class="nav-number">3.1.</span> <span class="nav-text">创建自定义 connector</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Add-plugin"><span class="nav-number">3.1.1.</span> <span class="nav-text">Add plugin</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-plugin"><span class="nav-number">3.1.2.</span> <span class="nav-text">配置 plugin</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-Topic"><span class="nav-number">3.2.</span> <span class="nav-text">创建 Topic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Add-connector-for-topic"><span class="nav-number">3.3.</span> <span class="nav-text">Add connector for topic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-databend-connector-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.</span> <span class="nav-text">添加 databend connector 的配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C%E7%99%BD%E5%90%8D%E5%8D%95"><span class="nav-number">3.5.</span> <span class="nav-text">配置网络白名单</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E8%AE%A4%E9%85%8D%E7%BD%AE%E5%B9%B6%E5%90%AF%E5%8A%A8-kafka-connector"><span class="nav-number">3.6.</span> <span class="nav-text">确认配置并启动 kafka connector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%91-topic-%E4%B8%AD%E5%8F%91%E9%80%81%E6%A0%B7%E4%BE%8B%E6%95%B0%E6%8D%AE"><span class="nav-number">3.7.</span> <span class="nav-text">向 topic 中发送样例数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/07/25/%E5%9C%A8-Confluent-Cloud-%E4%B8%8A%E4%BD%BF%E7%94%A8-Databend-Kafka-Connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E6%B5%81%E5%90%8C%E6%AD%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在 Confluent Cloud 上使用 Databend Kafka Connect 构建实时数据流同步 | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 Confluent Cloud 上使用 Databend Kafka Connect 构建实时数据流同步
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-07-25 15:32:43" itemprop="dateCreated datePublished" datetime="2024-07-25T15:32:43+08:00">2024-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/databend/" itemprop="url" rel="index"><span itemprop="name">databend</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h3 id="Confluent-Cloud"><a href="#Confluent-Cloud" class="headerlink" title="Confluent Cloud"></a>Confluent Cloud</h3><p><a href="https://confluent.cloud/" title="Confluent Cloud">Confluent Cloud</a> 是由 Confluent 公司提供的云服务，它是基于 Apache Kafka 的企业级事件流平台，允许用户轻松构建和管理分布式流处理应用。Confluent 由 Apache Kafka 的原始创建者创立，专注于提供围绕 Kafka 技术的产品和服务 。</p>
+<p>Confluent Cloud 提供的主要优势包括简化的部署和管理，高可用性，以及自动扩展能力。它是一个云端托管服务，是 Confluent Enterprise 的云端版本，增加了云端管理控制台的组件，使得用户无需担心底层基础设施的维护和扩展问题，可以更专注于业务逻辑的实现 。</p>
+<p>Confluent Cloud 与其他 Confluent 产品一样，提供了一系列的工具和服务，例如 Kafka Connect 用于连接外部系统，Schema Registry 用于管理数据格式的变更，以及 KSQL 用于流处理查询等。这些工具和服务帮助用户构建统一而灵活的数据流平台，实现数据的实时处理和分析 。</p>
+<p>此外，Confluent Cloud 还提供了不同层级的服务，根据可用性、安全等企业特性分为 Basic、Standard 和 Dedicated 三个版本，支持按需创建资源，并且按量收费，为用户提供了灵活的付费选项。</p>
+<h3 id="Databend-Kafka-Connect"><a href="#Databend-Kafka-Connect" class="headerlink" title="Databend Kafka Connect"></a>Databend Kafka Connect</h3><p>Databend 提供了 <a href="https://github.com/databendcloud/databend-kafka-connect" title="Databend-Kafka-connect">Databend-Kafka-Connect</a> 作为 Apache Kafka 的 Sink connector，直接接入到 Confluent Cloud 平台，就可以实时消费 kafka topic 中的数据并写入 Databend table。</p>
+<p>Databend kafka connect 提供了诸多特性，例如自动建表，Append Only 和 Upsert 写入模式，自动的 schema evolution。</p>
+<p>这篇文章我们将会介绍如何在 Confluent Cloud 上使用 Databend Kafka Connector 构建实时的数据同步管道。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><h4 id="创建自定义-connector"><a href="#创建自定义-connector" class="headerlink" title="创建自定义 connector"></a>创建自定义 connector</h4><p>Confluent 提供了一个 connector hub，在这里可以找到所有已经内置到 Confluent Cloud 中的 Connector。对于没有内置的，Confluent 支持创建自定义 connector。</p>
+<h5 id="Add-plugin"><a href="#Add-plugin" class="headerlink" title="Add plugin"></a>Add plugin</h5><p><img src="https://files.mdnice.com/user/4760/f3a43cc7-a2f0-4c1f-9382-082a695fab4d.png"></p>
+<h5 id="配置-plugin"><a href="#配置-plugin" class="headerlink" title="配置 plugin"></a>配置 plugin</h5><p><img src="https://files.mdnice.com/user/4760/98a64e63-32a8-475f-8d14-e3ecf78611e6.png"></p>
+<p>填写 connector 的名称、描述以及入口 class，在这里 databend connect 的入口类是：<code>com.databend.kafka.connect.DatabendSinkConnector</code>。</p>
+<p><code>git clone https://github.com/databendcloud/databend-kafka-connect.git</code> 下载源码编译或者直接到 <a href="https://github.com/databendcloud/databend-kafka-connect/releases" title="databend connect release">release</a> 页面下载打包好的 jar 文件。将其上传至 Confluent Cloud。</p>
+<p><img src="https://files.mdnice.com/user/4760/a48ad287-d83a-4eb3-a634-beef35502ab0.png"></p>
+<h4 id="创建-Topic"><a href="#创建-Topic" class="headerlink" title="创建 Topic"></a>创建 Topic</h4><p>创建一个新的 kafka topic </p>
+<p><img src="https://files.mdnice.com/user/4760/d09db662-e41f-438c-b900-ad5f083efc25.png"></p>
+<p>为新创建的 topic 定义一个 schema 以确定其数据结构。这里我们确定 kafka topic 中的数据格式为 AVRO，其 schema 为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &quot;Sample schema to help you get started.&quot;,</span><br><span class="line">  &quot;fields&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;doc&quot;: &quot;The int type is a 32-bit signed integer.&quot;,</span><br><span class="line">      &quot;name&quot;: &quot;id&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;int&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;doc&quot;: &quot;The string is a unicode character sequence.&quot;,</span><br><span class="line">      &quot;name&quot;: &quot;name&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;string&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;doc&quot;: &quot;The string is a unicode character sequence.&quot;,</span><br><span class="line">      &quot;name&quot;: &quot;age&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;int&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;name&quot;: &quot;sampleRecord&quot;,</span><br><span class="line">  &quot;type&quot;: &quot;record&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://files.mdnice.com/user/4760/6835ebf0-17da-463c-9fe9-0d5db8d47720.png"></p>
+<h4 id="Add-connector-for-topic"><a href="#Add-connector-for-topic" class="headerlink" title="Add connector for topic"></a>Add connector for topic</h4><p>为刚创建的 topic 添加一个 sink connector</p>
+<p><img src="https://files.mdnice.com/user/4760/b7dcbb0b-bca7-4c59-9cf2-d81cd03a6ed2.png"></p>
+<p>选择上面我们自定义的 databend connector 并配置 API key 和 secret。</p>
+<h4 id="添加-databend-connector-的配置文件"><a href="#添加-databend-connector-的配置文件" class="headerlink" title="添加 databend connector 的配置文件"></a>添加 databend connector 的配置文件</h4><p><img src="https://files.mdnice.com/user/4760/56ed12dc-4700-46d2-b19c-fcf217032576.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;auto.create&quot;: &quot;true&quot;,</span><br><span class="line">  &quot;auto.evolve&quot;: &quot;true&quot;,</span><br><span class="line">  &quot;batch.size&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;confluent.custom.schema.registry.auto&quot;: &quot;true&quot;,</span><br><span class="line">  &quot;connection.attempts&quot;: &quot;5&quot;,</span><br><span class="line">  &quot;connection.backoff.ms&quot;: &quot;10000&quot;,</span><br><span class="line">  &quot;connection.database&quot;: &quot;testsync&quot;,</span><br><span class="line">  &quot;connection.password&quot;: &quot;password&quot;,</span><br><span class="line">  &quot;connection.url&quot;: &quot;jdbc:databend://tn3ftqihs--medium-p8at.gw.aws-us-east-2.default.databend.com:443?ssl=true&quot;,</span><br><span class="line">  &quot;connection.user&quot;: &quot;cloudapp&quot;,</span><br><span class="line">  &quot;errors.tolerance&quot;: &quot;all&quot;,</span><br><span class="line">  &quot;insert.mode&quot;: &quot;upsert&quot;,</span><br><span class="line">  &quot;key.converter&quot;: &quot;org.apache.kafka.connect.storage.StringConverter&quot;,</span><br><span class="line">  &quot;max.retries&quot;: &quot;10&quot;,</span><br><span class="line">  &quot;pk.fields&quot;: &quot;id&quot;,</span><br><span class="line">  &quot;pk.mode&quot;: &quot;record_value&quot;,</span><br><span class="line">  &quot;table.name.format&quot;: &quot;testsync.$&#123;topic&#125;&quot;,</span><br><span class="line">  &quot;topics&quot;: &quot;topic_avrob&quot;,</span><br><span class="line">  &quot;value.converter&quot;: &quot;io.confluent.connect.avro.AvroConverter&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置文件中指定了目标端的连接参数，数据库名，表名，kafka 相关信息以及 connector converter 。<br>key.converter 和 value.converter 就是指定的转换器，分别指定了消息键和消息值所使用的的转换器，用于在 Kafka Connect 格式和写入 Kafka 的序列化格式之间进行转换。这控制了写入 Kafka 或从 Kafka 读取的消息中键和值的格式。由于这与 Connector 没有任何关系，因此任何 Connector 可以与任何序列化格式一起使用。默认使用 Kafka 提供的 JSONConverter。有些转换器还包含了特定的配置参数。例如，通过将 key.converter.schemas.enable 设置成 true 或者 false 来指定 JSON 消息是否包含 schema。</p>
+<h4 id="配置网络白名单"><a href="#配置网络白名单" class="headerlink" title="配置网络白名单"></a>配置网络白名单</h4><p>将数据写入的目标端的 host 填入 confluent cloud 的 connection endpoint 配置，confluent 会在 kafka 和目标端之间建立 private link 以确保网络通畅。</p>
+<p><img src="https://files.mdnice.com/user/4760/57e22044-1d49-4211-ae92-12539a15c680.png"></p>
+<h4 id="确认配置并启动-kafka-connector"><a href="#确认配置并启动-kafka-connector" class="headerlink" title="确认配置并启动 kafka connector"></a>确认配置并启动 kafka connector</h4><p><img src="https://files.mdnice.com/user/4760/256681ea-0f35-464d-9f14-1d5802ea2db2.png"></p>
+<h4 id="向-topic-中发送样例数据"><a href="#向-topic-中发送样例数据" class="headerlink" title="向 topic 中发送样例数据"></a>向 topic 中发送样例数据</h4><p><img src="https://files.mdnice.com/user/4760/fb3b0903-f227-44bb-bbaf-ac2fc4bb224e.png"></p>
+<p>确认 kafka connect 处于 running 状态后，</p>
+<p>我们使用 confluent CLI 工具往 topic 中发送数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">confluent kafka topic produce topic_avrob  --value-format avro --schema schema.json</span><br></pre></td></tr></table></figure>
+<p>其中 <code>schema.json</code> 就是我们为 topic 定义的 schema。</p>
+<p><img src="https://files.mdnice.com/user/4760/7e5f2c3b-36bb-428d-af9b-7afa423e7261.png"></p>
+<p>通过 confluent cloud 的日志我们可以看到 kafka connect 已经接收到来自 topic 的消息并开始写入 databend table：</p>
+<p><img src="https://files.mdnice.com/user/4760/77548f76-747d-44c8-9a39-72a860510212.png"></p>
+<p>同时我们在 databend cloud 中可以看到 <code>testsync.topic_avrob</code> 表已经被自动创建且数据已写入：</p>
+<p><img src="https://files.mdnice.com/user/4760/f3a3c32b-7954-4db7-8b91-df153e11de70.png"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过以上步骤，我们就可以在 Confluent Cloud 与 Databend Cloud 之间，使用 Databend Kafka Connector 构建起二者之间的实时数据同步管道。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/databend/" rel="tag"># databend</a>
+              <a href="/tags/kafka-connect/" rel="tag"># kafka connect</a>
+              <a href="/tags/confluent/" rel="tag"># confluent</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/07/23/Lambda-Go%EF%BC%9A%E5%B0%86%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E5%BC%95%E5%85%A5-Go/" rel="prev" title="Lambda-Go：将函数式编程引入 Go">
+                  <i class="fa fa-angle-left"></i> Lambda-Go：将函数式编程引入 Go
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/01/%E4%BB%8E-Golang-%E5%88%B0-TinyGo%EF%BC%9A%E5%A6%82%E4%BD%95%E4%B8%BA-IOT-%E6%9E%84%E5%BB%BA%E9%AB%98%E6%95%88%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%EF%BC%9F/" rel="next" title="从 Golang 到 TinyGo：如何为 IOT 构建高效应用程序？">
+                  从 Golang 到 TinyGo：如何为 IOT 构建高效应用程序？ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

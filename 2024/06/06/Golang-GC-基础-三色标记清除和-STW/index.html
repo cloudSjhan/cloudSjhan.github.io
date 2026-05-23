@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Golang GC 基础: 三色标记清除和 STW">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/06/06/Golang-GC-%E5%9F%BA%E7%A1%80-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E5%92%8C-STW/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/c0fc2f94-81fc-439a-ade4-8c3da5ec3970.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/18b600b8-5659-4511-9b50-83a3bbc46e52.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/5f390365-4631-4d39-8daf-7464b6d4500c.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/8fd19e35-2603-4ff2-ae18-30aead44df37.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/ba5d3b17-d581-494a-bea0-2289bb201056.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/36f28032-0aea-4d2d-90ab-9c5fdcb04cc8.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/50d734c8-f479-4514-8d8d-323309f6c1e2.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/fd736e5e-ee33-4e58-a116-a9980657d45b.png">
+<meta property="article:published_time" content="2024-06-06T08:54:11.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.769Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.mdnice.com/user/4760/c0fc2f94-81fc-439a-ade4-8c3da5ec3970.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/06/06/Golang-GC-%E5%9F%BA%E7%A1%80-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E5%92%8C-STW/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/06/06/Golang-GC-%E5%9F%BA%E7%A1%80-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E5%92%8C-STW/","path":"2024/06/06/Golang-GC-基础-三色标记清除和-STW/","title":"Golang GC 基础: 三色标记清除和 STW"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Golang GC 基础: 三色标记清除和 STW | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E5%92%8C%E6%B8%85%E9%99%A4"><span class="nav-number">1.</span> <span class="nav-text">标记和清除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%9C%A8%E6%B2%A1%E6%9C%89-STW-%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%9B%E8%A1%8C%E6%A0%87%E8%AE%B0%E5%92%8C%E6%B8%85%E6%89%AB%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">如果在没有 STW 的情况下进行标记和清扫，会发生什么情况？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E5%92%8C%E6%B8%85%E6%89%AB%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%B9%B6%E5%8F%91%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%9A%84%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">三色标记和清扫是如何实现并发垃圾回收的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9CStop-the-world%E2%80%9D-in-Go-is-not-a-problem"><span class="nav-number">4.</span> <span class="nav-text">“Stop the world” in Go is not a problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Benchmark"><span class="nav-number">5.</span> <span class="nav-text">Benchmark</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/06/06/Golang-GC-%E5%9F%BA%E7%A1%80-%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E5%92%8C-STW/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Golang GC 基础: 三色标记清除和 STW | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang GC 基础: 三色标记清除和 STW
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-06 16:54:11" itemprop="dateCreated datePublished" datetime="2024-06-06T16:54:11+08:00">2024-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+
+
+<p>今天大家讨论一下 Golang 中垃圾回收的一些基础知识，这些知识往往让人难以理解。要知道，在垃圾回收过程中，Go 会首先:<br>（1）将根对象标记为灰色，<br>（2）然后将它们自己标记为黑色，将它们的后代标记为灰色，<br>（3）最后删除剩余的（白色）对象。<br>这就是所谓的标记和清除。但为什么我们需要三种颜色呢？为什么不是两种呢？让我们在下文中进一步讨论这个问题，并确定 STW (stop the world)的实际开销。</p>
+<h3 id="标记和清除"><a href="#标记和清除" class="headerlink" title="标记和清除"></a>标记和清除</h3><p>如果 GC 的全部任务都归结为标记不能删除的对象和删除未标记的对象，那么为什么不使用双色算法呢？事实上，我们可以简单地用黑色标记所有可到达的对象，然后删除白色的对象。</p>
+<p><img src="https://files.mdnice.com/user/4760/c0fc2f94-81fc-439a-ade4-8c3da5ec3970.png"></p>
+<p>这一切似乎都合乎逻辑，但现在我们决定让垃圾回收器增量运行，也就是说，我们赋予它将标记阶段分成几个低延迟阶段的能力。</p>
+<p><img src="https://files.mdnice.com/user/4760/18b600b8-5659-4511-9b50-83a3bbc46e52.png"><br>如图所示，在第一阶段，我们首先将节点 1 标记为黑色，然后查找该节点的连接，找到节点 2，并将其也标记为黑色。然后，标记暂停，给应用程序一点 CPU 时间来执行其主要任务。最后，我们进入第二阶段标记。由于没有灰色&#x2F;黑色之分，我们不知道节点 1 的引用是否已被检查过，因此必须再次检查。算法最终很可能会完成，但不能保证它会在程序本身完成之前完成（导致 OOM）。</p>
+<p>为了解决这个问题，我们增加了一个不变量：黑色物体应被视为扫描对象。</p>
+<p>这个算法似乎是有效的，即使在增量垃圾回收的情况下也能正确终止。但有一个问题却打破了一切：在这种天真版本的标记和清扫算法的整个运行过程中，我们必须保持程序处于 “STW”状态。</p>
+<h3 id="如果在没有-STW-的情况下进行标记和清扫，会发生什么情况？"><a href="#如果在没有-STW-的情况下进行标记和清扫，会发生什么情况？" class="headerlink" title="如果在没有 STW 的情况下进行标记和清扫，会发生什么情况？"></a>如果在没有 STW 的情况下进行标记和清扫，会发生什么情况？</h3><p><img src="https://files.mdnice.com/user/4760/5f390365-4631-4d39-8daf-7464b6d4500c.png"></p>
+<p>正如你所看到的，在这两个标记阶段之间，已经添加了许多新对象，但我们并没有标记表明需要对它们进行扫描。这就导致了内存泄漏。唯一的解决办法就是禁止我们的程序（突变器）在垃圾回收器运行时进行任何更改。</p>
+<h3 id="三色标记和清扫是如何实现并发垃圾回收的？"><a href="#三色标记和清扫是如何实现并发垃圾回收的？" class="headerlink" title="三色标记和清扫是如何实现并发垃圾回收的？"></a>三色标记和清扫是如何实现并发垃圾回收的？</h3><p>正如我们之前所发现的，在标记和扫描算法中，我们遇到了 “世界停止”（STW）的问题。不过，如果我们引入一个额外的标记 “未扫描但不符合删除条件”（灰色），STW 问题就会自动解决！</p>
+<p>需要注意的是，在 Golang 中，GC 不仅是增量式的，而且是并发式的。其逻辑与增量方法相同–GC 工作被分为不同的部分，但它们不是按顺序执行，而是由后台工作者并发执行。</p>
+<p>下面是 Golang 中的三色标记：<br><img src="https://files.mdnice.com/user/4760/8fd19e35-2603-4ff2-ae18-30aead44df37.png"></p>
+<p>我们将黑色节点引用但尚未扫描的对象标记为灰色节点。让我们看看这如何帮助我们消除 STW。</p>
+<p><img src="https://files.mdnice.com/user/4760/ba5d3b17-d581-494a-bea0-2289bb201056.png"></p>
+<p>新添加的对象会被标记为灰色，并由 gcBgMarkWorker2 或其他可用的工作程序进行扫描。这并不能完全消除对 STW 的需求，但会大大减少花费在 STW 上的时间。至少在标记阶段，我们不需要让世界停止运行，以防止堆发生变化。接下来，我们将深入探讨 Golang 中仍会出现的特定 STW。</p>
+<h3 id="“Stop-the-world”-in-Go-is-not-a-problem"><a href="#“Stop-the-world”-in-Go-is-not-a-problem" class="headerlink" title="“Stop the world” in Go is not a problem"></a>“Stop the world” in Go is not a problem</h3><p>其实，仔细想想，在 99% 的情况下，这都与你无关。垃圾回收器的主要工作与程序的执行同时进行，而 STW 在两个阶段之间发生的时间很短：</p>
+<ul>
+<li>从扫频过渡到标记（扫频终止）。</li>
+<li>从标记过渡到扫描（标记终止）。</li>
+</ul>
+<p>在这两种情况下，世界的停顿都是为了下一阶段做准备：启动 Worker、清除 P 缓存（用 Go 调度器术语来说就是处理器）、等待清扫阶段完成（对于在运行时启动垃圾回收的同时从程序代码中触发 runtime.GC()的情况）、设置&#x2F;取消写入障碍–而这一切都与已分配对象的数量无关。</p>
+<p>如果你分配了 1 兆字节，然后开始分配千兆字节的对象，这并不意味着 STW 会按比例增长，因为 STW 只在下一个标记或扫描阶段的初始化过程中短暂需要。该数据数组的实际标记和扫描是在后台进行的。</p>
+<p>STW 的持续时间取决于所涉及的 P 的数量和 goroutines 的数量，并与管理其状态的需要有关。STW 不受堆上分配数量的影响。</p>
+<p>世界只在两个短时间内停止：标记终止和扫描终止。标记和扫描在后台进行，不会阻塞应用程序。</p>
+<h3 id="Benchmark"><a href="#Benchmark" class="headerlink" title="Benchmark"></a>Benchmark</h3><p>这里做一个简单的测试，测试两种分配小对象的情况。我使用 env GOGC&#x3D;off 禁用了垃圾回收器，并在每次测试结束时直接调用 runtime.GC() 来触发垃圾回收：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">func Test1000Allocs(t *testing.T) &#123;</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          i := 123</span><br><span class="line">          reader(&amp;i)</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 1000; i++ &#123;</span><br><span class="line">       ii := i</span><br><span class="line">       i = *reader(&amp;ii)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    runtime.GC()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Test10000000000Allocs(t *testing.T) &#123;</span><br><span class="line">    go func() &#123;</span><br><span class="line">       for &#123;</span><br><span class="line">          i := 123</span><br><span class="line">          reader(&amp;i)</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 10000000000; i++ &#123;</span><br><span class="line">       ii := i</span><br><span class="line">       i = *reader(&amp;ii)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    runtime.GC()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//go:noinline</span><br><span class="line">func reader(i *int) *int &#123;</span><br><span class="line">    ii := i</span><br><span class="line">    return ii</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>我们运行每个测试时都启用了跟踪信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GOGC=off go test -run=Test1000Allocs -trace=trace1.out</span><br><span class="line">GOGC=off go test -run=Test10000000000Allocs -trace=trace2.out</span><br><span class="line">go tool trace trace1.out</span><br><span class="line">go tool trace trace2.out</span><br></pre></td></tr></table></figure>
+<p>Test1000Allocs</p>
+<p><img src="https://files.mdnice.com/user/4760/36f28032-0aea-4d2d-90ab-9c5fdcb04cc8.png"></p>
+<p>Test10000000000Allocs</p>
+<p><img src="https://files.mdnice.com/user/4760/50d734c8-f479-4514-8d8d-323309f6c1e2.png"></p>
+<p>Test10000000000Allocs<br><img src="https://files.mdnice.com/user/4760/fd736e5e-ee33-4e58-a116-a9980657d45b.png"></p>
+<p>在 Test1000Allocs 测试的扫描终止阶段，STW 为 80384 ns。测试 10000000000Allocs 时为 88384 ns。有区别吗？我也没发现。</p>
+<p>在 Test1000Allocs 测试的标记终止阶段，STW 为 87616 ns。测试 10000000000Allocs 时为 120128 毫微秒。这里的差异更为明显，但我们谈论的还是毫秒级的微小差异。在 GC 运行的大部分时间里，我们的程序成功并行运行。</p>
+<p>在分配数量多、GOGC 值低的情况下，这些带有小 STW 阶段的短 GC 循环可能会频繁出现，并可能被视为一个问题。由于我禁用了 GC，并且只通过直接调用触发了一次，所以测试有点像是合成的。但这恰恰说明，有时值得考虑所选的 GOGC 值。</p>
+<p>总之，Golang 中的垃圾回收器显然是并发运行的，在大多数情况下，STW 时的停顿都是可以忽略不计的问题。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/03/%E4%BD%BF%E7%94%A8-Golang-%E6%9E%84%E5%BB%BA%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA-k8s-Operator/" rel="prev" title="使用 Golang 构建你的第一个 k8s Operator">
+                  <i class="fa fa-angle-left"></i> 使用 Golang 构建你的第一个 k8s Operator
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/08/%E5%BF%AB%E9%80%9F%E5%90%83%E9%80%8F-Golang-Channels/" rel="next" title="快速吃透 Golang Channels">
+                  快速吃透 Golang Channels <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

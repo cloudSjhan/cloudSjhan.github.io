@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Databend debezium server support auto schema evolution">
+<meta property="og:type" content="article">
+<meta property="og:title" content="databend debezium server support  auto schema evolution">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Databend debezium server support auto schema evolution">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/21ddf1f4-e2e5-4f07-8d9a-ea7fe08b7771.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/37999730-dc82-4073-a9cb-fe6e318e6b1a.png">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/18336d1a-8df3-46cf-8051-6013e3ff4256.png">
+<meta property="article:published_time" content="2024-01-25T09:29:12.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.757Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="CDC">
+<meta property="article:tag" content="databend">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.mdnice.com/user/4760/21ddf1f4-e2e5-4f07-8d9a-ea7fe08b7771.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/","path":"2024/01/25/databend-debezium-server-support-auto-schema-evolution/","title":"databend debezium server support  auto schema evolution"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>databend debezium server support  auto schema evolution | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">实现过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5-%E6%BC%94%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">实践&amp;演示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Debezium-Server-Databend"><span class="nav-number">3.1.</span> <span class="nav-text">Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mysql-%E4%B8%AD%E5%87%86%E5%A4%87%E8%A1%A8%E5%92%8C%E6%95%B0%E6%8D%AE"><span class="nav-number">3.2.</span> <span class="nav-text">Mysql 中准备表和数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Databend-Cloud-%E4%B8%AD%E5%88%9B%E5%BB%BA-Database"><span class="nav-number">3.3.</span> <span class="nav-text">Databend Cloud 中创建 Database</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-Debezium-Server-Databend"><span class="nav-number">3.4.</span> <span class="nav-text">启动 Debezium Server Databend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E5%8F%98-Mysql-%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="nav-number">3.5.</span> <span class="nav-text">改变 Mysql 表结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/01/25/databend-debezium-server-support-auto-schema-evolution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="databend debezium server support  auto schema evolution | cloud world">
+      <meta itemprop="description" content="Databend debezium server support auto schema evolution">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          databend debezium server support  auto schema evolution
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-01-25 17:29:12" itemprop="dateCreated datePublished" datetime="2024-01-25T17:29:12+08:00">2024-01-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Databend/" itemprop="url" rel="index"><span itemprop="name">Databend</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">Databend debezium server support auto schema evolution</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p><a href="https://github.com/databendcloud/debezium-server-databend">Debezium Server Databend</a> 是一个基于 Debezium Engine 自研的轻量级 CDC 项目，用于实时捕获数据库更改并将其作为事件流传递最终将数据写入目标数据库 Databend。它提供了一种简单的方式来监视和捕获关系型数据库的变化，并支持将这些变化转换为可消费事件。使用 Debezium server databend 实现 CDC 无须依赖大型的 Data Infra 比如 Flink, Kafka, Spark 等，只需一个启动脚本即可开启实时数据同步。</p>
+<p>CDC 过程中的 Schema 变更处理是上游数据库中十分常见的用户场景，也是数据同步框架实现的难点。针对该场景，Databend-debezium-server 0.3.0 引入了 Auto Schema Evolution 的能力，在每一批次的数据中协调并控制作业拓扑中的 schema 变更事件处理。</p>
+<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><p>Debezium  Server Databend 实现 Schema Auto Evolution 功能的原理大致是：</p>
+<p>在配置文件中新增 <code>debezium.sink.databend.schema.evolution</code> 的配置，默认为 false 不开启该功能。</p>
+<p>当上游数据源发生 schema 变更时，先将流水线中已经读出的的数据全部刷出以保证进入数据流的这一批 schema 的一致性：</p>
+<p>然后先将该类 schemachangekey 事件暂存到 schemaEvolutionEvents 的 ArrayList 中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;DatabendChangeEvent&gt; schemaEvolutionEvents = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">  <span class="keyword">for</span> (DatabendChangeEvent event : events) &#123;</span><br><span class="line">   <span class="keyword">if</span> (DatabendUtil.isSchemaChanged(event.schema()) &amp;&amp; isSchemaEvolutionEnabled) &#123;</span><br><span class="line">             schemaEvolutionEvents.add(event);</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>先将上面刷出的数据执行写入操作，写入这批数据之后且解析 schema 变更的事件之前的时间里不会有新的数据进来。数据处理完后再去解析 schema change events，如果事件类型属于 DDL 并且为 alter table 语句，就对目标 database.table 执行该 DDL。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// handle schema evolution</span></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          schemaEvolution(table, schemaEvolutionEvents);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e.getMessage());</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">schemaEvolution</span><span class="params">(RelationalTable table, List&lt;DatabendChangeEvent&gt; events)</span> &#123;</span><br><span class="line">     <span class="keyword">for</span> (DatabendChangeEvent event : events) &#123;</span><br><span class="line">         Map&lt;String, Object&gt; values = event.valueAsMap();</span><br><span class="line">         <span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : values.entrySet()) &#123;</span><br><span class="line">             <span class="keyword">if</span> (entry.getKey().contains(<span class="string">&quot;ddl&quot;</span>) &amp;&amp; entry.getValue().toString().toLowerCase().contains(<span class="string">&quot;alter table&quot;</span>)) &#123;</span><br><span class="line">                 <span class="type">String</span> <span class="variable">tableName</span> <span class="operator">=</span> getFirstWordAfterAlterTable(entry.getValue().toString());</span><br><span class="line">                 <span class="type">String</span> <span class="variable">ddlSql</span> <span class="operator">=</span> replaceFirstWordAfterTable(entry.getValue().toString(), table.databaseName + <span class="string">&quot;.&quot;</span> + tableName);</span><br><span class="line">                 <span class="keyword">try</span> (<span class="type">PreparedStatement</span> <span class="variable">statement</span> <span class="operator">=</span> connection.prepareStatement(ddlSql)) &#123;</span><br><span class="line">                     System.out.println(ddlSql);</span><br><span class="line">                     statement.execute(ddlSql);</span><br><span class="line">                 &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                     <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e.getMessage());</span><br><span class="line">                 &#125;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当 schema 变更事件处理成功后，会继续新的数据同步流程。</p>
+<p>基本的处理流程如下图所示：</p>
+<p><img src="https://files.mdnice.com/user/4760/21ddf1f4-e2e5-4f07-8d9a-ea7fe08b7771.png"></p>
+<h3 id="实践-演示"><a href="#实践-演示" class="headerlink" title="实践&amp;演示"></a>实践&amp;演示</h3><h4 id="Debezium-Server-Databend"><a href="#Debezium-Server-Databend" class="headerlink" title="Debezium Server Databend"></a>Debezium Server Databend</h4><ul>
+<li><p>Clone 项目: <code>git clone ``https://github.com/databendcloud/debezium-server-databend.git</code></p>
+</li>
+<li><p>从项目根目录开始:</p>
+<ul>
+<li>构建和打包 debezium server: <code>mvn -Passembly -Dmaven.test.skip package</code></li>
+<li>构建完成后，解压服务器分发包: <code>unzip debezium-server-databend-dist/target/debezium-server-databend-dist*.zip -d databendDist</code></li>
+<li>进入解压后的文件夹: <code>cd databendDist</code></li>
+<li>创建 <code>application.properties</code> 文件并修改: <code>nano conf/application.properties</code>，将下面的 application.properties 拷贝进去，根据用户实际情况修改相应的配置。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">debezium.sink.type=databend</span><br><span class="line">debezium.sink.databend.upsert=<span class="literal">true</span></span><br><span class="line">debezium.sink.databend.upsert-keep-deletes=<span class="literal">false</span></span><br><span class="line">debezium.sink.databend.database.databaseName=debezium</span><br><span class="line">debezium.sink.databend.database.url=jdbc:databend:<span class="comment">//tnf34b0rm--xxxxxx.default.databend.cn:443</span></span><br><span class="line">debezium.sink.databend.database.username=cloudapp</span><br><span class="line">debezium.sink.databend.database.password=password</span><br><span class="line">debezium.sink.databend.database.primaryKey=id</span><br><span class="line">debezium.sink.databend.database.tableName=products</span><br><span class="line">debezium.sink.databend.database.param.ssl=<span class="literal">true</span></span><br><span class="line">debezium.sink.databend.schema.evolution=<span class="literal">true</span> <span class="comment">// Enable Auto Schema Evolution</span></span><br><span class="line"></span><br><span class="line"># enable event schemas</span><br><span class="line">debezium.format.value.schemas.enable=<span class="literal">true</span></span><br><span class="line">debezium.format.key.schemas.enable=<span class="literal">true</span></span><br><span class="line">debezium.format.value=json</span><br><span class="line">debezium.format.key=json</span><br><span class="line"></span><br><span class="line"># mysql source</span><br><span class="line">debezium.source.connector.class=io.debezium.connector.mysql.MySqlConnector</span><br><span class="line">debezium.source.offset.storage.file.filename=data/offsets.dat</span><br><span class="line">debezium.source.offset.flush.interval.ms=<span class="number">60000</span></span><br><span class="line"></span><br><span class="line">debezium.source.database.hostname=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">debezium.source.database.port=<span class="number">3306</span></span><br><span class="line">debezium.source.database.user=root</span><br><span class="line">debezium.source.database.password=<span class="number">123456</span></span><br><span class="line">debezium.source.database.dbname=mydb</span><br><span class="line">debezium.source.database.server.name=from_mysql</span><br><span class="line">debezium.source.include.schema.changes=<span class="literal">false</span></span><br><span class="line">debezium.source.table.include.list=mydb.products</span><br><span class="line"># debezium.source.database.ssl.mode=required</span><br><span class="line"># Run without Kafka, use local file to store checkpoints</span><br><span class="line">debezium.source.database.history=io.debezium.relational.history.FileDatabaseHistory</span><br><span class="line">debezium.source.database.history.file.filename=data/status.dat</span><br><span class="line"># <span class="keyword">do</span> event flattening. unwrap message!</span><br><span class="line">debezium.transforms=unwrap</span><br><span class="line">debezium.transforms.unwrap.type=io.debezium.transforms.ExtractNewRecordState</span><br><span class="line">debezium.transforms.unwrap.delete.handling.mode=rewrite</span><br><span class="line">debezium.transforms.unwrap.drop.tombstones=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"># ############ SET LOG LEVELS ############</span><br><span class="line">quarkus.log.level=INFO</span><br><span class="line"># Ignore messages below warning level from Jetty, because it<span class="string">&#x27;s a bit verbose</span></span><br><span class="line"><span class="string">quarkus.log.category.&quot;org.eclipse.jetty&quot;.level=WARN</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>使用提供的脚本运行服务: <code>bash run.sh</code></li>
+<li>Debezium Server with Databend 将会启动</li>
+</ul>
+</li>
+</ul>
+<h4 id="Mysql-中准备表和数据"><a href="#Mysql-中准备表和数据" class="headerlink" title="Mysql 中准备表和数据"></a>Mysql 中准备表和数据</h4><p>创建数据库 mydb 和表 <code>products</code>，并插入数据:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE mydb;</span><br><span class="line">USE mydb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE TABLE</span> products (id <span class="type">INTEGER</span> <span class="keyword">NOT NULL</span> AUTO_INCREMENT <span class="keyword">PRIMARY KEY</span>,name <span class="type">VARCHAR</span>(<span class="number">255</span>) <span class="keyword">NOT NULL</span>,description <span class="type">VARCHAR</span>(<span class="number">512</span>));</span><br><span class="line"><span class="keyword">ALTER TABLE</span> products AUTO_INCREMENT <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT INTO</span> products <span class="keyword">VALUES</span> (<span class="keyword">default</span>,&quot;scooter&quot;,&quot;Small 2-wheel scooter&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;car battery&quot;,&quot;12V car battery&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;12-pack drill bits&quot;,&quot;12-pack of drill bits with sizes ranging from #40 to #3&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;12oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;14oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;hammer&quot;,&quot;16oz carpenter&#x27;s hammer&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;rocks&quot;,&quot;box of assorted rocks&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;jacket&quot;,&quot;water resistent black wind breaker&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;cloud&quot;,&quot;test for databend&quot;),</span><br><span class="line">(<span class="keyword">default</span>,&quot;spare tire&quot;,&quot;24 inch spare tire&quot;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="Databend-Cloud-中创建-Database"><a href="#Databend-Cloud-中创建-Database" class="headerlink" title="Databend Cloud 中创建 Database"></a>Databend Cloud 中创建 Database</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> database debezium</span><br></pre></td></tr></table></figure>
+
+<p>NOTE: 用户可以不必先在 Databend 中创建表，系统检测到后会自动为用户建表。</p>
+<h4 id="启动-Debezium-Server-Databend"><a href="#启动-Debezium-Server-Databend" class="headerlink" title="启动 Debezium Server Databend"></a>启动 Debezium Server Databend</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash run.sh</span><br></pre></td></tr></table></figure>
+
+<p>首次启动会进入 init snapshot 模式，通过配置的 Batch Size 全量将 MySQL 中的数据同步到 Databend，所以在 Databend 中可以看到 MySQL 中的数据已经同步过来了：</p>
+<h4 id="改变-Mysql-表结构"><a href="#改变-Mysql-表结构" class="headerlink" title="改变 Mysql 表结构"></a>改变 Mysql 表结构</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter table</span> products <span class="keyword">add</span> columm a <span class="type">int</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 products 表中新增一列 <code>a int</code></p>
+<p>同时在 Databend Cloud 中也可以看到目标同步表的结构也随之变更了：</p>
+<p><img src="https://files.mdnice.com/user/4760/37999730-dc82-4073-a9cb-fe6e318e6b1a.png"></p>
+<p>此时在 mysql 中插入数据，新的数据就会以新的 Schema 形式写入目标表：</p>
+<p><img src="https://files.mdnice.com/user/4760/18336d1a-8df3-46cf-8051-6013e3ff4256.png"></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>Debezium Server Databend 在支持 Auto Schema Evolution 之后，用户无需在数据源发生 schema 变更时手动介入，大大降低用户的运维成本；只需对同步任务进行简单配置即可将多表、多个数据库同步至下游，提高了数据同步的效率并且降低了用户的开发难度。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CDC/" rel="tag"># CDC</a>
+              <a href="/tags/databend/" rel="tag"># databend</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/06/Databend-SDK-%E6%8E%A5%E5%85%A5%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" rel="prev" title="(持续更新)Databend SDK 接入最佳实践&amp;常见问题">
+                  <i class="fa fa-angle-left"></i> (持续更新)Databend SDK 接入最佳实践&常见问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/07/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E5%B7%A5%E5%85%B7%E8%80%83%E5%8F%A4/" rel="next" title="数据同步工具考古">
+                  数据同步工具考古 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

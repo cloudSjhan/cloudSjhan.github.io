@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Databend SDK 接入最佳实践&amp;常见问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(持续更新)Databend SDK 接入最佳实践&amp;常见问题">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/01/06/Databend-SDK-%E6%8E%A5%E5%85%A5%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="Databend SDK 接入最佳实践&amp;常见问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-06T09:45:41.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:50.189Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Databend">
+<meta property="article:tag" content="driver SDK">
+<meta property="article:tag" content="生态">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/01/06/Databend-SDK-%E6%8E%A5%E5%85%A5%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/01/06/Databend-SDK-%E6%8E%A5%E5%85%A5%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/","path":"2024/01/06/Databend-SDK-接入最佳实践-常见问题/","title":"(持续更新)Databend SDK 接入最佳实践&常见问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>(持续更新)Databend SDK 接入最佳实践&常见问题 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Databend-JDBC"><span class="nav-number">1.</span> <span class="nav-text">Databend JDBC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-JDBC-Connection"><span class="nav-number">1.1.</span> <span class="nav-text">创建 JDBC Connection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8"><span class="nav-number">1.2.</span> <span class="nav-text">建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%9D%A1%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.</span> <span class="nav-text">单条插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5"><span class="nav-number">1.4.</span> <span class="nav-text">批量插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">连接参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">1.6.</span> <span class="nav-text">常见问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang-SDK"><span class="nav-number">2.</span> <span class="nav-text">Golang SDK</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-sql-db-client"><span class="nav-number">2.1.</span> <span class="nav-text">创建 sql.db client</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C-SQL"><span class="nav-number">2.2.</span> <span class="nav-text">执行 SQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5-1"><span class="nav-number">2.3.</span> <span class="nav-text">批量插入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8D%95%E8%A1%8C-%E5%A4%9A%E8%A1%8C-Querying-Row-s"><span class="nav-number">2.4.</span> <span class="nav-text">请求单行&#x2F;多行 (Querying Row&#x2F;s)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-SDK"><span class="nav-number">3.</span> <span class="nav-text">Python SDK</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#databend-py"><span class="nav-number">3.1.</span> <span class="nav-text">databend-py</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-client"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建 client</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8-%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.1.2.</span> <span class="nav-text">建表&amp;查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E6%8F%92%E5%85%A5-2"><span class="nav-number">3.1.3.</span> <span class="nav-text">批量插入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Upload-data-to-stage"><span class="nav-number">3.1.4.</span> <span class="nav-text">Upload data to stage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Upload-file-to-stage"><span class="nav-number">3.1.5.</span> <span class="nav-text">Upload file to stage</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Databend-sqlalchemy"><span class="nav-number">3.2.</span> <span class="nav-text">Databend sqlalchemy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-sqlalchemy-connect-%E5%B9%B6%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建 sqlalchemy connect 并查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bendsql"><span class="nav-number">4.</span> <span class="nav-text">Bendsql</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exec"><span class="nav-number">4.1.</span> <span class="nav-text">Exec</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%8D%95%E8%A1%8C%E6%95%B0%E6%8D%AE"><span class="nav-number">4.2.</span> <span class="nav-text">请求单行数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%9A%E8%A1%8C"><span class="nav-number">4.3.</span> <span class="nav-text">请求多行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DSN-%E5%8F%82%E6%95%B0"><span class="nav-number">4.4.</span> <span class="nav-text">DSN 参数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/01/06/Databend-SDK-%E6%8E%A5%E5%85%A5%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="(持续更新)Databend SDK 接入最佳实践&amp;常见问题 | cloud world">
+      <meta itemprop="description" content="Databend SDK 接入最佳实践&amp;常见问题">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          (持续更新)Databend SDK 接入最佳实践&常见问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-01-06 17:45:41" itemprop="dateCreated datePublished" datetime="2024-01-06T17:45:41+08:00">2024-01-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Databend/" itemprop="url" rel="index"><span itemprop="name">Databend</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">Databend SDK 接入最佳实践&常见问题</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<p>本文档包含 Databend 支持的所有 SDK 接入的最佳实践以及在使用过程中可能会出现的问题以及对应的解决方案。希望可以成为用户接入 Databend 的一把金钥匙，打开通向 Databend 的大门。</p>
+<h3 id="Databend-JDBC"><a href="#Databend-JDBC" class="headerlink" title="Databend JDBC"></a>Databend JDBC</h3><ul>
+<li>Github: <a href="https://github.com/datafuselabs/databend-jdbc">https://github.com/datafuselabs/databend-jdbc</a></li>
+<li>入门示例：<a href="https://github.com/datafuselabs/databend-jdbc/blob/main/databend-jdbc/src/main/java/com/databend/jdbc/examples/Examples.java">https://github.com/datafuselabs/databend-jdbc/blob/main/databend-jdbc/src/main/java/com/databend/jdbc/examples/Examples.java</a></li>
+</ul>
+<h4 id="创建-JDBC-Connection"><a href="#创建-JDBC-Connection" class="headerlink" title="创建 JDBC Connection"></a>创建 JDBC Connection</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Connection <span class="title function_">createConnection</span><span class="params">()</span></span><br><span class="line">        <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;jdbc:databend://localhost:8000&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> DriverManager.getConnection(url, <span class="string">&quot;databend&quot;</span>, <span class="string">&quot;databend&quot;</span>); <span class="comment">// user, password</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Connection</span> <span class="variable">c</span> <span class="operator">=</span> createConnection();</span><br><span class="line">c.createStatement().execute(<span class="string">&quot;create table test_basic_driver.table1(i int)&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="单条插入数据"><a href="#单条插入数据" class="headerlink" title="单条插入数据"></a>单条插入数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Connection</span> <span class="variable">c</span> <span class="operator">=</span> createConnection();</span><br><span class="line">c.createStatement().execute(<span class="string">&quot;create table test_basic_driver.table1(i int, j varchar)&quot;</span>);</span><br><span class="line">c.createStatement().execute(<span class="string">&quot;insert into test_basic_driver.table1 values(1,&#x27;j&#x27;)&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>单条插入无法发挥 databend 的性能，写入性能较差，只能作为测试使用。推荐使用批量插入（Batch Insert）</p>
+<h4 id="批量插入"><a href="#批量插入" class="headerlink" title="批量插入"></a>批量插入</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">BatchInsert</span><span class="params">()</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    <span class="type">Connection</span> <span class="variable">c</span> <span class="operator">=</span> createConnection();</span><br><span class="line">    c.setAutoCommit(<span class="literal">false</span>);</span><br><span class="line">    </span><br><span class="line">    c.createStatement().execute(<span class="string">&quot;create table test_basic_driver.test_prepare_statement(i int, j varchar)&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">PreparedStatement</span> <span class="variable">ps</span> <span class="operator">=</span> c.prepareStatement(<span class="string">&quot;insert into test_prepare_statement values&quot;</span>);</span><br><span class="line">    ps.setInt(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    ps.setString(<span class="number">2</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line">    ps.addBatch();</span><br><span class="line">    ps.setInt(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    ps.setString(<span class="number">2</span>, <span class="string">&quot;b&quot;</span>);</span><br><span class="line">    ps.addBatch();</span><br><span class="line">    System.out.println(<span class="string">&quot;execute batch insert&quot;</span>);</span><br><span class="line">    <span class="type">int</span>[] ans = ps.executeBatch();</span><br><span class="line">    ps.close();</span><br><span class="line">    <span class="type">Statement</span> <span class="variable">statement</span> <span class="operator">=</span> c.createStatement();</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;execute select&quot;</span>);</span><br><span class="line">    statement.execute(<span class="string">&quot;SELECT * from test_prepare_statement&quot;</span>);</span><br><span class="line">    <span class="type">ResultSet</span> <span class="variable">r</span> <span class="operator">=</span> statement.getResultSet();</span><br><span class="line">    <span class="keyword">while</span> (r.next()) &#123;</span><br><span class="line">        System.out.println(r.getInt(<span class="number">1</span>));</span><br><span class="line">        System.out.println(r.getString(<span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    statement.close();</span><br><span class="line">    c.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在实际使用中，推荐增大 Batch size 到 10w~100w 之间</p>
+</blockquote>
+<h4 id="连接参数"><a href="#连接参数" class="headerlink" title="连接参数"></a>连接参数</h4><p><a href="https://github.com/datafuselabs/databend-jdbc/blob/main/docs/Connection.md">https://github.com/datafuselabs/databend-jdbc/blob/main/docs/Connection.md</a></p>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><p>Q: <code>Upload to stream failed</code> 报错</p>
+<p>A: 检查 Client 到 OSS 的网络情况</p>
+<p>Q: Spring boot 等项目 Slf4j provider not found</p>
+<p>A: 这可能是引入的 slf4j 包产生了冲突，检查 pom 中 slf4j 版本是否一致</p>
+<p>Q: 如何将 NULL 写入表</p>
+<p>A: ps.setNull(index, Types.NULL)</p>
+<p>Q: Spring boot JDBCTemplate <code>getParameterType</code> not implement</p>
+<p>A: <code>getParameterType</code> 在 databend JDBC 中目前还没有实现，已在开发计划中</p>
+<h3 id="Golang-SDK"><a href="#Golang-SDK" class="headerlink" title="Golang SDK"></a>Golang SDK</h3><ul>
+<li>Github: <a href="https://github.com/datafuselabs/databend-go">https://github.com/datafuselabs/databend-go</a></li>
+</ul>
+<h4 id="创建-sql-db-client"><a href="#创建-sql-db-client" class="headerlink" title="创建 sql.db client"></a>创建 sql.db client</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line"><span class="string">&quot;database/sql&quot;</span></span><br><span class="line">_ <span class="string">&quot;github.com/datafuselabs/databend-go&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    db, err := sql.Open(<span class="string">&quot;databend&quot;</span>, dsn)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    db.Ping()</span><br><span class="line">    db.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="执行-SQL"><a href="#执行-SQL" class="headerlink" title="执行 SQL"></a>执行 SQL</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">conn, err := sql.Open(<span class="string">&quot;databend&quot;</span>, dsn)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">     fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">conn.Exec(<span class="string">`DROP TABLE IF EXISTS data`</span>)</span><br><span class="line">_, err = conn.Exec(<span class="string">`    CREATE TABLE IF NOT EXISTS  data(        Col1 TINYINT,        Col2 VARCHAR    )`</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">      fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">_, err = conn.Exec(<span class="string">&quot;INSERT INTO data VALUES (1, &#x27;test-1&#x27;)&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="批量插入-1"><a href="#批量插入-1" class="headerlink" title="批量插入"></a>批量插入</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">        conn, err := sql.Open(<span class="string">&quot;databend&quot;</span>, <span class="string">&quot;http://databend:databend@localhost:8000/default?sslmode=disable&quot;</span>)</span><br><span class="line">        tx, err := conn.Begin()</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">                fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">        batch, err := tx.Prepare(fmt.Sprintf(<span class="string">&quot;INSERT INTO %s VALUES&quot;</span>, <span class="string">&quot;test&quot;</span>))</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">                _, err = batch.Exec(</span><br><span class="line">                        <span class="string">&quot;1234&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;2345&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;3.1415&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;test&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;test2&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;[4, 5, 6]&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;[1, 2, 3]&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;2021-01-01&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;2021-01-01 00:00:00&quot;</span>,</span><br><span class="line">                )</span><br><span class="line">        &#125;</span><br><span class="line">        err = tx.Commit()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="请求单行-多行-Querying-Row-s"><a href="#请求单行-多行-Querying-Row-s" class="headerlink" title="请求单行&#x2F;多行 (Querying Row&#x2F;s)"></a>请求单行&#x2F;多行 (<strong>Querying Row&#x2F;s)</strong></h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="comment">// create table data (col1 uint8, col2 string);</span></span><br><span class="line"><span class="comment">// insert into data values(1,&#x27;col2&#x27;);conn, err := sql.Open(&quot;databend&quot;, &quot;http://databend:databend@localhost:8000/default?sslmode=disable&quot;)</span></span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">                fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">        row := conn.QueryRow(<span class="string">&quot;SELECT * FROM data&quot;</span>)</span><br><span class="line">        <span class="keyword">var</span> (</span><br><span class="line">                col1 uint8col2 <span class="type">string</span></span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">if</span> err := row.Scan(&amp;col1, &amp;col2); err != <span class="literal">nil</span> &#123;</span><br><span class="line">                fmt.Println(err)</span><br><span class="line">        &#125;</span><br><span class="line">        fmt.Println(col2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Python-SDK"><a href="#Python-SDK" class="headerlink" title="Python SDK"></a>Python SDK</h3><h4 id="databend-py"><a href="#databend-py" class="headerlink" title="databend-py"></a>databend-py</h4><ul>
+<li>Github: <a href="https://github.com/datafuselabs/databend-py">https://github.com/datafuselabs/databend-py</a></li>
+</ul>
+<h5 id="创建-client"><a href="#创建-client" class="headerlink" title="创建 client"></a>创建 client</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c = Client.from_url(<span class="string">&quot;http://user:password@host:port/db?secure=false&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Databend py DSN 中支持的参数可以参考： <a href="https://github.com/datafuselabs/databend-py/blob/main/docs/connection.md">https://github.com/datafuselabs/databend-py/blob/main/docs/connection.md</a></p>
+</blockquote>
+<h5 id="建表-查询"><a href="#建表-查询" class="headerlink" title="建表&amp;查询"></a>建表&amp;查询</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">c = Client.from_url(databend_url)</span><br><span class="line">c.execute(<span class="string">&#x27;CREATE TABLE if not exists test (x Int32,y VARCHAR)&#x27;</span>)</span><br><span class="line">t, r = c.execute(<span class="string">&#x27;INSERT INTO test VALUES&#x27;</span>, [(<span class="number">3</span>, <span class="string">&#x27;aa&#x27;</span>),(<span class="number">4</span>,<span class="string">&#x27;bb&#x27;</span>)],with_column_types=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># execute 返回值有两个，第一个是(column_name, column_type)：[(&#x27;a&#x27;, &#x27;Int32&#x27;), (&#x27;b&#x27;, &#x27;String&#x27;)], 只有当 with_column_types=True 的时候才返回，默认为 False;</span></span><br><span class="line"><span class="comment"># 第二个返回值是数据集： [(1, &#x27;a&#x27;), (2, &#x27;b&#x27;)]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="批量插入-2"><a href="#批量插入-2" class="headerlink" title="批量插入"></a>批量插入</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">c = Client.from_url(databend_url)</span><br><span class="line">c.execute(<span class="string">&#x27;DROP TABLE IF EXISTS test&#x27;</span>)</span><br><span class="line">c.execute(<span class="string">&#x27;CREATE TABLE if not exists test (x Int32,y VARCHAR)&#x27;</span>)</span><br><span class="line">c.execute(<span class="string">&#x27;DESC  test&#x27;</span>)</span><br><span class="line">_, r1 = c.execute(<span class="string">&#x27;INSERT INTO test VALUES&#x27;</span>, [(<span class="number">3</span>, <span class="string">&#x27;aa&#x27;</span>), (<span class="number">4</span>, <span class="string">&#x27;bb&#x27;</span>)])</span><br><span class="line">assertEqual(r1, <span class="number">2</span>)</span><br><span class="line">_, ss = c.execute(<span class="string">&#x27;select * from test&#x27;</span>)</span><br><span class="line">assertEqual(ss, [(<span class="number">3</span>, <span class="string">&#x27;aa&#x27;</span>), (<span class="number">4</span>, <span class="string">&#x27;bb&#x27;</span>)])</span><br></pre></td></tr></table></figure>
+
+<h5 id="Upload-data-to-stage"><a href="#Upload-data-to-stage" class="headerlink" title="Upload data to stage"></a>Upload data to stage</h5><p>databend py 可以直接将 python slice 数据以 csv 格式导入到 databend stage</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> databend_py <span class="keyword">import</span> Client</span><br><span class="line">client = Client.from_url(databend_url)</span><br><span class="line">stage_path = client.upload_to_stage(<span class="string">&#x27;@~&#x27;</span>, <span class="string">&quot;upload.csv&quot;</span>, [(<span class="number">1</span>, <span class="string">&#x27;a&#x27;</span>), (<span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>)])</span><br><span class="line"><span class="comment"># stage_path is @~/upload.csv</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Upload-file-to-stage"><a href="#Upload-file-to-stage" class="headerlink" title="Upload file to stage"></a>Upload file to stage</h5><p>Databend py 也可以直接将文件上传到 stage</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> databend_py <span class="keyword">import</span> Client</span><br><span class="line">client = Client.from_url(<span class="variable language_">self</span>.databend_url)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;upload.csv&quot;</span>, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">      stage_path = client.upload_to_stage(<span class="string">&#x27;@~&#x27;</span>, <span class="string">&quot;upload.csv&quot;</span>, f)</span><br><span class="line">      <span class="built_in">print</span>(stage_path)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Databend-sqlalchemy"><a href="#Databend-sqlalchemy" class="headerlink" title="Databend sqlalchemy"></a>Databend sqlalchemy</h4><ul>
+<li>Github： <a href="https://github.com/datafuselabs/databend-sqlalchemy">https://github.com/datafuselabs/databend-sqlalchemy</a></li>
+</ul>
+<h5 id="创建-sqlalchemy-connect-并查询"><a href="#创建-sqlalchemy-connect-并查询" class="headerlink" title="创建 sqlalchemy connect 并查询"></a>创建 sqlalchemy connect 并查询</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from sqlalchemy <span class="keyword">import</span> create_engine, text</span><br><span class="line">from sqlalchemy.engine.base <span class="keyword">import</span> Connection, Engine</span><br><span class="line"></span><br><span class="line">engine = create_engine(</span><br><span class="line">            f<span class="string">&quot;databend://&#123;username&#125;:&#123;password&#125;@&#123;host_port_name&#125;/&#123;database_name&#125;?sslmode=disable&quot;</span></span><br><span class="line">        )</span><br><span class="line">connection = engine.connect()</span><br><span class="line">result = connection.execute(text(<span class="string">&quot;SELECT 1&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(result.fetchall())</span><br></pre></td></tr></table></figure>
+
+<p>databend-sqlalchemy 在版本&lt;v0.4.0 使用[databend-py]（<a href="https://github.com/datafuselabs/databend-py%EF%BC%89%E6%97%B6%E4%BD%9C%E4%B8%BA%E5%86%85%E9%83%A8">https://github.com/datafuselabs/databend-py）时作为内部</a> Driver，&gt;&#x3D; v0.4.0 时使用 <a href="%EF%BC%88https://github.com/datafuselabs/bendsql/blob/main/main/bindings/python/readme.md%EF%BC%89">databend driver python binding</a>作为内部驱动程序。两者之间的唯一区别是，DSN中提供的连接参数不同。使用相应的版本时应该参考相应驱动程序提供的连接参数。</p>
+<h3 id="Bendsql"><a href="#Bendsql" class="headerlink" title="Bendsql"></a>Bendsql</h3><ul>
+<li>GitHub：<a href="https://github.com/datafuselabs/bendsql">https://github.com/datafuselabs/bendsql</a></li>
+</ul>
+<h4 id="Exec"><a href="#Exec" class="headerlink" title="Exec"></a><strong>Exec</strong></h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> databend_driver::Client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">dsn</span> = <span class="string">&quot;databend://root:@localhost:8000/default?sslmode=disable&quot;</span>.<span class="title function_ invoke__">to_string</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">client</span> = Client::<span class="title function_ invoke__">new</span>(dsn);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">conn</span> = client.<span class="title function_ invoke__">get_conn</span>().<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">sql_create</span> = <span class="string">&quot;CREATE TABLE books (</span></span><br><span class="line"><span class="string">    title VARCHAR,</span></span><br><span class="line"><span class="string">    author VARCHAR,</span></span><br><span class="line"><span class="string">    date Date</span></span><br><span class="line"><span class="string">);&quot;</span>;</span><br><span class="line">conn.<span class="title function_ invoke__">exec</span>(sql_create).<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">sql_insert</span> = <span class="string">&quot;INSERT INTO books VALUES (&#x27;The Little Prince&#x27;, &#x27;Antoine de Saint-Exupéry&#x27;, &#x27;1943-04-06&#x27;);&quot;</span>;</span><br><span class="line">conn.<span class="title function_ invoke__">exec</span>(sql_insert).<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="请求单行数据"><a href="#请求单行数据" class="headerlink" title="请求单行数据"></a><strong>请求单行数据</strong></h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">row</span> = conn.<span class="title function_ invoke__">query_row</span>(<span class="string">&quot;SELECT * FROM books;&quot;</span>).<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"><span class="keyword">let</span> (title,author,date): (<span class="type">String</span>,<span class="type">String</span>,<span class="type">i32</span>) = row.<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">try_into</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125; &#123;&#125;&quot;</span>, title, author, date);</span><br></pre></td></tr></table></figure>
+
+<h4 id="请求多行"><a href="#请求多行" class="headerlink" title="请求多行"></a>请求多行</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">rows</span> = conn.<span class="title function_ invoke__">query_iter</span>(<span class="string">&quot;SELECT * FROM books;&quot;</span>).<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">let</span> <span class="variable">Some</span>(row) = rows.<span class="title function_ invoke__">next</span>().<span class="keyword">await</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> (title,author,date): (<span class="type">String</span>,<span class="type">String</span>,chrono::NaiveDate) = row.<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">try_into</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125; &#123;&#125; &#123;&#125;&quot;</span>, title, author, date);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="DSN-参数"><a href="#DSN-参数" class="headerlink" title="DSN 参数"></a>DSN 参数</h4><p>参考：<a href="https://github.com/datafuselabs/bendsql/blob/main/README.md#dsn">https://github.com/datafuselabs/bendsql/blob/main/README.md#dsn</a></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Databend/" rel="tag"># Databend</a>
+              <a href="/tags/driver-SDK/" rel="tag"># driver SDK</a>
+              <a href="/tags/%E7%94%9F%E6%80%81/" rel="tag"># 生态</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/01/02/%E4%BB%8E-AutoMQ-Kafka-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE%E5%88%B0-Databend/" rel="prev" title="从 AutoMQ Kafka 导出数据到 Databend">
+                  <i class="fa fa-angle-left"></i> 从 AutoMQ Kafka 导出数据到 Databend
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/25/databend-debezium-server-support-auto-schema-evolution/" rel="next" title="databend debezium server support  auto schema evolution">
+                  databend debezium server support  auto schema evolution <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

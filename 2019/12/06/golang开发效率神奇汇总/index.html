@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="golang开发效率神奇汇总">
+<meta property="og:url" content="https://cloudsjhan.github.io/2019/12/06/golang%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E5%A5%87%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-06T09:46:58.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.771Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2019/12/06/golang%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E5%A5%87%E6%B1%87%E6%80%BB/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2019/12/06/golang%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E5%A5%87%E6%B1%87%E6%80%BB/","path":"2019/12/06/golang开发效率神奇汇总/","title":"golang开发效率神奇汇总"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>golang开发效率神奇汇总 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2019/12/06/golang%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87%E7%A5%9E%E5%A5%87%E6%B1%87%E6%80%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="golang开发效率神奇汇总 | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          golang开发效率神奇汇总
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-06 17:46:58" itemprop="dateCreated datePublished" datetime="2019-12-06T17:46:58+08:00">2019-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<p>一. 开发工具<br>1)sql2go<br>用于将 sql 语句转换为 golang 的 struct. 使用 ddl 语句即可。<br>例如对于创建表的语句: show create table xxx. 将输出的语句，直接粘贴进去就行。<br><a href="http://stming.cn/tool/sql2go.html">http://stming.cn/tool/sql2go.html</a></p>
+<p>2)toml2go<br>用于将编码后的 toml 文本转换问 golang 的 struct.<br><a href="https://xuri.me/toml-to-go/">https://xuri.me/toml-to-go/</a></p>
+<p>3)curl2go<br>用来将 curl 命令转化为具体的 golang 代码.<br><a href="https://mholt.github.io/curl-to-go/">https://mholt.github.io/curl-to-go/</a></p>
+<p>4)json2go<br>用于将 json 文本转换为 struct.<br><a href="https://mholt.github.io/json-to-go/">https://mholt.github.io/json-to-go/</a></p>
+<p>5)mysql 转 ES 工具<br><a href="http://www.ischoolbar.com/EsParser/">http://www.ischoolbar.com/EsParser/</a></p>
+<p>6)golang<br>模拟模板的工具，在支持泛型之前，可以考虑使用。<br><a href="https://github.com/cheekybits/genny">https://github.com/cheekybits/genny</a></p>
+<p>7)查看某一个库的依赖情况，类似于 go list 功能<br><a href="https://github.com/KyleBanks/depth">https://github.com/KyleBanks/depth</a></p>
+<p>8)一个好用的文件压缩和解压工具，集成了 zip，tar 等多种功能，主要还有跨平台。<br><a href="https://github.com/mholt/archiver">https://github.com/mholt/archiver</a></p>
+<p>9)go 内置命令<br>go list 可以查看某一个包的依赖关系.<br>go vet 可以检查代码不符合 golang 规范的地方。</p>
+<p>10)热编译工具<br><a href="https://github.com/silenceper/gowatch">https://github.com/silenceper/gowatch</a></p>
+<p>11)revive<br>golang 代码质量检测工具<br><a href="https://github.com/mgechev/revive">https://github.com/mgechev/revive</a></p>
+<p>12)Go Callvis<br>golang 的代码调用链图工具<br><a href="https://github.com/TrueFurby/go-callvis">https://github.com/TrueFurby/go-callvis</a></p>
+<p>13)Realize<br>开发流程改进工具<br><a href="https://github.com/oxequa/realize">https://github.com/oxequa/realize</a></p>
+<p>14)Gotests<br>自动生成测试用例工具<br><a href="https://github.com/cweill/gotests">https://github.com/cweill/gotests</a></p>
+<p>二.调试工具<br>1)perf<br>代理工具，支持内存，cpu，堆栈查看，并支持火焰图.<br>perf 工具和 go-torch 工具，快捷定位程序问题.<br><a href="https://github.com/uber-archive/go-torch">https://github.com/uber-archive/go-torch</a><br><a href="https://github.com/google/gops">https://github.com/google/gops</a></p>
+<p>2)dlv 远程调试<br>基于 goland+dlv 可以实现远程调式的能力.<br><a href="https://github.com/go-delve/delve">https://github.com/go-delve/delve</a><br>提供了对 golang 原生的支持，相比 gdb 调试，简单太多。</p>
+<p>3)网络代理工具<br>goproxy 代理，支持多种协议，支持 ssh 穿透和 kcp 协议.<br><a href="https://github.com/snail007/goproxy">https://github.com/snail007/goproxy</a></p>
+<p>4)抓包工具<br>go-sniffer 工具，可扩展的抓包工具，可以开发自定义协议的工具包. 现在只支持了 http，mysql，redis，mongodb.<br>基于这个工具，我们开发了 qapp 协议的抓包。<br><a href="https://github.com/40t/go-sniffer">https://github.com/40t/go-sniffer</a></p>
+<p>5)反向代理工具，快捷开放内网端口供外部使用。<br>ngrok 可以让内网服务外部调用<br><a href="https://ngrok.com/">https://ngrok.com/</a><br><a href="https://github.com/inconshreveable/ngrok">https://github.com/inconshreveable/ngrok</a></p>
+<p>6)配置化生成证书<br>从根证书，到业务侧证书一键生成.<br><a href="https://github.com/cloudflare/cfssl">https://github.com/cloudflare/cfssl</a></p>
+<p>7)免费的证书获取工具<br>基于 acme 协议，从 letsencrypt 生成免费的证书，有效期 1 年，可自动续期。<br><a href="https://github.com/Neilpang/acme.sh">https://github.com/Neilpang/acme.sh</a></p>
+<p>8)开发环境管理工具，单机搭建可移植工具的利器。支持多种虚拟机后端。<br>vagrant常被拿来同 docker 相比，值得拥有。<br><a href="https://github.com/hashicorp/vagrant">https://github.com/hashicorp/vagrant</a></p>
+<p>9)轻量级容器调度工具<br>nomad 可以非常方便的管理容器和传统应用，相比 k8s 来说，简单不要太多.<br><a href="https://github.com/hashicorp/nomad">https://github.com/hashicorp/nomad</a></p>
+<p>10)敏感信息和密钥管理工具<br><a href="https://github.com/hashicorp/vault">https://github.com/hashicorp/vault</a></p>
+<p>11)高度可配置化的 http 转发工具，基于 etcd 配置。<br><a href="https://github.com/gojek/weaver">https://github.com/gojek/weaver</a></p>
+<p>12)进程监控工具 supervisor<br><a href="https://www.jianshu.com/p/39b476e808d8">https://www.jianshu.com/p/39b476e808d8</a></p>
+<p>13)基于procFile进程管理工具. 相比 supervisor 更加简单。<br><a href="https://github.com/ddollar/foreman">https://github.com/ddollar/foreman</a></p>
+<p>14)基于 http，https，websocket 的调试代理工具，配置功能丰富。在线教育的 nohost web 调试工具，基于此开发.<br><a href="https://github.com/avwo/whistle">https://github.com/avwo/whistle</a></p>
+<p>15)分布式调度工具<br><a href="https://github.com/shunfei/cronsun/blob/master/README_ZH.md">https://github.com/shunfei/cronsun/blob/master/README_ZH.md</a><br><a href="https://github.com/ouqiang/gocron">https://github.com/ouqiang/gocron</a></p>
+<p>16)自动化运维平台 Gaia<br><a href="https://github.com/gaia-pipeline/gaia">https://github.com/gaia-pipeline/gaia</a></p>
+<p>三. 网络工具</p>
+<p>四. 常用网站<br>go 百科全书: <a href="https://awesome-go.com/">https://awesome-go.com/</a></p>
+<p>json 解析: <a href="https://www.json.cn/">https://www.json.cn/</a></p>
+<p>出口 IP: <a href="https://ipinfo.io/">https://ipinfo.io/</a></p>
+<p>redis 命令: <a href="http://doc.redisfans.com/">http://doc.redisfans.com/</a></p>
+<p>ES 命令首页:</p>
+<p><a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html">https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html</a></p>
+<p>UrlEncode: <a href="http://tool.chinaz.com/Tools/urlencode.aspx">http://tool.chinaz.com/Tools/urlencode.aspx</a></p>
+<p>Base64: <a href="https://tool.oschina.net/encrypt?type=3">https://tool.oschina.net/encrypt?type=3</a></p>
+<p>Guid: <a href="https://www.guidgen.com/">https://www.guidgen.com/</a></p>
+<p>常用工具: <a href="http://www.ofmonkey.com/">http://www.ofmonkey.com/</a></p>
+<p>五. golang 常用库<br>日志<br><a href="https://github.com/Sirupsen/logrus">https://github.com/Sirupsen/logrus</a><br><a href="https://github.com/uber-go/zap">https://github.com/uber-go/zap</a></p>
+<p>配置<br>兼容 json，toml，yaml，hcl 等格式的日志库.<br><a href="https://github.com/spf13/viper">https://github.com/spf13/viper</a></p>
+<p>存储<br>mysql: <a href="https://github.com/go-xorm/xorm">https://github.com/go-xorm/xorm</a><br>es: <a href="https://github.com/elastic/elasticsearch">https://github.com/elastic/elasticsearch</a><br>redis: <a href="https://github.com/gomodule/redigo">https://github.com/gomodule/redigo</a><br>mongo: <a href="https://github.com/mongodb/mongo-go-driver">https://github.com/mongodb/mongo-go-driver</a><br>kafka: <a href="https://github.com/Shopify/sarama">https://github.com/Shopify/sarama</a></p>
+<p>数据结构<br><a href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
+<p>命令行<br><a href="https://github.com/spf13/cobra">https://github.com/spf13/cobra</a></p>
+<p>框架<br><a href="https://github.com/grpc/grpc-go">https://github.com/grpc/grpc-go</a><br><a href="https://github.com/gin-gonic/gin">https://github.com/gin-gonic/gin</a></p>
+<p>并发<br><a href="https://github.com/Jeffail/tunny">https://github.com/Jeffail/tunny</a><br><a href="https://github.com/benmanns/goworker">https://github.com/benmanns/goworker</a><br>现在我们框架在用的，虽然 star 不多，但是确实好用，当然还可以更好用.<br><a href="https://github.com/rafaeldias/async">https://github.com/rafaeldias/async</a></p>
+<p>工具<br>定义了实用的判定类，以及针对结构体的校验逻辑，避免业务侧写复杂的代码.<br><a href="https://github.com/asaskevich/govalidator">https://github.com/asaskevich/govalidator</a><br><a href="https://github.com/bytedance/go-tagexpr">https://github.com/bytedance/go-tagexpr</a></p>
+<p>protobuf 文件动态解析的接口，可以实现反射相关的能力。<br><a href="https://github.com/jhump/protoreflect">https://github.com/jhump/protoreflect</a></p>
+<p>表达式引擎工具<br><a href="https://github.com/Knetic/govaluate">https://github.com/Knetic/govaluate</a><br><a href="https://github.com/google/cel-go">https://github.com/google/cel-go</a></p>
+<p>字符串处理<br><a href="https://github.com/huandu/xstrings">https://github.com/huandu/xstrings</a></p>
+<p>ratelimit 工具<br><a href="https://github.com/uber-go/ratelimit">https://github.com/uber-go/ratelimit</a><br><a href="https://blog.csdn.net/chenchongg/article/details/85342086">https://blog.csdn.net/chenchongg/article/details/85342086</a><br><a href="https://github.com/juju/ratelimit">https://github.com/juju/ratelimit</a></p>
+<p>golang 熔断的库<br>熔断除了考虑频率限制，还要考虑 qps，出错率等其他东西.<br><a href="https://github.com/afex/hystrix-go">https://github.com/afex/hystrix-go</a><br><a href="https://github.com/sony/gobreaker">https://github.com/sony/gobreaker</a></p>
+<p>表格<br><a href="https://github.com/chenjiandongx/go-echarts">https://github.com/chenjiandongx/go-echarts</a></p>
+<p>tail 工具库<br><a href="https://github.com/hpcloud/taglshi">https://github.com/hpcloud/taglshi</a></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/30/golang%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/" rel="prev" title="golang设计模式之装饰器模式">
+                  <i class="fa fa-angle-left"></i> golang设计模式之装饰器模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/10/%E4%BD%BF%E7%94%A8swaggo%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90API%E6%96%87%E6%A1%A3/" rel="next" title="使用swaggo自动生成API文档">
+                  使用swaggo自动生成API文档 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

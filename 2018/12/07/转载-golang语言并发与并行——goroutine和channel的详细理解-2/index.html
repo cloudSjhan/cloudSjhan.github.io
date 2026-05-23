@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="golang语言并发与并行——goroutine和channel的详细理解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(转载)golang语言并发与并行——goroutine和channel的详细理解(2)">
+<meta property="og:url" content="https://cloudsjhan.github.io/2018/12/07/%E8%BD%AC%E8%BD%BD-golang%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E2%80%94%E2%80%94goroutine%E5%92%8Cchannel%E7%9A%84%E8%AF%A6%E7%BB%86%E7%90%86%E8%A7%A3-2/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="golang语言并发与并行——goroutine和channel的详细理解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hit9.qiniudn.com/con_and_par.jpg">
+<meta property="article:published_time" content="2018-12-07T03:48:11.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.747Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hit9.qiniudn.com/con_and_par.jpg">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2018/12/07/%E8%BD%AC%E8%BD%BD-golang%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E2%80%94%E2%80%94goroutine%E5%92%8Cchannel%E7%9A%84%E8%AF%A6%E7%BB%86%E7%90%86%E8%A7%A3-2/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2018/12/07/%E8%BD%AC%E8%BD%BD-golang%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E2%80%94%E2%80%94goroutine%E5%92%8Cchannel%E7%9A%84%E8%AF%A6%E7%BB%86%E7%90%86%E8%A7%A3-2/","path":"2018/12/07/转载-golang语言并发与并行——goroutine和channel的详细理解-2/","title":"(转载)golang语言并发与并行——goroutine和channel的详细理解(2)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>(转载)golang语言并发与并行——goroutine和channel的详细理解(2) | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Go%E8%AF%AD%E8%A8%80%E7%9A%84%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">Go语言的并发和并行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine%E6%98%AF%E5%9C%A8%E5%B9%B6%E8%A1%8C%E5%90%97%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">goroutine是在并行吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E8%A1%8C%E5%92%8C%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.</span> <span class="nav-text">并行和并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.3.</span> <span class="nav-text">真正的并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">一个小问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime%E8%B0%83%E5%BA%A6%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">runtime调度器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E5%A4%9A%E6%A0%B8%E7%9A%84%E5%AE%9E%E9%AA%8C"><span class="nav-number">1.7.</span> <span class="nav-text">开启多核的实验</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2018/12/07/%E8%BD%AC%E8%BD%BD-golang%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E2%80%94%E2%80%94goroutine%E5%92%8Cchannel%E7%9A%84%E8%AF%A6%E7%BB%86%E7%90%86%E8%A7%A3-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="(转载)golang语言并发与并行——goroutine和channel的详细理解(2) | cloud world">
+      <meta itemprop="description" content="golang语言并发与并行——goroutine和channel的详细理解">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          (转载)golang语言并发与并行——goroutine和channel的详细理解(2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-07 11:48:11" itemprop="dateCreated datePublished" datetime="2018-12-07T11:48:11+08:00">2018-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">golang语言并发与并行——goroutine和channel的详细理解</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<p><a href="https://studygolang.com/articles/9533">本文转载自</a>，版权属于原作者。</p>
+<h1 id="Go语言的并发和并行"><a href="#Go语言的并发和并行" class="headerlink" title="Go语言的并发和并行"></a>Go语言的并发和并行</h1><p>不知道你有没有注意到一个现象，还是这段代码，如果我跑在两个goroutines里面的话:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var quit chan int = make(chan int)</span><br><span class="line"></span><br><span class="line">func loop() &#123;</span><br><span class="line">    for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">        fmt.Printf(&quot;%d &quot;, i)</span><br><span class="line">    &#125;</span><br><span class="line">    quit &lt;- 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    // 开两个goroutine跑函数loop, loop函数负责打印10个数</span><br><span class="line">    go loop()</span><br><span class="line">    go loop()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 2; i++ &#123;</span><br><span class="line">        &lt;- quit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们观察下输出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9</span><br></pre></td></tr></table></figure>
+
+<p>这是不是有什么问题？?</p>
+<p>以前我们用线程去做类似任务的时候，系统的线程会抢占式地输出， 表现出来的是乱序地输出。而goroutine为什么是这样输出的呢？</p>
+<h2 id="goroutine是在并行吗？"><a href="#goroutine是在并行吗？" class="headerlink" title="goroutine是在并行吗？"></a>goroutine是在并行吗？</h2><p>我们找个例子<a href="http://lib.csdn.net/base/softwaretest">测试</a>下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">import &quot;time&quot;</span><br><span class="line"></span><br><span class="line">var quit chan int</span><br><span class="line"></span><br><span class="line">func foo(id int) &#123;</span><br><span class="line">    fmt.Println(id)</span><br><span class="line">    time.Sleep(time.Second) // 停顿一秒</span><br><span class="line">    quit &lt;- 0 // 发消息：我执行完啦！</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    count := 1000</span><br><span class="line">    quit = make(chan int, count) // 缓冲1000个数据</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; count; i++ &#123; //开1000个goroutine</span><br><span class="line">        go foo(i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for i :=0 ; i &lt; count; i++ &#123; // 等待所有完成消息发送完毕。</span><br><span class="line">        &lt;- quit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让我们跑一下这个程序(之所以先编译再运行，是为了让程序跑的尽量快,测试结果更好):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go build test.go</span><br><span class="line">time ./test</span><br><span class="line">./test  0.01s user 0.01s system 1% cpu 1.016 total</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，总计用时接近一秒。 貌似并行了！</p>
+<p>我们需要首先考虑下什么是并发, 什么是并行</p>
+<h2 id="并行和并发"><a href="#并行和并发" class="headerlink" title="并行和并发"></a>并行和并发</h2><p>从概念上讲，并发和并行是不同的, 简单来说看这个图片(原图来自<a href="http://joearms.github.io/2013/04/05/concurrent-and-parallel-programming.html">这里</a>)</p>
+<p><img src="http://hit9.qiniudn.com/con_and_par.jpg" alt="img"></p>
+<ul>
+<li>两个队列，一个Coffee机器，那是并发</li>
+<li>两个队列，两个Coffee机器，那是并行</li>
+</ul>
+<p>更多的资料： <a href="http://www.aqee.net/docs/Concurrency-is-not-Parallelism/">并发不是并行</a>, 当然Google上有更多关于并行和并发的区别。</p>
+<p>那么回到一开始的疑问上，从上面的两个例子执行后的表现来看，多个goroutine跑loop函数会挨个goroutine去进行，而sleep则是一起执行的。</p>
+<p>这是为什么？</p>
+<p>默认地， <a href="http://lib.csdn.net/base/go">Go</a>所有的goroutines只能在一个线程里跑 。</p>
+<p>也就是说， 以上两个代码都不是并行的，但是都是是并发的。</p>
+<p>如果当前goroutine不发生阻塞，它是不会让出CPU给其他goroutine的, 所以例子一中的输出会是一个一个goroutine进行的，而sleep函数则阻塞掉了 当前goroutine, 当前goroutine主动让其他goroutine执行, 所以形成了逻辑上的并行, 也就是并发。</p>
+<h2 id="真正的并行"><a href="#真正的并行" class="headerlink" title="真正的并行"></a>真正的并行</h2><p>为了达到真正的并行，我们需要告诉Go我们允许同时最多使用多个核。</p>
+<p>回到起初的例子，我们设置最大开2个原生线程, 我们需要用到runtime包(runtime包是goroutine的调度器):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;runtime&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var quit chan int = make(chan int)</span><br><span class="line"></span><br><span class="line">func loop() &#123;</span><br><span class="line">    for i := 0; i &lt; 100; i++ &#123; //为了观察，跑多些</span><br><span class="line">        fmt.Printf(&quot;%d &quot;, i)</span><br><span class="line">    &#125;</span><br><span class="line">    quit &lt;- 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    runtime.GOMAXPROCS(2) // 最多使用2个核</span><br><span class="line"></span><br><span class="line">    go loop()</span><br><span class="line">    go loop()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 2; i++ &#123;</span><br><span class="line">        &lt;- quit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这下会看到两个goroutine会抢占式地输出数据了。</p>
+<p>我们还可以这样显式地让出CPU时间：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func loop() &#123;</span><br><span class="line">    for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">        runtime.Gosched() // 显式地让出CPU时间给其他goroutine</span><br><span class="line">        fmt.Printf(&quot;%d &quot;, i)</span><br><span class="line">    &#125;</span><br><span class="line">    quit &lt;- 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">    go loop()</span><br><span class="line">    go loop()</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 2; i++ &#123;</span><br><span class="line">        &lt;- quit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>观察下结果会看到这样有规律的输出:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9</span><br></pre></td></tr></table></figure>
+
+<p>其实，这种主动让出CPU时间的方式仍然是在单核里跑。但手工地切换goroutine导致了看上去的“并行”。</p>
+<p>其实作为一个<a href="http://lib.csdn.net/base/python">Python</a>程序员，goroutine让我更多地想到的是gevent的协程，而不是原生线程。</p>
+<p>关于runtime包对goroutine的调度，在stackoverflow上有一个不错的答案:<a href="http://stackoverflow.com/questions/13107958/what-exactly-does-runtime-gosched-do">http://stackoverflow.com/questions/13107958/what-exactly-does-runtime-gosched-do</a></p>
+<h2 id="一个小问题"><a href="#一个小问题" class="headerlink" title="一个小问题"></a>一个小问题</h2><p>我在Segmentfault看到了这个问题: <a href="http://segmentfault.com/q/1010000000207474">http://segmentfault.com/q/1010000000207474</a></p>
+<p>题目说，如下的程序，按照理解应该打印下5次 <code>&quot;world&quot;</code>呀，可是为什么什么也没有打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func say(s string) &#123;</span><br><span class="line">    for i := 0; i &lt; 5; i++ &#123;</span><br><span class="line">        fmt.Println(s)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    go say(&quot;world&quot;) //开一个新的Goroutines执行</span><br><span class="line">    for &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>楼下的答案已经很棒了，这里Go仍然在使用单核，for死循环占据了单核CPU所有的资源，而main线和say两个goroutine都在一个线程里面， 所以say没有机会执行。解决方案还是两个：</p>
+<ul>
+<li>允许Go使用多核(<code>runtime.GOMAXPROCS</code>)</li>
+<li>手动显式调动(<code>runtime.Gosched</code>)</li>
+</ul>
+<h2 id="runtime调度器"><a href="#runtime调度器" class="headerlink" title="runtime调度器"></a>runtime调度器</h2><p>runtime调度器是个很神奇的东西，但是我真是但愿它不存在，我希望显式调度能更为自然些，多核处理默认开启。</p>
+<p>关于runtime包几个函数:</p>
+<ul>
+<li><code>Gosched</code> 让出cpu</li>
+<li><code>NumCPU</code> 返回当前系统的CPU核数量</li>
+<li><code>GOMAXPROCS</code> 设置最大的可同时使用的CPU核数</li>
+<li><code>Goexit</code> 退出当前goroutine(但是defer语句会照常执行)</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我们从例子中可以看到，默认的, 所有goroutine会在一个原生线程里跑，也就是只使用了一个CPU核。</p>
+<p>在同一个原生线程里，如果当前goroutine不发生阻塞，它是不会让出CPU时间给其他同线程的goroutines的，这是Go运行时对goroutine的调度，我们也可以使用runtime包来手工调度。</p>
+<p>本文开头的两个例子都是限制在单核CPU里执行的，所有的goroutines跑在一个线程里面，分析如下:</p>
+<ul>
+<li>对于代码例子一（loop函数的那个），每个goroutine没有发生堵塞(直到quit流入数据), 所以在quit之前每个goroutine不会主动让出CPU，也就发生了串行打印</li>
+<li>对于代码例子二（time的那个），每个goroutine在sleep被调用的时候会阻塞，让出CPU, 所以例子二并发执行。</li>
+</ul>
+<p>那么关于我们开启多核的时候呢？Go语言对goroutine的调度行为又是怎么样的？</p>
+<p>我们可以在Golang官方网站的<a href="http://golang.org/doc/faq#goroutines">这里</a> 找到一句话:</p>
+<blockquote>
+<p>When a coroutine blocks, such as by calling a blocking system call, the run-time automatically moves other coroutines on the same operating system thread to a different, runnable thread so they won’t be blocked.</p>
+</blockquote>
+<p>也就是说:</p>
+<blockquote>
+<p>当一个goroutine发生阻塞，Go会自动地把与该goroutine处于同一系统线程的其他goroutines转移到另一个系统线程上去，以使这些goroutines不阻塞</p>
+</blockquote>
+<h2 id="开启多核的实验"><a href="#开启多核的实验" class="headerlink" title="开启多核的实验"></a>开启多核的实验</h2><p>仍然需要做一个实验，来测试下多核支持下goroutines的对原生线程的分配, 也验证下我们所得到的结论“goroutine不阻塞不放开CPU”。</p>
+<p>实验代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;runtime&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var quit chan int = make(chan int)</span><br><span class="line"></span><br><span class="line">func loop(id int) &#123; // id: 该goroutine的标号</span><br><span class="line">    for i := 0; i &lt; 10; i++ &#123; //打印10次该goroutine的标号</span><br><span class="line">        fmt.Printf(&quot;%d &quot;, id)</span><br><span class="line">    &#125;</span><br><span class="line">    quit &lt;- 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    runtime.GOMAXPROCS(2) // 最多同时使用2个核</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 3; i++ &#123; //开三个goroutine</span><br><span class="line">        go loop(i)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for i := 0; i &lt; 3; i++ &#123;</span><br><span class="line">        &lt;- quit</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多跑几次会看到类似这些输出(不同机器环境不一样):</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0 0 0 0 0 1 1 0 0 1 0 0 1 0 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2</span><br><span class="line">0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2</span><br><span class="line">0 0 0 0 0 0 0 1 1 1 1 1 0 1 0 1 0 1 2 1 2 1 2 2 2 2 2 2 2 2</span><br><span class="line">0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 0 2 0 2 0 2 2 2 2 2 2 2 2</span><br><span class="line">0 0 0 0 0 0 0 1 0 0 1 0 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2</span><br></pre></td></tr></table></figure>
+
+<p>执行它我们会发现以下现象:</p>
+<ul>
+<li>有时会发生抢占式输出(说明Go开了不止一个原生线程，达到了真正的并行)</li>
+<li>有时会顺序输出, 打印完0再打印1, 再打印2(说明Go开一个原生线程，单线程上的goroutine不阻塞不松开CPU)</li>
+</ul>
+<p>那么，我们还会观察到一个现象，无论是抢占地输出还是顺序的输出，都会有那么两个数字表现出这样的现象:</p>
+<ul>
+<li>一个数字的所有输出都会在另一个数字的所有输出之前</li>
+</ul>
+<p>原因是， 3个goroutine分配到至多2个线程上，就会至少两个goroutine分配到同一个线程里，单线程里的goroutine 不阻塞不放开CPU, 也就发生了顺序输出。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/golang/" rel="tag"># golang</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/07/%E8%BD%AC%E8%BD%BD-golang%E8%AF%AD%E8%A8%80%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C%E2%80%94%E2%80%94goroutine%E5%92%8Cchannel%E7%9A%84%E8%AF%A6%E7%BB%86%E7%90%86%E8%A7%A3-1/" rel="prev" title="(转载)golang语言并发与并行——goroutine和channel的详细理解(1)">
+                  <i class="fa fa-angle-left"></i> (转载)golang语言并发与并行——goroutine和channel的详细理解(1)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/12/08/%E6%8A%80%E6%9C%AF%E5%91%A8%E5%88%8A%E4%B9%8BinfluxDB%E4%BD%BF%E7%94%A8%E5%85%A5%E9%97%A8/" rel="next" title="技术周刊之influxDB使用入门">
+                  技术周刊之influxDB使用入门 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="Go 如何基于 MVS 解决依赖关系问题">
+<meta property="og:url" content="https://cloudsjhan.github.io/2024/06/20/Go-%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E-MVS-%E8%A7%A3%E5%86%B3%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.mdnice.com/user/4760/6ccc54d0-95a5-4812-8705-50a37fbf0c5a.png">
+<meta property="article:published_time" content="2024-06-20T02:49:10.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.761Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://files.mdnice.com/user/4760/6ccc54d0-95a5-4812-8705-50a37fbf0c5a.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2024/06/20/Go-%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E-MVS-%E8%A7%A3%E5%86%B3%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E9%97%AE%E9%A2%98/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2024/06/20/Go-%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E-MVS-%E8%A7%A3%E5%86%B3%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E9%97%AE%E9%A2%98/","path":"2024/06/20/Go-如何基于-MVS-解决依赖关系问题/","title":"Go 如何基于 MVS 解决依赖关系问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Go 如何基于 MVS 解决依赖关系问题 | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go-get"><span class="nav-number">1.</span> <span class="nav-text">go get</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-project"><span class="nav-number">1.1.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51"><span class="nav-number">1.2.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project@v1.2.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install-build-and-install-packages"><span class="nav-number">1.3.</span> <span class="nav-text">go install: build and install packages</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2024/06/20/Go-%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8E-MVS-%E8%A7%A3%E5%86%B3%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Go 如何基于 MVS 解决依赖关系问题 | cloud world">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go 如何基于 MVS 解决依赖关系问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-20 10:49:10" itemprop="dateCreated datePublished" datetime="2024-06-20T10:49:10+08:00">2024-06-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<blockquote>
+<p>摘要：文章主要介绍了 Go 如何解决依赖关系和版本冲突问题，以及模块管理系统，包括 go.mod 文件的作用、go get 和 go install 命令的使用</p>
+</blockquote>
+<p>Go 使用一种名为 “最小版本选择(Minimal version selection)”（<a href="https://go.dev/ref/mod#minimal-version-selection" title="MVS">MVS</a>）的方法来处理依赖关系和解决版本冲突。<br>MVS 听起来很复杂，但要点如下：它为每个模块挑选最低版本，以满足其他模块的所有要求。这样，它就能在满足所有相关需求的同时，尽可能减少依赖性。</p>
+<p>例如，假设我们有三个模块：A、B 和 C。</p>
+<p>模块 <a href="mailto:&#x41;&#x40;&#49;&#x2e;&#51;&#x2e;&#50;">&#x41;&#x40;&#49;&#x2e;&#51;&#x2e;&#50;</a> 和模块 <a href="mailto:&#x42;&#x40;&#x31;&#x2e;&#48;&#x2e;&#48;">&#x42;&#x40;&#x31;&#x2e;&#48;&#x2e;&#48;</a> 都依赖于模块 C。</p>
+<p>但 A 需要 <a href="mailto:&#67;&#64;&#50;&#x2e;&#x33;&#x2e;&#x32;">&#67;&#64;&#50;&#x2e;&#x33;&#x2e;&#x32;</a>，B 需要 <a href="mailto:&#67;&#64;&#x32;&#x2e;&#51;&#x2e;&#48;">&#67;&#64;&#x32;&#x2e;&#51;&#x2e;&#48;</a>。</p>
+<p>同时 C 也有一个更新的版本，即 2.4.1。</p>
+<p>Go 如何决定使用哪个版本的 C？</p>
+<p><img src="https://files.mdnice.com/user/4760/6ccc54d0-95a5-4812-8705-50a37fbf0c5a.png"></p>
+<blockquote>
+<p>如果选择的 2.3.2 版本与模块 B 不兼容怎么办？</p>
+</blockquote>
+<p>Go 模块使用语义版本控制（<a href="https://semver.org/" title="semver">semver</a>）来处理兼容性问题。<br>如果模块遵循 semver，则任何破坏性修改都应修改主版本（major.minor.patch）。由于 2.3.0 和 2.3.2 两个版本的主要版本（2.3.x）相同，因此它们应该相互向后兼容。<br>模块作者有责任确保不同版本保持兼容。</p>
+<blockquote>
+<p>如果 A 需要 3.0.0 版本的 C，这会破坏与 B 的兼容性，怎么办？</p>
+</blockquote>
+<p>当模块达到主版本 2 或更高版本时，其路径会包含主版本号（如 &#x2F;v2 或 &#x2F;v3）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.com/user/project/v2</span><br><span class="line">github.com/user/project/v3</span><br></pre></td></tr></table></figure>
+
+<p>不同主要版本的模块被视为不同的模块。因此，我们可以在同一项目中同时使用 <a href="mailto:&#x43;&#64;&#50;&#46;&#x33;&#46;&#x32;">&#x43;&#64;&#50;&#46;&#x33;&#46;&#x32;</a> 和 <a href="mailto:&#x43;&#64;&#51;&#x2e;&#x30;&#x2e;&#48;">&#x43;&#64;&#51;&#x2e;&#x30;&#x2e;&#48;</a>。</p>
+<p>例如，我们的 go.mod 文件可能如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module yourproject</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">    github.com/user/A v1.0.0</span><br><span class="line">    github.com/user/B v1.0.0</span><br><span class="line">)</span><br><span class="line">require (</span><br><span class="line">    github.com/user/C/v2 v2.3.2 // indirect</span><br><span class="line">    github.com/user/C/v3 v3.0.0 // indirect</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><code>// indirect</code> 注释表示这里的项目没有直接导入 C 模块，而是因为 A 或 B 需要它才导入的。</p>
+<p>还有一个要注意点：<code>go get</code> 不会更新或添加缺失的测试依赖项。要包含这些依赖项，请使用 -t 标志，如 <code>go get -t ./...</code></p>
+<h3 id="go-get"><a href="#go-get" class="headerlink" title="go get"></a>go get</h3><p>这里举几个例子，看看 go get 在不同情况下是如何工作的。</p>
+<p>使用 go get .或 go get .&#x2F;…查找当前目录或其子目录中所有缺失的依赖项，并将其添加到 go.mod 文件中。<br>这意味着它会检查任何尚未列出的依赖项，并将其添加进来。除非你特别要求，否则它不会将现有的依赖项更新到最新版本，比如下一个例子中的 -u 标志。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u .</span><br></pre></td></tr></table></figure>
+
+<p>在 go get .中使用 -u 标志，会将当前目录中的现有依赖项更新到最新的次版本或补丁版本。请记住，它不会更新到新的主版本，因为它们被视为不同的模块。<br>要将主模块的所有依赖项更新到最新版本，可以使用 <code>go get -u ./...</code></p>
+<p>在下面的几个情况下，即使不指定 -u 标志，go get 仍会更新过时或丢失的依赖项。</p>
+<h4 id="go-get-github-com-user-project"><a href="#go-get-github-com-user-project" class="headerlink" title="go get github.com&#x2F;user&#x2F;project"></a>go get github.com&#x2F;user&#x2F;project</h4><p>此命令下载模块 github.com&#x2F;user&#x2F;project，并将其添加到 go.mod 文件中。如果该模块已列在该文件中，则会将其更新为最新的次版本或补丁版本。基本上，如果你不指定版本（或版本查询后缀），它会假定你想升级到最新版本，就像使用 go get github.com&#x2F;user&#x2F;project@upgrade 一样。</p>
+<h4 id="go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51"><a href="#go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51" class="headerlink" title="go get github.com&#x2F;user&#x2F;&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;"></a>go get github.com&#x2F;user&#x2F;<a href="mailto:&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;">&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;</a></h4><p>此命令将模块更新到指定版本，即 v1.2.3。根据当前的版本，它可能会升级或降级模块以匹配该版本。</p>
+<h4 id="go-install-build-and-install-packages"><a href="#go-install-build-and-install-packages" class="headerlink" title="go install: build and install packages"></a>go install: build and install packages</h4><p>与下载依赖项以便在项目中使用其源代码不同，go install 会将依赖项的源代码编译成二进制文件，并将其移动到 $GOPATH&#x2F;bin 目录中进行安装。这样就可以在终端上使用它了。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go install golang.org/x/tools/gopls@latest</span><br></pre></td></tr></table></figure>
+<p>运行该命令并查看 $GOBIN 文件夹（我们之前提到过）后，你会在其中看到一个名为 gopls 的可执行文件。如果 $GOBIN 在您的 $PATH 中，您就可以在终端中运行 gopls。</p>
+<p>如果只是在没有任何参数的情况下运行 go install 会怎样呢？<br><code>go install</code> 就会下载缺失的依赖项，并在当前目录下构建当前模块。<br>这导致一些人误用 go install 来管理依赖关系，因为它确实会下载依赖关系。但这并不是它的主要工作，它实际上是要构建你的项目，并将生成的二进制文件安装到 $GOBIN 目录中。</p>
+<p>go install 用于构建和安装软件包，而 go get 用于管理依赖关系。有些开发者经常会感到困惑，这是因为在旧版本的 Go 中，go get 确实是用来在更新 go.mod 文件后构建软件包，然后将它们安装到 $GOPATH&#x2F;bin。</p>
+<p>但从 Go 1.16 开始，go install 成为了构建和安装的首选命令，而 go get 则专注于管理 go.mod 文件中的需求。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/19/Robust-generic-functions-on-slices/" rel="prev" title="Robust generic functions on slices">
+                  <i class="fa fa-angle-left"></i> Robust generic functions on slices
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/20/Golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E5%92%8C%E5%85%B6%E4%BD%BF%E7%94%A8/" rel="next" title="Golang 空结构体的底层原理和其使用">
+                  Golang 空结构体的底层原理和其使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

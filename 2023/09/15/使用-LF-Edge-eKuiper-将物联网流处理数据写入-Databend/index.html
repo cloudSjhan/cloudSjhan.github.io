@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="使用 LF Edge eKuiper 将物联网流处理数据写入 Databend">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 LF Edge eKuiper 将物联网流处理数据写入 Databend">
+<meta property="og:url" content="https://cloudsjhan.github.io/2023/09/15/%E4%BD%BF%E7%94%A8-LF-Edge-eKuiper-%E5%B0%86%E7%89%A9%E8%81%94%E7%BD%91%E6%B5%81%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-Databend/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="使用 LF Edge eKuiper 将物联网流处理数据写入 Databend">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p.ipic.vip/zk6cqs.png">
+<meta property="og:image" content="https://p.ipic.vip/jheqto.png">
+<meta property="og:image" content="https://datafuselabs.feishu.cn/space/api/box/stream/download/asynccode/?code=YjM5YjU2ZGQ4NzllOGQ2OTEyMGQ4MmUzOTVjOGY0ZDNfa3plRTRiRnB5aTZMVmdVamdlUUZCQ1BQSVAySVB0S05fVG9rZW46V2p0VWJTcTR6b1FUc254OFVjRWN5dXBqbkJoXzE2OTQ3NjU2NzA6MTY5NDc2OTI3MF9WNA">
+<meta property="og:image" content="https://p.ipic.vip/x9595c.png">
+<meta property="og:image" content="https://datafuselabs.feishu.cn/space/api/box/stream/download/asynccode/?code=ZWQwYjA4NjRlYzZhMDBhMTcyZjExNjI4M2FjZTA0ZmVfYU03MWt0ZGpMamdPRWg0MTN0N3JCeWFXRll4TEJaY0RfVG9rZW46SGxkTGJtZnFibzFqdzh4Sk02QWN1MHhtbnBnXzE2OTQ3NjU2NzA6MTY5NDc2OTI3MF9WNA">
+<meta property="og:image" content="https://p.ipic.vip/1i2f2u.png">
+<meta property="article:published_time" content="2023-09-15T08:12:42.000Z">
+<meta property="article:modified_time" content="2026-05-23T13:26:04.748Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="Databend">
+<meta property="article:tag" content="EMQ">
+<meta property="article:tag" content="stream data">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p.ipic.vip/zk6cqs.png">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/2023/09/15/%E4%BD%BF%E7%94%A8-LF-Edge-eKuiper-%E5%B0%86%E7%89%A9%E8%81%94%E7%BD%91%E6%B5%81%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-Databend/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://cloudsjhan.github.io/2023/09/15/%E4%BD%BF%E7%94%A8-LF-Edge-eKuiper-%E5%B0%86%E7%89%A9%E8%81%94%E7%BD%91%E6%B5%81%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-Databend/","path":"2023/09/15/使用-LF-Edge-eKuiper-将物联网流处理数据写入-Databend/","title":"使用 LF Edge eKuiper 将物联网流处理数据写入 Databend"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用 LF Edge eKuiper 将物联网流处理数据写入 Databend | cloud world</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LF-Edge-eKuiper"><span class="nav-number">1.</span> <span class="nav-text">LF Edge eKuiper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Databend-Sql-Sink"><span class="nav-number">2.</span> <span class="nav-text">Databend Sql Sink</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91-ekuiper-%E5%92%8C-Databend-Sql-Plugin"><span class="nav-number">3.</span> <span class="nav-text">编译 ekuiper 和 Databend Sql Plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ekuiper"><span class="nav-number">3.1.</span> <span class="nav-text">Ekuiper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Databend-Sql-Plugin"><span class="nav-number">3.2.</span> <span class="nav-text">Databend Sql Plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Databend-%E5%BB%BA%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">Databend 建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8-ekuiperd"><span class="nav-number">5.</span> <span class="nav-text">启动 ekuiperd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%B5%81%EF%BC%88stream%EF%BC%89-%E5%92%8C-%E8%A7%84%E5%88%99-rule"><span class="nav-number">6.</span> <span class="nav-text">创建流（stream） 和 规则 (rule)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-stream"><span class="nav-number">6.1.</span> <span class="nav-text">创建 stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA-Databend-Sink-Rule"><span class="nav-number">6.2.</span> <span class="nav-text">创建 Databend  Sink Rule</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">7.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cloudsjhan.github.io/2023/09/15/%E4%BD%BF%E7%94%A8-LF-Edge-eKuiper-%E5%B0%86%E7%89%A9%E8%81%94%E7%BD%91%E6%B5%81%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-Databend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="cloud sjhan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cloud world">
+      <meta itemprop="description" content="关于技术，关于生活">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用 LF Edge eKuiper 将物联网流处理数据写入 Databend | cloud world">
+      <meta itemprop="description" content="使用 LF Edge eKuiper 将物联网流处理数据写入 Databend">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 LF Edge eKuiper 将物联网流处理数据写入 Databend
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-15 16:12:42" itemprop="dateCreated datePublished" datetime="2023-09-15T16:12:42+08:00">2023-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Databend/" itemprop="url" rel="index"><span itemprop="name">Databend</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-file-o"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">使用 LF Edge eKuiper 将物联网流处理数据写入 Databend</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p class="description"></p>
+
+
+<span id="more"></span>
+
+<h2 id="LF-Edge-eKuiper"><a href="#LF-Edge-eKuiper" class="headerlink" title="LF Edge eKuiper"></a>LF Edge eKuiper</h2><p>[LF Edge eKuiper(<a href="https://github.com/lf-edge/ekuiper">https://github.com/lf-edge/ekuiper</a>) 是 Golang 实现的轻量级物联网边缘分析、流式处理开源软件，可以运行在各类资源受限的边缘设备上。eKuiper 的主要目标是在边缘端提供一个流媒体软件框架（类似于 <a href="https://flink.apache.org/">Apache Flink (opens new window)</a>）。eKuiper 的规则引擎允许用户提供基于 SQL 或基于图形（类似于 Node-RED）的规则，在几分钟内创建物联网边缘分析应用。具体介绍可以参考 <a href="https://ekuiper.org/docs/zh/latest/">LF Edge eKuiper - 超轻量物联网边缘流处理软件</a>。</p>
+<p><img src="https://p.ipic.vip/zk6cqs.png"></p>
+<h2 id="Databend-Sql-Sink"><a href="#Databend-Sql-Sink" class="headerlink" title="Databend Sql Sink"></a>Databend Sql Sink</h2><p>eKuiper 支持通过 Golang 或者 Python 在<code>源 (Source)</code>，<code>SQL 函数</code>, <code>目标 (Sink)</code> 三个方面的扩展，通过支持不同的 Sink，允许用户将分析结果发送到不同的扩展系统中。Databend 作为 Sink 也被集成到了 eKuiper plugin 当中，下面通过一个案例来展示如何使用 eKuiper 将物联网流处理数据写入 Databend。</p>
+<h2 id="编译-ekuiper-和-Databend-Sql-Plugin"><a href="#编译-ekuiper-和-Databend-Sql-Plugin" class="headerlink" title="编译 ekuiper 和 Databend Sql Plugin"></a>编译 ekuiper 和 Databend Sql Plugin</h2><h3 id="Ekuiper"><a href="#Ekuiper" class="headerlink" title="Ekuiper"></a>Ekuiper</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">git</span> clone https://github.com/lf-edge/ekuiper &amp; cd ekuiper</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<h3 id="Databend-Sql-Plugin"><a href="#Databend-Sql-Plugin" class="headerlink" title="Databend Sql Plugin"></a>Databend Sql Plugin</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">go</span> build -trimpath --buildmode=plugin -tags databend -o plugins/sinks/Sql.so extensions/sinks/sql/sql.go</span><br></pre></td></tr></table></figure>
+
+<p>编译后的 sink plugin 拷贝到 build 目录：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">cp</span> plugins/sinks/Sql.so _build/kuiper-<span class="number">1</span>.<span class="number">11</span>.<span class="number">1</span>-<span class="number">18</span>-g42d9147f-darwin-arm64/plugins/sinks</span><br></pre></td></tr></table></figure>
+
+<h2 id="Databend-建表"><a href="#Databend-建表" class="headerlink" title="Databend 建表"></a>Databend 建表</h2><p>在 Databend 中先创建目标表 ekuiper_test：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table ekuiper_test (name string<span class="punctuation">,</span>size bigint<span class="punctuation">,</span>id bigint);</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动-ekuiperd"><a href="#启动-ekuiperd" class="headerlink" title="启动 ekuiperd"></a>启动 ekuiperd</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">cd</span> _build/kuiper-<span class="number">1</span>.<span class="number">11</span>.<span class="number">1</span>-<span class="number">18</span>-g42d9147f-darwin-arm64 </span><br><span class="line">./bin/kuiperd</span><br></pre></td></tr></table></figure>
+
+<p>服务正常启动：</p>
+<p><img src="https://p.ipic.vip/jheqto.png" alt="img"></p>
+<h2 id="创建流（stream）-和-规则-rule"><a href="#创建流（stream）-和-规则-rule" class="headerlink" title="创建流（stream） 和 规则 (rule)"></a>创建流（stream） 和 规则 (rule)</h2><p>Ekuiper 提供了两种管理各种流、规则，目标端的方式，一种是通过 ekuiper-manager 的 docker image（<a href="https://hub.docker.com/r/lfedge/ekuiper%EF%BC%89%E5%90%AF%E5%8A%A8%E5%8F%AF%E8%A7%86%E5%8C%96%E7%AE%A1%E7%90%86%E7%95%8C%E9%9D%A2%EF%BC%8C%E4%B8%80%E7%A7%8D%E6%98%AF%E9%80%9A%E8%BF%87">https://hub.docker.com/r/lfedge/ekuiper）启动可视化管理界面，一种是通过</a> CLI 工具来管理。这里我们使用 CLI。</p>
+<h3 id="创建-stream"><a href="#创建-stream" class="headerlink" title="创建 stream"></a>创建 stream</h3><p>流是 eKuiper 中数据源连接器的运行形式。它必须指定一个源类型来定义如何连接到外部资源。这里我们创建一个流，从 json 文件数据源中获取数据，并发送到 ekuiper 中。</p>
+<p>首先配置文件数据源，连接器的配置文件位于 <code>/etc/sources/file.yaml</code>。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">default:</span></span><br><span class="line">  <span class="comment"># 文件的类型，支持 json， csv 和 lines</span></span><br><span class="line">  <span class="attr">fileType:</span> <span class="string">json</span></span><br><span class="line">  <span class="comment"># 文件以 eKuiper 为根目录的目录或文件的绝对路径。</span></span><br><span class="line">  <span class="comment"># 请勿在此处包含文件名。文件名应在流数据源中定义</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">data</span></span><br><span class="line">  <span class="comment"># 读取文件的时间间隔，单位为ms。如果只读取一次，则将其设置为 0</span></span><br><span class="line">  <span class="attr">interval:</span> <span class="number">0</span></span><br><span class="line">  <span class="comment"># 读取后，两条数据发送的间隔时间</span></span><br><span class="line">  <span class="attr">sendInterval:</span> <span class="number">0</span></span><br><span class="line">  <span class="comment"># 是否并行读取目录中的文件</span></span><br><span class="line">  <span class="attr">parallel:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># 文件读取后的操作</span></span><br><span class="line">  <span class="comment"># 0: 文件保持不变</span></span><br><span class="line">  <span class="comment"># 1: 删除文件</span></span><br><span class="line">  <span class="comment"># 2: 移动文件到 moveTo 定义的位置</span></span><br><span class="line">  <span class="attr">actionAfterRead:</span> <span class="number">0</span></span><br><span class="line">  <span class="comment"># 移动文件的位置, 仅用于 actionAfterRead 为 2 的情况</span></span><br><span class="line">  <span class="attr">moveTo:</span> <span class="string">/tmp/kuiper/moved</span></span><br><span class="line">  <span class="comment"># 是否包含文件头，多用于 csv。若为 true，则第一行解析为文件头。</span></span><br><span class="line">  <span class="attr">hasHeader:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># 定义文件的列。如果定义了文件头，该选项将被覆盖。</span></span><br><span class="line">  <span class="comment"># columns: [id, name]</span></span><br><span class="line">  <span class="comment"># 忽略开头多少行的内容。</span></span><br><span class="line">  <span class="attr">ignoreStartLines:</span> <span class="number">0</span></span><br><span class="line">  <span class="comment"># 忽略结尾多少行的内容。最后的空行不计算在内。</span></span><br><span class="line">  <span class="attr">ignoreEndLines:</span> <span class="number">0</span></span><br><span class="line">  <span class="comment"># 使用指定的压缩方法解压缩文件。现在支持`gzip`、`zstd` 方法。</span></span><br><span class="line">  <span class="attr">decompression:</span> <span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 CLI 创建 steam 名为 <code>stream1</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">./bin/kuiper</span> <span class="string">create</span> <span class="string">stream</span> <span class="string">stream1</span> <span class="string">&#x27;(id BIGINT, name STRING,size BIGINT) WITH (DATASOURCE=&quot;test.json&quot;, FORMAT=&quot;json&quot;, TYPE=&quot;file&quot;);&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://datafuselabs.feishu.cn/space/api/box/stream/download/asynccode/?code=YjM5YjU2ZGQ4NzllOGQ2OTEyMGQ4MmUzOTVjOGY0ZDNfa3plRTRiRnB5aTZMVmdVamdlUUZCQ1BQSVAySVB0S05fVG9rZW46V2p0VWJTcTR6b1FUc254OFVjRWN5dXBqbkJoXzE2OTQ3NjU2NzA6MTY5NDc2OTI3MF9WNA" alt="img"></p>
+<p>Json 文件的内容为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">100</span><span class="punctuation">,</span> <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;John Doe&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">200</span><span class="punctuation">,</span> <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Jane Smith&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">3</span><span class="punctuation">,</span><span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">300</span><span class="punctuation">,</span> <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Kobe Brant&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">4</span><span class="punctuation">,</span><span class="attr">&quot;size&quot;</span><span class="punctuation">:</span><span class="number">400</span><span class="punctuation">,</span> <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Alen Iverson&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建-Databend-Sink-Rule"><a href="#创建-Databend-Sink-Rule" class="headerlink" title="创建 Databend  Sink Rule"></a>创建 Databend  Sink Rule</h3><p>一个规则代表了一个流处理流程，定义了从将数据输入流的数据源到各种处理逻辑，再到将数据输入到外部系统的动作。ekuiper 有两种方法来定义规则的业务逻辑。要么使用SQL&#x2F;动作组合，要么使用新增加的图API。</p>
+<p>这里我们通过指定 <code>sql</code> 和 <code>actions</code> 属性，以声明的方式定义规则的业务逻辑。其中，<code>sql</code> 定义了针对预定义流运行的 SQL 查询，这将转换数据。然后，输出的数据可以通过 <code>action</code> 路由到多个位置。</p>
+<p>规则由 JSON 定义，下面是准备创建的规则 myRule.json：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;myRule&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sql&quot;</span><span class="punctuation">:</span> <span class="string">&quot;SELECT id, name from stream1&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;actions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;log&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sql&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;databend://databend:databend@localhost:8000/default?sslmode=disable&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;table&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ekuiper_test&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;id&quot;</span><span class="punctuation">,</span><span class="string">&quot;name&quot;</span><span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行 CLI 创建规则：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kuiper create rule myRule -f myRule.json</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://p.ipic.vip/x9595c.png" alt="img"></p>
+<p>可以查看所创建规则的运行状态：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kuiper getstatus rule myRule</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://datafuselabs.feishu.cn/space/api/box/stream/download/asynccode/?code=ZWQwYjA4NjRlYzZhMDBhMTcyZjExNjI4M2FjZTA0ZmVfYU03MWt0ZGpMamdPRWg0MTN0N3JCeWFXRll4TEJaY0RfVG9rZW46SGxkTGJtZnFibzFqdzh4Sk02QWN1MHhtbnBnXzE2OTQ3NjU2NzA6MTY5NDc2OTI3MF9WNA" alt="img"></p>
+<p>规则创建后，会立即将符合规则条件的数据发送到目标端，此时我们查看 databend 的 ekuiper_test 表，可以看到文件数据源中的数据已经被写入到 databend：</p>
+<p><img src="https://p.ipic.vip/1i2f2u.png" alt="img"></p>
+<p>可以看到由于我们的规则 SQL 中只指定了 <code>id</code>, <code>name</code> 字段，所以这里只有这两个字段被写入。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Ekuiper 是 EMQ 旗下的一款流处理软件，其体积小、功能强大，在工业物联网、车辆网、公共数据分析等很多场景中得到广泛使用。本文介绍如何使用 eKuiper 将物联网流处理数据写入 Databend。</p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="cloud sjhan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="cloud sjhan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Databend/" rel="tag"># Databend</a>
+              <a href="/tags/EMQ/" rel="tag"># EMQ</a>
+              <a href="/tags/stream-data/" rel="tag"># stream data</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/08/databend-kafka-connect-%E6%9E%84%E5%BB%BA%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5/" rel="prev" title="databend kafka connect 构建实时数据同步">
+                  <i class="fa fa-angle-left"></i> databend kafka connect 构建实时数据同步
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/01/02/%E4%BB%8E-AutoMQ-Kafka-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE%E5%88%B0-Databend/" rel="next" title="从 AutoMQ Kafka 导出数据到 Databend">
+                  从 AutoMQ Kafka 导出数据到 Databend <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
