@@ -166,7 +166,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go-get"><span class="nav-number">1.</span> <span class="nav-text">go get</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-project"><span class="nav-number">1.1.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51"><span class="nav-number">1.2.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project@v1.2.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install-build-and-install-packages"><span class="nav-number">1.3.</span> <span class="nav-text">go install: build and install packages</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go-get"><span class="nav-number">1.</span> <span class="nav-text">go get</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-project"><span class="nav-number">1.1.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-get-github-com-user-112-x72-111-106-x65-99-116-64-x76-x31-46-x32-x2e-x33"><span class="nav-number">1.2.</span> <span class="nav-text">go get github.com&#x2F;user&#x2F;project@v1.2.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#go-install-build-and-install-packages"><span class="nav-number">1.3.</span> <span class="nav-text">go install: build and install packages</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -309,8 +309,8 @@
 </blockquote>
 <p>Go 使用一种名为 “最小版本选择(Minimal version selection)”（<a href="https://go.dev/ref/mod#minimal-version-selection" title="MVS">MVS</a>）的方法来处理依赖关系和解决版本冲突。<br>MVS 听起来很复杂，但要点如下：它为每个模块挑选最低版本，以满足其他模块的所有要求。这样，它就能在满足所有相关需求的同时，尽可能减少依赖性。</p>
 <p>例如，假设我们有三个模块：A、B 和 C。</p>
-<p>模块 <a href="mailto:&#x41;&#x40;&#49;&#x2e;&#51;&#x2e;&#50;">&#x41;&#x40;&#49;&#x2e;&#51;&#x2e;&#50;</a> 和模块 <a href="mailto:&#x42;&#x40;&#x31;&#x2e;&#48;&#x2e;&#48;">&#x42;&#x40;&#x31;&#x2e;&#48;&#x2e;&#48;</a> 都依赖于模块 C。</p>
-<p>但 A 需要 <a href="mailto:&#67;&#64;&#50;&#x2e;&#x33;&#x2e;&#x32;">&#67;&#64;&#50;&#x2e;&#x33;&#x2e;&#x32;</a>，B 需要 <a href="mailto:&#67;&#64;&#x32;&#x2e;&#51;&#x2e;&#48;">&#67;&#64;&#x32;&#x2e;&#51;&#x2e;&#48;</a>。</p>
+<p>模块 <a href="mailto:&#65;&#64;&#49;&#x2e;&#51;&#x2e;&#50;">&#65;&#64;&#49;&#x2e;&#51;&#x2e;&#50;</a> 和模块 <a href="mailto:&#66;&#x40;&#x31;&#46;&#48;&#46;&#x30;">&#66;&#x40;&#x31;&#46;&#48;&#46;&#x30;</a> 都依赖于模块 C。</p>
+<p>但 A 需要 <a href="mailto:&#67;&#x40;&#x32;&#46;&#51;&#46;&#x32;">&#67;&#x40;&#x32;&#46;&#51;&#46;&#x32;</a>，B 需要 <a href="mailto:&#67;&#x40;&#50;&#46;&#x33;&#46;&#x30;">&#67;&#x40;&#50;&#46;&#x33;&#46;&#x30;</a>。</p>
 <p>同时 C 也有一个更新的版本，即 2.4.1。</p>
 <p>Go 如何决定使用哪个版本的 C？</p>
 <p><img src="https://files.mdnice.com/user/4760/6ccc54d0-95a5-4812-8705-50a37fbf0c5a.png"></p>
@@ -324,7 +324,7 @@
 <p>当模块达到主版本 2 或更高版本时，其路径会包含主版本号（如 &#x2F;v2 或 &#x2F;v3）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">github.com/user/project/v2</span><br><span class="line">github.com/user/project/v3</span><br></pre></td></tr></table></figure>
 
-<p>不同主要版本的模块被视为不同的模块。因此，我们可以在同一项目中同时使用 <a href="mailto:&#x43;&#64;&#50;&#46;&#x33;&#46;&#x32;">&#x43;&#64;&#50;&#46;&#x33;&#46;&#x32;</a> 和 <a href="mailto:&#x43;&#64;&#51;&#x2e;&#x30;&#x2e;&#48;">&#x43;&#64;&#51;&#x2e;&#x30;&#x2e;&#48;</a>。</p>
+<p>不同主要版本的模块被视为不同的模块。因此，我们可以在同一项目中同时使用 <a href="mailto:&#67;&#64;&#x32;&#x2e;&#x33;&#x2e;&#x32;">&#67;&#64;&#x32;&#x2e;&#x33;&#x2e;&#x32;</a> 和 <a href="mailto:&#x43;&#64;&#51;&#46;&#48;&#x2e;&#48;">&#x43;&#64;&#51;&#46;&#48;&#x2e;&#48;</a>。</p>
 <p>例如，我们的 go.mod 文件可能如下所示：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module yourproject</span><br><span class="line"></span><br><span class="line">require (</span><br><span class="line">    github.com/user/A v1.0.0</span><br><span class="line">    github.com/user/B v1.0.0</span><br><span class="line">)</span><br><span class="line">require (</span><br><span class="line">    github.com/user/C/v2 v2.3.2 // indirect</span><br><span class="line">    github.com/user/C/v3 v3.0.0 // indirect</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
@@ -337,7 +337,7 @@
 <p>在 go get .中使用 -u 标志，会将当前目录中的现有依赖项更新到最新的次版本或补丁版本。请记住，它不会更新到新的主版本，因为它们被视为不同的模块。<br>要将主模块的所有依赖项更新到最新版本，可以使用 <code>go get -u ./...</code></p>
 <p>在下面的几个情况下，即使不指定 -u 标志，go get 仍会更新过时或丢失的依赖项。</p>
 <h4 id="go-get-github-com-user-project"><a href="#go-get-github-com-user-project" class="headerlink" title="go get github.com&#x2F;user&#x2F;project"></a>go get github.com&#x2F;user&#x2F;project</h4><p>此命令下载模块 github.com&#x2F;user&#x2F;project，并将其添加到 go.mod 文件中。如果该模块已列在该文件中，则会将其更新为最新的次版本或补丁版本。基本上，如果你不指定版本（或版本查询后缀），它会假定你想升级到最新版本，就像使用 go get github.com&#x2F;user&#x2F;project@upgrade 一样。</p>
-<h4 id="go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51"><a href="#go-get-github-com-user-112-114-x6f-x6a-101-99-116-64-118-x31-46-50-x2e-51" class="headerlink" title="go get github.com&#x2F;user&#x2F;&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;"></a>go get github.com&#x2F;user&#x2F;<a href="mailto:&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;">&#112;&#114;&#x6f;&#x6a;&#101;&#99;&#116;&#64;&#118;&#x31;&#46;&#50;&#x2e;&#51;</a></h4><p>此命令将模块更新到指定版本，即 v1.2.3。根据当前的版本，它可能会升级或降级模块以匹配该版本。</p>
+<h4 id="go-get-github-com-user-112-x72-111-106-x65-99-116-64-x76-x31-46-x32-x2e-x33"><a href="#go-get-github-com-user-112-x72-111-106-x65-99-116-64-x76-x31-46-x32-x2e-x33" class="headerlink" title="go get github.com&#x2F;user&#x2F;&#112;&#x72;&#111;&#106;&#x65;&#99;&#116;&#64;&#x76;&#x31;&#46;&#x32;&#x2e;&#x33;"></a>go get github.com&#x2F;user&#x2F;<a href="mailto:&#112;&#x72;&#111;&#106;&#x65;&#99;&#116;&#64;&#x76;&#x31;&#46;&#x32;&#x2e;&#x33;">&#112;&#x72;&#111;&#106;&#x65;&#99;&#116;&#64;&#x76;&#x31;&#46;&#x32;&#x2e;&#x33;</a></h4><p>此命令将模块更新到指定版本，即 v1.2.3。根据当前的版本，它可能会升级或降级模块以匹配该版本。</p>
 <h4 id="go-install-build-and-install-packages"><a href="#go-install-build-and-install-packages" class="headerlink" title="go install: build and install packages"></a>go install: build and install packages</h4><p>与下载依赖项以便在项目中使用其源代码不同，go install 会将依赖项的源代码编译成二进制文件，并将其移动到 $GOPATH&#x2F;bin 目录中进行安装。这样就可以在终端上使用它了。</p>
 <p>例如：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go install golang.org/x/tools/gopls@latest</span><br></pre></td></tr></table></figure>
