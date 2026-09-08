@@ -30,7 +30,7 @@
 <meta property="og:description" content="Last updated: 2026-08-06 OverviewSayble (“the App”) is an iOS voice keyboard that turns spoken input into clean, ready-to-send text. It removes filler words, repetition, and self-corrections, adds pun">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-06T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-08-06T04:53:01.344Z">
+<meta property="article:modified_time" content="2026-08-06T09:22:31.462Z">
 <meta property="article:author" content="cloud sjhan">
 <meta property="article:tag" content="go, python, Docker, k8s">
 <meta name="twitter:card" content="summary">
@@ -262,6 +262,7 @@
 <li><strong>Spoken instructions.</strong> For example “make this shorter” or “translate to English”.</li>
 <li><strong>Personal dictionary terms.</strong> Names and specialist vocabulary you add yourself.</li>
 <li><strong>Snippets.</strong> Reusable text you save yourself, such as an address or signature.</li>
+<li><strong>Purchase information.</strong> If you subscribe or buy lifetime access, Apple-signed transaction information including the product identifier, transaction identifiers, purchase status, expiration date, and revocation status.</li>
 </ul>
 <p>The App has no account system. You do not register, sign in, or provide an email address to use it.</p>
 <h2 id="Microphone-and-Speech-Recognition"><a href="#Microphone-and-Speech-Recognition" class="headerlink" title="Microphone and Speech Recognition"></a>Microphone and Speech Recognition</h2><p>There are two separate paths, and they behave differently:</p>
@@ -287,7 +288,7 @@
 <li>The private key remains protected by Apple on your device and is never sent to us</li>
 <li>The service issues a short-lived access token and an installation-specific rotating refresh token so the App and keyboard can use AI features without requiring you to periodically reopen the main App</li>
 </ul>
-<p>This information is used only for App security, fraud prevention, replay prevention, rate limiting, and controlling access to the refinement service. It is not used for advertising or tracking across apps or websites. App Attest records are not associated with an account because Sayble has no account system.</p>
+<p>This information is used only for App security, fraud prevention, replay prevention, rate limiting, enforcing free usage allowances, and controlling access to the refinement service. It is not used for advertising or tracking across apps or websites. App Attest records are not associated with an account because Sayble has no account system.</p>
 <h2 id="Third-Party-Processing"><a href="#Third-Party-Processing" class="headerlink" title="Third-Party Processing"></a>Third-Party Processing</h2><p>Text sent for refinement is processed by <strong>DeepSeek</strong> (<code>api.deepseek.com</code>) to generate the result. Your use of this feature is therefore also subject to DeepSeek’s own privacy policy and terms.</p>
 <p>When you ask a question that needs current information, the App may query these services for that answer:</p>
 <ul>
@@ -300,6 +301,7 @@
 <li>Dictation history, including the original transcript and the final result</li>
 <li>Your personal dictionary</li>
 <li>Your snippets</li>
+<li>A local copy of your current Pro status and remaining free allowances, shared so the keyboard can update immediately</li>
 <li>Preferences, such as refinement mode and recognition language</li>
 </ul>
 <p>History can be deleted individually or cleared entirely from within the App. Deleting the App removes all locally stored data.</p>
@@ -310,12 +312,15 @@
 </ol>
 <p>Password fields continue to use Apple’s secure keyboard, and iOS does not allow any third-party keyboard to appear there.</p>
 <h2 id="Analytics-Ads-and-Tracking"><a href="#Analytics-Ads-and-Tracking" class="headerlink" title="Analytics, Ads, and Tracking"></a>Analytics, Ads, and Tracking</h2><p>The App contains no advertising SDKs, no third-party analytics, and no tracking SDKs. It does not build an advertising profile and does not track you across other apps or websites.</p>
-<h2 id="In-App-Purchases"><a href="#In-App-Purchases" class="headerlink" title="In-App Purchases"></a>In-App Purchases</h2><p>The App currently has no in-app purchases and no subscriptions.</p>
+<h2 id="In-App-Purchases"><a href="#In-App-Purchases" class="headerlink" title="In-App Purchases"></a>In-App Purchases</h2><p>Sayble offers monthly and yearly auto-renewable subscriptions and a one-time lifetime purchase. Purchases are processed by Apple through StoreKit; Sayble does not receive or store your payment card or Apple Account credentials.</p>
+<p>The App sends Apple’s cryptographically signed transaction record to the Sayble service. The service verifies it against Apple’s certificate chain and stores the product identifier, transaction identifiers, expiration or revocation status, and verification time. This is necessary to activate Pro features, restore purchases, prevent forged access, enforce free allowances, and stop access after a refund, revocation, or subscription expiration. Purchase records are associated with an App Attest installation identifier, not an account, email address, advertising identifier, or real-world identity.</p>
+<p>Subscription management and cancellation are handled by Apple in your Apple Account settings. Deleting the App does not cancel an active subscription.</p>
 <h2 id="Data-Sharing"><a href="#Data-Sharing" class="headerlink" title="Data Sharing"></a>Data Sharing</h2><p>We do not sell or rent your information. Data is processed only by:</p>
 <ul>
 <li>The Sayble refinement service, when you use a refinement, rewrite, or compose feature</li>
 <li>DeepSeek, as the model provider behind that service</li>
 <li>Open-Meteo and ER-API, when your request needs current weather, air quality, or exchange rate data</li>
+<li>Apple, for processing purchases and providing signed transaction status</li>
 </ul>
 <h2 id="Children’s-Privacy"><a href="#Children’s-Privacy" class="headerlink" title="Children’s Privacy"></a>Children’s Privacy</h2><p>The App is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13.</p>
 <h2 id="Your-Choices"><a href="#Your-Choices" class="headerlink" title="Your Choices"></a>Your Choices</h2><p>You can:</p>
@@ -325,13 +330,14 @@
 <li>Delete individual history entries, or clear all history</li>
 <li>Remove any personal dictionary term or snippet at any time</li>
 <li>Decline Full Access, though cloud refinement and shared snippets will then be unavailable</li>
+<li>Use Apple’s purchase settings to manage or cancel a subscription, or Restore Purchases in Sayble</li>
 <li>Remove all local data by deleting the App</li>
 </ul>
 <h2 id="Changes-to-This-Policy"><a href="#Changes-to-This-Policy" class="headerlink" title="Changes to This Policy"></a>Changes to This Policy</h2><p>We may update this privacy policy from time to time. Any changes will be reflected in the “Last updated” date above.</p>
 <h2 id="Contact"><a href="#Contact" class="headerlink" title="Contact"></a>Contact</h2><p>If you have any questions about this privacy policy, please contact us:</p>
 <ul>
 <li>Support: <a href="https://cloudsjhan.github.io/sayble-support/">https://cloudsjhan.github.io/sayble-support/</a></li>
-<li>Email: <a href="mailto:&#x68;&#x61;&#x6e;&#115;&#104;&#97;&#x6e;&#106;&#x69;&#x65;&#97;&#112;&#112;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#x68;&#x61;&#x6e;&#115;&#104;&#97;&#x6e;&#106;&#x69;&#x65;&#97;&#112;&#112;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
+<li>Email: <a href="mailto:&#x68;&#97;&#110;&#115;&#104;&#97;&#x6e;&#106;&#105;&#101;&#97;&#112;&#x70;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#x68;&#97;&#110;&#115;&#104;&#97;&#x6e;&#106;&#105;&#101;&#97;&#112;&#x70;&#64;&#103;&#x6d;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></li>
 </ul>
 
       </div>
