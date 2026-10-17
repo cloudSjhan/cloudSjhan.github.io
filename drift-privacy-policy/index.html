@@ -30,7 +30,7 @@
 <meta property="og:description" content="Last updated &#x2F; 最后更新：2026-10-16 English · 简体中文 · Drift Support &#x2F; 帮助与支持  EnglishScope and developerDrift is a macOS photo and video browser developed by Shanjie Han, distributed through the Ma">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-10-16T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-16T10:41:08.904Z">
+<meta property="article:modified_time" content="2026-10-17T04:09:50.112Z">
 <meta property="article:author" content="cloud sjhan">
 <meta property="article:tag" content="go, python, Docker, k8s">
 <meta name="twitter:card" content="summary">
@@ -259,8 +259,8 @@
 <p>Privacy contact: <a href="mailto:hanshanjieapp@gmail.com">hanshanjieapp@gmail.com</a>.</p>
 <h3 id="Photos-videos-and-folder-access"><a href="#Photos-videos-and-folder-access" class="headerlink" title="Photos, videos and folder access"></a>Photos, videos and folder access</h3><p>Drift accesses only folders you select and the Photos library access you grant through macOS. It reads media and relevant metadata to display, sort and group items, including capture or file dates, dimensions, duration and file sizes where available. The app uses Apple PhotoKit for your Photos library and iCloud Photos. iCloud downloads and synchronization are handled by Apple and your configured storage providers.</p>
 <p><strong>Drift does not upload your photos, videos, capture metadata, viewing history or favorites to a server operated by us.</strong> Processing and image preview generation happen on your Mac. Granting Photos access does not give us remote access to your library.</p>
-<h3 id="Local-storage"><a href="#Local-storage" class="headerlink" title="Local storage"></a>Local storage</h3><p>The app stores preferences, recent-folder security-scoped bookmarks, review history, favorites, aggregate review&#x2F;deletion statistics and cached capture dates locally. Image previews and the motion portion of Live Photos may be cached on your Mac to support playback. App Store builds do not create a Drift account, trial record or third-party license activation record.</p>
-<p>Removing a recent folder or resetting review history in the app does not delete the source media. macOS manages the app container and Keychain independently; uninstalling the app does not necessarily erase every cache, preference or Keychain item.</p>
+<h3 id="Local-storage"><a href="#Local-storage" class="headerlink" title="Local storage"></a>Local storage</h3><p>The app stores preferences, recent-folder and saved-favorite security-scoped bookmarks, review history, favorite media references and metadata, aggregate review&#x2F;deletion statistics and cached capture dates locally. Image previews and the motion portion of Live Photos may be cached on your Mac to support playback. App Store builds do not create a Drift account, trial record or third-party license activation record.</p>
+<p>Removing a recent folder or resetting review history in the app does not delete source media or erase saved favorites. Exporting favorites creates copies only in a folder you choose. macOS manages the app container and Keychain independently; uninstalling the app does not necessarily erase every cache, preference or Keychain item.</p>
 <h3 id="Deletion-and-iCloud"><a href="#Deletion-and-iCloud" class="headerlink" title="Deletion and iCloud"></a>Deletion and iCloud</h3><p>Marking an item for deletion does not immediately remove it. After you review and confirm, folder files are moved to macOS Trash where supported. Photos library assets are deleted through Apple’s system confirmation flow and may be recoverable in Recently Deleted under Apple’s rules.</p>
 <p><strong>Changes to an iCloud Photos library or iCloud Drive folder may synchronize to other devices.</strong> A RAW + JPEG pair or a paired Live Photo may include more than one file. Back up important media and check the confirmation screen before deleting.</p>
 <h3 id="Mac-App-Store-edition"><a href="#Mac-App-Store-edition" class="headerlink" title="Mac App Store edition"></a>Mac App Store edition</h3><p>The Mac App Store edition is a paid-upfront app with no subscription, third-party license activation, or third-party updater. Purchases and updates are managed by Apple. Drift does not receive your card details, Apple ID credentials or App Store purchase history for its browsing functions.</p>
@@ -284,8 +284,8 @@
 <p>隐私联系邮箱：<a href="mailto:hanshanjieapp@gmail.com">hanshanjieapp@gmail.com</a>。</p>
 <h3 id="照片、视频与文件夹权限"><a href="#照片、视频与文件夹权限" class="headerlink" title="照片、视频与文件夹权限"></a>照片、视频与文件夹权限</h3><p>Drift 仅访问你选择并授权的文件夹，以及你通过 macOS 授权的“照片”图库。为显示、排序和按日期归组，App 会读取媒体及相关元数据，例如拍摄或文件日期、尺寸、时长，以及可获得的文件大小。系统图库和 iCloud 照片通过 Apple PhotoKit 提供；云端下载与同步由 Apple 及你配置的存储服务处理。</p>
 <p><strong>Drift 不会把你的照片、视频、拍摄元数据、浏览历史或收藏上传到我们运营的服务器。</strong> 浏览处理和预览生成在 Mac 上进行。授予图库权限不会让开发者远程访问你的图库。</p>
-<h3 id="本地保存的内容"><a href="#本地保存的内容" class="headerlink" title="本地保存的内容"></a>本地保存的内容</h3><p>偏好设置、最近文件夹的安全作用域书签、回顾历史、收藏、回顾及删除统计、拍摄日期索引均保存在本机。为支持显示和播放，App 可能缓存图片预览或实况照片的动态部分。App Store 版不会创建 Drift 账号、试用记录或第三方激活记录。</p>
-<p>移除最近文件夹或重置浏览记录不会删除原照片。App 容器与钥匙串由 macOS 分别管理；卸载 App 不一定会删除所有缓存、偏好设置或钥匙串条目。</p>
+<h3 id="本地保存的内容"><a href="#本地保存的内容" class="headerlink" title="本地保存的内容"></a>本地保存的内容</h3><p>偏好设置、最近文件夹及收藏原文件的安全作用域书签、回顾历史、收藏引用及媒体元数据、回顾及删除统计、拍摄日期索引均保存在本机。为支持显示和播放，App 可能缓存图片预览或实况照片的动态部分。App Store 版不会创建 Drift 账号、试用记录或第三方激活记录。</p>
+<p>移除最近文件夹或重置浏览记录不会删除原照片，也不会清空已保存的收藏。导出收藏仅在你选择的文件夹中创建副本。App 容器与钥匙串由 macOS 分别管理；卸载 App 不一定会删除所有缓存、偏好设置或钥匙串条目。</p>
 <h3 id="删除与-iCloud-同步"><a href="#删除与-iCloud-同步" class="headerlink" title="删除与 iCloud 同步"></a>删除与 iCloud 同步</h3><p>“标记删除”不会立刻删除媒体。复核并确认后，本地文件在系统支持时移至 macOS 废纸篓；图库资产通过 Apple 系统确认流程删除，能否从“最近删除”恢复以 Apple 的规则为准。</p>
 <p><strong>iCloud 照片图库或 iCloud Drive 文件夹的删除可能同步到其他设备。</strong> RAW + JPEG 或配对的实况照片可能包含多个文件。整理重要资料前请备份，并核对确认列表。</p>
 <h3 id="Mac-App-Store-版"><a href="#Mac-App-Store-版" class="headerlink" title="Mac App Store 版"></a>Mac App Store 版</h3><p>Mac App Store 版采用付费下载，无订阅、无第三方激活码、无第三方应用更新器。购买和更新由 Apple 管理。Drift 的浏览功能不会接收你的银行卡信息、Apple ID 凭据或 App Store 购买历史。</p>
