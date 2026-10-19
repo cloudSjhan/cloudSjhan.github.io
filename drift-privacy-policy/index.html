@@ -30,7 +30,7 @@
 <meta property="og:description" content="Last updated &#x2F; 最后更新：2026-10-16 English · 简体中文 · Drift Support &#x2F; 帮助与支持  EnglishScope and developerDrift is a macOS photo and video browser developed by Shanjie Han, distributed through the Ma">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-10-16T04:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-17T04:09:50.112Z">
+<meta property="article:modified_time" content="2026-10-19T11:37:21.838Z">
 <meta property="article:author" content="cloud sjhan">
 <meta property="article:tag" content="go, python, Docker, k8s">
 <meta name="twitter:card" content="summary">
@@ -266,12 +266,13 @@
 <h3 id="Mac-App-Store-edition"><a href="#Mac-App-Store-edition" class="headerlink" title="Mac App Store edition"></a>Mac App Store edition</h3><p>The Mac App Store edition is a paid-upfront app with no subscription, third-party license activation, or third-party updater. Purchases and updates are managed by Apple. Drift does not receive your card details, Apple ID credentials or App Store purchase history for its browsing functions.</p>
 <p>The App Store edition includes no advertising, third-party analytics, behavioral profiling or cross-app tracking SDKs. We do not collect data from the app for advertising or analytics. Photos accessed locally are not sent to us for storage or analysis.</p>
 <h3 id="Website-edition-only-trial-licensing-and-updates"><a href="#Website-edition-only-trial-licensing-and-updates" class="headerlink" title="Website edition only: trial, licensing and updates"></a>Website edition only: trial, licensing and updates</h3><p>The separate website edition offers a seven-day trial and a one-time license. Trial dates, license keys, license-instance identifiers and related entitlement information are stored locally, including in macOS Keychain. These entries may survive app reinstallation.</p>
-<p>Online license activation and validation use Lemon Squeezy. Requests can include the license key, an activation-instance identifier, and the Mac’s name at first activation. The payment provider processes purchase email, billing information and payment data under its own terms; customer name or email returned by that provider can be displayed in the app’s license panel. We do not receive card numbers through the app. Deactivation contacts that service to release a device activation.</p>
+<p>Paddle (Paddle.com Market Ltd.) sells the website edition as Merchant of Record and processes payment, tax, receipts and refunds under its own terms; we never receive card numbers. Online activation, validation and deactivation contact Drift’s license service at hhdrift.com (hosted on Cloudflare) with the license key and a randomly generated install identifier, to enforce the two-Mac limit. The Mac’s name, photos and usage are not sent. The service stores one-way hashes of keys and device identifiers, the order ID, Paddle customer ID and a keyed hash of the purchase email; license and recovery emails are sent through Resend. Contact <a href="mailto:&#x73;&#x75;&#112;&#112;&#111;&#114;&#116;&#x40;&#104;&#x68;&#x64;&#114;&#x69;&#x66;&#116;&#x2e;&#99;&#111;&#109;">&#x73;&#x75;&#112;&#112;&#111;&#114;&#116;&#x40;&#104;&#x68;&#x64;&#114;&#x69;&#x66;&#116;&#x2e;&#99;&#111;&#109;</a> to request deletion.</p>
 <p>The website edition uses Sparkle for update checks. Update and download requests may expose standard connection information, such as IP address and request metadata, to the website host. These website-edition services are not part of the Mac App Store edition.</p>
 <p>Third-party policies:</p>
 <ul>
 <li><a href="https://www.apple.com/legal/privacy/">Apple Privacy Policy</a></li>
-<li><a href="https://www.lemonsqueezy.com/privacy">Lemon Squeezy Privacy Policy</a></li>
+<li><a href="https://www.paddle.com/legal/privacy">Paddle Privacy Policy</a></li>
+<li><a href="https://resend.com/legal/privacy-policy">Resend Privacy Policy</a></li>
 <li><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy</a></li>
 <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a> — hosting of this policy and support website</li>
 </ul>
@@ -291,9 +292,9 @@
 <h3 id="Mac-App-Store-版"><a href="#Mac-App-Store-版" class="headerlink" title="Mac App Store 版"></a>Mac App Store 版</h3><p>Mac App Store 版采用付费下载，无订阅、无第三方激活码、无第三方应用更新器。购买和更新由 Apple 管理。Drift 的浏览功能不会接收你的银行卡信息、Apple ID 凭据或 App Store 购买历史。</p>
 <p>App Store 版不包含广告、第三方分析、行为画像或跨 App 跟踪 SDK；我们不会为了广告或分析自动收集 App 数据。本地访问照片不代表把照片提交给开发者存储或分析。</p>
 <h3 id="仅官网版：试用、授权与更新"><a href="#仅官网版：试用、授权与更新" class="headerlink" title="仅官网版：试用、授权与更新"></a>仅官网版：试用、授权与更新</h3><p>独立的官网版提供七天试用及买断授权。试用日期、激活码、设备实例标识和相关授权状态保存在本机，包括 macOS 钥匙串；重新安装后部分记录仍可能保留。</p>
-<p>联网激活与授权校验通过 Lemon Squeezy 进行，可能发送激活码、激活实例 ID，以及首次激活时的 Mac 名称。付款平台按其规则处理购买邮箱、账单与付款资料；平台返回的客户姓名或邮箱可能显示在 App 许可证页面。App 不接收银行卡号。停用本机需要联系授权服务以释放激活名额。</p>
+<p>官网版由 Paddle（Paddle.com Market Ltd.）作为 Merchant of Record 销售，按其条款处理付款、税费、收据和退款，我们不接触银行卡号。联网激活、校验和停用会连接 hhdrift.com 上的 Drift 授权服务（托管于 Cloudflare），发送激活码和随机生成的安装标识，用于执行“最多 2 台 Mac”的限制；不发送 Mac 名称、照片或使用记录。服务器保存激活码和设备标识的单向哈希、订单号、Paddle 客户编号及购买邮箱的加密哈希；激活码与找回邮件通过 Resend 发送。如需删除，请写信至 <a href="mailto:&#115;&#x75;&#112;&#x70;&#x6f;&#114;&#116;&#x40;&#x68;&#x68;&#100;&#x72;&#105;&#102;&#x74;&#x2e;&#x63;&#111;&#109;">&#115;&#x75;&#112;&#x70;&#x6f;&#114;&#116;&#x40;&#x68;&#x68;&#100;&#x72;&#105;&#102;&#x74;&#x2e;&#x63;&#111;&#109;</a>。</p>
 <p>官网版使用 Sparkle 检查更新。下载与更新请求可能向网站托管服务暴露 IP 地址和请求元数据等连接信息。以上官网版服务不属于 Mac App Store 版。</p>
-<p>相关第三方政策见英文部分的 Apple、Lemon Squeezy、Cloudflare 与 GitHub 隐私政策链接。</p>
+<p>相关第三方政策见英文部分的 Apple、Paddle、Resend、Cloudflare 与 GitHub 隐私政策链接。</p>
 <h3 id="支持邮件与网页访问"><a href="#支持邮件与网页访问" class="headerlink" title="支持邮件与网页访问"></a>支持邮件与网页访问</h3><p>如果你联系支持，我们会收到你主动发送的邮箱、App&#x2F;系统版本、问题描述等信息，仅用于回复和排查。请不要主动发送私人照片、密码、完整激活码或银行卡资料。支持邮件与 App 自动采集属于不同场景。</p>
 <p>本隐私政策与支持页托管在 GitHub Pages。访问网页和外部链接会向相应网站发起普通网络请求，这不等于 Drift 上传了你的照片库；外部平台适用各自的政策。</p>
 <h3 id="儿童、数据请求与政策变更"><a href="#儿童、数据请求与政策变更" class="headerlink" title="儿童、数据请求与政策变更"></a>儿童、数据请求与政策变更</h3><p>Drift 并非专门面向儿童的服务，不设置儿童专属账号、广告或跟踪。如果你在支持邮件中提供了希望删除的个人信息，可以联系上述邮箱；我们会依据适用法律处理，并遵守必要的法定记录保留义务。</p>
