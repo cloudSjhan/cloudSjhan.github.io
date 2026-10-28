@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.css" integrity="sha256-gkQVf8UKZgQ0HyuxL/VnacadJ+D2Kox2TCEBuNQg5+w=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous" defer></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cloudsjhan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night-bright"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="最后更新：2026-10-28 关于内经四时把《黄帝内经》读进生活。 内经四时（原名「时养」）是一款支持 iOS 17 及以上版本的 iPhone 应用，提供经典阅读、二十四节气生活指南、每日安排和生活手记。核心功能可离线使用，无需注册账号。 本应用用于文化阅读与一般生活参考，不做体质诊断、不推荐方药、不承诺疗效，也不能替代医生或其他合格专业人员的建议。 功能入口   页面 主要功能    今日">
+<meta property="og:type" content="website">
+<meta property="og:title" content="技术支持 — 内经四时">
+<meta property="og:url" content="https://cloudsjhan.github.io/neijing-sishi-support/index.html">
+<meta property="og:site_name" content="cloud world">
+<meta property="og:description" content="最后更新：2026-10-28 关于内经四时把《黄帝内经》读进生活。 内经四时（原名「时养」）是一款支持 iOS 17 及以上版本的 iPhone 应用，提供经典阅读、二十四节气生活指南、每日安排和生活手记。核心功能可离线使用，无需注册账号。 本应用用于文化阅读与一般生活参考，不做体质诊断、不推荐方药、不承诺疗效，也不能替代医生或其他合格专业人员的建议。 功能入口   页面 主要功能    今日">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-28T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-28T15:14:38.089Z">
+<meta property="article:author" content="cloud sjhan">
+<meta property="article:tag" content="go, python, Docker, k8s">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cloudsjhan.github.io/neijing-sishi-support/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"https://cloudsjhan.github.io/neijing-sishi-support/index.html","path":"neijing-sishi-support/index.html","title":"技术支持 — 内经四时"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>技术支持 — 内经四时 | cloud world
+</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.31/fancybox/fancybox.umd.js" integrity="sha256-a+H7FYzJv6oU2hfsfDGM2Ohw/cR9v+hPfxHCLdmCrE8=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+  <script src="/js/third-party/pace.js" defer></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="cloud world" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">cloud world</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">To be A geek</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-top"><a href="/top" rel="section"><i class="fa fa-signal fa-fw"></i>top</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%86%85%E7%BB%8F%E5%9B%9B%E6%97%B6"><span class="nav-number">1.</span> <span class="nav-text">关于内经四时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">功能入口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E4%B8%8E%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">阅读与内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E7%AF%87%E7%AB%A0%E9%83%BD%E6%9C%89%E7%99%BD%E8%AF%9D%E5%90%97%EF%BC%9F"><span class="nav-number">3.1.</span> <span class="nav-text">所有篇章都有白话吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E6%89%BE%E5%88%B0%E6%9F%90%E7%AF%87%E6%88%96%E6%9F%90%E4%B8%80%E6%AE%B5%EF%BC%9F"><span class="nav-number">3.2.</span> <span class="nav-text">怎样找到某篇或某一段？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E4%BA%9B%E6%96%87%E5%AD%97%E4%B8%8E%E5%85%B6%E4%BB%96%E7%89%88%E6%9C%AC%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="nav-number">3.3.</span> <span class="nav-text">为什么有些文字与其他版本不同？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E6%B0%94%E6%8C%87%E5%8D%97%E6%98%AF%E5%8F%A4%E4%B9%A6%E9%80%90%E8%8A%82%E6%B0%94%E5%8E%9F%E6%96%87%E5%90%97%EF%BC%9F"><span class="nav-number">3.4.</span> <span class="nav-text">节气指南是古书逐节气原文吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E6%B0%94%E6%97%A5%E6%9C%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8E%E5%8E%86%E4%B9%A6%E7%9B%B8%E5%B7%AE%E4%B8%80%E5%A4%A9%EF%BC%9F"><span class="nav-number">3.5.</span> <span class="nav-text">节气日期为什么与历书相差一天？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%AD%E7%BD%91%E8%BF%98%E8%83%BD%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F"><span class="nav-number">3.6.</span> <span class="nav-text">断网还能使用吗？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E6%8E%92%E3%80%81%E6%89%8B%E8%AE%B0%E4%B8%8E%E6%95%B0%E6%8D%AE"><span class="nav-number">4.</span> <span class="nav-text">安排、手记与数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E6%A0%B7%E8%AE%B0%E5%BD%95%E4%B8%80%E5%A4%A9%E7%9A%84%E7%8A%B6%E6%80%81%EF%BC%9F"><span class="nav-number">4.1.</span> <span class="nav-text">怎样记录一天的状态？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%9A%E5%90%8C%E6%AD%A5%E5%88%B0%E5%85%B6%E4%BB%96%E8%AE%BE%E5%A4%87%E5%90%97%EF%BC%9F"><span class="nav-number">4.2.</span> <span class="nav-text">数据会同步到其他设备吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA%E3%80%8C%E8%BF%99%E6%AC%A1%E6%B2%A1%E6%9C%89%E4%BF%9D%E5%AD%98%E6%88%90%E5%8A%9F%E3%80%8D%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">4.3.</span> <span class="nav-text">提示「这次没有保存成功」怎么办？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA%E3%80%8C%E6%9C%AA%E8%83%BD%E8%AF%BB%E5%8F%96%E5%B7%B2%E4%BF%9D%E5%AD%98%E7%9A%84%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95%E3%80%8D%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">4.4.</span> <span class="nav-text">提示「未能读取已保存的生活记录」怎么办？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%88%A0%E9%99%A4%E6%89%8B%E8%AE%B0%E6%88%96%E6%B8%85%E7%A9%BA%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E5%90%97%EF%BC%9F"><span class="nav-number">4.5.</span> <span class="nav-text">能删除手记或清空所有数据吗？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E6%81%AF%E4%B8%8E%E6%8F%90%E9%86%92"><span class="nav-number">5.</span> <span class="nav-text">作息与提醒</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E5%BC%80%E5%90%AF%E6%8F%90%E9%86%92%EF%BC%9F"><span class="nav-number">5.1.</span> <span class="nav-text">怎么开启提醒？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E4%BA%86%E6%8F%90%E9%86%92%E4%BD%86%E6%B2%A1%E6%9C%89%E6%94%B6%E5%88%B0"><span class="nav-number">5.2.</span> <span class="nav-text">开了提醒但没有收到</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E7%A7%81%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="nav-number">6.</span> <span class="nav-text">隐私与联系</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="cloud sjhan"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">cloud sjhan</p>
+  <div class="site-description" itemprop="description">关于技术，关于生活</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hantmac" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hantmac" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hantmac@outlook.com" title="E-Mail → mailto:hantmac@outlook.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://blog.csdn.net/u012421976" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u012421976" rel="noopener" target="_blank">CSDN</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.w3school.com.cn/" title="http:&#x2F;&#x2F;www.w3school.com.cn&#x2F;" rel="noopener" target="_blank">w3school</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">技术支持 — 内经四时
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <p>最后更新：2026-10-28</p>
+<h2 id="关于内经四时"><a href="#关于内经四时" class="headerlink" title="关于内经四时"></a>关于内经四时</h2><p><strong>把《黄帝内经》读进生活。</strong> 内经四时（原名「时养」）是一款支持 iOS 17 及以上版本的 iPhone 应用，提供经典阅读、二十四节气生活指南、每日安排和生活手记。核心功能可离线使用，无需注册账号。</p>
+<p>本应用用于文化阅读与一般生活参考，<strong>不做体质诊断、不推荐方药、不承诺疗效，也不能替代医生或其他合格专业人员的建议。</strong></p>
+<h2 id="功能入口"><a href="#功能入口" class="headerlink" title="功能入口"></a>功能入口</h2><table>
+<thead>
+<tr>
+<th>页面</th>
+<th>主要功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>今日</td>
+<td>查看当前节气、公历农历、经典短句，把一件小事加入今日安排并标记完成</td>
+</tr>
+<tr>
+<td>节气</td>
+<td>浏览全年 24 节气，阅读起居、饮食、生活三个主题，查看原文与现代依据</td>
+</tr>
+<tr>
+<td>读经</td>
+<td>浏览《素问》《灵枢》篇章，搜索原文和白话，使用篇内搜索、段落目录与收藏</td>
+</tr>
+<tr>
+<td>我的</td>
+<td>记录估计睡眠时长、精力和随手记，设置作息与可选本地提醒</td>
+</tr>
+</tbody></table>
+<h2 id="阅读与内容"><a href="#阅读与内容" class="headerlink" title="阅读与内容"></a>阅读与内容</h2><h3 id="所有篇章都有白话吗？"><a href="#所有篇章都有白话吗？" class="headerlink" title="所有篇章都有白话吗？"></a>所有篇章都有白话吗？</h3><p>不是。当前书库包含《素问》《灵枢》各 81 篇底本正文，共 162 篇；其中首批 5 篇提供全文白话对照，另外 11 篇提供白话选读，其余篇章仅提供原文。应用会区分「全文对照」「白话选读」和仅原文，不把选段冒充全本译注。</p>
+<p>现有全文对照为《上古天真论》《四气调神大论》《生气通天论》《本神》《天年》。白话内容尚未经古籍与医学专业审校，阅读时请结合底本和专业校注核对。</p>
+<h3 id="怎样找到某篇或某一段？"><a href="#怎样找到某篇或某一段？" class="headerlink" title="怎样找到某篇或某一段？"></a>怎样找到某篇或某一段？</h3><p>在「读经」中选择全部、素问、灵枢或收藏，再输入篇名、原文或白话关键词。支持简繁输入和忽略标点的匹配，也可开启「只看全文对照」进一步筛选。</p>
+<p>进入篇章后，可以使用篇内搜索；右上角「… → 段落目录」可跳到指定段落、篇首或末段。提供全文对照的篇章，在原文与白话之间切换时保留当前段落位置。</p>
+<h3 id="为什么有些文字与其他版本不同？"><a href="#为什么有些文字与其他版本不同？" class="headerlink" title="为什么有些文字与其他版本不同？"></a>为什么有些文字与其他版本不同？</h3><p>书库使用维基文库固定修订版本作为底本，显示为简体字。不同底本可能存在用字、分段、篇次和传承差异；《素问》两篇遗篇等存在版本争议，应用另有提示。每篇的底本说明提供来源及许可链接。</p>
+<p>如发现疑似错字、缺文或释义问题，请反馈书名、篇名、段落位置和你参考的版本。尽量不要只发送无法定位的一句截图。</p>
+<h3 id="节气指南是古书逐节气原文吗？"><a href="#节气指南是古书逐节气原文吗？" class="headerlink" title="节气指南是古书逐节气原文吗？"></a>节气指南是古书逐节气原文吗？</h3><p>不是。起居、饮食、生活指南是借鉴四时观念并参考现代公开健康资料的编辑建议，具体行动和餐食不代表《黄帝内经》的逐节气处方。每个主题的「原文与依据」可以查看借鉴范围与来源。</p>
+<p>古文中的方药、针刺和有毒材料为历史记录，<strong>请勿自行照做</strong>。有持续不适请咨询合格专业人员，紧急情况应及时就医。</p>
+<h3 id="节气日期为什么与历书相差一天？"><a href="#节气日期为什么与历书相差一天？" class="headerlink" title="节气日期为什么与历书相差一天？"></a>节气日期为什么与历书相差一天？</h3><p>应用按太阳视黄经采用低精度算法近似求解，并显示设备时区下的日期。临近午夜的边界日期可能与权威历书不同，正式历法用途请核对权威历书。四季建议沿用北半球传统季节，不代表所在地的实时天气或个人身体状况。</p>
+<h3 id="断网还能使用吗？"><a href="#断网还能使用吗？" class="headerlink" title="断网还能使用吗？"></a>断网还能使用吗？</h3><p>可以。已提供的古籍、白话、节气指南、图片和字体随应用保存；搜索、收藏、安排和手记无需联网。主动打开原文网站、现代参考资料或许可链接时需要网络。</p>
+<h2 id="安排、手记与数据"><a href="#安排、手记与数据" class="headerlink" title="安排、手记与数据"></a>安排、手记与数据</h2><h3 id="怎样记录一天的状态？"><a href="#怎样记录一天的状态？" class="headerlink" title="怎样记录一天的状态？"></a>怎样记录一天的状态？</h3><p>在「我的」中填写估计睡眠时长、精力选项和最多 500 字的随手记。一天一笔，当天可修改。睡眠时长是你自行填写的估计值，不是自动监测结果。</p>
+<h3 id="数据会同步到其他设备吗？"><a href="#数据会同步到其他设备吗？" class="headerlink" title="数据会同步到其他设备吗？"></a>数据会同步到其他设备吗？</h3><p>目前不会。安排、收藏、生活手记和作息设置仅由本应用保存到当前设备，没有账号、应用内云同步、导入或导出功能。系统设备备份可能包含应用数据，但不等同于应用内实时同步。</p>
+<p>更名为「内经四时」没有更换工程名、Bundle ID 或本地存储目录，原有数据仍沿用同一存储。</p>
+<h3 id="提示「这次没有保存成功」怎么办？"><a href="#提示「这次没有保存成功」怎么办？" class="headerlink" title="提示「这次没有保存成功」怎么办？"></a>提示「这次没有保存成功」怎么办？</h3><p>先检查设备剩余存储空间，再重试。保存失败时，应用不会将本次操作显示为已经保存；原有记录保留。不要为了排查而直接删除应用，以免失去本机记录。</p>
+<h3 id="提示「未能读取已保存的生活记录」怎么办？"><a href="#提示「未能读取已保存的生活记录」怎么办？" class="headerlink" title="提示「未能读取已保存的生活记录」怎么办？"></a>提示「未能读取已保存的生活记录」怎么办？</h3><p>此时原文件不会被覆盖，新写入会暂停以保护已有资料。可到应用「设置 → 重新读取本机记录」重试。如问题持续，请保留应用，通过下方邮箱反馈错误提示、系统版本和发生前的操作，不必发送完整手记。</p>
+<p>「重新读取」不是恢复出厂设置，也不是从云端恢复数据。</p>
+<h3 id="能删除手记或清空所有数据吗？"><a href="#能删除手记或清空所有数据吗？" class="headerlink" title="能删除手记或清空所有数据吗？"></a>能删除手记或清空所有数据吗？</h3><p>当前版本不支持对过去日期手记逐条编辑或删除，也没有完整的数据管理页面。</p>
+<p>如确需移除全部本机数据，可在 iOS「设置 → 通用 → iPhone 储存空间 → 内经四时」选择<strong>删除 App</strong>。不要选择只保留文稿与数据的「卸载 App」。删除前请确认记录不再需要，当前没有应用内导出或开发者端找回功能。旧设备备份中的副本需另外通过系统备份设置管理。</p>
+<h2 id="作息与提醒"><a href="#作息与提醒" class="headerlink" title="作息与提醒"></a>作息与提醒</h2><h3 id="怎么开启提醒？"><a href="#怎么开启提醒？" class="headerlink" title="怎么开启提醒？"></a>怎么开启提醒？</h3><p>先设置计划上床与起床时间，再在应用设置中开启需要的提醒，并允许系统通知权限：</p>
+<ul>
+<li>睡前提醒：计划上床前 30 分钟，每日重复。</li>
+<li>节气来信：节气当天上午 9 点，一次安排未来 24 次；再次打开应用时续排。</li>
+</ul>
+<p>提醒是本地通知，不需要账号或开发者服务器推送。计划休息时长不代表实际睡眠时长，也不是必须达到的医学目标。</p>
+<h3 id="开了提醒但没有收到"><a href="#开了提醒但没有收到" class="headerlink" title="开了提醒但没有收到"></a>开了提醒但没有收到</h3><ol>
+<li>检查应用内对应提醒开关是否开启。</li>
+<li>到 iOS「设置 → 通知 → 内经四时」，确认允许通知以及所需的声音、横幅和锁屏显示方式。</li>
+<li>检查专注模式、通知摘要等系统设置是否延迟或静音通知。</li>
+<li>修改作息或旅行更换时区后，重新打开应用，让本地提醒按当前设置重新安排。</li>
+<li>节气提醒一次安排未来 24 次，长期未打开应用可能需要重新打开以续排。</li>
+</ol>
+<p>系统通知投递受 iOS 策略影响，本应用不提供严格准时或后台实时保证，不应作为医疗、服药或其他关键事项的唯一提醒工具。</p>
+<h2 id="隐私与联系"><a href="#隐私与联系" class="headerlink" title="隐私与联系"></a>隐私与联系</h2><p>完整数据处理说明见<a href="https://cloudsjhan.github.io/neijing-sishi-privacy-policy/">内经四时隐私政策</a>。本应用不上传手记，不读取 HealthKit，不含广告或第三方追踪 SDK。</p>
+<ul>
+<li>邮箱：<a href="mailto:&#x68;&#97;&#110;&#116;&#x6d;&#x61;&#99;&#64;&#111;&#117;&#x74;&#x6c;&#111;&#x6f;&#107;&#x2e;&#x63;&#x6f;&#109;">&#x68;&#97;&#110;&#116;&#x6d;&#x61;&#99;&#64;&#111;&#117;&#x74;&#x6c;&#111;&#x6f;&#107;&#x2e;&#x63;&#x6f;&#109;</a></li>
+</ul>
+<p>反馈时建议使用邮件主题「内经四时 — 问题反馈」，并附上：</p>
+<ul>
+<li>应用版本、iPhone 型号和 iOS 版本。</li>
+<li>问题发生的页面、操作步骤，以及预期和实际结果。</li>
+<li>如涉及内容，提供书名、篇名、段落或节气主题。</li>
+<li>必要的错误提示截图；请先遮挡个人手记与其他敏感信息。</li>
+</ul>
+<p>我们会根据收到的信息排查并回复。请勿发送账号密码、完整健康记录或与问题无关的个人资料。</p>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">cloud sjhan</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
